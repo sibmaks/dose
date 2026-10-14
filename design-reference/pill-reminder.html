@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f7fb">
+  <meta name="description" content="Dose — a simple daily pill reminder and medication tracker prototype.">
+  <title>Dose — Pill Reminder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js"></script>
+  <style>
+    :root { font-family: 'DM Sans', system-ui, -apple-system, sans-serif; color: #20253c; background: #eff0f6; font-synthesis: none; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: .48; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #b7acfa; outline-offset: 3px; }
+    [v-cloak] { display: none; }
+    .app-shell { width: min(100%, 490px); min-height: 100dvh; margin: 0 auto; background: #fafbfe; box-shadow: 0 20px 80px #22254616; position: relative; }
+    .content { padding: 0 23px 116px; }
+    .top { background: #fafbfe; padding: max(23px, env(safe-area-inset-top)) 23px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 9px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -1px; }
+    .brand-mark { display: grid; place-items: center; width: 36px; height: 36px; background: #675be8; color: white; border-radius: 13px; transform: rotate(-5deg); font-size: 18px; }
+    .brand-mark i { transform: rotate(5deg); }
+    .top-actions { display: flex; gap: 9px; }
+    .round-button { width: 41px; height: 41px; border: 1px solid #e9eaf2; background: white; color: #626982; border-radius: 14px; display: grid; place-items: center; font-size: 17px; }
+    .round-button.is-on { background: #eeecff; border-color: #e1dcff; color: #675be8; }
+    .greeting { padding: 15px 0 19px; }
+    .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; color: #857bab; text-transform: uppercase; }
+    h1,h2,h3,p { margin-top: 0; }
+    h1,h2,h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
+    h1 { margin: 8px 0 8px; font-size: clamp(28px, 7vw, 34px); letter-spacing: -1.7px; line-height: 1.2; }
+    .muted { color: #858aa0; }
+    .subtitle { color: #9295a6; font-size: 14px; margin: 0; }
+    .hero { border-radius: 27px; padding: 22px; color: white; background: linear-gradient(128deg,#7867ee 0%,#6457d8 65%,#5147c7 100%); position: relative; overflow: hidden; box-shadow: 0 14px 26px #7468e43a; }
+    .hero::after,.hero::before { content: ''; position: absolute; border: 1px solid #ffffff24; border-radius: 50%; pointer-events: none; }
+    .hero::after { width: 245px; height: 245px; top: -132px; right: -125px; }
+    .hero::before { width: 186px; height: 186px; bottom: -123px; right: -34px; }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .hero-caption { font-size: 12px; color: #e8e3ff; font-weight: 700; letter-spacing: .25px; display: flex; gap: 8px; align-items: center; }
+    .hero-clock { background: #ffffff29; border: 1px solid #ffffff20; padding: 7px 10px; border-radius: 10px; font-size: 12px; font-weight: 700; }
+    .hero-time { font-family: 'Plus Jakarta Sans'; font-size: 37px; line-height: 1.2; letter-spacing: -1.5px; font-weight: 800; margin: 20px 0 4px; }
+    .hero-med { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .hero-dose { color: #e5e0ff; font-size: 13px; margin-bottom: 21px; }
+    .hero-btn { background: white; color: #5b50d0; border: none; font-weight: 800; font-size: 13px; border-radius: 13px; padding: 12px 16px; display: inline-flex; align-items: center; gap: 9px; }
+    .hero-btn:active { transform: translateY(1px); }
+    .hero-all { margin: 27px 0 5px; font-weight: 800; font-size: 23px; letter-spacing: -.7px; }
+    .hero-text { font-size: 14px; color: #e9e5ff; max-width: 300px; margin: 0; line-height: 1.5; }
+    .section-heading { margin: 28px 0 14px; display: flex; align-items: center; justify-content: space-between; }
+    .section-heading h2 { margin: 0; font-size: 18px; letter-spacing: -.55px; }
+    .text-action { border: none; background: transparent; color: #6f61e9; font-size: 13px; font-weight: 800; padding: 7px 1px; }
+    .progress-card { margin-top: 17px; background: white; border: 1px solid #f0f0f5; padding: 17px; border-radius: 21px; display: flex; gap: 16px; align-items: center; box-shadow: 0 5px 22px #2c365008; }
+    .ring { --progress: 0%; width: 65px; height: 65px; border-radius: 50%; background: conic-gradient(#7466ea var(--progress),#eeedfa 0); display: grid; place-items: center; flex-shrink: 0; }
+    .ring-inner { width: 51px; height: 51px; border-radius: 50%; background: white; display: grid; place-items: center; font-size: 14px; font-weight: 800; }
+    .progress-copy { flex: 1; }
+    .progress-copy strong { display: block; font-size: 15px; letter-spacing: -.25px; margin-bottom: 4px; }
+    .progress-copy small { color: #989baa; font-size: 12px; }
+    .progress-arrow { color: #a9acc1; }
+    .timeline { display: grid; gap: 11px; }
+    .dose-card { display: flex; align-items: center; gap: 12px; padding: 15px 13px; border-radius: 20px; border: 1px solid #eeeff5; background: white; box-shadow: 0 5px 18px #232a4508; }
+    .pill-avatar { height: 49px; width: 49px; border-radius: 17px; display: grid; place-items: center; flex-shrink: 0; font-size: 23px; }
+    .pill-avatar.violet { background: #f0ecff; color: #7969e7; }
+    .pill-avatar.mint { background: #ddf6ef; color: #39a98e; }
+    .pill-avatar.peach { background: #fff0e4; color: #eb9a65; }
+    .pill-avatar.blue { background: #e4f0ff; color: #6799de; }
+    .dose-details { min-width: 0; flex: 1; }
+    .dose-name { font-size: 14px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 5px; }
+    .dose-meta { font-size: 12px; color: #969aac; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .dose-right { text-align: right; flex-shrink: 0; }
+    .dose-time { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+    .status { font-size: 11px; font-weight: 800; border-radius: 9px; padding: 5px 7px; display: inline-block; white-space: nowrap; }
+    .status.taken { color: #279877; background: #e3f8ef; }
+    .status.skipped { color: #9095a5; background: #f1f2f7; }
+    .status.upcoming { color: #6d6ee5; background: #f0efff; }
+    .status.due,.status.overdue { color: #df8350; background: #fff0e5; }
+    .status.snoozed { color: #648bb4; background: #eaf2fc; }
+    .dose-actions { margin-top: 9px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .mini-action { padding: 6px 9px; color: #6e63d9; font-weight: 800; font-size: 11px; border-radius: 9px; border: 1px solid #e7e3ff; background: #f8f7ff; }
+    .mini-action.gray { color: #898fa4; background: #f6f7fa; border-color: #eceef4; }
+    .empty { text-align: center; padding: 28px 16px; border: 1px dashed #dcdde9; border-radius: 19px; color: #9295a5; background: white; }
+    .empty i { font-size: 30px; color: #a89deb; display: block; margin-bottom: 12px; }
+    .empty strong { display: block; color: #343b54; margin-bottom: 4px; }
+    .empty p { margin: 0; line-height: 1.5; font-size: 13px; }
+    .info-banner { margin-top: 19px; padding: 13px 14px; background: #f0efff; color: #766caa; border-radius: 16px; display: flex; gap: 10px; font-size: 12px; line-height: 1.55; }
+    .info-banner i { font-size: 16px; flex-shrink: 0; }
+    .page-header { padding-top: 24px; margin-bottom: 25px; }
+    .page-header h1 { margin-top: 9px; }
+    .medicine-card { background: white; border: 1px solid #eeeef4; border-radius: 20px; padding: 15px; margin-bottom: 12px; }
+    .medicine-top { display: flex; align-items: center; gap: 13px; }
+    .medicine-main { min-width: 0; flex: 1; }
+    .medicine-main strong { font-size: 15px; display: block; margin-bottom: 5px; }
+    .medicine-main small { color: #9a9dae; }
+    .icon-btn { border: none; background: #f7f7fb; color: #8086a0; width: 35px; height: 35px; border-radius: 11px; }
+    .medicine-footer { margin-top: 16px; padding-top: 13px; border-top: 1px solid #f0f0f5; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .time-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+    .time-pill { font-size: 11px; color: #7167b5; background: #f2f0ff; padding: 6px 8px; border-radius: 9px; font-weight: 800; }
+    .toggle { border: none; background: #dfe1e9; width: 37px; height: 22px; border-radius: 20px; padding: 3px; flex-shrink: 0; transition: background .15s; }
+    .toggle span { display: block; width: 16px; height: 16px; border-radius: 50%; background: white; transition: transform .15s; }
+    .toggle.enabled { background: #7365e7; }
+    .toggle.enabled span { transform: translateX(15px); }
+    .inactive { opacity: .56; }
+    .floating-add { display: flex; align-items: center; justify-content: center; gap: 9px; background: #7466e9; border: none; color: white; font-weight: 800; border-radius: 15px; padding: 15px 20px; width: 100%; margin-top: 18px; box-shadow: 0 9px 20px #7567e735; }
+    .history-day { margin-bottom: 24px; }
+    .history-date { color: #8e93a6; font-size: 12px; font-weight: 800; margin-bottom: 9px; }
+    .history-row { background: white; display: flex; align-items: center; gap: 12px; border: 1px solid #eff0f5; padding: 14px; margin-bottom: 7px; border-radius: 15px; }
+    .history-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; background: #e7f8f0; color: #2d9d79; flex-shrink: 0; }
+    .history-icon.skipped { color: #8e92a4; background: #f0f1f5; }
+    .history-detail { flex: 1; font-size: 13px; font-weight: 800; }
+    .history-detail small { display: block; font-weight: 500; color: #a0a3b3; margin-top: 4px; }
+    .history-status { color: #329c78; font-weight: 800; font-size: 12px; }
+    .history-status.skipped { color: #9ca0ae; }
+    .bottom-nav { position: fixed; bottom: 0; z-index: 5; width: min(100%, 490px); background: #ffffffed; backdrop-filter: blur(16px); border-top: 1px solid #eceef4; display: flex; justify-content: space-around; padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); }
+    .nav-item { flex: 1; border: none; background: none; color: #aaadbc; display: grid; gap: 5px; place-items: center; font-size: 10px; font-weight: 800; padding: 3px 0; }
+    .nav-item i { font-size: 21px; }
+    .nav-item.active { color: #6c5fe3; }
+    .nav-item.active i { background: #f0edff; border-radius: 10px; padding: 6px 14px; margin: -6px 0; }
+    .modal-backdrop { position: fixed; z-index: 15; inset: 0; background: #1d224b79; display: flex; justify-content: center; align-items: flex-end; padding: 0 12px; }
+    .modal { background: #fff; width: min(100%, 480px); max-height: min(93dvh,840px); overflow-y: auto; border-radius: 26px 26px 0 0; padding: 23px 23px calc(25px + env(safe-area-inset-bottom)); box-shadow: 0 -10px 55px #1c184c25; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 23px; }
+    .modal-head h2 { margin: 0; font-size: 20px; letter-spacing: -.7px; }
+    .field { display: block; margin-bottom: 16px; }
+    .field-label { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 800; color: #565b74; }
+    .field input,.field textarea { display: block; width: 100%; border-radius: 13px; padding: 12px 13px; border: 1px solid #e7e8f0; background: #fafafd; color: #2d344f; outline: none; font-size: 14px; }
+    .field textarea { resize: vertical; min-height: 65px; }
+    .field input:focus,.field textarea:focus { border-color: #9185ef; background: white; }
+    .time-input-row { display: flex; gap: 9px; align-items: center; margin-bottom: 8px; }
+    .time-input-row input { flex: 1; min-width: 0; }
+    .remove-time { border: none; background: #fff0f0; color: #dd7777; width: 42px; height: 42px; border-radius: 12px; }
+    .add-time { background: none; border: none; color: #6c5fdc; font-size: 13px; font-weight: 800; padding: 6px 0; }
+    .colors { display: flex; gap: 10px; }
+    .color-choice { height: 35px; width: 35px; border-radius: 12px; border: 3px solid white; display: grid; place-items: center; color: white; }
+    .color-choice.violet { background: #8173eb; }
+    .color-choice.mint { background: #57bda2; }
+    .color-choice.peach { background: #efaa79; }
+    .color-choice.blue { background: #76a7e5; }
+    .color-choice.selected { outline: 2px solid #a6a4d2; }
+    .save-btn { border: none; color: white; font-size: 14px; font-weight: 800; border-radius: 14px; width: 100%; background: #7163e5; padding: 15px 20px; margin-top: 8px; }
+    .delete-btn { display: block; border: none; background: transparent; margin: 15px auto 0; padding: 8px; font-weight: 700; color: #d77a7a; }
+    .toast { position: fixed; z-index: 30; bottom: calc(88px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); background: #2d3050; color: white; font-size: 13px; font-weight: 700; border-radius: 13px; padding: 13px 18px; box-shadow: 0 8px 22px #11152c38; max-width: min(92vw,440px); text-align: center; }
+    .fade-enter-active,.fade-leave-active { transition: opacity .2s ease; }
+    .fade-enter-from,.fade-leave-to { opacity: 0; }
+    @media (min-width: 540px) { body { padding: 24px 0; } .app-shell { min-height: 850px; border-radius: 32px; overflow: hidden; } .bottom-nav { bottom: 0; } .modal-backdrop { align-items: center; } .modal { border-radius: 25px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms!important; transition-duration: .01ms!important; } }
+  </style>
+</head>
+<body>
+<div id="app" v-cloak>
+  <div class="app-shell">
+    <header class="top">
+      <div class="brand"><span class="brand-mark"><i class="bi bi-capsule-pill"></i></span> dose<span style="color:#7569e5">.</span></div>
+      <div class="top-actions">
+        <button class="round-button" :class="{'is-on': notificationPermission==='granted'}" @click="enableNotifications" :title="notificationPermission==='granted' ? 'Notifications enabled' : 'Enable notifications'" aria-label="Enable notifications"><i :class="notificationPermission==='granted'?'bi bi-bell-fill':'bi bi-bell'"></i></button>
+        <button class="round-button" @click="openAdd" title="Add medication" aria-label="Add medication"><i class="bi bi-plus-lg"></i></button>
+      </div>
+    </header>
+
+    <main class="content" v-if="activeTab==='today'">
+      <div class="greeting">
+        <div class="eyebrow">{{ todayLabel }}</div>
+        <h1>Every dose counts<span style="color:#7569e5">.</span></h1>
+        <p class="subtitle">A little care, every single day.</p>
+      </div>
+
+      <section class="hero" aria-label="Next medication reminder">
+        <div class="hero-inner">
+          <div class="hero-heading"><span class="hero-caption"><i class="bi bi-alarm"></i>{{ featuredItem && featuredItem.status!=='upcoming' && featuredItem.status!=='snoozed' ? 'DOSE NEEDS ATTENTION' : 'YOUR NEXT REMINDER' }}</span><span class="hero-clock">{{ clockLabel }}</span></div>
+          <template v-if="featuredItem">
+            <div class="hero-time">{{ featuredItem.status==='snoozed' ? formatClock(featuredItem.snoozedUntil) : featuredItem.time }}</div>
+            <div class="hero-med">{{ featuredItem.med.name }}</div>
+            <div class="hero-dose">{{ featuredItem.med.dose }}<span v-if="featuredItem.med.note"> · {{ featuredItem.med.note }}</span></div>
+            <button class="hero-btn" @click="recordDose(featuredItem,'taken')"><i class="bi bi-check2-circle"></i> Mark as taken</button>
+          </template>
+          <template v-else>
+            <div class="hero-all">{{ todayItems.length ? 'All done for today!' : 'Your routine starts here' }}</div>
+            <p class="hero-text">{{ todayItems.length ? 'You have recorded every scheduled dose today. Keep it up!' : 'Add your first medication to set a daily reminder.' }}</p>
+            <button v-if="!todayItems.length" class="hero-btn" style="margin-top:18px" @click="openAdd"><i class="bi bi-plus-circle"></i> Add medication</button>
+          </template>
+        </div>
+      </section>
+
+      <div class="progress-card">
+        <div class="ring" :style="{'--progress': progressPercent + '%'}"><span class="ring-inner">{{ progressPercent }}%</span></div>
+        <div class="progress-copy"><strong>Today's progress</strong><small>{{ takenCount }} of {{ todayItems.length }} doses taken<span v-if="skippedCount"> · {{ skippedCount }} skipped</span></small></div>
+        <i class="bi bi-activity progress-arrow"></i>
+      </div>
+
+      <div class="section-heading"><h2>Today's schedule</h2><button class="text-action" @click="activeTab='medicines'">Manage <i class="bi bi-arrow-right-short"></i></button></div>
+      <div class="timeline" v-if="todayItems.length">
+        <article class="dose-card" v-for="item in todayItems" :key="item.key">
+          <div class="pill-avatar" :class="item.med.color"><i class="bi bi-capsule"></i></div>
+          <div class="dose-details">
+            <div class="dose-name">{{ item.med.name }}</div>
+            <div class="dose-meta">{{ item.med.dose }}<span v-if="item.med.note"> · {{ item.med.note }}</span></div>
+            <div class="dose-actions" v-if="!item.logged">
+              <button class="mini-action" @click="recordDose(item,'taken')"><i class="bi bi-check2"></i> Taken</button>
+              <button class="mini-action gray" v-if="item.status==='due' || item.status==='overdue'" @click="snoozeDose(item)">+10 min</button>
+              <button class="mini-action gray" @click="recordDose(item,'skipped')">Skip</button>
+            </div>
+            <div class="dose-actions" v-else><button class="mini-action gray" @click="undoDose(item)"><i class="bi bi-arrow-counterclockwise"></i> Undo</button></div>
+          </div>
+          <div class="dose-right"><div class="dose-time">{{ item.time }}</div><span class="status" :class="item.status">{{ statusLabel(item) }}</span></div>
+        </article>
+      </div>
+      <div class="empty" v-else><i class="bi bi-calendar-plus"></i><strong>Nothing scheduled yet</strong><p>Add medication and set the times you want to be reminded.</p></div>
+      <div class="info-banner"><i class="bi bi-info-circle"></i><span>This demo uses device-local time. Alerts work while this page is running; reliable closed-app reminders require a native app or push notification backend.</span></div>
+    </main>
+
+    <main class="content" v-else-if="activeTab==='medicines'">
+      <div class="page-header"><div class="eyebrow">YOUR DAILY ROUTINE</div><h1>My medications<span style="color:#7569e5">.</span></h1><p class="subtitle">Manage your doses and reminder times.</p></div>
+      <template v-if="medications.length">
+        <article class="medicine-card" :class="{inactive:!med.active}" v-for="med in medications" :key="med.id">
+          <div class="medicine-top"><div class="pill-avatar" :class="med.color"><i class="bi bi-capsule"></i></div><div class="medicine-main"><strong>{{ med.name }}</strong><small>{{ med.dose }}<span v-if="med.note"> · {{ med.note }}</span></small></div><button class="icon-btn" @click="openEdit(med)" :aria-label="'Edit '+med.name"><i class="bi bi-pencil"></i></button></div>
+          <div class="medicine-footer"><div class="time-pills"><span class="time-pill" v-for="time in med.times" :key="time"><i class="bi bi-clock"></i> {{ time }}</span></div><button class="toggle" :class="{enabled:med.active}" role="switch" :aria-checked="med.active" :aria-label="'Enable '+med.name" @click="med.active=!med.active; showToast(med.active ? 'Reminders enabled' : 'Reminders paused')"><span></span></button></div>
+        </article>
+      </template>
+      <div class="empty" v-else><i class="bi bi-capsule"></i><strong>No medications yet</strong><p>Start by adding your first daily medication.</p></div>
+      <button class="floating-add" @click="openAdd"><i class="bi bi-plus-circle"></i> Add medication</button>
+    </main>
+
+    <main class="content" v-else>
+      <div class="page-header"><div class="eyebrow">KEEP YOUR STREAK GOING</div><h1>Dose history<span style="color:#7569e5">.</span></h1><p class="subtitle">Your recent dose activity, saved on this device.</p></div>
+      <div class="history-day" v-for="group in historyGroups" :key="group.key">
+        <div class="history-date">{{ group.label }}</div>
+        <div class="history-row" v-for="log in group.logs" :key="log.id">
+          <div class="history-icon" :class="log.status"><i :class="log.status==='taken'?'bi bi-check-lg':'bi bi-dash-lg'"></i></div>
+          <div class="history-detail">{{ medName(log.medId, log.medName) }}<small>Scheduled {{ log.time }} · {{ log.dose || 'Dose' }}</small></div>
+          <span class="history-status" :class="log.status">{{ log.status==='taken'?'Taken':'Skipped' }}</span>
+        </div>
+      </div>
+      <div class="empty" v-if="!historyGroups.length"><i class="bi bi-clock-history"></i><strong>No history yet</strong><p>Mark a dose as taken or skipped to build your history.</p></div>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="nav-item" :class="{active:activeTab==='today'}" @click="activeTab='today'"><i class="bi bi-house-door"></i><span>Today</span></button>
+      <button class="nav-item" :class="{active:activeTab==='medicines'}" @click="activeTab='medicines'"><i class="bi bi-capsule"></i><span>Medications</span></button>
+      <button class="nav-item" :class="{active:activeTab==='history'}" @click="activeTab='history'"><i class="bi bi-clock-history"></i><span>History</span></button>
+    </nav>
+  </div>
+
+  <div v-if="formOpen" class="modal-backdrop" @click.self="closeForm">
+    <form class="modal" @submit.prevent="saveMedication" aria-label="Medication editor">
+      <div class="modal-head"><h2>{{ editingId ? 'Edit medication' : 'Add medication' }}</h2><button type="button" class="round-button" @click="closeForm" aria-label="Close"><i class="bi bi-x-lg"></i></button></div>
+      <label class="field"><span class="field-label">Medication name *</span><input v-model.trim="draft.name" maxlength="70" required placeholder="e.g. Vitamin D3"></label>
+      <label class="field"><span class="field-label">Dosage *</span><input v-model.trim="draft.dose" maxlength="70" required placeholder="e.g. 1 tablet"></label>
+      <div class="field"><span class="field-label">Reminder times *</span><div class="time-input-row" v-for="(time,index) in draft.times" :key="index"><input aria-label="Reminder time" type="time" v-model="draft.times[index]" required><button type="button" class="remove-time" :disabled="draft.times.length===1" @click="draft.times.splice(index,1)" aria-label="Remove time"><i class="bi bi-trash"></i></button></div><button type="button" class="add-time" @click="draft.times.push('12:00')"><i class="bi bi-plus-lg"></i> Add another time</button></div>
+      <label class="field"><span class="field-label">Instructions (optional)</span><textarea v-model.trim="draft.note" maxlength="140" placeholder="e.g. Take after a meal"></textarea></label>
+      <div class="field"><span class="field-label">Color</span><div class="colors"><button type="button" v-for="color in colors" :key="color" class="color-choice" :class="[color,{selected:draft.color===color}]" :aria-label="color+' color'" :aria-pressed="draft.color===color" @click="draft.color=color"><i v-if="draft.color===color" class="bi bi-check-lg"></i></button></div></div>
+      <button class="save-btn" type="submit">{{ editingId ? 'Save changes' : 'Add medication' }}</button>
+      <button v-if="editingId" type="button" class="delete-btn" @click="deleteMedication"><i class="bi bi-trash"></i> Delete medication</button>
+    </form>
+  </div>
+  <transition name="fade"><div class="toast" role="status" v-if="toast">{{ toast }}</div></transition>
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (!window.Vue) {
+      document.body.innerHTML = '<div style="padding:24px;text-align:center;font-family:system-ui">Unable to load Vue from the CDN. Connect to the internet and reload this page.</div>';
+      return;
+    }
+    const { createApp } = Vue;
+    const KEYS = { meds:'dose_demo_meds_v1', logs:'dose_demo_logs_v1', sent:'dose_demo_sent_v1', snoozes:'dose_demo_snoozes_v1' };
+    const demo = [
+      {id:'example-d3',name:'Vitamin D3',dose:'1 capsule',times:['08:00'],note:'After breakfast',color:'violet',active:true},
+      {id:'example-omega',name:'Omega-3',dose:'2 softgels',times:['13:00'],note:'With lunch',color:'mint',active:true},
+      {id:'example-mg',name:'Magnesium',dose:'1 tablet',times:['21:00'],note:'In the evening',color:'peach',active:true}
+    ];
+    function load(key,fallback) { try { const data=localStorage.getItem(key); return data===null ? fallback : JSON.parse(data); } catch(e) { return fallback; } }
+    function persist(key,value) { try { localStorage.setItem(key,JSON.stringify(value)); } catch(e) { /* storage may be unavailable */ } }
+    function dateKey(date) { return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`; }
+    function scheduledAt(date,time) { const [h,m]=time.split(':').map(Number); return new Date(date.getFullYear(),date.getMonth(),date.getDate(),h,m,0,0); }
+    function uid() { return typeof crypto!=='undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`; }
+    const app = createApp({
+      data() { return {
+        now:new Date(), activeTab:'today', medications:load(KEYS.meds,demo), logs:load(KEYS.logs,[]),
+        alertsSent:load(KEYS.sent,[]), snoozes:load(KEYS.snoozes,{}),
+        notificationPermission:('Notification' in window ? Notification.permission : 'unsupported'),
+        formOpen:false,editingId:null,draft:{name:'',dose:'',times:['08:00'],note:'',color:'violet'},
+        colors:['violet','mint','peach','blue'],toast:'',toastTimer:null,tickTimer:null
+      }; },
+      computed: {
+        todayKey() { return dateKey(this.now); },
+        todayLabel() { return new Intl.DateTimeFormat('en-US',{weekday:'long',month:'long',day:'numeric'}).format(this.now); },
+        clockLabel() { return new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(this.now); },
+        todayItems() {
+          const nowMs=this.now.getTime(); const result=[];
+          for(const med of this.medications) {
+            if(!med.active) continue;
+            for(const time of med.times) {
+              const key=`${this.todayKey}|${med.id}|${time}`;
+              const log=this.logs.find(x=>x.date===this.todayKey&&x.medId===med.id&&x.time===time);
+              const snoozedUntil=this.snoozes[key]||null;
+              const scheduled=scheduledAt(this.now,time).getTime();
+              const dueMs=snoozedUntil ? new Date(snoozedUntil).getTime() : scheduled;
+              let status=log?.status || (snoozedUntil && nowMs<dueMs ? 'snoozed' : nowMs<dueMs ? 'upcoming' : nowMs-dueMs>=30*60000 ? 'overdue':'due');
+              result.push({key,med,time,logged:!!log,status,snoozedUntil,scheduled,dueMs});
+            }
+          }
+          return result.sort((a,b)=>a.time.localeCompare(b.time)||a.med.name.localeCompare(b.med.name));
+        },
+        featuredItem() {
+          const pending=this.todayItems.filter(x=>!x.logged);
+          const needAttention=pending.filter(x=>x.status==='due'||x.status==='overdue');
+          if(needAttention.length) return needAttention.sort((a,b)=>a.dueMs-b.dueMs)[0];
+          return pending.sort((a,b)=>a.dueMs-b.dueMs)[0] || null;
+        },
+        takenCount() { return this.todayItems.filter(x=>x.status==='taken').length; },
+        skippedCount() { return this.todayItems.filter(x=>x.status==='skipped').length; },
+        progressPercent() { return this.todayItems.length ? Math.round(this.takenCount/this.todayItems.length*100) : 0; },
+        historyGroups() {
+          const groups=[];
+          for(let i=0;i<7;i++) {
+            const d=new Date(this.now.getFullYear(),this.now.getMonth(),this.now.getDate()-i);
+            const day=dateKey(d);
+            const dayLogs=this.logs.filter(x=>x.date===day).sort((a,b)=>b.time.localeCompare(a.time));
+            if(!dayLogs.length) continue;
+            groups.push({key:day,label:i===0?'Today':i===1?'Yesterday':new Intl.DateTimeFormat('en-US',{weekday:'long',month:'short',day:'numeric'}).format(d),logs:dayLogs});
+          }
+          return groups;
+        }
+      },
+      watch: {
+        medications:{handler(v){persist(KEYS.meds,v);},deep:true},
+        logs:{handler(v){persist(KEYS.logs,v);},deep:true},
+        alertsSent:{handler(v){persist(KEYS.sent,v);},deep:true},
+        snoozes:{handler(v){persist(KEYS.snoozes,v);},deep:true}
+      },
+      methods: {
+        statusLabel(item) {
+          return ({taken:'Taken',skipped:'Skipped',upcoming:'Upcoming',due:'Due now',overdue:'Overdue',snoozed:'Snoozed'})[item.status];
+        },
+        formatClock(iso) { return iso ? new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(iso)) : ''; },
+        medName(id,fallback) { return this.medications.find(x=>x.id===id)?.name || fallback || 'Deleted medication'; },
+        showToast(message) { this.toast=message; clearTimeout(this.toastTimer); this.toastTimer=setTimeout(()=>this.toast='',3100); },
+        openAdd() { this.editingId=null; this.draft={name:'',dose:'',times:['08:00'],note:'',color:'violet'}; this.formOpen=true; },
+        openEdit(med) { this.editingId=med.id; this.draft={name:med.name,dose:med.dose,times:[...med.times],note:med.note||'',color:med.color||'violet'}; this.formOpen=true; },
+        closeForm() { this.formOpen=false; },
+        saveMedication() {
+          const name=this.draft.name.trim(), dose=this.draft.dose.trim();
+          const times=[...new Set(this.draft.times)].sort();
+          if(!name||!dose||!times.length||times.some(t=>!/^([01]\d|2[0-3]):[0-5]\d$/.test(t))) { this.showToast('Enter a name, dosage, and valid times.'); return; }
+          if(times.length!==this.draft.times.length) { this.showToast('Remove duplicate reminder times.'); return; }
+          const fields={name,dose,times,note:this.draft.note.trim(),color:this.draft.color};
+          if(this.editingId) {
+            const index=this.medications.findIndex(x=>x.id===this.editingId);
+            if(index>=0) this.medications[index]={...this.medications[index],...fields};
+          } else this.medications.push({id:uid(),...fields,active:true});
+          this.closeForm();this.showToast(this.editingId?'Medication updated':'Medication added');this.activeTab='medicines';this.checkReminders();
+        },
+        deleteMedication() {
+          const med=this.medications.find(x=>x.id===this.editingId);
+          if(!med || !window.confirm(`Delete ${med.name}? Past history will remain.`)) return;
+          this.medications=this.medications.filter(x=>x.id!==this.editingId);
+          this.closeForm();this.showToast('Medication deleted');
+        },
+        recordDose(item,status) {
+          const log={id:uid(),date:this.todayKey,medId:item.med.id,medName:item.med.name,dose:item.med.dose,time:item.time,status,at:new Date().toISOString()};
+          this.logs=this.logs.filter(x=>!(x.date===log.date&&x.medId===log.medId&&x.time===log.time)).concat(log);
+          const next={...this.snoozes}; delete next[item.key]; this.snoozes=next;
+          this.showToast(status==='taken'?`${item.med.name} marked as taken`:'Dose skipped');
+        },
+        undoDose(item) { this.logs=this.logs.filter(x=>!(x.date===this.todayKey&&x.medId===item.med.id&&x.time===item.time)); this.showToast('Dose entry removed'); },
+        snoozeDose(item) {
+          this.snoozes={...this.snoozes,[item.key]:new Date(Date.now()+10*60000).toISOString()};
+          this.showToast('Reminder snoozed for 10 minutes');
+        },
+        async enableNotifications() {
+          if(!('Notification' in window)) { this.showToast('This browser does not support notifications.');return; }
+          if(!window.isSecureContext) { this.showToast('Use HTTPS or localhost to enable notifications.');return; }
+          if(Notification.permission==='granted') { this.showToast('Notifications are already enabled');return; }
+          try {
+            const permission=await Notification.requestPermission(); this.notificationPermission=permission;
+            this.showToast(permission==='granted'?'Notifications enabled':permission==='denied'?'Notification permission denied':'Notification permission not granted');
+          } catch(e) { this.showToast('Could not request notifications.'); }
+        },
+        checkReminders() {
+          const now=Date.now();
+          const currentDay=dateKey(new Date());
+          const sent=this.alertsSent.filter(x=>x.startsWith(currentDay+'|'));
+          if(sent.length!==this.alertsSent.length) this.alertsSent=sent;
+          const snoozes={...this.snoozes};
+          for(const key of Object.keys(snoozes)) if(!key.startsWith(currentDay+'|')) delete snoozes[key];
+          if(Object.keys(snoozes).length!==Object.keys(this.snoozes).length) this.snoozes=snoozes;
+          for(const item of this.todayItems) {
+            if(item.logged) continue;
+            const delay=now-item.dueMs;
+            if(delay<0 || delay>20*60000) continue;
+            const dedupe=`${item.key}|${item.snoozedUntil||'original'}`;
+            if(this.alertsSent.includes(dedupe)) continue;
+            this.alertsSent.push(dedupe);
+            this.showToast(`Time to take ${item.med.name} — ${item.med.dose}`);
+            if('Notification' in window && Notification.permission==='granted') {
+              try { new Notification(`Time for ${item.med.name}`,{body:`${item.med.dose}${item.med.note?' · '+item.med.note:''}`,tag:'dose-'+dedupe}); } catch(e) { /* unsupported context/platform */ }
+            }
+          }
+        },
+        refreshClock() { this.now=new Date();this.checkReminders(); }
+      },
+      mounted() {
+        this.tickTimer=setInterval(this.refreshClock,10000);
+        this.onFocus=()=>this.refreshClock();
+        this.onVisibility=()=>{if(!document.hidden)this.refreshClock();};
+        window.addEventListener('focus',this.onFocus);
+        document.addEventListener('visibilitychange',this.onVisibility);
+        this.checkReminders();
+      },
+      beforeUnmount() { clearInterval(this.tickTimer);clearTimeout(this.toastTimer);window.removeEventListener('focus',this.onFocus);document.removeEventListener('visibilitychange',this.onVisibility); }
+    });
+    app.mount('#app');
+  });
+</script>
+</body>
+</html>
