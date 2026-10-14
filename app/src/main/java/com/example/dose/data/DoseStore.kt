@@ -114,7 +114,7 @@ object DoseStore {
 
     @Synchronized
     fun snoozes(context: Context): Map<String, Long> = runCatching {
-        val obj = JSONObject(prefs(context).getString(SNOOZES, "{}"))
+        val obj = JSONObject(prefs(context).getString(SNOOZES, "{}") ?: "{}")
         obj.keys().asSequence().associateWith { key -> obj.optLong(key) }.filterValues { it > 0L }
     }.getOrDefault(emptyMap())
 

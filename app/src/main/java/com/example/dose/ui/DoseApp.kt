@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
@@ -462,7 +463,7 @@ private fun DoseCard(
                         CompactAction("Skip", null, onClick = { onRecord(item, "skipped") }, secondary = true)
                     }
                 } else {
-                    CompactAction("Undo", Icons.Rounded.Undo, onClick = { onUndo(item) }, secondary = true)
+                    CompactAction("Undo", Icons.AutoMirrored.Rounded.Undo, onClick = { onUndo(item) }, secondary = true)
                 }
             }
             Spacer(Modifier.width(7.dp))
