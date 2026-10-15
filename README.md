@@ -21,7 +21,7 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - Multiple schedules per medication. Each rule has one or several times and can use specific dates, selected weekdays, selected month days, or every day.
 - Six preset colors (including rose and amber) plus an RGB/hex color picker. Up to eight swatches appear, with frequently saved colors first and the current selection included. Usage persists across app restarts; pausing does not increase usage.
 - Taken, Skip, and Snooze 10 min notification actions; Taken, Skip, Undo, and due-dose Snooze actions in the dashboard.
-- Optional pop-up reminder window over other apps, with Taken, Snooze, Skip, and Later actions. Enable it from the settings gear and grant Android's Display over other apps access. A test pop-up is available without recording a dose.
+- Optional pop-up reminder window over other apps, with Taken, Snooze, Skip, and Later actions. Enable it from the settings gear and grant Android's Display over other apps access. The pop-up uses purple pill-shaped actions, side-by-side Snooze and Skip controls, medication cards, and scheduled-time badges. The test pop-up shows the same controls using up to two existing medications (or an example); its buttons close the preview without recording a dose.
 - History includes a Time to take report: average delay overall and per medication, with 7-day, 30-day, and all-time views. Each Taken entry also shows its click time and delay.
 - Reminders restored on reboot, clock/time-zone changes, package upgrades, and exact-alarm permission grants.
 

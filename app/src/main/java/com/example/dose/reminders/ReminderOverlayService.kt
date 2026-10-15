@@ -7,9 +7,6 @@ import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.content.res.Configuration
-import android.graphics.Color
-import android.graphics.Typeface
-import android.graphics.drawable.GradientDrawable
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
@@ -19,12 +16,6 @@ import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
-import com.example.dose.ui.iconResource
 import androidx.core.app.NotificationCompat
 import com.example.dose.MainActivity
 import com.example.dose.R
@@ -99,63 +90,38 @@ class ReminderOverlayService : Service() {
 
     private fun render() {
         val themed = ContextThemeWrapper(this, R.style.Theme_Dose)
-        val content = LinearLayout(themed).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(dp(22), dp(16), dp(22), dp(16))
-            background = GradientDrawable().apply { setColor(Color.WHITE); cornerRadius = dp(22).toFloat() }
-            elevation = dp(12).toFloat()
-        }
-        fun text(value: String, size: Float = 16f, bold: Boolean = false) = TextView(themed).apply {
-            text = value; textSize = size; setTextColor(Color.rgb(37, 43, 67))
-            if (bold) setTypeface(typeface, Typeface.BOLD)
-            setPadding(0, dp(5), 0, dp(5))
-        }
-        content.addView(text(if (preview) "Test reminder" else "Time for your medication", 21f, true))
-        if (preview) {
-            content.addView(text("This is how Dose appears over other apps. No dose will be recorded."))
+        val medications = DoseStore.medications(this).associateBy { it.id }
+        val entries = if (preview) {
+            // Render the real controls in preview, with harmless actions and no saved dose changes.
+            val examples = medications.values.take(2).ifEmpty {
+                listOf(Medication("preview", "Vitamin D", "1", "tablet", emptyList()))
+            }
+            examples.map { medication -> ReminderPopupView.Entry(medication, "08:00") { finishAlert() } }
         } else {
-            val medications = DoseStore.medications(this).associateBy { it.id }
-            slots.values.forEach { slot ->
-                val medication = medications[slot.medicationId] ?: return@forEach
-                val heading = LinearLayout(themed).apply { gravity = Gravity.CENTER_VERTICAL }
-                heading.addView(ImageView(themed).apply {
-                    setImageResource(medication.form.iconResource()); setColorFilter(Color.parseColor(MedicationColors.hex(medication.color)))
-                    contentDescription = medication.form.label
-                }, LinearLayout.LayoutParams(dp(34), dp(34)))
-                heading.addView(text(medication.name, 19f, true), LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply { marginStart = dp(10) })
-                content.addView(heading)
-                content.addView(text("${medication.dose} · Scheduled ${slot.time}"))
-                if (medication.note.isNotBlank()) content.addView(text(medication.note, 14f))
-                listOf("Taken" to ReminderReceiver.ACTION_TAKEN, "Snooze 10 min" to ReminderReceiver.ACTION_SNOOZE, "Skip" to ReminderReceiver.ACTION_SKIP).forEach { (label, action) ->
-                    content.addView(Button(themed).apply {
-                        this.text = label; isAllCaps = false
-                        setOnClickListener {
-                            // Reuse notification actions, including their duplicate-log and schedule validation.
-                            ReminderScheduler.actionIntent(this@ReminderOverlayService, action, slot.medicationId, slot.time, slot.date, slot.scheduledAt).send()
-                            slots.remove(slot.key)
-                            if (slots.isEmpty()) finishAlert() else render()
-                        }
-                    }, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(48)))
+            slots.values.mapNotNull { slot ->
+                medications[slot.medicationId]?.let { medication ->
+                    ReminderPopupView.Entry(medication, slot.time) { action ->
+                        ReminderScheduler.actionIntent(this, action, slot.medicationId, slot.time, slot.date, slot.scheduledAt).send()
+                        slots.remove(slot.key)
+                        if (slots.isEmpty()) finishAlert() else render()
+                    }
                 }
             }
         }
-        content.addView(Button(themed).apply {
-            text = if (preview) "Close test" else "Later · keep notification"; isAllCaps = false
-            setOnClickListener { finishAlert() }
-        })
-        val scroll = ScrollView(themed).apply { isFillViewport = true; addView(content) }
+        val popup = ReminderPopupView.create(themed, preview, entries, ::finishAlert)
         val metrics = resources.displayMetrics
         val width = minOf(metrics.widthPixels - dp(32), dp(420)).coerceAtLeast(1)
-        content.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
-        val height = minOf(content.measuredHeight, (metrics.heightPixels * 0.8).toInt())
+        popup.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec((metrics.heightPixels * 0.8).toInt(), View.MeasureSpec.AT_MOST))
+        val height = popup.measuredHeight
         val params = WindowManager.LayoutParams(width, height, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
             PixelFormat.TRANSLUCENT).apply { gravity = Gravity.CENTER; setTitle("Dose medication reminder") }
         try {
             window?.let { manager.removeView(it) }
             window = null
-            manager.addView(scroll, params)
-            window = scroll
+            manager.addView(popup, params)
+            window = popup
             renderedKeys = slots.keys.toList()
         } catch (_: RuntimeException) {
             // Permission revocation / protected system surfaces must leave the ordinary reminder intact.
