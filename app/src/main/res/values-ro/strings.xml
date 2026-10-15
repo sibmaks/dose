@@ -69,15 +69,10 @@
     <string name="unit">"Unitate *"</string>
     <string name="choose_below_or_type_your_own">"Alege mai jos sau scrie propria unitate"</string>
     <string name="when_should_dose_remind_you">"Când să te anunțe Dose?"</string>
-    <string name="choose_dates">"Alege datele"</string>
-    <string name="just_right_now">"Chiar acum"</string>
-    <string name="immediate_reminder_hint">"Un memento după salvare. Poți adăuga instrucțiuni la ultimul pas."</string>
-    <string name="immediate_resume_hint">"Salvarea reia medicamentul pus pe pauză."</string>
     <string name="schedule_overlap_hint">"Alege una sau mai multe ore. Datele și orele identice produc o singură doză."</string>
     <string name="add_another_schedule">"Adaugă alt program"</string>
     <string name="review_finish">"Verifică și finalizează"</string>
     <string name="other">"Altele"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Acum · Un memento la salvare"</string>
     <string name="add_instructions">"Adaugă instrucțiuni"</string>
     <string name="instructions_optional">"Instrucțiuni (opțional)"</string>
     <string name="e_g_take_after_a_meal">"De ex. după masă"</string>

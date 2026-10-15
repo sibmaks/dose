@@ -69,15 +69,10 @@
     <string name="unit">"Vahid *"</string>
     <string name="choose_below_or_type_your_own">"Aşağıdan seçin və ya özünüz yazın"</string>
     <string name="when_should_dose_remind_you">"Nə vaxt xatırladaq?"</string>
-    <string name="choose_dates">"Tarixləri seç"</string>
-    <string name="just_right_now">"Elə indi"</string>
-    <string name="immediate_reminder_hint">"Saxlandıqdan sonra bir xatırlatma. Son addımda təlimat əlavə edə bilərsiniz."</string>
-    <string name="immediate_resume_hint">"Saxlama dayandırılmış dərmanı bərpa edəcək."</string>
     <string name="schedule_overlap_hint">"Bir cədvəldə bir neçə vaxt seçin. Eyni tarix və vaxt bir qəbul yaradır."</string>
     <string name="add_another_schedule">"Başqa cədvəl əlavə et"</string>
     <string name="review_finish">"Yoxla və tamamla"</string>
     <string name="other">"Digər"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"İndi · Saxlandıqda bir xatırlatma"</string>
     <string name="add_instructions">"Təlimat əlavə et"</string>
     <string name="instructions_optional">"Təlimat (istəyə bağlı)"</string>
     <string name="e_g_take_after_a_meal">"Məsələn, yeməkdən sonra"</string>

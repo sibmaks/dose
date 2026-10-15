@@ -70,15 +70,10 @@
     <string name="unit">"Unit *"</string>
     <string name="choose_below_or_type_your_own">"Choose below or type your own"</string>
     <string name="when_should_dose_remind_you">"When should Dose remind you?"</string>
-    <string name="choose_dates">"Choose dates"</string>
-    <string name="just_right_now">"Just right now"</string>
-    <string name="immediate_reminder_hint">"Send one reminder when you finish saving. You can still add instructions on the final screen."</string>
-    <string name="immediate_resume_hint">"Saving this one-time reminder resumes the paused medication."</string>
     <string name="schedule_overlap_hint">"Use one or several times per schedule. Overlapping dates and times produce one dose."</string>
     <string name="add_another_schedule">"Add another schedule"</string>
     <string name="review_finish">"Review &amp; finish"</string>
     <string name="other">"Other"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Just right now · One-time reminder when saved"</string>
     <string name="add_instructions">"Add instructions"</string>
     <string name="instructions_optional">"Instructions (optional)"</string>
     <string name="e_g_take_after_a_meal">"e.g. Take after a meal"</string>

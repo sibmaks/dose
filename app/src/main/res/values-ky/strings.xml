@@ -69,15 +69,10 @@
     <string name="unit">"Бирдик *"</string>
     <string name="choose_below_or_type_your_own">"Төмөндөн тандаңыз же өзүңүз жазыңыз"</string>
     <string name="when_should_dose_remind_you">"Качан эскертүү керек?"</string>
-    <string name="choose_dates">"Күндөрдү тандоо"</string>
-    <string name="just_right_now">"Азыр эле"</string>
-    <string name="immediate_reminder_hint">"Сактагандан кийин бир эскертме. Акыркы кадамда көрсөтмө кошсоңуз болот."</string>
-    <string name="immediate_resume_hint">"Сактоо токтотулган дарыны кайра иштетет."</string>
     <string name="schedule_overlap_hint">"Жадыбалга бир нече убакыт кошсо болот. Бирдей күн жана убакыт бир кабыл алуу түзөт."</string>
     <string name="add_another_schedule">"Жадыбал кошуу"</string>
     <string name="review_finish">"Текшерүү жана бүтүрүү"</string>
     <string name="other">"Башка"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Азыр · Сактаганда бир эскертме"</string>
     <string name="add_instructions">"Көрсөтмө кошуу"</string>
     <string name="instructions_optional">"Көрсөтмө (милдеттүү эмес)"</string>
     <string name="e_g_take_after_a_meal">"Мисалы, тамактан кийин"</string>

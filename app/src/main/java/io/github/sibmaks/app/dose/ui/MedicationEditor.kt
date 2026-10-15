@@ -62,7 +62,6 @@ internal fun MedicationEditor(
     var note by rememberSaveable { mutableStateOf(original?.note.orEmpty()) }
     var color by rememberSaveable { mutableStateOf(original?.color ?: "violet") }
     var schedules by rememberSaveable(stateSaver = ScheduleListSaver) { mutableStateOf(original?.schedules ?: listOf(DoseSchedule())) }
-    var remindNow by rememberSaveable { mutableStateOf(false) }
     var step by rememberSaveable { mutableStateOf(MedicationStep.NAME) }
     var showSuggestions by rememberSaveable { mutableStateOf(false) }
     var suggestedForm by rememberSaveable { mutableStateOf<String?>(null) }
@@ -90,7 +89,7 @@ internal fun MedicationEditor(
             quantity.isBlank() && !(original?.quantity == "" && amount == original.amount) -> context.getString(R.string.unit_required)
             else -> null
         }
-        MedicationStep.SCHEDULE -> if (remindNow) null else if (schedules.isEmpty()) context.getString(R.string.schedule_required) else schedules.mapIndexedNotNull { index, rule ->
+        MedicationStep.SCHEDULE -> if (schedules.isEmpty()) context.getString(R.string.schedule_required) else schedules.mapIndexedNotNull { index, rule ->
             rule.validationError()?.let { context.getString(R.string.schedule_error, index + 1, localizedValidationError(context, it)) }
         }.firstOrNull()
         else -> null
@@ -102,12 +101,12 @@ internal fun MedicationEditor(
         if (step != MedicationStep.DETAILS) { step = MedicationEditorFlow.next(step, form); return }
         val invalidStep = steps.firstOrNull { stepError(it) != null }
         if (invalidStep != null) { step = invalidStep; error = stepError(invalidStep); return }
-        val rules = if (remindNow) listOf(DoseSchedule.immediately()) else schedules.map { it.copy(times = it.times.sorted(), dates = it.dates.distinct().sorted(), weekDays = it.weekDays.sorted(), monthDays = it.monthDays.sorted()) }
+        val rules = schedules.map { it.copy(times = it.times.sorted(), dates = it.dates.distinct().sorted(), weekDays = it.weekDays.sorted(), monthDays = it.monthDays.sorted()) }
         onSave((original ?: DoseStore.newMedication(name.trim(), amount.trim(), quantity.trim(), rules, "", color, form))
             .copy(name = name.trim(), amount = amount.trim(), quantity = quantity.trim(), schedules = rules,
                 note = if (addInstructions) note.trim() else "", color = color, form = form,
                 customForm = if (form == MedicationForm.OTHER) customForm.trim() else "",
-                active = if (remindNow) true else original?.active ?: true))
+                active = original?.active ?: true))
     }
 
     Dialog(onDismissRequest = ::previous, properties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
@@ -195,22 +194,13 @@ internal fun MedicationEditor(
                         }
                         MedicationStep.SCHEDULE -> {
                             Text(context.getString(R.string.when_should_dose_remind_you), fontSize = 19.sp, fontWeight = FontWeight.Bold)
-                            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                FilterChip(selected = !remindNow, onClick = { remindNow = false; error = null }, label = { Text(context.getString(R.string.choose_dates)) })
-                                FilterChip(selected = remindNow, onClick = { remindNow = true; error = null }, label = { Text(context.getString(R.string.just_right_now)) })
+                            Text(context.getString(R.string.schedule_overlap_hint), color = TextMuted, fontSize = 12.sp)
+                            schedules.forEachIndexed { index, rule ->
+                                ScheduleEditor(rule, index + 1, onChange = { updated ->
+                                    schedules = schedules.toMutableList().apply { set(index, updated.copy(immediateAt = null)) }; error = null
+                                }, onRemove = if (schedules.size > 1) ({ schedules = schedules.filterIndexed { i, _ -> i != index }; error = null }) else null)
                             }
-                            if (remindNow) {
-                                Text(context.getString(R.string.immediate_reminder_hint), color = Violet, fontSize = 14.sp)
-                                if (original?.active == false) Text(context.getString(R.string.immediate_resume_hint), color = TextMuted, fontSize = 12.sp)
-                            } else {
-                                Text(context.getString(R.string.schedule_overlap_hint), color = TextMuted, fontSize = 12.sp)
-                                schedules.forEachIndexed { index, rule ->
-                                    ScheduleEditor(rule, index + 1, onChange = { updated ->
-                                        schedules = schedules.toMutableList().apply { set(index, updated.copy(immediateAt = null)) }; error = null
-                                    }, onRemove = if (schedules.size > 1) ({ schedules = schedules.filterIndexed { i, _ -> i != index }; error = null }) else null)
-                                }
-                                OutlinedButton(onClick = { schedules = schedules + DoseSchedule(); error = null }, modifier = Modifier.fillMaxWidth()) { Icon(Icons.Rounded.Add, null); Text(context.getString(R.string.add_another_schedule)) }
-                            }
+                            OutlinedButton(onClick = { schedules = schedules + DoseSchedule(); error = null }, modifier = Modifier.fillMaxWidth()) { Icon(Icons.Rounded.Add, null); Text(context.getString(R.string.add_another_schedule)) }
                         }
                         MedicationStep.DETAILS -> {
                             Text(context.getString(R.string.review_finish), fontSize = 19.sp, fontWeight = FontWeight.Bold)
@@ -218,8 +208,7 @@ internal fun MedicationEditor(
                                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                                     Text(name, fontWeight = FontWeight.Bold)
                                     Text((if (form == MedicationForm.OTHER) customForm.ifBlank { context.getString(R.string.other) } else form.localizedLabel(context)) + " · $amount ${localizedUnit(context, quantity)}", fontSize = 14.sp)
-                                    if (remindNow) Text(context.getString(R.string.just_right_now_one_time_reminder_when_saved), color = Violet, fontSize = 13.sp)
-                                    else schedules.forEach { Text(scheduleSummary(context, it), color = TextMuted, fontSize = 12.sp) }
+                                    schedules.forEach { Text(scheduleSummary(context, it), color = TextMuted, fontSize = 12.sp) }
                                 }
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {

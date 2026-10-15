@@ -69,15 +69,10 @@
     <string name="unit">"Birlik *"</string>
     <string name="choose_below_or_type_your_own">"Aşakdan saýlaň ýa-da özüňiz ýazyň"</string>
     <string name="when_should_dose_remind_you">"Haçan ýatlatmaly?"</string>
-    <string name="choose_dates">"Seneleri saýlamak"</string>
-    <string name="just_right_now">"Edil häzir"</string>
-    <string name="immediate_reminder_hint">"Saklanandan soň bir ýatlatma. Soňky ädimde görkezme goşup bilersiňiz."</string>
-    <string name="immediate_resume_hint">"Saklamak togtadylan dermany gaýtadan işjeňleşdirýär."</string>
     <string name="schedule_overlap_hint">"Bir ýa-da birnäçe wagt saýlaň. Gabat gelýän sene we wagt bir doza berýär."</string>
     <string name="add_another_schedule">"Başga tertip goşmak"</string>
     <string name="review_finish">"Barlamak we tamamlamak"</string>
     <string name="other">"Başga"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Häzir · Saklananda bir ýatlatma"</string>
     <string name="add_instructions">"Görkezme goşmak"</string>
     <string name="instructions_optional">"Görkezme (islege görä)"</string>
     <string name="e_g_take_after_a_meal">"Meselem, nahardan soň"</string>

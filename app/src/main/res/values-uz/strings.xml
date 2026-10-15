@@ -69,15 +69,10 @@
     <string name="unit">"Birlik *"</string>
     <string name="choose_below_or_type_your_own">"Quyidan tanlang yoki oʻzingiz yozing"</string>
     <string name="when_should_dose_remind_you">"Qachon eslatish kerak?"</string>
-    <string name="choose_dates">"Sanalarni tanlash"</string>
-    <string name="just_right_now">"Hozirning oʻzida"</string>
-    <string name="immediate_reminder_hint">"Saqlangandan keyin bitta eslatma. Oxirgi bosqichda koʻrsatma qoʻshish mumkin."</string>
-    <string name="immediate_resume_hint">"Saqlash toʻxtatilgan dorini qayta faollashtiradi."</string>
     <string name="schedule_overlap_hint">"Bir yoki bir nechta vaqt tanlang. Bir xil sana va vaqt bitta qabul yaratadi."</string>
     <string name="add_another_schedule">"Yana jadval qoʻshish"</string>
     <string name="review_finish">"Tekshirish va tugatish"</string>
     <string name="other">"Boshqa"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Hozir · Saqlanganda bitta eslatma"</string>
     <string name="add_instructions">"Koʻrsatma qoʻshish"</string>
     <string name="instructions_optional">"Koʻrsatma (ixtiyoriy)"</string>
     <string name="e_g_take_after_a_meal">"Masalan, ovqatdan keyin"</string>

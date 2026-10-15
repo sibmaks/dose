@@ -69,15 +69,10 @@
     <string name="unit">"ერთეული *"</string>
     <string name="choose_below_or_type_your_own">"აირჩიეთ ქვემოთ ან შეიყვანეთ საკუთარი"</string>
     <string name="when_should_dose_remind_you">"როდის შეგახსენოთ?"</string>
-    <string name="choose_dates">"თარიღების არჩევა"</string>
-    <string name="just_right_now">"ახლავე"</string>
-    <string name="immediate_reminder_hint">"ერთი შეხსენება შენახვის შემდეგ. ბოლო ეტაპზე შეგიძლიათ დაამატოთ მითითებები."</string>
-    <string name="immediate_resume_hint">"შენახვა განაახლებს შეჩერებულ წამალს."</string>
     <string name="schedule_overlap_hint">"აირჩიეთ ერთი ან რამდენიმე დრო. ერთნაირი თარიღი და დრო ერთ მიღებას ქმნის."</string>
     <string name="add_another_schedule">"სხვა განრიგის დამატება"</string>
     <string name="review_finish">"გადახედვა და დასრულება"</string>
     <string name="other">"სხვა"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"ახლავე · ერთი შეხსენება შენახვისას"</string>
     <string name="add_instructions">"მითითებების დამატება"</string>
     <string name="instructions_optional">"მითითებები (არასავალდებულო)"</string>
     <string name="e_g_take_after_a_meal">"მაგალითად, ჭამის შემდეგ"</string>

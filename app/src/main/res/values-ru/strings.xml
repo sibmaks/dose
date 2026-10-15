@@ -69,15 +69,10 @@
     <string name="unit">"Единица *"</string>
     <string name="choose_below_or_type_your_own">"Выберите ниже или введите свою"</string>
     <string name="when_should_dose_remind_you">"Когда напомнить?"</string>
-    <string name="choose_dates">"Выбрать даты"</string>
-    <string name="just_right_now">"Прямо сейчас"</string>
-    <string name="immediate_reminder_hint">"Одно напоминание после сохранения. На последнем шаге можно добавить инструкции."</string>
-    <string name="immediate_resume_hint">"Сохранение возобновит приостановленное лекарство."</string>
     <string name="schedule_overlap_hint">"В расписании можно указать несколько времён. Совпадающие дата и время дают один приём."</string>
     <string name="add_another_schedule">"Добавить расписание"</string>
     <string name="review_finish">"Проверить и сохранить"</string>
     <string name="other">"Другое"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Сейчас · Одно напоминание после сохранения"</string>
     <string name="add_instructions">"Добавить инструкции"</string>
     <string name="instructions_optional">"Инструкции (необязательно)"</string>
     <string name="e_g_take_after_a_meal">"Например, после еды"</string>

@@ -69,15 +69,10 @@
     <string name="unit">"Воҳид *"</string>
     <string name="choose_below_or_type_your_own">"Аз поён интихоб ё худ ворид кунед"</string>
     <string name="when_should_dose_remind_you">"Кай ёдрас кунем?"</string>
-    <string name="choose_dates">"Интихоби санаҳо"</string>
-    <string name="just_right_now">"Ҳамин ҳозир"</string>
-    <string name="immediate_reminder_hint">"Пас аз захира як ёдраскунӣ. Дар қадами охир дастур илова кардан мумкин аст."</string>
-    <string name="immediate_resume_hint">"Захира доруи боздоштаро фаъол мекунад."</string>
     <string name="schedule_overlap_hint">"Як ё чанд вақт интихоб кунед. Сана ва вақти якхела як қабул медиҳанд."</string>
     <string name="add_another_schedule">"Иловаи ҷадвал"</string>
     <string name="review_finish">"Санҷиш ва анҷом"</string>
     <string name="other">"Дигар"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Ҳозир · Як ёдраскунӣ пас аз захира"</string>
     <string name="add_instructions">"Иловаи дастур"</string>
     <string name="instructions_optional">"Дастур (ихтиёрӣ)"</string>
     <string name="e_g_take_after_a_meal">"Масалан, баъди хӯрок"</string>

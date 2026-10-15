@@ -69,15 +69,10 @@
     <string name="unit">"Адзінка *"</string>
     <string name="choose_below_or_type_your_own">"Выберыце ніжэй ці ўвядзіце сваю"</string>
     <string name="when_should_dose_remind_you">"Калі нагадаць?"</string>
-    <string name="choose_dates">"Выбраць даты"</string>
-    <string name="just_right_now">"Проста зараз"</string>
-    <string name="immediate_reminder_hint">"Адзін напамін пасля захавання. На апошнім кроку можна дадаць інструкцыі."</string>
-    <string name="immediate_resume_hint">"Захаванне адновіць прыпыненыя лекі."</string>
     <string name="schedule_overlap_hint">"У раскладзе можна ўказаць некалькі часоў. Аднолькавыя дата і час даюць адзін прыём."</string>
     <string name="add_another_schedule">"Дадаць расклад"</string>
     <string name="review_finish">"Праверыць і захаваць"</string>
     <string name="other">"Іншае"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Зараз · Адзін напамін пасля захавання"</string>
     <string name="add_instructions">"Дадаць інструкцыі"</string>
     <string name="instructions_optional">"Інструкцыі (неабавязкова)"</string>
     <string name="e_g_take_after_a_meal">"Напрыклад, пасля ежы"</string>

@@ -69,15 +69,10 @@
     <string name="unit">"Бірлік *"</string>
     <string name="choose_below_or_type_your_own">"Төменнен таңдаңыз не өзіңіз жазыңыз"</string>
     <string name="when_should_dose_remind_you">"Қашан еске салу керек?"</string>
-    <string name="choose_dates">"Күндерді таңдау"</string>
-    <string name="just_right_now">"Дәл қазір"</string>
-    <string name="immediate_reminder_hint">"Сақтағаннан кейін бір еске салғыш. Соңғы қадамда нұсқаулар қосуға болады."</string>
-    <string name="immediate_resume_hint">"Сақтау тоқтатылған дәріні қайта қосады."</string>
     <string name="schedule_overlap_hint">"Кестеге бірнеше уақыт қосуға болады. Бірдей күн мен уақыт бір қабылдау жасайды."</string>
     <string name="add_another_schedule">"Кесте қосу"</string>
     <string name="review_finish">"Тексеру және аяқтау"</string>
     <string name="other">"Басқа"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Қазір · Сақтағанда бір еске салғыш"</string>
     <string name="add_instructions">"Нұсқаулар қосу"</string>
     <string name="instructions_optional">"Нұсқаулар (міндетті емес)"</string>
     <string name="e_g_take_after_a_meal">"Мысалы, тамақтан кейін"</string>

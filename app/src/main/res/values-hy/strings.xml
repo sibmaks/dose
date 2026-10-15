@@ -69,15 +69,10 @@
     <string name="unit">"Միավոր *"</string>
     <string name="choose_below_or_type_your_own">"Ընտրեք ստորև կամ մուտքագրեք ձերը"</string>
     <string name="when_should_dose_remind_you">"Ե՞րբ հիշեցնել։"</string>
-    <string name="choose_dates">"Ընտրել ամսաթվերը"</string>
-    <string name="just_right_now">"Հենց հիմա"</string>
-    <string name="immediate_reminder_hint">"Մեկ հիշեցում՝ պահպանելուց հետո։ Վերջին քայլին կարող եք ավելացնել ցուցումներ։"</string>
-    <string name="immediate_resume_hint">"Պահպանումը կվերսկսի դադարեցված դեղը։"</string>
     <string name="schedule_overlap_hint">"Կարող եք ընտրել մի քանի ժամ։ Համընկնող ամսաթիվն ու ժամը տալիս են մեկ ընդունում։"</string>
     <string name="add_another_schedule">"Ավելացնել ժամանակացույց"</string>
     <string name="review_finish">"Ստուգել և ավարտել"</string>
     <string name="other">"Այլ"</string>
-    <string name="just_right_now_one_time_reminder_when_saved">"Հիմա · Մեկ հիշեցում՝ պահպանումից հետո"</string>
     <string name="add_instructions">"Ավելացնել ցուցումներ"</string>
     <string name="instructions_optional">"Ցուցումներ (ըստ ցանկության)"</string>
     <string name="e_g_take_after_a_meal">"Օրինակ՝ ուտելուց հետո"</string>
