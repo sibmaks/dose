@@ -230,4 +230,5 @@
     <string name="on_time">"Уақытында"</string>
     <string name="report_time_basis">"Кешігу жазылған қабылдау уақытымен есептеледі. «Уақытында» кейінге қалдырғаннан кейін де бастапқы жоспарлы уақытты жазады."</string>
     <string name="report_explanation">"Өткізілгендер есептелмейді; ерте қабылдау — нөл кешігу. Ерте: %1$d."</string>
+    <string name="close_screen">"Экранды жабу"</string>
 </resources>

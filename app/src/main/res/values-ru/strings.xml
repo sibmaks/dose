@@ -230,4 +230,5 @@
     <string name="on_time">"Вовремя"</string>
     <string name="report_time_basis">"Задержка считается по записанному времени приёма. «Вовремя» записывает исходное время по расписанию, даже после отсрочки."</string>
     <string name="report_explanation">"Пропуски исключены; ранний приём даёт нулевую задержку. Ранних: %1$d."</string>
+    <string name="close_screen">"Закрыть экран"</string>
 </resources>

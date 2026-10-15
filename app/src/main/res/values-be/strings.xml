@@ -230,4 +230,5 @@
     <string name="on_time">"Своечасова"</string>
     <string name="report_time_basis">"Затрымка лічыцца паводле запісанага часу прыёму. «Своечасова» запісвае зыходны час раскладу, нават пасля адкладання."</string>
     <string name="report_explanation">"Пропускі выключаны; ранні прыём дае нулявую затрымку. Ранніх: %1$d."</string>
+    <string name="close_screen">"Закрыць экран"</string>
 </resources>

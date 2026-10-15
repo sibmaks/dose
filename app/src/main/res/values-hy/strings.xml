@@ -230,4 +230,5 @@
     <string name="on_time">"Ժամանակին"</string>
     <string name="report_time_basis">"Ուշացումը հաշվվում է գրանցված ընդունման ժամանակով։ «Ժամանակին»-ը գրանցում է սկզբնական պլանավորված ժամը՝ նաև հետաձգումից հետո։"</string>
     <string name="report_explanation">"Բաց թողնվածները չեն հաշվվում, վաղ ընդունումը՝ զրոյական ուշացում։ Վաղ՝ %1$d։"</string>
+    <string name="close_screen">"Փակել էկրանը"</string>
 </resources>

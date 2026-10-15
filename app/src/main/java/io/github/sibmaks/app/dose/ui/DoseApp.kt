@@ -123,6 +123,11 @@ fun DoseApp() {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
+    if (showLanguagePicker) {
+        LanguagePicker(firstLanguageOffer, onDismiss = { showLanguagePicker = false })
+        return
+    }
+
     Scaffold(
         containerColor = Page,
         topBar = {
@@ -216,9 +221,6 @@ fun DoseApp() {
         }
     }
 
-    if (showLanguagePicker) {
-        LanguagePicker(firstLanguageOffer, onDismiss = { showLanguagePicker = false })
-    }
     if (showReminderSettings) {
         ReminderSettingsDialog(reminderSetup, onDismiss = { showReminderSettings = false },
             onRefresh = ::refresh, onExactAlarms = { openExactAlarmSettings(context) })
