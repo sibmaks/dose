@@ -87,6 +87,7 @@ fun DoseApp() {
     var tab by remember { mutableStateOf(Tab.Today) }
     var editing by remember { mutableStateOf<Medication?>(null) }
     var showEditor by remember { mutableStateOf(false) }
+    var showReminderSettings by remember { mutableStateOf(false) }
     val medications = remember(revision) { DoseStore.medications(context) }
     val logs = remember(revision) { DoseStore.logs(context) }
     val snoozes = remember(revision) { DoseStore.snoozes(context) }
@@ -156,6 +157,9 @@ fun DoseApp() {
                         tint = if (notificationsGranted) Violet else TextMuted,
                     )
                 }
+                IconButton(onClick = { showReminderSettings = true }) {
+                    Icon(Icons.Rounded.Settings, "Reminder alert settings", tint = TextMuted)
+                }
                 IconButton(onClick = { editing = null; showEditor = true }) {
                     Icon(Icons.Rounded.Add, contentDescription = "Add medication", tint = TextPrimary)
                 }
@@ -222,6 +226,10 @@ fun DoseApp() {
         }
     }
 
+    if (showReminderSettings) {
+        ReminderSettingsDialog(revision, onDismiss = { showReminderSettings = false },
+            onNotifications = ::requestNotifications, onExactAlarms = { openExactAlarmSettings(context) })
+    }
     if (showEditor) {
         MedicationEditor(
             original = editing,
@@ -639,6 +647,7 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>) {
                         Column(Modifier.weight(1f)) {
                             Text(log.medicationName, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             Text("Scheduled ${log.time} · ${log.dose}", color = TextMuted, fontSize = 12.sp)
+
                         }
                         Text(
                             if (log.status == "taken") "Taken" else "Skipped",

@@ -21,6 +21,7 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - Multiple schedules per medication. Each rule has one or several times and can use specific dates, selected weekdays, selected month days, or every day.
 - Six preset colors (including rose and amber) plus an RGB/hex color picker. Up to eight swatches appear, with frequently saved colors first and the current selection included. Usage persists across app restarts; pausing does not increase usage.
 - Taken, Skip, and Snooze 10 min notification actions; Taken, Skip, Undo, and due-dose Snooze actions in the dashboard.
+- Optional pop-up reminder window over other apps, with Taken, Snooze, Skip, and Later actions. Enable it from the settings gear and grant Android's Display over other apps access. A test pop-up is available without recording a dose.
 - Reminders restored on reboot, clock/time-zone changes, package upgrades, and exact-alarm permission grants.
 
 ## Schedule behavior
@@ -37,6 +38,9 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 
 - Android 13+: use the bell or Enable banner to grant notification permission.
 - Android 12+: grant Alarms & reminders access through the Allow exact alarms banner for precise timing. Without it, Android may delay alarms.
+- Pop-ups are off by default. Enable **Settings gear → Pop-up over other apps**, grant **Display over other apps**, allow exact alarms, then use **Test pop-up**. Exact alarms allow the foreground pop-up service to start while Dose is closed. If Android blocks the service, the ordinary dose notification remains available.
+- The pop-up runs for at most two minutes, then closes without recording or skipping doses. Several simultaneous reminders share one scrollable window. Later keeps the dose notifications; Taken, Skip, or Snooze use the same actions as notifications. Permission revocation, pause/delete/schedule changes, and dose actions remove invalid pop-ups.
+- Pop-ups do not unlock or wake the phone. Android or protected apps can suppress overlays; lock-screen reminders continue to use notifications. The Reminder notification settings button opens Android's channel controls for sound and Pop on screen where supported.
 - Vendor battery policies, force-stop, power off, and Do Not Disturb can interfere with alerts. A force-stopped app receives alarms again after launch.
 - Snoozes apply to the current day's dose. This app does not provide clinical advice or track inventory.
 
@@ -46,9 +50,12 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - `ui/MedicationEditor.kt`: form, dose, schedule, and color controls.
 - `data/DoseModels.kt`: calendar rules, occurrence calculation, units, and color ordering.
 - `data/MedicationJson.kt` and `data/DoseStore.kt`: persistence and legacy migration.
+- `reminders/ReminderOverlayService.kt` and `ui/ReminderSettings.kt`: optional bounded overlay and permission controls.
 - `reminders/ReminderScheduler.kt` and `reminders/ReminderReceiver.kt`: alarms, notification actions, and delivery.
 - `app/src/test`: calendar boundaries, finite rules, monthly/leap dates, overlap deduplication, recorded slots, snoozes, time-zone resolution, colors, and JSON migration/round-trip tests.
 
-Verified on 2026-10-14: debug APK assembly succeeded, all 25 unit tests passed, and Android lint finished with no errors (warnings remain). No connected Android device or emulator image was available, so editor layout and actual notification delivery/actions still need device verification.
+Verified on 2026-10-15: debug APK assembly succeeded, all 25 unit tests passed, and Android lint finished with no errors (warnings remain). No connected Android device or emulator image was available, so layout and real overlay/notification delivery and actions still need device verification.
+
+Device verification: enable overlay access and exact alarms, test the pop-up, then schedule two medications for the same minute and switch to another app. Check both appear and Taken/Skip/Snooze affect only the intended dose. Check Later/timeout preserve notifications, notification actions remove the corresponding pop-up, and disabling overlay access or pausing/deleting a medication clears its pop-up.
 
 The browser prototype in `design-reference/pill-reminder.html` is kept for reference and is not bundled in the APK.

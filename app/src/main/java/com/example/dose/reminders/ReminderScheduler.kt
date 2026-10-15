@@ -138,18 +138,21 @@ object ReminderScheduler {
     private fun snoozeIntent(context: Context, id: String, time: String, date: String): PendingIntent =
         pending(context, ReminderReceiver.ACTION_SNOOZE_FIRED, "dose://snooze/$date/$id/$time", id, time, date)
 
-    fun actionIntent(context: Context, action: String, id: String, time: String, date: String): PendingIntent =
-        pending(context, action, "dose://action/$action/$date/$id/$time", id, time, date)
+    fun actionIntent(context: Context, action: String, id: String, time: String, date: String, scheduledAt: Long? = null): PendingIntent =
+        pending(context, action, "dose://action/$action/$date/$id/$time", id, time, date, scheduledAt)
 
     private fun pending(
-        context: Context, action: String, url: String, id: String, time: String, date: String?,
+        context: Context, action: String, url: String, id: String, time: String, date: String?, scheduledAt: Long? = null,
     ): PendingIntent {
         val intent = Intent(context, ReminderReceiver::class.java).apply {
             this.action = action
             data = Uri.parse(url)
             putExtra(ReminderReceiver.EXTRA_MEDICATION_ID, id)
             putExtra(ReminderReceiver.EXTRA_TIME, time)
-            if (date != null) putExtra(ReminderReceiver.EXTRA_DATE, date)
+            if (date != null) {
+                putExtra(ReminderReceiver.EXTRA_DATE, date)
+                putExtra(ReminderReceiver.EXTRA_SCHEDULED_AT, scheduledAt ?: DoseLogic.scheduledMillis(LocalDate.parse(date), time))
+            }
         }
         return PendingIntent.getBroadcast(
             context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,

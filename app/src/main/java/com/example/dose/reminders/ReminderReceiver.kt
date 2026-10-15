@@ -23,10 +23,11 @@ import java.time.LocalDate
 
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val id = intent.getStringExtra(EXTRA_MEDICATION_ID) ?: return
-        val time = intent.getStringExtra(EXTRA_TIME) ?: return
-        val date = intent.getStringExtra(EXTRA_DATE) ?: LocalDate.now().toString()
-        val scheduledDate = runCatching { LocalDate.parse(date) }.getOrNull() ?: return
+        val slot = ReminderSlot.from(intent) ?: return
+        val id = slot.medicationId
+        val time = slot.time
+        val date = slot.date
+        val scheduledDate = LocalDate.parse(date)
         val med = DoseStore.medications(context).find { it.id == id && it.active && time in it.timesOn(scheduledDate) }
         val notificationId = notificationId(id, time, date)
         when (intent.action) {
@@ -59,14 +60,15 @@ class ReminderReceiver : BroadcastReceiver() {
                 if (intent.action == ACTION_SNOOZE_FIRED) {
                     DoseStore.clearSnooze(context, "${date}|${id}|${time}")
                 }
-                notify(context, med, id, time, date, notificationId)
+                notify(context, med, id, time, date, notificationId, slot.scheduledAt)
+                ReminderAlerts.show(context, slot)
             }
         }
     }
 
     private fun notify(
         context: Context, medication: Medication,
-        id: String, time: String, date: String, notificationId: Int,
+        id: String, time: String, date: String, notificationId: Int, scheduledAt: Long,
     ) {
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(
                 context, Manifest.permission.POST_NOTIFICATIONS,
@@ -97,13 +99,13 @@ class ReminderReceiver : BroadcastReceiver() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .addAction(R.drawable.ic_notification, "Taken", ReminderScheduler.actionIntent(
-                context, ACTION_TAKEN, id, time, date,
+                context, ACTION_TAKEN, id, time, date, scheduledAt,
             ))
             .addAction(R.drawable.ic_notification, "Snooze 10 min", ReminderScheduler.actionIntent(
-                context, ACTION_SNOOZE, id, time, date,
+                context, ACTION_SNOOZE, id, time, date, scheduledAt,
             ))
             .addAction(R.drawable.ic_notification, "Skip", ReminderScheduler.actionIntent(
-                context, ACTION_SKIP, id, time, date,
+                context, ACTION_SKIP, id, time, date, scheduledAt,
             ))
             .build()
         NotificationManagerCompat.from(context).notify(notificationId, notification)
@@ -118,7 +120,8 @@ class ReminderReceiver : BroadcastReceiver() {
         const val EXTRA_MEDICATION_ID = "medicationId"
         const val EXTRA_TIME = "time"
         const val EXTRA_DATE = "date"
-        private const val CHANNEL_ID = "dose_reminders_v1"
+        const val EXTRA_SCHEDULED_AT = "scheduledAt"
+        const val CHANNEL_ID = "dose_reminders_v1"
 
         fun notificationId(id: String, time: String, date: String): Int =
             "$id|$time|$date".hashCode() and 0x7fffffff
