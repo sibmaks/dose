@@ -227,4 +227,5 @@
     <string name="duration_minutes">"%1$s daq"</string>
     <string name="inhaler">"Ingalyator"</string>
     <string name="remove_time">"%1$s vaqtini oʻchirish"</string>
+    <string name="upcoming_dose">"Kelgusi qabul"</string>
 </resources>

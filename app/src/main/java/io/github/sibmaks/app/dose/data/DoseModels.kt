@@ -148,6 +148,10 @@ data class DoseItem(
 }
 
 object DoseLogic {
+    /** Snoozing changes alert delivery, never the original dose deadline. */
+    fun isDistantDose(item: DoseItem, nowMillis: Long): Boolean =
+        item.medication.scheduledMillis(LocalDate.parse(item.date), item.time) - nowMillis > 30 * 60_000L
+
     fun dateKey(date: LocalDate = LocalDate.now()): String = date.toString()
     fun slotKey(date: String, medicationId: String, time: String): String = "$date|$medicationId|$time"
     fun isTime(time: String) = Regex("(?:[01][0-9]|2[0-3]):[0-5][0-9]").matches(time)

@@ -227,4 +227,5 @@
     <string name="duration_minutes">"%1$s ր"</string>
     <string name="inhaler">"Ինհալյատոր"</string>
     <string name="remove_time">"Ջնջել ժամը՝ %1$s"</string>
+    <string name="upcoming_dose">"Առաջիկա ընդունում"</string>
 </resources>

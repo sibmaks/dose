@@ -227,4 +227,5 @@
     <string name="duration_minutes">"%1$s хв"</string>
     <string name="inhaler">"Інгалятар"</string>
     <string name="remove_time">"Выдаліць час %1$s"</string>
+    <string name="upcoming_dose">"Будучы прыём"</string>
 </resources>

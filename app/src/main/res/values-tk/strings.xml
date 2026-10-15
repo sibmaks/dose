@@ -227,4 +227,5 @@
     <string name="duration_minutes">"%1$s min"</string>
     <string name="inhaler">"Ingalýator"</string>
     <string name="remove_time">"%1$s wagtyny pozmak"</string>
+    <string name="upcoming_dose">"Indiki doza"</string>
 </resources>

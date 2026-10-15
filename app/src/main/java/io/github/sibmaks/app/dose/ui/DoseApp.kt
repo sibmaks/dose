@@ -299,7 +299,7 @@ private fun TodayPage(
                 Text(context.getString(R.string.a_little_care_every_single_day), fontSize = 14.sp, color = TextMuted)
             }
         }
-        item { FeaturedCard(featured, items.isNotEmpty(), hasMedications, onAdd, onRecord) }
+        item { FeaturedCard(featured, items.isNotEmpty(), hasMedications, System.currentTimeMillis(), onAdd, onRecord) }
         item {
             Card(
                 shape = RoundedCornerShape(20.dp),
@@ -353,17 +353,18 @@ private fun TodayPage(
 
 @Composable
 private fun FeaturedCard(
-    item: DoseItem?, hasSchedule: Boolean, hasMedications: Boolean, onAdd: () -> Unit,
+    item: DoseItem?, hasSchedule: Boolean, hasMedications: Boolean, nowMillis: Long, onAdd: () -> Unit,
     onRecord: (DoseItem, String) -> Unit,
 ) {
     val context = LocalContext.current
+    val distant = item?.let { DoseLogic.isDistantDose(it, nowMillis) } == true
     Card(shape = RoundedCornerShape(27.dp), colors = CardDefaults.cardColors(containerColor = Violet)) {
         Column(Modifier.fillMaxWidth().padding(23.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Rounded.Alarm, null, tint = Color(0xFFE5E0FF), modifier = Modifier.size(17.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    if (item?.status == "overdue" || item?.status == "due") context.getString(R.string.dose_needs_attention) else context.getString(R.string.your_next_reminder),
+                    if (distant) context.getString(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") context.getString(R.string.dose_needs_attention) else context.getString(R.string.your_next_reminder),
                     fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFFE5E0FF),
                 )
             }
@@ -386,7 +387,7 @@ private fun FeaturedCard(
                     fontSize = 13.sp, color = Color(0xFFE9E5FF),
                 )
                 Spacer(Modifier.height(20.dp))
-                Button(
+                if (!distant) Button(
                     onClick = { onRecord(item, "taken") },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Violet),
                     shape = RoundedCornerShape(12.dp),

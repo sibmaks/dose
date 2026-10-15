@@ -227,4 +227,5 @@
     <string name="duration_minutes">"%1$s წთ"</string>
     <string name="inhaler">"ინჰალატორი"</string>
     <string name="remove_time">"დრო %1$s-ის წაშლა"</string>
+    <string name="upcoming_dose">"მომავალი მიღება"</string>
 </resources>

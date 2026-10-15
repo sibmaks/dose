@@ -227,4 +227,5 @@
     <string name="duration_minutes">"%1$s min"</string>
     <string name="inhaler">"Inhalator"</string>
     <string name="remove_time">"Șterge ora %1$s"</string>
+    <string name="upcoming_dose">"Doză viitoare"</string>
 </resources>

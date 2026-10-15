@@ -227,4 +227,5 @@
     <string name="duration_minutes">"%1$s мүн"</string>
     <string name="inhaler">"Ингалятор"</string>
     <string name="remove_time">"%1$s убактысын өчүрүү"</string>
+    <string name="upcoming_dose">"Алдыдагы кабыл алуу"</string>
 </resources>

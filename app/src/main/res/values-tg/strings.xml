@@ -227,4 +227,5 @@
     <string name="duration_minutes">"%1$s дақ"</string>
     <string name="inhaler">"Ингалятор"</string>
     <string name="remove_time">"Нест кардани вақти %1$s"</string>
+    <string name="upcoming_dose">"Қабули оянда"</string>
 </resources>
