@@ -1,7 +1,6 @@
 package com.example.dose.ui
 
 import android.Manifest
-import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -42,8 +41,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -53,18 +50,16 @@ import com.example.dose.reminders.ReminderReceiver
 import com.example.dose.reminders.ReminderScheduler
 import kotlinx.coroutines.delay
 import java.time.LocalDate
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.Locale
 
-private val Violet = Color(0xFF7163E5)
-private val TextPrimary = Color(0xFF252B43)
-private val TextMuted = Color(0xFF9599AC)
+internal val Violet = Color(0xFF7163E5)
+internal val TextPrimary = Color(0xFF252B43)
+internal val TextMuted = Color(0xFF9599AC)
 private val Page = Color(0xFFFAFBFE)
-private val PanelBorder = Color(0xFFEBECF5)
+internal val PanelBorder = Color(0xFFEBECF5)
 private val Mint = Color(0xFF379D80)
-private val Peach = Color(0xFFE78F5C)
+internal val Peach = Color(0xFFE78F5C)
 
 @Composable
 fun DoseTheme(content: @Composable () -> Unit) {
@@ -188,6 +183,7 @@ fun DoseApp() {
             Tab.Today -> TodayPage(
                 modifier = Modifier.padding(padding),
                 items = items,
+                hasMedications = medications.isNotEmpty(),
                 showNotificationWarning = !notificationsGranted,
                 showExactWarning = !exactEnabled,
                 onNotificationPermission = ::requestNotifications,
@@ -232,6 +228,7 @@ fun DoseApp() {
             onDismiss = { showEditor = false },
             onSave = { med ->
                 DoseStore.upsert(context, med)
+                DoseStore.recordColorUse(context, med.color)
                 ReminderScheduler.scheduleAll(context)
                 refresh()
                 showEditor = false
@@ -274,6 +271,7 @@ private fun openExactAlarmSettings(context: Context) {
 private fun TodayPage(
     modifier: Modifier,
     items: List<DoseItem>,
+    hasMedications: Boolean,
     showNotificationWarning: Boolean,
     showExactWarning: Boolean,
     onNotificationPermission: () -> Unit,
@@ -305,7 +303,7 @@ private fun TodayPage(
                 Text("A little care, every single day.", fontSize = 14.sp, color = TextMuted)
             }
         }
-        item { FeaturedCard(featured, items.isNotEmpty(), onAdd, onRecord) }
+        item { FeaturedCard(featured, items.isNotEmpty(), hasMedications, onAdd, onRecord) }
         item {
             Card(
                 shape = RoundedCornerShape(20.dp),
@@ -357,7 +355,9 @@ private fun TodayPage(
             }
         }
         if (items.isEmpty()) {
-            item { EmptyCard("Nothing scheduled yet", "Add a medication and choose when you want to be reminded.", onAdd) }
+            item { EmptyCard(if (hasMedications) "No doses scheduled today" else "Nothing scheduled yet",
+                if (hasMedications) "Your reminders follow the dates you selected. View them in Medications." else "Add a medication and choose when you want to be reminded.",
+                if (hasMedications) null else onAdd) }
         } else {
             items(items, key = { it.id }) { item ->
                 DoseCard(item, onRecord = onRecord, onUndo = onUndo, onSnooze = onSnooze)
@@ -368,7 +368,7 @@ private fun TodayPage(
 
 @Composable
 private fun FeaturedCard(
-    item: DoseItem?, hasSchedule: Boolean, onAdd: () -> Unit,
+    item: DoseItem?, hasSchedule: Boolean, hasMedications: Boolean, onAdd: () -> Unit,
     onRecord: (DoseItem, String) -> Unit,
 ) {
     Card(shape = RoundedCornerShape(27.dp), colors = CardDefaults.cardColors(containerColor = Violet)) {
@@ -390,7 +390,10 @@ private fun FeaturedCard(
                     } else item.time,
                     fontSize = 38.sp, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
-                Text(item.medication.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Icon(androidx.compose.ui.res.painterResource(item.medication.form.iconResource()), item.medication.form.label, tint = Color.White, modifier = Modifier.size(26.dp))
+                    Text(item.medication.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                }
                 Spacer(Modifier.height(3.dp))
                 Text(
                     item.medication.dose + (if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else ""),
@@ -409,16 +412,17 @@ private fun FeaturedCard(
             } else {
                 Spacer(Modifier.height(23.dp))
                 Text(
-                    if (hasSchedule) "All done for today!" else "Your routine starts here",
+                    if (hasSchedule) "All done for today!" else if (hasMedications) "No doses due today" else "Your routine starts here",
                     fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
                     if (hasSchedule) "You've recorded all your scheduled doses."
+                    else if (hasMedications) "Your next doses follow your selected dates."
                     else "Add your first medication to build your daily routine.",
                     color = Color(0xFFE9E5FF), fontSize = 14.sp,
                 )
-                if (!hasSchedule) {
+                if (!hasMedications) {
                     Spacer(Modifier.height(14.dp))
                     Button(onClick = onAdd, colors = ButtonDefaults.buttonColors(Color.White, contentColor = Violet)) {
                         Icon(Icons.Rounded.Add, null)
@@ -444,7 +448,7 @@ private fun DoseCard(
         border = BorderStroke(1.dp, PanelBorder),
     ) {
         Row(Modifier.fillMaxWidth().padding(13.dp), verticalAlignment = Alignment.Top) {
-            PillAvatar(item.medication.color)
+            PillAvatar(item.medication.color, item.medication.form)
             Spacer(Modifier.width(11.dp))
             Column(Modifier.weight(1f)) {
                 Spacer(Modifier.height(3.dp))
@@ -538,7 +542,7 @@ private fun MedicationsPage(
                 ) {
                     Column(Modifier.padding(15.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            PillAvatar(med.color)
+                            PillAvatar(med.color, med.form)
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(med.name, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold)
@@ -553,13 +557,10 @@ private fun MedicationsPage(
                         }
                         HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(top = 13.dp, bottom = 9.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Row(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                                med.times.take(3).forEach { time ->
-                                    Box(Modifier.clip(RoundedCornerShape(8.dp)).background(Color(0xFFF3F0FF)).padding(horizontal = 7.dp, vertical = 7.dp)) {
-                                        Text(time, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Violet)
-                                    }
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                med.schedules.forEach { rule ->
+                                    Text(scheduleSummary(rule), fontSize = 12.sp, color = Violet)
                                 }
-                                if (med.times.size > 3) Text("+${med.times.size - 3}", color = TextMuted, fontSize = 11.sp)
                             }
                             Switch(checked = med.active, onCheckedChange = { onToggle(med) }, modifier = Modifier.height(29.dp))
                         }
@@ -652,162 +653,22 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>) {
 }
 
 @Composable
-private fun MedicationEditor(
-    original: Medication?, onDismiss: () -> Unit,
-    onSave: (Medication) -> Unit, onDelete: (Medication) -> Unit,
-) {
-    val context = LocalContext.current
-    var name by remember { mutableStateOf(original?.name.orEmpty()) }
-    var dose by remember { mutableStateOf(original?.dose.orEmpty()) }
-    var note by remember { mutableStateOf(original?.note.orEmpty()) }
-    var color by remember { mutableStateOf(original?.color ?: "violet") }
-    var times by remember { mutableStateOf(original?.times ?: listOf("08:00")) }
-    var error by remember { mutableStateOf<String?>(null) }
-    var showDeleteConfirm by remember { mutableStateOf(false) }
-
-    fun showTimePicker(index: Int?, initial: String = "12:00") {
-        val time = LocalTime.parse(initial)
-        TimePickerDialog(context, { _, hour, minute ->
-            val formatted = "%02d:%02d".format(Locale.US, hour, minute)
-            times = if (index == null) times + formatted else times.toMutableList().apply { set(index, formatted) }
-            error = null
-        }, time.hour, time.minute, true).show()
-    }
-
-    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        Surface(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).fillMaxHeight(0.88f),
-            shape = RoundedCornerShape(26.dp), color = Color.White,
-        ) {
-            Column {
-                Row(
-                    Modifier.fillMaxWidth().padding(start = 22.dp, end = 12.dp, top = 17.dp, bottom = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        if (original == null) "Add medication" else "Edit medication",
-                        fontSize = 21.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f),
-                    )
-                    IconButton(onClick = onDismiss) { Icon(Icons.Rounded.Close, "Close") }
-                }
-                Column(
-                    modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())
-                        .padding(horizontal = 22.dp, vertical = 6.dp),
-                    verticalArrangement = Arrangement.spacedBy(14.dp),
-                ) {
-                    OutlinedTextField(
-                        name, { name = it.take(70); error = null },
-                        label = { Text("Medication name *") }, placeholder = { Text("e.g. Vitamin D3") },
-                        singleLine = true, modifier = Modifier.fillMaxWidth(),
-                    )
-                    OutlinedTextField(
-                        dose, { dose = it.take(70); error = null },
-                        label = { Text("Dosage *") }, placeholder = { Text("e.g. 1 tablet") },
-                        singleLine = true, modifier = Modifier.fillMaxWidth(),
-                    )
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("Reminder times *", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                        times.forEachIndexed { index, time ->
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                OutlinedButton(onClick = { showTimePicker(index, time) }, modifier = Modifier.weight(1f)) {
-                                    Icon(Icons.Rounded.Schedule, null, modifier = Modifier.size(18.dp))
-                                    Spacer(Modifier.width(8.dp))
-                                    Text(time, fontWeight = FontWeight.Bold)
-                                }
-                                IconButton(onClick = { times = times.filterIndexed { i, _ -> i != index } }, enabled = times.size > 1) {
-                                    Icon(Icons.Rounded.Delete, contentDescription = "Remove $time", tint = Peach)
-                                }
-                            }
-                        }
-                        TextButton(onClick = { showTimePicker(null) }) {
-                            Icon(Icons.Rounded.Add, null)
-                            Spacer(Modifier.width(5.dp))
-                            Text("Add another time")
-                        }
-                    }
-                    OutlinedTextField(
-                        note, { note = it.take(140) }, label = { Text("Instructions (optional)") },
-                        placeholder = { Text("e.g. Take after a meal") },
-                        modifier = Modifier.fillMaxWidth(), minLines = 2,
-                    )
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("Color", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            listOf("violet", "mint", "peach", "blue").forEach { choice ->
-                                val selected = color == choice
-                                Box(
-                                    Modifier.size(39.dp).clip(RoundedCornerShape(12.dp))
-                                        .background(palette(choice).first)
-                                        .then(if (selected) Modifier.border(3.dp, TextPrimary, RoundedCornerShape(12.dp)) else Modifier)
-                                        .clickable { color = choice }
-                                        .semantics { contentDescription = "$choice color" },
-                                    contentAlignment = Alignment.Center,
-                                ) {
-                                    if (selected) Icon(Icons.Rounded.Check, null, tint = Color.White)
-                                }
-                            }
-                        }
-                    }
-                    if (error != null) Text(error.orEmpty(), color = Color(0xFFD14D53), fontSize = 13.sp)
-                }
-                Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 15.dp)) {
-                    Button(
-                        modifier = Modifier.fillMaxWidth().height(51.dp),
-                        shape = RoundedCornerShape(14.dp),
-                        onClick = {
-                            val cleanTimes = times.sorted()
-                            when {
-                                name.isBlank() || dose.isBlank() -> error = "Enter a medication name and dosage."
-                                cleanTimes.isEmpty() -> error = "Choose at least one time."
-                                cleanTimes.distinct().size != cleanTimes.size -> error = "Remove duplicate reminder times."
-                                else -> onSave(
-                                    (original ?: DoseStore.newMedication(name.trim(), dose.trim(), cleanTimes, note.trim(), color))
-                                        .copy(name = name.trim(), dose = dose.trim(), times = cleanTimes, note = note.trim(), color = color),
-                                )
-                            }
-                        },
-                    ) { Text(if (original == null) "Add medication" else "Save changes", fontWeight = FontWeight.Bold) }
-                    if (original != null) {
-                        TextButton(onClick = { showDeleteConfirm = true }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                            Icon(Icons.Rounded.Delete, null, tint = Color(0xFFD27979), modifier = Modifier.size(17.dp))
-                            Spacer(Modifier.width(5.dp))
-                            Text("Delete medication", color = Color(0xFFD27979))
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if (showDeleteConfirm && original != null) {
-        AlertDialog(
-            onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("Delete ${original.name}?") },
-            text = { Text("Reminders will stop. Your previous dose history will be kept.") },
-            confirmButton = { TextButton(onClick = { onDelete(original) }) { Text("Delete", color = Color(0xFFC45151)) } },
-            dismissButton = { TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") } },
-        )
-    }
-}
-
-@Composable
 private fun Eyebrow(text: String) {
     Text(text, color = Color(0xFF847AAD), fontWeight = FontWeight.ExtraBold, fontSize = 11.sp, letterSpacing = 1.1.sp)
 }
 
 @Composable
-private fun PillAvatar(color: String) {
+private fun PillAvatar(color: String, form: MedicationForm) {
     val (foreground, background) = palette(color)
     Box(
         Modifier.size(49.dp).clip(RoundedCornerShape(16.dp)).background(background),
         contentAlignment = Alignment.Center,
-    ) { Icon(Icons.Rounded.Medication, null, tint = foreground, modifier = Modifier.size(26.dp)) }
+    ) { Icon(androidx.compose.ui.res.painterResource(form.iconResource()), form.label, tint = foreground, modifier = Modifier.size(26.dp)) }
 }
 
-private fun palette(color: String): Pair<Color, Color> = when (color) {
-    "mint" -> Color(0xFF39A98E) to Color(0xFFDEF5ED)
-    "peach" -> Color(0xFFED9C64) to Color(0xFFFFF0E4)
-    "blue" -> Color(0xFF6899DE) to Color(0xFFE5F0FF)
-    else -> Color(0xFF7969E7) to Color(0xFFF0ECFF)
+internal fun palette(color: String): Pair<Color, Color> {
+    val foreground = Color(android.graphics.Color.parseColor(MedicationColors.hex(color)))
+    return foreground to androidx.compose.ui.graphics.lerp(Color.White, foreground, 0.13f)
 }
 
 @Composable

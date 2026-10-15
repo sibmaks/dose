@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -16,22 +17,25 @@ import com.example.dose.MainActivity
 import com.example.dose.R
 import com.example.dose.data.DoseLog
 import com.example.dose.data.DoseStore
+import com.example.dose.data.Medication
+import com.example.dose.ui.iconResource
 import java.time.LocalDate
 
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val id = intent.getStringExtra(EXTRA_MEDICATION_ID) ?: return
         val time = intent.getStringExtra(EXTRA_TIME) ?: return
-        val med = DoseStore.medications(context).find { it.id == id && it.active && time in it.times }
         val date = intent.getStringExtra(EXTRA_DATE) ?: LocalDate.now().toString()
+        val scheduledDate = runCatching { LocalDate.parse(date) }.getOrNull() ?: return
+        val med = DoseStore.medications(context).find { it.id == id && it.active && time in it.timesOn(scheduledDate) }
         val notificationId = notificationId(id, time, date)
         when (intent.action) {
-            ACTION_TAKEN -> {
+            ACTION_TAKEN, ACTION_SKIP -> {
                 if (med != null && DoseStore.logs(context).none {
                         it.date == date && it.medicationId == id && it.time == time
                     }) {
                     DoseStore.record(context, DoseLog(
-                        date, id, med.name, med.dose, time, "taken", System.currentTimeMillis(),
+                        date, id, med.name, med.dose, time, if (intent.action == ACTION_SKIP) "skipped" else "taken", System.currentTimeMillis(),
                     ))
                 }
                 ReminderScheduler.cancelSnooze(context, id, time, date)
@@ -55,13 +59,13 @@ class ReminderReceiver : BroadcastReceiver() {
                 if (intent.action == ACTION_SNOOZE_FIRED) {
                     DoseStore.clearSnooze(context, "${date}|${id}|${time}")
                 }
-                notify(context, med.name, med.dose, med.note, id, time, date, notificationId)
+                notify(context, med, id, time, date, notificationId)
             }
         }
     }
 
     private fun notify(
-        context: Context, name: String, dose: String, note: String,
+        context: Context, medication: Medication,
         id: String, time: String, date: String, notificationId: Int,
     ) {
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(
@@ -77,12 +81,17 @@ class ReminderReceiver : BroadcastReceiver() {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
-        val message = if (note.isBlank()) dose else "$dose · $note"
+        val message = medication.dose + if (medication.note.isBlank()) "" else " · ${medication.note}"
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Time for $name")
+            .setSmallIcon(medication.form.iconResource())
+            .setContentTitle("Time for ${medication.name}")
             .setContentText(message)
             .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+            .addExtras(Bundle().apply {
+                putString(EXTRA_MEDICATION_ID, id)
+                putString(EXTRA_TIME, time)
+                putString(EXTRA_DATE, date)
+            })
             .setAutoCancel(true)
             .setContentIntent(open)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -93,6 +102,9 @@ class ReminderReceiver : BroadcastReceiver() {
             .addAction(R.drawable.ic_notification, "Snooze 10 min", ReminderScheduler.actionIntent(
                 context, ACTION_SNOOZE, id, time, date,
             ))
+            .addAction(R.drawable.ic_notification, "Skip", ReminderScheduler.actionIntent(
+                context, ACTION_SKIP, id, time, date,
+            ))
             .build()
         NotificationManagerCompat.from(context).notify(notificationId, notification)
     }
@@ -100,6 +112,7 @@ class ReminderReceiver : BroadcastReceiver() {
     companion object {
         const val ACTION_REMIND = "com.example.dose.REMIND"
         const val ACTION_SNOOZE_FIRED = "com.example.dose.SNOOZE_FIRED"
+        const val ACTION_SKIP = "com.example.dose.SKIP"
         const val ACTION_TAKEN = "com.example.dose.TAKEN"
         const val ACTION_SNOOZE = "com.example.dose.SNOOZE"
         const val EXTRA_MEDICATION_ID = "medicationId"

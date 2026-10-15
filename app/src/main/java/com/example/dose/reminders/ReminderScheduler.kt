@@ -2,6 +2,7 @@ package com.example.dose.reminders
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,7 +13,7 @@ import java.time.LocalDate
 import java.time.Instant
 import java.time.ZonedDateTime
 
-/** Uses independent one-shot alarms and schedules the next day after each delivery. */
+/** Uses independent one-shot alarms and finds the next matching date after each delivery. */
 object ReminderScheduler {
     private const val PREFS = "dose_scheduled_alarms"
     private const val SLOTS = "scheduled_slots"
@@ -37,12 +38,22 @@ object ReminderScheduler {
         val logs = DoseStore.logs(app)
         val medications = DoseStore.medications(app).filter { it.active }
         val now = ZonedDateTime.now()
-        val today = DoseLogic.dateKey(now.toLocalDate())
+        // Editing a rule, pausing, deleting, or recording a dose invalidates its visible reminder.
+        val notifications = app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notifications.activeNotifications.forEach { posted ->
+            val extras = posted.notification.extras
+            val id = extras.getString(ReminderReceiver.EXTRA_MEDICATION_ID) ?: return@forEach
+            val time = extras.getString(ReminderReceiver.EXTRA_TIME) ?: return@forEach
+            val date = extras.getString(ReminderReceiver.EXTRA_DATE) ?: return@forEach
+            val scheduledDate = runCatching { LocalDate.parse(date) }.getOrNull()
+            val valid = scheduledDate != null && medications.any { it.id == id && time in it.timesOn(scheduledDate) } &&
+                logs.none { it.date == date && it.medicationId == id && it.time == time }
+            if (!valid) notifications.cancel(posted.id)
+        }
         val newSlots = mutableSetOf<String>()
         medications.forEach { med ->
-            med.times.forEach { time ->
-                val recorded = logs.any { it.date == today && it.medicationId == med.id && it.time == time }
-                val at = DoseLogic.nextOccurrence(time, now, recorded)
+            med.times.forEach timeLoop@ { time ->
+                val at = DoseLogic.nextOccurrence(med, time, now, logs) ?: return@timeLoop
                 val dueDate = Instant.ofEpochMilli(at).atZone(now.zone).toLocalDate().toString()
                 val intent = primaryIntent(app, med.id, time, dueDate)
                 schedule(manager, at, intent, app)
@@ -63,11 +74,7 @@ object ReminderScheduler {
         val medication = DoseStore.medications(app).find { it.id == medicationId && it.active }
         if (medication == null || time !in medication.times) return
         val now = ZonedDateTime.now()
-        val today = DoseLogic.dateKey(now.toLocalDate())
-        val recorded = DoseStore.logs(app).any {
-            it.date == today && it.medicationId == medicationId && it.time == time
-        }
-        val at = DoseLogic.nextOccurrence(time, now, recorded)
+        val at = DoseLogic.nextOccurrence(medication, time, now, DoseStore.logs(app)) ?: return
         val dueDate = Instant.ofEpochMilli(at).atZone(now.zone).toLocalDate().toString()
         schedule(manager, at, primaryIntent(app, medicationId, time, dueDate), app)
     }
@@ -96,7 +103,7 @@ object ReminderScheduler {
             val parts = key.split('|', limit = 3)
             if (parts.size != 3) return@forEach
             val (date, id, time) = parts
-            val valid = date == currentDate && meds[id]?.times?.contains(time) == true &&
+            val valid = date == currentDate && meds[id]?.timesOn(LocalDate.parse(date))?.contains(time) == true &&
                 logs.none { it.date == date && it.medicationId == id && it.time == time }
             if (valid && until > now) {
                 schedule(manager, until, snoozeIntent(context, id, time, date), context)

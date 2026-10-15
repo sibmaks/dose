@@ -17,35 +17,30 @@ object DoseStore {
     @Synchronized
     fun medications(context: Context): List<Medication> = runCatching {
         val array = JSONArray(prefs(context).getString(MEDICATIONS, "[]"))
-        (0 until array.length()).mapNotNull { i ->
+        val medications = (0 until array.length()).mapNotNull { i ->
             val obj = array.optJSONObject(i) ?: return@mapNotNull null
-            val timesArray = obj.optJSONArray("times") ?: JSONArray()
-            val times = (0 until timesArray.length()).mapNotNull { j ->
-                timesArray.optString(j).takeIf { isTime(it) }
-            }.distinct().sorted()
-            val id = obj.optString("id")
-            val name = obj.optString("name")
-            val dose = obj.optString("dose")
-            if (id.isBlank() || name.isBlank() || dose.isBlank() || times.isEmpty()) return@mapNotNull null
-            Medication(id, name, dose, times, obj.optString("note"), obj.optString("color", "violet"), obj.optBoolean("active", true))
+            MedicationJson.decode(obj)
         }
+        if ((0 until array.length()).any { array.optJSONObject(it)?.has("schedules") == false }) {
+            // Keep unreadable entries intact instead of deleting them during a format upgrade.
+            (0 until array.length()).forEach { index ->
+                val obj = array.optJSONObject(index)
+                if (obj != null && !obj.has("schedules")) {
+                    MedicationJson.decode(obj)?.let { array.put(index, MedicationJson.encode(it)) }
+                }
+            }
+            prefs(context).edit().putString(MEDICATIONS, array.toString()).commit()
+        }
+        medications
     }.getOrDefault(emptyList())
 
     @Synchronized
     fun upsert(context: Context, medication: Medication) {
+        require(medication.name.isNotBlank() && medication.amount.isNotBlank())
+        require(medication.schedules.isNotEmpty() && medication.schedules.all { it.validationError() == null })
         val list = medications(context).filterNot { it.id == medication.id } + medication
         val array = JSONArray()
-        list.forEach { med ->
-            array.put(JSONObject().apply {
-                put("id", med.id)
-                put("name", med.name)
-                put("dose", med.dose)
-                put("times", JSONArray(med.times))
-                put("note", med.note)
-                put("color", med.color)
-                put("active", med.active)
-            })
-        }
+        list.forEach { array.put(MedicationJson.encode(it)) }
         prefs(context).edit().putString(MEDICATIONS, array.toString()).commit()
     }
 
@@ -53,13 +48,7 @@ object DoseStore {
     fun delete(context: Context, medicationId: String) {
         val remaining = medications(context).filterNot { it.id == medicationId }
         val array = JSONArray()
-        remaining.forEach { med ->
-            array.put(JSONObject().apply {
-                put("id", med.id); put("name", med.name); put("dose", med.dose)
-                put("times", JSONArray(med.times)); put("note", med.note)
-                put("color", med.color); put("active", med.active)
-            })
-        }
+        remaining.forEach { array.put(MedicationJson.encode(it)) }
         prefs(context).edit().putString(MEDICATIONS, array.toString()).commit()
         val remainingSnoozes = snoozes(context).filterKeys { !it.contains("|$medicationId|") }
         saveSnoozes(context, remainingSnoozes)
@@ -74,7 +63,7 @@ object DoseStore {
                 obj.optString("date"), obj.optString("medicationId"),
                 obj.optString("medicationName"), obj.optString("dose"), obj.optString("time"),
                 obj.optString("status"), obj.optLong("recordedAt"),
-            ).takeIf { it.date.isNotBlank() && it.medicationId.isNotBlank() && isTime(it.time) }
+            ).takeIf { it.date.isNotBlank() && it.medicationId.isNotBlank() && DoseLogic.isTime(it.time) }
         }
     }.getOrDefault(emptyList())
 
@@ -132,13 +121,26 @@ object DoseStore {
         prefs(context).edit().putString(SNOOZES, obj.toString()).commit()
     }
 
-    fun newMedication(name: String, dose: String, times: List<String>, note: String, color: String) =
-        Medication(UUID.randomUUID().toString(), name, dose, times, note, color)
+    fun newMedication(name: String, amount: String, quantity: String, schedules: List<DoseSchedule>, note: String, color: String, form: MedicationForm) =
+        Medication(UUID.randomUUID().toString(), name, amount, quantity, schedules, note, color, form = form)
+
+    fun colorUsage(context: Context): Map<String, Int> = runCatching {
+        val obj = JSONObject(prefs(context).getString("color_usage", "{}") ?: "{}")
+        obj.keys().asSequence().associateWith { obj.optInt(it) }
+    }.getOrDefault(emptyMap())
+
+    @Synchronized
+    fun recordColorUse(context: Context, color: String) {
+        val usage = colorUsage(context).toMutableMap()
+        usage[color] = (usage[color] ?: 0) + 1
+        val obj = JSONObject()
+        usage.forEach { (key, count) -> obj.put(key, count) }
+        prefs(context).edit().putString("color_usage", obj.toString()).commit()
+    }
 
     fun newLog(item: DoseItem, status: String): DoseLog = DoseLog(
         item.date, item.medication.id, item.medication.name, item.medication.dose,
         item.time, status, System.currentTimeMillis(),
     )
 
-    private fun isTime(time: String) = Regex("(?:[01][0-9]|2[0-3]):[0-5][0-9]").matches(time)
 }
