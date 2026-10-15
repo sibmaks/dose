@@ -1,18 +1,13 @@
 package com.example.dose.reminders
 
-import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import com.example.dose.MainActivity
 import com.example.dose.R
 import com.example.dose.data.DoseLog
@@ -70,13 +65,8 @@ class ReminderReceiver : BroadcastReceiver() {
         context: Context, medication: Medication,
         id: String, time: String, date: String, notificationId: Int, scheduledAt: Long,
     ) {
-        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(
-                context, Manifest.permission.POST_NOTIFICATIONS,
-            ) != PackageManager.PERMISSION_GRANTED) return
-        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.createNotificationChannel(NotificationChannel(
-            CHANNEL_ID, "Medication reminders", NotificationManager.IMPORTANCE_HIGH,
-        ).apply { description = "Reminders for medication schedules you added" })
+        if (!ReminderAlerts.feedEnabled(context) || !ReminderNotifications.allowed(context)) return
+        ReminderNotifications.createChannel(context)
 
         val open = PendingIntent.getActivity(
             context, 0, Intent(context, MainActivity::class.java).apply {
@@ -108,7 +98,12 @@ class ReminderReceiver : BroadcastReceiver() {
                 context, ACTION_SKIP, id, time, date, scheduledAt,
             ))
             .build()
-        NotificationManagerCompat.from(context).notify(notificationId, notification)
+        try {
+            NotificationManagerCompat.from(context).notify(notificationId, notification)
+        } catch (failure: SecurityException) {
+            // Permission can be revoked after the readiness check; pop-ups remain independent.
+            Log.w("DoseNotifications", "Notification permission was revoked before delivery", failure)
+        }
     }
 
     companion object {

@@ -27,7 +27,7 @@ internal object ReminderPopupView {
 
     data class Entry(val medication: Medication, val time: String, val onAction: (String) -> Unit)
 
-    fun create(context: Context, preview: Boolean, entries: List<Entry>, onLater: () -> Unit): ScrollView {
+    fun create(context: Context, preview: Boolean, entries: List<Entry>, keepNotification: Boolean, onLater: () -> Unit): ScrollView {
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
         fun shape(color: Int, radius: Int, stroke: Int? = null) = GradientDrawable().apply {
             setColor(color)
@@ -114,7 +114,7 @@ internal object ReminderPopupView {
             content.addView(card, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
         }
-        content.addView(pill(if (preview) "Close test" else "Later · keep notification", quiet = true, onClick = onLater),
+        content.addView(pill(if (preview) "Close test" else if (keepNotification) "Later · keep notification" else "Later", quiet = true, onClick = onLater),
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(16) })
         return ScrollView(context).apply {
             background = shape(Color.WHITE, 24)

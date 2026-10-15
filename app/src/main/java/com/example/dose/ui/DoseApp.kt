@@ -1,15 +1,11 @@
 package com.example.dose.ui
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,6 +25,7 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -43,11 +40,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.dose.data.*
+import com.example.dose.reminders.ReminderAlerts
 import com.example.dose.reminders.ReminderReceiver
 import com.example.dose.reminders.ReminderScheduler
 import kotlinx.coroutines.delay
@@ -91,7 +88,7 @@ fun DoseApp() {
     val scope = rememberCoroutineScope()
     var editing by remember { mutableStateOf<Medication?>(null) }
     var showEditor by remember { mutableStateOf(false) }
-    var showReminderSettings by remember { mutableStateOf(false) }
+    var showReminderSettings by rememberSaveable { mutableStateOf(false) }
     val medications = remember(revision) { DoseStore.medications(context) }
     val logs = remember(revision) { DoseStore.logs(context) }
     val snoozes = remember(revision) { DoseStore.snoozes(context) }
@@ -99,27 +96,9 @@ fun DoseApp() {
     val items = remember(medications, logs, snoozes, now) {
         DoseLogic.todayItems(medications, logs, snoozes, now)
     }
-    val notificationsGranted = remember(revision) { hasNotificationPermission(context) }
-    val exactEnabled = remember(revision) { ReminderScheduler.exactAlarmsAvailable(context) }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { revision++ }
+    val reminderSetup = remember(revision) { ReminderAlerts.setupState(context) }
 
     fun refresh() { revision++ }
-    fun requestNotifications() {
-        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(
-                context, Manifest.permission.POST_NOTIFICATIONS,
-            ) != PackageManager.PERMISSION_GRANTED) {
-            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        } else if (!androidx.core.app.NotificationManagerCompat.from(context).areNotificationsEnabled()) {
-            context.startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-            })
-        } else {
-            Toast.makeText(context, "Notifications are enabled", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -154,15 +133,12 @@ fun DoseApp() {
                 Text("dose", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, color = TextPrimary)
                 Text(".", fontSize = 27.sp, fontWeight = FontWeight.ExtraBold, color = Violet)
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = ::requestNotifications) {
-                    Icon(
-                        if (notificationsGranted) Icons.Rounded.NotificationsActive else Icons.Outlined.Notifications,
-                        contentDescription = "Enable notifications",
-                        tint = if (notificationsGranted) Violet else TextMuted,
-                    )
-                }
                 IconButton(onClick = { showReminderSettings = true }) {
-                    Icon(Icons.Rounded.Settings, "Reminder alert settings", tint = TextMuted)
+                    Icon(
+                        if (reminderSetup.complete) Icons.Rounded.NotificationsActive else Icons.Outlined.Notifications,
+                        contentDescription = if (reminderSetup.complete) "Reminder setup complete. Change reminders" else "Reminder setup incomplete. Set up reminders",
+                        tint = if (reminderSetup.complete) Violet else TextMuted,
+                    )
                 }
                 IconButton(onClick = { editing = null; showEditor = true }) {
                     Icon(Icons.Rounded.Add, contentDescription = "Add medication", tint = TextPrimary)
@@ -194,10 +170,8 @@ fun DoseApp() {
                     modifier = Modifier.fillMaxSize(),
                     items = items,
                     hasMedications = medications.isNotEmpty(),
-                    showNotificationWarning = !notificationsGranted,
-                    showExactWarning = !exactEnabled,
-                    onNotificationPermission = ::requestNotifications,
-                    onExactPermission = { openExactAlarmSettings(context) },
+                    showSetupWarning = !reminderSetup.complete,
+                    onReminderSetup = { showReminderSettings = true },
                     onAdd = { editing = null; showEditor = true },
                     onManage = { scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) } },
                     onRecord = { item, status ->
@@ -234,8 +208,8 @@ fun DoseApp() {
     }
 
     if (showReminderSettings) {
-        ReminderSettingsDialog(revision, onDismiss = { showReminderSettings = false },
-            onNotifications = ::requestNotifications, onExactAlarms = { openExactAlarmSettings(context) })
+        ReminderSettingsDialog(reminderSetup, onDismiss = { showReminderSettings = false },
+            onRefresh = ::refresh, onExactAlarms = { openExactAlarmSettings(context) })
     }
     if (showEditor) {
         MedicationEditor(
@@ -264,12 +238,6 @@ private fun cancelDoseNotification(context: Context, item: DoseItem) {
     androidx.core.app.NotificationManagerCompat.from(context).cancel(id)
 }
 
-private fun hasNotificationPermission(context: Context): Boolean =
-    (Build.VERSION.SDK_INT < 33 || ContextCompat.checkSelfPermission(
-        context, Manifest.permission.POST_NOTIFICATIONS,
-    ) == PackageManager.PERMISSION_GRANTED) &&
-        androidx.core.app.NotificationManagerCompat.from(context).areNotificationsEnabled()
-
 private fun openExactAlarmSettings(context: Context) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
     runCatching {
@@ -287,10 +255,8 @@ private fun TodayPage(
     modifier: Modifier,
     items: List<DoseItem>,
     hasMedications: Boolean,
-    showNotificationWarning: Boolean,
-    showExactWarning: Boolean,
-    onNotificationPermission: () -> Unit,
-    onExactPermission: () -> Unit,
+    showSetupWarning: Boolean,
+    onReminderSetup: () -> Unit,
     onAdd: () -> Unit,
     onManage: () -> Unit,
     onRecord: (DoseItem, String) -> Unit,
@@ -347,19 +313,9 @@ private fun TodayPage(
                 }
             }
         }
-        if (showNotificationWarning) {
+        if (showSetupWarning) {
             item {
-                InfoBanner(
-                    "Notifications are disabled. Allow them to receive reminders outside the app.",
-                    "Enable", onNotificationPermission,
-                )
-            }
-        } else if (showExactWarning) {
-            item {
-                InfoBanner(
-                    "Precise alarms are not enabled. Android may delay your reminders.",
-                    "Allow exact alarms", onExactPermission,
-                )
+                InfoBanner("Choose how Dose reminds you and finish Android access.", "Set up reminders", onReminderSetup)
             }
         }
         item {

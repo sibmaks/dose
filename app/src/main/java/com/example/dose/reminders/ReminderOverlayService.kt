@@ -108,7 +108,8 @@ class ReminderOverlayService : Service() {
                 }
             }
         }
-        val popup = ReminderPopupView.create(themed, preview, entries, ::finishAlert)
+        val popup = ReminderPopupView.create(themed, preview, entries,
+            keepNotification = ReminderAlerts.feedEnabled(this) && ReminderNotifications.allowed(this), onLater = ::finishAlert)
         val metrics = resources.displayMetrics
         val width = minOf(metrics.widthPixels - dp(32), dp(420)).coerceAtLeast(1)
         popup.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
