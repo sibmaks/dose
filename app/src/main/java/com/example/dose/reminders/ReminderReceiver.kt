@@ -73,7 +73,7 @@ class ReminderReceiver : BroadcastReceiver() {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
-        val message = medication.dose + if (medication.note.isBlank()) "" else " · ${medication.note}"
+        val message = medication.doseDescription + if (medication.note.isBlank()) "" else " · ${medication.note}"
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(medication.form.iconResource())
             .setContentTitle("Time for ${medication.name}")

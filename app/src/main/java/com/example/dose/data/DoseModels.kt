@@ -7,7 +7,7 @@ import java.time.ZonedDateTime
 
 enum class MedicationForm(val label: String) {
     PILL("Pill"), CAPSULE("Capsule"), LIQUID("Liquid"), SPRAY("Spray"),
-    DROPS("Drops"), INJECTION("Injection"), CREAM("Cream");
+    DROPS("Drops"), INJECTION("Injection"), CREAM("Cream"), OTHER("Other");
 }
 
 enum class ScheduleKind(val label: String) {
@@ -79,7 +79,10 @@ data class Medication(
     val color: String = "violet",
     val active: Boolean = true,
     val form: MedicationForm = MedicationForm.PILL,
+    val customForm: String = "",
 ) {
+    val formLabel: String get() = customForm.takeIf { form == MedicationForm.OTHER && it.isNotBlank() } ?: form.label
+    val doseDescription: String get() = dose + if (form == MedicationForm.OTHER) " · $formLabel" else ""
     val dose: String get() = listOf(amount, quantity).filter { it.isNotBlank() }.joinToString(" ")
     val times: List<String> get() = schedules.flatMap { it.times }.distinct().sorted()
     fun timesOn(date: LocalDate): List<String> = schedules.filter { it.includes(date) }.flatMap { it.times }.distinct().sorted()

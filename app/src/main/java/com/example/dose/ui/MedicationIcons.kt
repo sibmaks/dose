@@ -12,4 +12,5 @@ fun MedicationForm.iconResource(): Int = when (this) {
     MedicationForm.DROPS -> R.drawable.ic_form_drops
     MedicationForm.INJECTION -> R.drawable.ic_form_injection
     MedicationForm.CREAM -> R.drawable.ic_form_cream
+    MedicationForm.OTHER -> R.drawable.ic_form_other
 }

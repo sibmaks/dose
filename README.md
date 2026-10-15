@@ -15,8 +15,9 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 ## Features
 
 - Today dashboard, upcoming/overdue doses, completion indicator, and seven-day local history. Swipe horizontally between Today, Medications, and History, or tap the matching bottom navigation item.
-- Add, edit, pause, and delete medications without removing previous dose history.
-- Medication forms: pill, capsule, liquid, spray, drops, injection, and cream. SVG source illustrations live in `design-reference/medication-forms`; Android vector drawables use the same paths in the editor, dashboard, medication list, and notification small icon.
+- Add, edit, pause, and delete medications without removing previous dose history. Add/edit uses a guided sequence: name and color → form → amount and unit → schedules → optional instructions and final review. Other opens an additional optional custom-form text step. Back preserves entries and drafts survive rotation.
+- Name suggestions use an offline starter dictionary with English/Russian search plus previously saved names. Selecting a variant preselects its editable form. Free name input remains available. Catalog scope and primary references are in `docs/medication-dictionary.md`.
+- Medication forms: pill, capsule, liquid, spray, drops, injection, cream, and Other with a custom label. SVG source illustrations live in `design-reference/medication-forms`; Android vector drawables use the same paths in the editor, dashboard, medication list, and notification small icon.
 - Separate dose amount and unit, with mg, ml, g, mcg, IU, tablet, capsule, drop, spray, and puff presets plus an editable custom unit.
 - Multiple schedules per medication. Each rule has one or several times and can use specific dates, selected weekdays, selected month days, or every day.
 - Six preset colors (including rose and amber) plus an RGB/hex color picker. Up to eight swatches appear, with frequently saved colors first and the current selection included. Usage persists across app restarts; pausing does not increase usage.
@@ -66,7 +67,7 @@ New records persist their scheduled instant so later time-zone changes do not re
 - `reminders/ReminderScheduler.kt` and `reminders/ReminderReceiver.kt`: alarms, notification actions, and delivery.
 - `app/src/test`: calendar boundaries, finite rules, monthly/leap dates, overlap deduplication, recorded slots, snoozes, time-zone resolution, colors, and JSON migration/round-trip tests.
 
-Verified on 2026-10-15: debug APK assembly succeeded, all 47 unit tests passed, and Android lint finished with no errors (warnings remain). No connected Android device or emulator image was available, so screen gestures, layout, system permission prompts, and real overlay/notification delivery and actions still need device verification.
+Verified on 2026-10-15: debug APK assembly succeeded, all 61 unit tests passed, and Android lint finished with no errors (warnings remain). No connected Android device or emulator image was available, so screen gestures, layout, system permission prompts, and real overlay/notification delivery and actions still need device verification.
 
 Device verification: swipe between all three screens and confirm bottom navigation stays synchronized; check the progress card no longer suggests an inactive action. Use the bell to choose feed only, pop-ups only, both, and neither; deny/revoke each permission and verify gray/purple status refreshes after returning from Settings. Check a disabled Medication reminders channel keeps the bell gray for feed users. Then enable overlay access and exact alarms, test the pop-up, then schedule two medications for the same minute and switch to another app. Check both appear and Taken/Skip/Snooze affect only the intended dose. Check Later/timeout preserve notifications, notification actions remove the corresponding pop-up, and disabling overlay access or pausing/deleting a medication clears its pop-up. Confirm History reports the expected delay (including early clicks, snoozes, and a dose taken after midnight).
 

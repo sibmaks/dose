@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +37,14 @@ import java.time.LocalTime
 import java.time.format.TextStyle
 import java.util.Locale
 
+private val ScheduleListSaver = androidx.compose.runtime.saveable.Saver<List<DoseSchedule>, String>(
+    save = { rules -> org.json.JSONArray().apply { rules.forEach { put(MedicationJson.encodeSchedule(it)) } }.toString() },
+    restore = { saved -> runCatching {
+        val array = org.json.JSONArray(saved)
+        (0 until array.length()).map { MedicationJson.decodeSchedule(array.getJSONObject(it)) }
+    }.getOrDefault(listOf(DoseSchedule())) },
+)
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun MedicationEditor(
@@ -43,112 +52,187 @@ internal fun MedicationEditor(
     onSave: (Medication) -> Unit, onDelete: (Medication) -> Unit,
 ) {
     val context = LocalContext.current
-    var name by remember { mutableStateOf(original?.name.orEmpty()) }
-    var amount by remember { mutableStateOf(original?.amount.orEmpty()) }
-    var quantity by remember { mutableStateOf(original?.quantity ?: "mg") }
-    var form by remember { mutableStateOf(original?.form ?: MedicationForm.PILL) }
-    var note by remember { mutableStateOf(original?.note.orEmpty()) }
-    var color by remember { mutableStateOf(original?.color ?: "violet") }
-    var schedules by remember { mutableStateOf(original?.schedules ?: listOf(DoseSchedule())) }
+    var name by rememberSaveable { mutableStateOf(original?.name.orEmpty()) }
+    var amount by rememberSaveable { mutableStateOf(original?.amount.orEmpty()) }
+    var quantity by rememberSaveable { mutableStateOf(original?.quantity ?: "mg") }
+    var form by rememberSaveable { mutableStateOf(original?.form ?: MedicationForm.PILL) }
+    var customForm by rememberSaveable { mutableStateOf(original?.customForm.orEmpty()) }
+    var note by rememberSaveable { mutableStateOf(original?.note.orEmpty()) }
+    var color by rememberSaveable { mutableStateOf(original?.color ?: "violet") }
+    var schedules by rememberSaveable(stateSaver = ScheduleListSaver) { mutableStateOf(original?.schedules ?: listOf(DoseSchedule())) }
+    var step by rememberSaveable { mutableStateOf(MedicationStep.NAME) }
+    var showSuggestions by rememberSaveable { mutableStateOf(false) }
+    var suggestedForm by rememberSaveable { mutableStateOf<String?>(null) }
+    var addInstructions by rememberSaveable { mutableStateOf(original?.note?.isNotBlank() == true) }
     var error by remember { mutableStateOf<String?>(null) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showColorPicker by remember { mutableStateOf(false) }
     val colorUsage = remember { DoseStore.colorUsage(context) }
     val medications = remember { DoseStore.medications(context) }
+    val steps = MedicationEditorFlow.steps(form)
+    val position = steps.indexOf(step)
+    val scroll = rememberScrollState()
+    val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
+    LaunchedEffect(step) { scroll.scrollTo(0) }
 
-    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        Surface(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).fillMaxHeight(0.94f).imePadding(),
-            shape = RoundedCornerShape(26.dp), color = Color.White,
-        ) {
+    fun previous() {
+        keyboard?.hide()
+        if (step == MedicationStep.NAME) onDismiss() else step = MedicationEditorFlow.previous(step, form)
+        error = null
+    }
+    fun stepError(candidate: MedicationStep): String? = when (candidate) {
+        MedicationStep.NAME -> if (name.isBlank()) "Enter a medication name." else null
+        MedicationStep.DOSAGE -> when {
+            amount.isBlank() -> "Enter an amount."
+            quantity.isBlank() && !(original?.quantity == "" && amount == original.amount) -> "Choose a unit or enter your own."
+            else -> null
+        }
+        MedicationStep.SCHEDULE -> if (schedules.isEmpty()) "Add at least one schedule." else schedules.mapIndexedNotNull { index, rule ->
+            rule.validationError()?.let { "Schedule ${index + 1}: $it" }
+        }.firstOrNull()
+        else -> null
+    }
+    fun advance() {
+        keyboard?.hide()
+        error = stepError(step)
+        if (error != null) return
+        if (step != MedicationStep.DETAILS) { step = MedicationEditorFlow.next(step, form); return }
+        val invalidStep = steps.firstOrNull { stepError(it) != null }
+        if (invalidStep != null) { step = invalidStep; error = stepError(invalidStep); return }
+        val rules = schedules.map { it.copy(times = it.times.sorted(), dates = it.dates.distinct().sorted(), weekDays = it.weekDays.sorted(), monthDays = it.monthDays.sorted()) }
+        onSave((original ?: DoseStore.newMedication(name.trim(), amount.trim(), quantity.trim(), rules, "", color, form))
+            .copy(name = name.trim(), amount = amount.trim(), quantity = quantity.trim(), schedules = rules,
+                note = if (addInstructions) note.trim() else "", color = color, form = form,
+                customForm = if (form == MedicationForm.OTHER) customForm.trim() else ""))
+    }
+
+    Dialog(onDismissRequest = ::previous, properties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
+        Surface(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).fillMaxHeight(0.94f).imePadding(),
+            shape = RoundedCornerShape(26.dp), color = Color.White) {
             Column {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 10.dp, top = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(if (original == null) "Add medication" else "Edit medication", fontSize = 21.sp,
                         fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
-                    IconButton(onClick = onDismiss) { Icon(Icons.Rounded.Close, "Close") }
+                    IconButton(onClick = onDismiss) { Icon(Icons.Rounded.Close, "Close medication editor") }
                 }
-                Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp),
+                Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("Step ${position + 1} of ${steps.size} · ${step.title}", color = Violet, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                    LinearProgressIndicator(progress = { (position + 1f) / steps.size }, modifier = Modifier.fillMaxWidth(), color = Violet)
+                }
+                Column(Modifier.weight(1f).verticalScroll(scroll).padding(horizontal = 20.dp, vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                    OutlinedTextField(name, { name = it.take(70); error = null }, label = { Text("Medication name *") },
-                        placeholder = { Text("e.g. Vitamin D3") }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                    Text("Medication form", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        MedicationForm.entries.forEach { choice ->
-                            FilterChip(selected = form == choice, onClick = { form = choice }, label = { Text(choice.label) },
-                                leadingIcon = { Icon(painterResource(choice.iconResource()), null, modifier = Modifier.size(23.dp)) })
+                    when (step) {
+                        MedicationStep.NAME -> {
+                            OutlinedTextField(name, { name = it.take(70); showSuggestions = true; suggestedForm = null; error = null },
+                                label = { Text("Medication name *") }, placeholder = { Text("Start typing a name") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                            val suggestions = if (showSuggestions) MedicationDictionary.suggestions(name, medications) else emptyList()
+                            if (suggestions.isNotEmpty()) {
+                                Text("Name suggestions", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                suggestions.forEach { suggestion ->
+                                    Surface(onClick = {
+                                        name = suggestion.name; form = suggestion.form; customForm = suggestion.customForm
+                                        suggestedForm = suggestion.formLabel; showSuggestions = false; keyboard?.hide(); error = null
+                                    }, shape = RoundedCornerShape(13.dp), color = Color(0xFFF5F2FF), modifier = Modifier.fillMaxWidth()) {
+                                        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                            Icon(painterResource(suggestion.form.iconResource()), null, tint = Violet, modifier = Modifier.size(25.dp))
+                                            Column(Modifier.weight(1f)) {
+                                                Text(suggestion.name, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                                Text(suggestion.formLabel + if (suggestion.saved) " · Previously entered" else "", color = TextMuted, fontSize = 12.sp)
+                                            }
+                                            Icon(Icons.Rounded.Add, "Choose ${suggestion.name}, ${suggestion.formLabel}", tint = Violet)
+                                        }
+                                    }
+                                }
+                            }
+                            if (suggestedForm != null) Text("Suggested form: $suggestedForm. You can change it on the next screen.", fontSize = 13.sp, color = Violet)
+                            Text("Color", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                            Text("Your most used colors appear first.", color = TextMuted, fontSize = 12.sp)
+                            FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                                MedicationColors.choices(colorUsage, medications, color).forEach { choice ->
+                                    val foreground = palette(choice).first
+                                    val selected = MedicationColors.hex(color) == MedicationColors.hex(choice)
+                                    Box(Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)).background(foreground)
+                                        .then(if (selected) Modifier.border(3.dp, TextPrimary, RoundedCornerShape(12.dp)) else Modifier)
+                                        .clickable { color = choice }.semantics { contentDescription = "$choice color${if (selected) ", selected" else ""}" }, contentAlignment = Alignment.Center) {
+                                        if (selected) Icon(Icons.Rounded.Check, null, tint = if (foreground.luminance() > 0.45f) Color.Black else Color.White)
+                                    }
+                                }
+                            }
+                            TextButton(onClick = { showColorPicker = true }) { Icon(Icons.Rounded.Palette, null); Spacer(Modifier.width(6.dp)); Text("Pick a custom color") }
                         }
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        OutlinedTextField(amount, { amount = it.take(70); error = null }, label = { Text("Amount *") },
-                            placeholder = { Text("e.g. 500") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                            singleLine = true, modifier = Modifier.weight(1f))
-                        OutlinedTextField(quantity, { quantity = it.take(40); error = null }, label = { Text("Unit *") },
-                            placeholder = { Text("mg or your own") }, singleLine = true, modifier = Modifier.weight(1f))
-                    }
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        DoseUnits.common.forEach { unit ->
-                            FilterChip(selected = quantity == unit, onClick = { quantity = unit; error = null }, label = { Text(unit) })
-                        }
-                    }
-                    Text("Due dates & times", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text("Add several schedules, each with one time or a list of times. Overlapping dates and times produce one dose.", color = TextMuted, fontSize = 12.sp)
-                    schedules.forEachIndexed { index, rule ->
-                        ScheduleEditor(rule, index + 1, onChange = { updated ->
-                            schedules = schedules.toMutableList().apply { set(index, updated) }; error = null
-                        }, onRemove = if (schedules.size > 1) ({ schedules = schedules.filterIndexed { i, _ -> i != index }; error = null }) else null)
-                    }
-                    OutlinedButton(onClick = { schedules = schedules + DoseSchedule(); error = null }, modifier = Modifier.fillMaxWidth()) {
-                        Icon(Icons.Rounded.Add, null); Spacer(Modifier.width(6.dp)); Text("Add another schedule")
-                    }
-                    OutlinedTextField(note, { note = it.take(140) }, label = { Text("Instructions (optional)") },
-                        placeholder = { Text("e.g. Take after a meal") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
-                    Text("Color", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                    Text("Your most used colors appear first.", color = TextMuted, fontSize = 12.sp)
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        MedicationColors.choices(colorUsage, medications, color).forEach { choice ->
-                            val foreground = palette(choice).first
-                            val selected = MedicationColors.hex(color) == MedicationColors.hex(choice)
-                            Box(Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)).background(foreground)
-                                .then(if (selected) Modifier.border(3.dp, TextPrimary, RoundedCornerShape(12.dp)) else Modifier)
-                                .clickable { color = choice }.semantics { contentDescription = "$choice color${if (selected) ", selected" else ""}" },
-                                contentAlignment = Alignment.Center) {
-                                if (selected) Icon(Icons.Rounded.Check, null, tint = if (foreground.luminance() > 0.45f) Color.Black else Color.White)
+                        MedicationStep.FORM -> {
+                            Text("Choose the form of $name.", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            if (suggestedForm != null) Text("$suggestedForm was suggested with the name. Choose a different form if needed.", color = TextMuted, fontSize = 13.sp)
+                            MedicationForm.entries.forEach { choice ->
+                                Surface(onClick = { form = choice; error = null }, shape = RoundedCornerShape(14.dp),
+                                    color = if (form == choice) Color(0xFFF0ECFF) else Color(0xFFF8F9FD), modifier = Modifier.fillMaxWidth()) {
+                                    Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                        Icon(painterResource(choice.iconResource()), null, tint = Violet, modifier = Modifier.size(30.dp))
+                                        Text(choice.label, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                                        RadioButton(selected = form == choice, onClick = null)
+                                    }
+                                }
                             }
                         }
-                    }
-                    TextButton(onClick = { showColorPicker = true }) {
-                        Icon(Icons.Rounded.Palette, null); Spacer(Modifier.width(6.dp)); Text("Pick a custom color")
+                        MedicationStep.OTHER_FORM -> {
+                            Text("Give this form a name", fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                            Text("Optional—for example, a patch, inhaler, or suppository. Leave it empty to use Other.", fontSize = 13.sp, color = TextMuted)
+                            OutlinedTextField(customForm, { customForm = it.take(40) }, label = { Text("Custom form (optional)") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                        }
+                        MedicationStep.DOSAGE -> {
+                            Text("How much per dose?", fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                            OutlinedTextField(amount, { amount = it.take(70); error = null }, label = { Text("Amount *") }, placeholder = { Text("e.g. 500") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true, modifier = Modifier.fillMaxWidth())
+                            OutlinedTextField(quantity, { quantity = it.take(40); error = null }, label = { Text("Unit *") }, placeholder = { Text("Choose below or type your own") },
+                                singleLine = true, modifier = Modifier.fillMaxWidth())
+                            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                DoseUnits.common.forEach { unit -> FilterChip(selected = quantity == unit, onClick = { quantity = unit; error = null }, label = { Text(unit) }) }
+                            }
+                        }
+                        MedicationStep.SCHEDULE -> {
+                            Text("When should Dose remind you?", fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                            Text("Use one or several times per schedule. Overlapping dates and times produce one dose.", color = TextMuted, fontSize = 12.sp)
+                            schedules.forEachIndexed { index, rule ->
+                                ScheduleEditor(rule, index + 1, onChange = { updated ->
+                                    schedules = schedules.toMutableList().apply { set(index, updated) }; error = null
+                                }, onRemove = if (schedules.size > 1) ({ schedules = schedules.filterIndexed { i, _ -> i != index }; error = null }) else null)
+                            }
+                            OutlinedButton(onClick = { schedules = schedules + DoseSchedule(); error = null }, modifier = Modifier.fillMaxWidth()) { Icon(Icons.Rounded.Add, null); Text("Add another schedule") }
+                        }
+                        MedicationStep.DETAILS -> {
+                            Text("Review & finish", fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                            Surface(color = Color(0xFFF5F2FF), shape = RoundedCornerShape(16.dp)) {
+                                Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    Text(name, fontWeight = FontWeight.Bold)
+                                    Text((if (form == MedicationForm.OTHER) customForm.ifBlank { "Other" } else form.label) + " · $amount $quantity", fontSize = 14.sp)
+                                    schedules.forEach { Text(scheduleSummary(it), color = TextMuted, fontSize = 12.sp) }
+                                }
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("Add instructions", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                                Switch(checked = addInstructions, onCheckedChange = { addInstructions = it })
+                            }
+                            if (addInstructions) OutlinedTextField(note, { note = it.take(140) }, label = { Text("Instructions (optional)") },
+                                placeholder = { Text("e.g. Take after a meal") }, minLines = 2, modifier = Modifier.fillMaxWidth())
+                            if (original != null) TextButton(onClick = { showDeleteConfirm = true }) { Text("Delete medication", color = Color(0xFFC45151)) }
+                        }
                     }
                 }
-                Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp)) {
-                    if (error != null) {
-                        Text(error.orEmpty(), color = Color(0xFFD14D53), fontSize = 13.sp)
-                        Spacer(Modifier.height(6.dp))
-                    }
-                    Button(modifier = Modifier.fillMaxWidth().height(51.dp), shape = RoundedCornerShape(14.dp), onClick = {
-                        val invalid = schedules.mapIndexedNotNull { index, rule -> rule.validationError()?.let { "Schedule ${index + 1}: $it" } }.firstOrNull()
-                        when {
-                            name.isBlank() || amount.isBlank() -> error = "Enter a medication name and amount."
-                            quantity.isBlank() && !(original?.quantity == "" && amount == original.amount) -> error = "Choose a unit or enter your own."
-                            schedules.isEmpty() -> error = "Add at least one schedule."
-                            invalid != null -> error = invalid
-                            else -> {
-                                val cleanRules = schedules.map { it.copy(times = it.times.sorted(), dates = it.dates.distinct().sorted(), weekDays = it.weekDays.sorted(), monthDays = it.monthDays.sorted()) }
-                                onSave((original ?: DoseStore.newMedication(name.trim(), amount.trim(), quantity.trim(), cleanRules, note.trim(), color, form))
-                                    .copy(name = name.trim(), amount = amount.trim(), quantity = quantity.trim(), schedules = cleanRules, note = note.trim(), color = color, form = form))
-                            }
+                Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp)) {
+                    if (error != null) { Text(error.orEmpty(), color = Color(0xFFD14D53), fontSize = 13.sp); Spacer(Modifier.height(6.dp)) }
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        if (step != MedicationStep.NAME) OutlinedButton(onClick = ::previous) { Text("Back") }
+                        Button(onClick = ::advance, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) {
+                            Text(if (step == MedicationStep.DETAILS) { if (original == null) "Add medication" else "Save changes" } else "Continue", fontWeight = FontWeight.Bold)
                         }
-                    }) { Text(if (original == null) "Add medication" else "Save changes", fontWeight = FontWeight.Bold) }
-                    if (original != null) TextButton(onClick = { showDeleteConfirm = true }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                        Text("Delete medication", color = Color(0xFFC45151))
                     }
                 }
             }
         }
     }
     if (showColorPicker) ColorPicker(color, onDismiss = { showColorPicker = false }, onChoose = { color = it; showColorPicker = false })
-    if (showDeleteConfirm && original != null) AlertDialog(onDismissRequest = { showDeleteConfirm = false },
-        title = { Text("Delete ${original.name}?") }, text = { Text("Reminders will stop. Your previous dose history will be kept.") },
+    if (showDeleteConfirm && original != null) AlertDialog(onDismissRequest = { showDeleteConfirm = false }, title = { Text("Delete ${original.name}?") },
+        text = { Text("Reminders will stop. Your previous dose history will be kept.") },
         confirmButton = { TextButton(onClick = { onDelete(original) }) { Text("Delete", color = Color(0xFFC45151)) } },
         dismissButton = { TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") } })
 }

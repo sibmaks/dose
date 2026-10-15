@@ -83,12 +83,12 @@ internal object ReminderPopupView {
                 setColorFilter(medicationColor)
                 setPadding(dp(9), dp(9), dp(9), dp(9))
                 background = shape(ColorUtils.blendARGB(Color.WHITE, medicationColor, 0.12f), 14)
-                contentDescription = medication.form.label
+                contentDescription = medication.formLabel
             }, LinearLayout.LayoutParams(dp(44), dp(44)))
             val description = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 addView(text(medication.name, 17f, true))
-                addView(text(medication.dose, 13f, color = muted), LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                addView(text(medication.doseDescription, 13f, color = muted), LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(3) })
             }
             heading.addView(description, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {

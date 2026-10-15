@@ -361,12 +361,12 @@ private fun FeaturedCard(
                     fontSize = 38.sp, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Icon(androidx.compose.ui.res.painterResource(item.medication.form.iconResource()), item.medication.form.label, tint = Color.White, modifier = Modifier.size(26.dp))
+                    Icon(androidx.compose.ui.res.painterResource(item.medication.form.iconResource()), item.medication.formLabel, tint = Color.White, modifier = Modifier.size(26.dp))
                     Text(item.medication.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
                 Spacer(Modifier.height(3.dp))
                 Text(
-                    item.medication.dose + (if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else ""),
+                    item.medication.doseDescription + (if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else ""),
                     fontSize = 13.sp, color = Color(0xFFE9E5FF),
                 )
                 Spacer(Modifier.height(20.dp))
@@ -418,13 +418,13 @@ private fun DoseCard(
         border = BorderStroke(1.dp, PanelBorder),
     ) {
         Row(Modifier.fillMaxWidth().padding(13.dp), verticalAlignment = Alignment.Top) {
-            PillAvatar(item.medication.color, item.medication.form)
+            PillAvatar(item.medication.color, item.medication.form, item.medication.formLabel)
             Spacer(Modifier.width(11.dp))
             Column(Modifier.weight(1f)) {
                 Spacer(Modifier.height(3.dp))
                 Text(item.medication.name, fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(
-                    item.medication.dose + if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else "",
+                    item.medication.doseDescription + if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else "",
                     fontSize = 12.sp, color = TextMuted, maxLines = 2, overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(Modifier.height(8.dp))
@@ -512,12 +512,12 @@ private fun MedicationsPage(
                 ) {
                     Column(Modifier.padding(15.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            PillAvatar(med.color, med.form)
+                            PillAvatar(med.color, med.form, med.formLabel)
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(med.name, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold)
                                 Text(
-                                    med.dose + if (med.note.isBlank()) "" else " · ${med.note}",
+                                    med.doseDescription + if (med.note.isBlank()) "" else " · ${med.note}",
                                     fontSize = 12.sp, color = TextMuted, maxLines = 2,
                                 )
                             }
@@ -635,12 +635,12 @@ private fun Eyebrow(text: String) {
 }
 
 @Composable
-private fun PillAvatar(color: String, form: MedicationForm) {
+private fun PillAvatar(color: String, form: MedicationForm, label: String) {
     val (foreground, background) = palette(color)
     Box(
         Modifier.size(49.dp).clip(RoundedCornerShape(16.dp)).background(background),
         contentAlignment = Alignment.Center,
-    ) { Icon(androidx.compose.ui.res.painterResource(form.iconResource()), form.label, tint = foreground, modifier = Modifier.size(26.dp)) }
+    ) { Icon(androidx.compose.ui.res.painterResource(form.iconResource()), label, tint = foreground, modifier = Modifier.size(26.dp)) }
 }
 
 internal fun palette(color: String): Pair<Color, Color> {
