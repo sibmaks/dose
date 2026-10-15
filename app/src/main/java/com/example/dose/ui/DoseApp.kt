@@ -15,6 +15,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -49,6 +51,7 @@ import com.example.dose.data.*
 import com.example.dose.reminders.ReminderReceiver
 import com.example.dose.reminders.ReminderScheduler
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -84,7 +87,8 @@ fun DoseApp() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var revision by remember { mutableIntStateOf(0) }
-    var tab by remember { mutableStateOf(Tab.Today) }
+    val pagerState = rememberPagerState { Tab.entries.size }
+    val scope = rememberCoroutineScope()
     var editing by remember { mutableStateOf<Medication?>(null) }
     var showEditor by remember { mutableStateOf(false) }
     var showReminderSettings by remember { mutableStateOf(false) }
@@ -169,8 +173,8 @@ fun DoseApp() {
             NavigationBar(containerColor = Color.White, tonalElevation = 2.dp) {
                 Tab.entries.forEach { target ->
                     NavigationBarItem(
-                        selected = target == tab,
-                        onClick = { tab = target },
+                        selected = pagerState.currentPage == target.ordinal,
+                        onClick = { scope.launch { pagerState.animateScrollToPage(target.ordinal) } },
                         icon = { Icon(target.icon, contentDescription = null) },
                         label = { Text(target.title, fontSize = 11.sp, fontWeight = FontWeight.Bold) },
                         colors = NavigationBarItemDefaults.colors(
@@ -183,46 +187,49 @@ fun DoseApp() {
             }
         },
     ) { padding ->
-        when (tab) {
-            Tab.Today -> TodayPage(
-                modifier = Modifier.padding(padding),
-                items = items,
-                hasMedications = medications.isNotEmpty(),
-                showNotificationWarning = !notificationsGranted,
-                showExactWarning = !exactEnabled,
-                onNotificationPermission = ::requestNotifications,
-                onExactPermission = { openExactAlarmSettings(context) },
-                onAdd = { editing = null; showEditor = true },
-                onManage = { tab = Tab.Medications },
-                onRecord = { item, status ->
-                    ReminderScheduler.cancelSnooze(context, item.medication.id, item.time, item.date)
-                    DoseStore.record(context, DoseStore.newLog(item, status))
-                    cancelDoseNotification(context, item)
-                    ReminderScheduler.refreshSlot(context, item.medication.id, item.time)
-                    refresh()
-                },
-                onUndo = { item ->
-                    DoseStore.undo(context, item.date, item.medication.id, item.time)
-                    ReminderScheduler.refreshSlot(context, item.medication.id, item.time)
-                    refresh()
-                },
-                onSnooze = { item ->
-                    ReminderScheduler.snooze(context, item.medication.id, item.time, item.date)
-                    cancelDoseNotification(context, item)
-                    refresh()
-                },
-            )
-            Tab.Medications -> MedicationsPage(
-                modifier = Modifier.padding(padding), medications = medications,
-                onAdd = { editing = null; showEditor = true },
-                onEdit = { med -> editing = med; showEditor = true },
-                onToggle = { med ->
-                    DoseStore.upsert(context, med.copy(active = !med.active))
-                    ReminderScheduler.scheduleAll(context)
-                    refresh()
-                },
-            )
-            Tab.History -> HistoryPage(modifier = Modifier.padding(padding), logs = logs)
+        HorizontalPager(state = pagerState, modifier = Modifier.padding(padding).fillMaxSize(),
+            verticalAlignment = Alignment.Top, beyondViewportPageCount = 1) { page ->
+            when (Tab.entries[page]) {
+                Tab.Today -> TodayPage(
+                    modifier = Modifier.fillMaxSize(),
+                    items = items,
+                    hasMedications = medications.isNotEmpty(),
+                    showNotificationWarning = !notificationsGranted,
+                    showExactWarning = !exactEnabled,
+                    onNotificationPermission = ::requestNotifications,
+                    onExactPermission = { openExactAlarmSettings(context) },
+                    onAdd = { editing = null; showEditor = true },
+                    onManage = { scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) } },
+                    onRecord = { item, status ->
+                        ReminderScheduler.cancelSnooze(context, item.medication.id, item.time, item.date)
+                        DoseStore.record(context, DoseStore.newLog(item, status))
+                        cancelDoseNotification(context, item)
+                        ReminderScheduler.refreshSlot(context, item.medication.id, item.time)
+                        refresh()
+                    },
+                    onUndo = { item ->
+                        DoseStore.undo(context, item.date, item.medication.id, item.time)
+                        ReminderScheduler.refreshSlot(context, item.medication.id, item.time)
+                        refresh()
+                    },
+                    onSnooze = { item ->
+                        ReminderScheduler.snooze(context, item.medication.id, item.time, item.date)
+                        cancelDoseNotification(context, item)
+                        refresh()
+                    },
+                )
+                Tab.Medications -> MedicationsPage(
+                    modifier = Modifier.fillMaxSize(), medications = medications,
+                    onAdd = { editing = null; showEditor = true },
+                    onEdit = { med -> editing = med; showEditor = true },
+                    onToggle = { med ->
+                        DoseStore.upsert(context, med.copy(active = !med.active))
+                        ReminderScheduler.scheduleAll(context)
+                        refresh()
+                    },
+                )
+                Tab.History -> HistoryPage(modifier = Modifier.fillMaxSize(), logs = logs)
+            }
         }
     }
 
@@ -240,7 +247,7 @@ fun DoseApp() {
                 ReminderScheduler.scheduleAll(context)
                 refresh()
                 showEditor = false
-                tab = Tab.Medications
+                scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) }
             },
             onDelete = { med ->
                 DoseStore.delete(context, med.id)

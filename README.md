@@ -14,7 +14,7 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 
 ## Features
 
-- Today dashboard, upcoming/overdue doses, completion indicator, and seven-day local history.
+- Today dashboard, upcoming/overdue doses, completion indicator, and seven-day local history. Swipe horizontally between Today, Medications, and History, or tap the matching bottom navigation item.
 - Add, edit, pause, and delete medications without removing previous dose history.
 - Medication forms: pill, capsule, liquid, spray, drops, injection, and cream. SVG source illustrations live in `design-reference/medication-forms`; Android vector drawables use the same paths in the editor, dashboard, medication list, and notification small icon.
 - Separate dose amount and unit, with mg, ml, g, mcg, IU, tablet, capsule, drop, spray, and puff presets plus an editable custom unit.
