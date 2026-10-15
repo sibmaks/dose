@@ -8,10 +8,28 @@ class MedicationEntryTest {
     private fun medication(name: String, form: MedicationForm = MedicationForm.PILL, custom: String = "") =
         Medication("id", name, "1", "unit", listOf(DoseSchedule(createdOn = "2026-10-15")), form = form, customForm = custom)
 
-    @Test fun dictionaryKeepsDifferentFormVariantsSeparate() {
+    @Test fun dictionaryShowsOneNameWithAnEditableDefaultForm() {
         val results = MedicationDictionary.suggestions("para")
-        assertEquals(setOf(MedicationForm.PILL, MedicationForm.CAPSULE, MedicationForm.LIQUID), results.map { it.form }.toSet())
+        assertEquals(1, results.size)
+        assertEquals(MedicationForm.PILL, results.single().form)
         assertTrue(results.all { it.name == "Paracetamol" })
+    }
+    @Test fun calciumDoesNotMatchInsideVitaminDAlias() {
+        val results = MedicationDictionary.suggestions("Кальций")
+        assertEquals(listOf("Кальций"), results.map { it.name })
+        assertEquals(listOf("Кальций"), MedicationDictionary.suggestions("кальц").map { it.name })
+    }
+    @Test fun thyroidAndAlfacalcidolSpellingVariantsShowExplicitCanonicalNames() {
+        assertEquals("Левотироксин", MedicationDictionary.suggestions("Тероксин").single().name)
+        assertEquals("Левотироксин", MedicationDictionary.suggestions("Тироксин").single().name)
+        assertEquals("Альфакальцидол", MedicationDictionary.suggestions("Альфокальцидол").single().name)
+        assertEquals(MedicationForm.CAPSULE, MedicationDictionary.suggestions("Альфакальцидол").single().form)
+    }
+    @Test fun savedVariantsShareOneNameSuggestionAndKeepTheirForm() {
+        val results = MedicationDictionary.suggestions("para", listOf(medication("Paracetamol", MedicationForm.LIQUID), medication("Paracetamol")))
+        assertEquals(1, results.size)
+        assertTrue(results.single().saved)
+        assertEquals(MedicationForm.LIQUID, results.single().form)
     }
     @Test fun russianSearchUsesRussianNamesAndIgnoresCase() {
         val results = MedicationDictionary.suggestions("  ПАРА  ")
