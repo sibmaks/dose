@@ -6,6 +6,9 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import android.widget.ImageView
+import androidx.compose.ui.viewinterop.AndroidView
+import io.github.sibmaks.app.dose.R
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -126,10 +129,10 @@ fun DoseApp() {
                     .padding(horizontal = 22.dp, vertical = 14.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(
-                    modifier = Modifier.size(39.dp).clip(RoundedCornerShape(13.dp)).background(Violet),
-                    contentAlignment = Alignment.Center,
-                ) { Icon(Icons.Rounded.Medication, null, tint = Color.White, modifier = Modifier.size(24.dp)) }
+                AndroidView(
+                    factory = { ImageView(it).apply { setImageResource(R.mipmap.ic_launcher) } },
+                    modifier = Modifier.size(39.dp),
+                )
                 Spacer(Modifier.width(9.dp))
                 Text("dose", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, color = TextPrimary)
                 Text(".", fontSize = 27.sp, fontWeight = FontWeight.ExtraBold, color = Violet)
