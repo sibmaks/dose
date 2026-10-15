@@ -450,6 +450,9 @@ private fun DoseCard(
                 if (item.log == null) {
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         CompactAction(context.getString(R.string.taken), Icons.Rounded.Check, onClick = { onRecord(item, "taken") })
+                        if (item.status == "due") {
+                            CompactAction(context.getString(R.string.on_time), Icons.Rounded.Schedule, onClick = { onRecord(item, "on_time") })
+                        }
                         if (item.status == "due" || item.status == "overdue") {
                             CompactAction(context.getString(R.string.duration_10m), Icons.Rounded.Alarm, onClick = { onSnooze(item) }, secondary = true)
                         }
@@ -632,6 +635,7 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>) {
                         Column(Modifier.weight(1f)) {
                             Text(log.medicationName, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             Text(context.getString(R.string.scheduled_dose, log.time, log.dose), color = TextMuted, fontSize = 12.sp)
+                            if (log.onTime) Text(context.getString(R.string.on_time), color = Violet, fontSize = 12.sp)
                             DoseReports.timing(log)?.let { timing ->
                                 val actual = java.time.Instant.ofEpochMilli(log.recordedAt).atZone(java.time.ZoneId.systemDefault())
                                     .format(DateTimeFormatter.ofPattern("MMM d, HH:mm", AppLanguages.locale(context)))

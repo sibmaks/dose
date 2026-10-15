@@ -174,7 +174,6 @@
     <string name="period_days">"%1$d zile"</string>
     <string name="average_delay_count">"Întârziere medie · Luate: %1$d"</string>
     <string name="taken_count">"Luate: %1$d"</string>
-    <string name="report_explanation">"De la ora programată la apăsarea „Luată”. Dozele omise nu se includ; cele luate devreme au întârziere zero. Devreme: %1$d."</string>
     <string name="estimated_entries">"Înregistrări vechi estimate în fusul orar actual: %1$d."</string>
     <string name="duration_hours">"%1$d h %2$d min"</string>
     <string name="scheduled_time">"Programată %1$s"</string>
@@ -228,4 +227,7 @@
     <string name="inhaler">"Inhalator"</string>
     <string name="remove_time">"Șterge ora %1$s"</string>
     <string name="upcoming_dose">"Doză viitoare"</string>
+    <string name="on_time">"La timp"</string>
+    <string name="report_time_basis">"Întârzierea folosește ora înregistrată a luării. „La timp” înregistrează ora programată inițial, chiar și după amânare."</string>
+    <string name="report_explanation">"Dozele omise nu se includ; cele luate devreme au întârziere zero. Devreme: %1$d."</string>
 </resources>

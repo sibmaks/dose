@@ -11,6 +11,7 @@ object DoseStore {
     private const val MEDICATIONS = "medications"
     private const val LOGS = "logs"
     private const val SNOOZES = "snoozes"
+    private const val DEFERRED = "deferred_slots"
 
     private fun prefs(context: Context) = context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
@@ -52,6 +53,7 @@ object DoseStore {
         prefs(context).edit().putString(MEDICATIONS, array.toString()).commit()
         val remainingSnoozes = snoozes(context).filterKeys { !it.contains("|$medicationId|") }
         saveSnoozes(context, remainingSnoozes)
+        prefs(context).edit().putStringSet(DEFERRED, deferred(context).filterNot { it.contains("|$medicationId|") }.toSet()).commit()
     }
 
     @Synchronized
@@ -74,6 +76,7 @@ object DoseStore {
         }
         prefs(context).edit().putString(LOGS, array.toString()).commit()
         clearSnooze(context, DoseLogic.slotKey(log.date, log.medicationId, log.time))
+        clearDeferred(context, DoseLogic.slotKey(log.date, log.medicationId, log.time))
     }
 
     @Synchronized
@@ -124,10 +127,22 @@ object DoseStore {
         prefs(context).edit().putString("color_usage", obj.toString()).commit()
     }
 
-    fun newLog(item: DoseItem, status: String): DoseLog = DoseLog(
-        item.date, item.medication.id, item.medication.name, item.medication.dose,
-        item.time, status, System.currentTimeMillis(),
-        scheduledAt = item.medication.scheduledMillis(java.time.LocalDate.parse(item.date), item.time),
+    private fun deferred(context: Context): Set<String> = prefs(context).getStringSet(DEFERRED, emptySet()).orEmpty().toSet()
+    fun wasDeferred(context: Context, key: String): Boolean = key in deferred(context)
+
+    @Synchronized
+    fun markDeferred(context: Context, key: String) {
+        prefs(context).edit().putStringSet(DEFERRED, deferred(context) + key).commit()
+    }
+    @Synchronized
+    private fun clearDeferred(context: Context, key: String) {
+        prefs(context).edit().putStringSet(DEFERRED, deferred(context) - key).commit()
+    }
+
+    fun newLog(item: DoseItem, status: String): DoseLog = DoseLogic.recordedLog(
+        item.medication, item.date, item.time, if (status == "on_time") "taken" else status,
+        item.medication.scheduledMillis(java.time.LocalDate.parse(item.date), item.time),
+        System.currentTimeMillis(), onTime = status == "on_time",
     )
 
 }

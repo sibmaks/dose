@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.github.sibmaks.app.dose.MainActivity
 import io.github.sibmaks.app.dose.R
-import io.github.sibmaks.app.dose.data.DoseLog
+import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseStore
 import io.github.sibmaks.app.dose.data.Medication
 import io.github.sibmaks.app.dose.ui.iconResource
@@ -27,13 +27,15 @@ class ReminderReceiver : BroadcastReceiver() {
         val med = DoseStore.medications(context).find { it.id == id && it.active && time in it.timesOn(scheduledDate) }
         val notificationId = notificationId(id, time, date)
         when (intent.action) {
-            ACTION_TAKEN, ACTION_SKIP -> {
+            ACTION_TAKEN, ACTION_ON_TIME, ACTION_SKIP -> {
                 if (med != null && DoseStore.logs(context).none {
                         it.date == date && it.medicationId == id && it.time == time
                     }) {
-                    DoseStore.record(context, DoseLog(
-                        date, id, med.name, med.dose, time, if (intent.action == ACTION_SKIP) "skipped" else "taken", System.currentTimeMillis(), scheduledAt = slot.scheduledAt,
-                    ))
+                    val now = System.currentTimeMillis()
+                    if (intent.action == ACTION_ON_TIME && !DoseLogic.canRecordOnTime(DoseStore.wasDeferred(context, slot.key), slot.scheduledAt, now)) return
+                    DoseStore.record(context, DoseLogic.recordedLog(med, date, time,
+                        if (intent.action == ACTION_SKIP) "skipped" else "taken", slot.scheduledAt, now,
+                        onTime = intent.action == ACTION_ON_TIME))
                 }
                 ReminderScheduler.cancelSnooze(context, id, time, date)
                 NotificationManagerCompat.from(context).cancel(notificationId)
@@ -64,7 +66,7 @@ class ReminderReceiver : BroadcastReceiver() {
 
     private fun notify(
         sourceContext: Context, medication: Medication,
-        id: String, time: String, date: String, notificationId: Int, scheduledAt: Long,
+        id: String, time: String, date: String, notificationId: Int, scheduledAt: Long, silent: Boolean = false,
     ) {
         val context = AppLanguages.wrap(sourceContext)
         if (!ReminderAlerts.feedEnabled(context) || !ReminderNotifications.allowed(context)) return
@@ -76,7 +78,7 @@ class ReminderReceiver : BroadcastReceiver() {
             }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
         val message = medication.localizedDose(context) + if (medication.note.isBlank()) "" else " · ${medication.note}"
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(medication.form.iconResource())
             .setContentTitle(context.getString(R.string.time_for_named, medication.name))
             .setContentText(message)
@@ -87,19 +89,22 @@ class ReminderReceiver : BroadcastReceiver() {
                 putString(EXTRA_DATE, date)
             })
             .setAutoCancel(true)
+            .setSilent(silent)
+            .setOnlyAlertOnce(silent)
             .setContentIntent(open)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
-            .addAction(R.drawable.ic_notification, context.getString(R.string.taken), ReminderScheduler.actionIntent(
-                context, ACTION_TAKEN, id, time, date, scheduledAt,
-            ))
-            .addAction(R.drawable.ic_notification, context.getString(R.string.snooze_10_min), ReminderScheduler.actionIntent(
-                context, ACTION_SNOOZE, id, time, date, scheduledAt,
-            ))
-            .addAction(R.drawable.ic_notification, context.getString(R.string.skip), ReminderScheduler.actionIntent(
-                context, ACTION_SKIP, id, time, date, scheduledAt,
-            ))
-            .build()
+        if (DoseLogic.canRecordOnTime(DoseStore.wasDeferred(context, "$date|$id|$time"), scheduledAt, System.currentTimeMillis())) {
+            // Android's action row is limited to three buttons. The expanded custom view keeps all four.
+            builder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomBigContentView(DeferredNotificationViews.expanded(context, medication, date, time, scheduledAt))
+                .setCustomHeadsUpContentView(DeferredNotificationViews.headsUp(context, medication, date, time, scheduledAt))
+        } else {
+            builder.addAction(R.drawable.ic_notification, context.getString(R.string.taken), ReminderScheduler.actionIntent(context, ACTION_TAKEN, id, time, date, scheduledAt))
+                .addAction(R.drawable.ic_notification, context.getString(R.string.snooze_10_min), ReminderScheduler.actionIntent(context, ACTION_SNOOZE, id, time, date, scheduledAt))
+                .addAction(R.drawable.ic_notification, context.getString(R.string.skip), ReminderScheduler.actionIntent(context, ACTION_SKIP, id, time, date, scheduledAt))
+        }
+        val notification = builder.build()
         try {
             NotificationManagerCompat.from(context).notify(notificationId, notification)
         } catch (failure: SecurityException) {
@@ -112,6 +117,7 @@ class ReminderReceiver : BroadcastReceiver() {
         const val ACTION_REMIND = "io.github.sibmaks.app.dose.REMIND"
         const val ACTION_SNOOZE_FIRED = "io.github.sibmaks.app.dose.SNOOZE_FIRED"
         const val ACTION_SKIP = "io.github.sibmaks.app.dose.SKIP"
+        const val ACTION_ON_TIME = "io.github.sibmaks.app.dose.ON_TIME"
         const val ACTION_TAKEN = "io.github.sibmaks.app.dose.TAKEN"
         const val ACTION_SNOOZE = "io.github.sibmaks.app.dose.SNOOZE"
         const val EXTRA_MEDICATION_ID = "medicationId"
@@ -119,6 +125,13 @@ class ReminderReceiver : BroadcastReceiver() {
         const val EXTRA_DATE = "date"
         const val EXTRA_SCHEDULED_AT = "scheduledAt"
         const val CHANNEL_ID = "dose_reminders_v1"
+
+        fun refreshNotification(context: Context, slot: ReminderSlot) {
+            val med = DoseStore.medications(context).find { it.id == slot.medicationId && it.active && slot.time in it.timesOn(LocalDate.parse(slot.date)) } ?: return
+            if (DoseStore.logs(context).any { it.medicationId == slot.medicationId && it.date == slot.date && it.time == slot.time }) return
+            ReminderReceiver().notify(context, med, slot.medicationId, slot.time, slot.date,
+                notificationId(slot.medicationId, slot.time, slot.date), slot.scheduledAt, silent = true)
+        }
 
         fun notificationId(id: String, time: String, date: String): Int =
             "$id|$time|$date".hashCode() and 0x7fffffff

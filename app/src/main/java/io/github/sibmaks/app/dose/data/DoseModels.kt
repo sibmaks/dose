@@ -153,6 +153,8 @@ data class DoseLog(
     val date: String, val medicationId: String, val medicationName: String, val dose: String,
     val time: String, val status: String, val recordedAt: Long,
     val scheduledAt: Long? = null,
+    val onTime: Boolean = false,
+    val clickedAt: Long? = null,
 )
 
 data class DoseItem(
@@ -166,6 +168,18 @@ object DoseLogic {
     /** Snoozing changes alert delivery, never the original dose deadline. */
     fun isDistantDose(item: DoseItem, nowMillis: Long): Boolean =
         item.medication.scheduledMillis(LocalDate.parse(item.date), item.time) - nowMillis > 30 * 60_000L
+
+    fun canRecordOnTime(deferred: Boolean, scheduledAt: Long, nowMillis: Long): Boolean =
+        deferred && nowMillis >= scheduledAt
+
+    /** Acceptance time and actual button-click time are deliberately kept separately. */
+    fun recordedLog(medication: Medication, date: String, time: String, status: String,
+                    scheduledAt: Long, nowMillis: Long, onTime: Boolean = false): DoseLog {
+        require(status == "taken" || status == "skipped")
+        require(!onTime || status == "taken" && nowMillis >= scheduledAt)
+        return DoseLog(date, medication.id, medication.name, medication.dose, time, status,
+            if (onTime) scheduledAt else nowMillis, scheduledAt, onTime, nowMillis)
+    }
 
     fun dateKey(date: LocalDate = LocalDate.now()): String = date.toString()
     fun slotKey(date: String, medicationId: String, time: String): String = "$date|$medicationId|$time"

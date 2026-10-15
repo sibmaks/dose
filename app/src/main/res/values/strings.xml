@@ -175,7 +175,6 @@
     <string name="period_days">"%1$d days"</string>
     <string name="average_delay_count">"Average delay · Taken: %1$d"</string>
     <string name="taken_count">"Taken: %1$d"</string>
-    <string name="report_explanation">"From scheduled time to Taken. Skipped doses are excluded; early clicks count as zero delay. Early: %1$d."</string>
     <string name="estimated_entries">"Older entries estimated using the current time zone: %1$d."</string>
     <string name="duration_hours">"%1$d h %2$d min"</string>
     <string name="scheduled_time">"Scheduled %1$s"</string>
@@ -230,4 +229,7 @@
     <string name="inhaler">"Inhaler"</string>
     <string name="remove_time">"Remove time %1$s"</string>
     <string name="upcoming_dose">"Upcoming dose"</string>
+    <string name="on_time">"On Time"</string>
+    <string name="report_time_basis">"Delay uses the recorded acceptance time. On Time records the original scheduled time, even after snoozing."</string>
+    <string name="report_explanation">"Skipped doses are excluded; early acceptance counts as zero delay. Early: %1$d."</string>
 </resources>

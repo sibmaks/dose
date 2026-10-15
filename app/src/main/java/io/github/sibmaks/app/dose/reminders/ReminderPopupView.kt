@@ -27,7 +27,7 @@ internal object ReminderPopupView {
     private val lavender = Color.rgb(242, 239, 255)
     private val border = Color.rgb(231, 228, 245)
 
-    data class Entry(val medication: Medication, val time: String, val onAction: (String) -> Unit)
+    data class Entry(val medication: Medication, val time: String, val allowOnTime: Boolean = false, val onAction: (String) -> Unit)
 
     fun create(context: Context, preview: Boolean, entries: List<Entry>, keepNotification: Boolean, onLater: () -> Unit): ScrollView {
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
@@ -104,8 +104,12 @@ internal object ReminderPopupView {
             card.addView(heading)
             if (medication.note.isNotBlank()) card.addView(text(medication.note, 13f, color = muted),
                 LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(10) })
-            card.addView(pill(context.getString(R.string.taken), primary = true) { entry.onAction(ReminderReceiver.ACTION_TAKEN) },
-                LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
+            val acceptance = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
+            acceptance.addView(pill(context.getString(R.string.taken), primary = true) { entry.onAction(ReminderReceiver.ACTION_TAKEN) },
+                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+            if (entry.allowOnTime) acceptance.addView(pill(context.getString(R.string.on_time)) { entry.onAction(ReminderReceiver.ACTION_ON_TIME) },
+                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply { marginStart = dp(8) })
+            card.addView(acceptance, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
             val secondary = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
             secondary.addView(pill(context.getString(R.string.snooze_10_min)) { entry.onAction(ReminderReceiver.ACTION_SNOOZE) },
                 LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.4f).apply { marginEnd = dp(8) })

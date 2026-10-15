@@ -92,6 +92,7 @@ object ReminderScheduler {
 
     /** Store the snooze so it survives device restart. */
     fun snooze(context: Context, medicationId: String, time: String, date: String, minutes: Int = 10) {
+        DoseStore.markDeferred(context, DoseLogic.slotKey(date, medicationId, time))
         val until = System.currentTimeMillis() + minutes * 60_000L
         val key = DoseLogic.slotKey(date, medicationId, time)
         DoseStore.putSnooze(context, key, until)

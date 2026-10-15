@@ -174,7 +174,6 @@
     <string name="period_days">"%1$d дн."</string>
     <string name="average_delay_count">"Середня затримка · Прийнято: %1$d"</string>
     <string name="taken_count">"Прийнято: %1$d"</string>
-    <string name="report_explanation">"Від планового часу до натискання «Прийнято». Пропуски виключено; ранній прийом дає нульову затримку. Ранніх: %1$d."</string>
     <string name="estimated_entries">"Старих записів з оцінкою за поточним часовим поясом: %1$d."</string>
     <string name="duration_hours">"%1$d год %2$d хв"</string>
     <string name="scheduled_time">"За планом %1$s"</string>
@@ -228,4 +227,7 @@
     <string name="inhaler">"Інгалятор"</string>
     <string name="remove_time">"Видалити час %1$s"</string>
     <string name="upcoming_dose">"Майбутній прийом"</string>
+    <string name="on_time">"Вчасно"</string>
+    <string name="report_time_basis">"Затримка рахується за записаним часом прийому. «Вчасно» записує початковий час за розкладом, навіть після відкладення."</string>
+    <string name="report_explanation">"Пропуски виключено; ранній прийом дає нульову затримку. Ранніх: %1$d."</string>
 </resources>

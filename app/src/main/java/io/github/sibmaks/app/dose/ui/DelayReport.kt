@@ -45,6 +45,7 @@ internal fun DelayReportCard(logs: List<DoseLog>, today: LocalDate) {
                     }
                 }
             }
+            Text(context.getString(R.string.report_time_basis), fontSize = 12.sp, color = TextMuted)
             Text(context.getString(R.string.report_explanation, report.earlyCount), fontSize = 12.sp, color = TextMuted)
             if (report.estimatedCount > 0) Text(context.getString(R.string.estimated_entries, report.estimatedCount), fontSize = 12.sp, color = TextMuted)
         }

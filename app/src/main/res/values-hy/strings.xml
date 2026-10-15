@@ -174,7 +174,6 @@
     <string name="period_days">"%1$d օր"</string>
     <string name="average_delay_count">"Միջին ուշացում · Ընդունված՝ %1$d"</string>
     <string name="taken_count">"Ընդունված՝ %1$d"</string>
-    <string name="report_explanation">"Պլանավորված ժամից մինչև «Ընդունված է» սեղմելը։ Բաց թողնվածները չեն հաշվվում, վաղ ընդունումը՝ զրոյական ուշացում։ Վաղ՝ %1$d։"</string>
     <string name="estimated_entries">"Հին գրառումներ՝ գնահատված ընթացիկ ժամային գոտով՝ %1$d։"</string>
     <string name="duration_hours">"%1$d ժ %2$d ր"</string>
     <string name="scheduled_time">"Պլանավորված՝ %1$s"</string>
@@ -228,4 +227,7 @@
     <string name="inhaler">"Ինհալյատոր"</string>
     <string name="remove_time">"Ջնջել ժամը՝ %1$s"</string>
     <string name="upcoming_dose">"Առաջիկա ընդունում"</string>
+    <string name="on_time">"Ժամանակին"</string>
+    <string name="report_time_basis">"Ուշացումը հաշվվում է գրանցված ընդունման ժամանակով։ «Ժամանակին»-ը գրանցում է սկզբնական պլանավորված ժամը՝ նաև հետաձգումից հետո։"</string>
+    <string name="report_explanation">"Բաց թողնվածները չեն հաշվվում, վաղ ընդունումը՝ զրոյական ուշացում։ Վաղ՝ %1$d։"</string>
 </resources>

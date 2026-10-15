@@ -174,7 +174,6 @@
     <string name="period_days">"%1$d рӯз"</string>
     <string name="average_delay_count">"Таъхири миёна · Қабул: %1$d"</string>
     <string name="taken_count">"Қабул: %1$d"</string>
-    <string name="report_explanation">"Аз вақти нақшавӣ то пахши «Қабул шуд». Гузарондаҳо ҳисоб намешаванд; барвақт — таъхири сифр. Барвақт: %1$d."</string>
     <string name="estimated_entries">"Сабтҳои кӯҳна бо минтақаи вақти ҷорӣ тахминшуда: %1$d."</string>
     <string name="duration_hours">"%1$d соат %2$d дақ"</string>
     <string name="scheduled_time">"Нақша: %1$s"</string>
@@ -228,4 +227,7 @@
     <string name="inhaler">"Ингалятор"</string>
     <string name="remove_time">"Нест кардани вақти %1$s"</string>
     <string name="upcoming_dose">"Қабули оянда"</string>
+    <string name="on_time">"Сари вақт"</string>
+    <string name="report_time_basis">"Таъхир аз вақти сабтшудаи қабул ҳисоб мешавад. «Сари вақт» вақти аслии ҷадвалро ҳатто баъди таъхир сабт мекунад."</string>
+    <string name="report_explanation">"Гузарондаҳо ҳисоб намешаванд; барвақт — таъхири сифр. Барвақт: %1$d."</string>
 </resources>

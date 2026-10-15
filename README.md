@@ -25,7 +25,7 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - Separate dose amount and unit, with mg, ml, g, mcg, IU, tablet, capsule, drop, spray, and puff presets plus an editable custom unit.
 - Multiple schedules per medication. Each rule has one or several times and can use specific dates, selected weekdays, selected month days, or every day.
 - Six preset colors (including rose and amber) plus an RGB/hex color picker. Up to eight swatches appear, with frequently saved colors first and the current selection included. Usage persists across app restarts; pausing does not increase usage.
-- Taken, Skip, and Snooze 10 min notification actions; Taken, Skip, Undo, and due-dose Snooze actions in the dashboard.
+- Taken, Skip, and Snooze 10 min notification actions. After Snooze or Later, a deferred reminder offers Taken (actual click time) and On Time (original scheduled acceptance time). Expand the feed notification for all four controls; heads-up shows both acceptance options. The pop-up shows the acceptance buttons side by side. Today’s schedule offers On Time only for Due now doses. History labels On Time records and preserves the actual click separately.
 - Optional pop-up reminder window over other apps, with Taken, Snooze, Skip, and Later actions. Enable it from the bell setup and grant Android's Display over other apps access. The pop-up uses purple pill-shaped actions, side-by-side Snooze and Skip controls, medication cards, and scheduled-time badges. The test pop-up shows the same controls using up to two existing medications (or an example); its buttons close the preview without recording a dose.
 - Pop-ups vibrate with two short pulses when a new reminder appears, including Test pop-up. Redrawing the window does not repeat vibration; device alarm/vibration settings still apply.
 - History includes a Time to take report: average delay overall and per medication, with 7-day, 30-day, and all-time views. Each Taken entry also shows its click time and delay.
@@ -51,7 +51,7 @@ Translations have resource/format validation but have not been reviewed by nativ
 
 ## Delay report
 
-Delay is the time from the original scheduled deadline to the Taken click. Early clicks contribute zero delay; skipped and unrecorded doses are excluded. The average is weighted by taken doses, not by medication. Reporting periods use the scheduled date, including doses taken after midnight. Snoozing does not move the report baseline.
+Delay is the time from the original scheduled deadline to the recorded acceptance time. Taken uses the actual click time; On Time explicitly uses the original scheduled instant, even after snoozing, and contributes zero delay. The original click timestamp is also retained. Early clicks contribute zero delay; skipped and unrecorded doses are excluded. The average is weighted by taken doses, not by medication. Reporting periods use the scheduled date, including doses taken after midnight. Snoozing does not move the report baseline.
 
 New records persist their scheduled instant so later time-zone changes do not reinterpret that timestamp. Older records remain readable; their deadline is estimated from the stored date and time in the current time zone and the report labels these estimates. Renamed or deleted medications retain their historical report entries.
 

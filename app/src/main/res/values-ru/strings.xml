@@ -174,7 +174,6 @@
     <string name="period_days">"%1$d дн."</string>
     <string name="average_delay_count">"Средняя задержка · Принято: %1$d"</string>
     <string name="taken_count">"Принято: %1$d"</string>
-    <string name="report_explanation">"От планового времени до нажатия «Принято». Пропуски исключены; ранний приём даёт нулевую задержку. Ранних: %1$d."</string>
     <string name="estimated_entries">"Старых записей с оценкой по текущему часовому поясу: %1$d."</string>
     <string name="duration_hours">"%1$d ч %2$d мин"</string>
     <string name="scheduled_time">"По плану %1$s"</string>
@@ -228,4 +227,7 @@
     <string name="inhaler">"Ингалятор"</string>
     <string name="remove_time">"Удалить время %1$s"</string>
     <string name="upcoming_dose">"Предстоящий приём"</string>
+    <string name="on_time">"Вовремя"</string>
+    <string name="report_time_basis">"Задержка считается по записанному времени приёма. «Вовремя» записывает исходное время по расписанию, даже после отсрочки."</string>
+    <string name="report_explanation">"Пропуски исключены; ранний приём даёт нулевую задержку. Ранних: %1$d."</string>
 </resources>

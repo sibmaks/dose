@@ -109,7 +109,7 @@ class ReminderOverlayService : Service() {
         } else {
             slots.values.mapNotNull { slot ->
                 medications[slot.medicationId]?.let { medication ->
-                    ReminderPopupView.Entry(medication, slot.time) { action ->
+                    ReminderPopupView.Entry(medication, slot.time, DoseLogic.canRecordOnTime(DoseStore.wasDeferred(this, slot.key), slot.scheduledAt, System.currentTimeMillis())) { action ->
                         ReminderScheduler.actionIntent(this, action, slot.medicationId, slot.time, slot.date, slot.scheduledAt).send()
                         slots.remove(slot.key)
                         if (slots.isEmpty()) finishAlert() else render()
@@ -118,7 +118,7 @@ class ReminderOverlayService : Service() {
             }
         }
         val popup = ReminderPopupView.create(themed, preview, entries,
-            keepNotification = ReminderAlerts.feedEnabled(this) && ReminderNotifications.allowed(this), onLater = ::finishAlert)
+            keepNotification = ReminderAlerts.feedEnabled(this) && ReminderNotifications.allowed(this), onLater = ::deferAlerts)
         val metrics = resources.displayMetrics
         val width = minOf(metrics.widthPixels - dp(32), dp(420)).coerceAtLeast(1)
         popup.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
@@ -138,6 +138,14 @@ class ReminderOverlayService : Service() {
             // Permission revocation / protected system surfaces must leave the ordinary reminder intact.
             finishAlert()
         }
+    }
+
+    private fun deferAlerts() {
+        if (!preview) slots.values.forEach { slot ->
+            DoseStore.markDeferred(this, slot.key)
+            ReminderReceiver.refreshNotification(this, slot)
+        }
+        finishAlert()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

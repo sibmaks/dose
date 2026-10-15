@@ -174,7 +174,6 @@
     <string name="period_days">"%1$d დღე"</string>
     <string name="average_delay_count">"საშუალო დაყოვნება · მიღებულია: %1$d"</string>
     <string name="taken_count">"მიღებულია: %1$d"</string>
-    <string name="report_explanation">"დაგეგმილი დროიდან „მიღებულია“-ზე დაჭერამდე. გამოტოვებული არ ითვლება; ადრეული მიღება ნულოვანი დაყოვნებაა. ადრე: %1$d."</string>
     <string name="estimated_entries">"მიმდინარე დროის სარტყლით შეფასებული ძველი ჩანაწერები: %1$d."</string>
     <string name="duration_hours">"%1$d სთ %2$d წთ"</string>
     <string name="scheduled_time">"დაგეგმილი: %1$s"</string>
@@ -228,4 +227,7 @@
     <string name="inhaler">"ინჰალატორი"</string>
     <string name="remove_time">"დრო %1$s-ის წაშლა"</string>
     <string name="upcoming_dose">"მომავალი მიღება"</string>
+    <string name="on_time">"დროულად"</string>
+    <string name="report_time_basis">"დაყოვნება აღრიცხული მიღების დროით ითვლება. „დროულად“ თავდაპირველ დაგეგმილ დროს ინახავს გადადების შემდეგაც."</string>
+    <string name="report_explanation">"გამოტოვებული არ ითვლება; ადრეული მიღება ნულოვანი დაყოვნებაა. ადრე: %1$d."</string>
 </resources>

@@ -174,7 +174,6 @@
     <string name="period_days">"%1$d kun"</string>
     <string name="average_delay_count">"Oʻrtacha kechikish · Qabul: %1$d"</string>
     <string name="taken_count">"Qabul: %1$d"</string>
-    <string name="report_explanation">"Reja vaqtidan «Qabul qilindi» bosilguncha. Oʻtkazilganlar hisoblanmaydi; erta qabul nol kechikish. Erta: %1$d."</string>
     <string name="estimated_entries">"Joriy vaqt mintaqasi bilan baholangan eski yozuvlar: %1$d."</string>
     <string name="duration_hours">"%1$d soat %2$d daq"</string>
     <string name="scheduled_time">"Reja: %1$s"</string>
@@ -228,4 +227,7 @@
     <string name="inhaler">"Ingalyator"</string>
     <string name="remove_time">"%1$s vaqtini oʻchirish"</string>
     <string name="upcoming_dose">"Kelgusi qabul"</string>
+    <string name="on_time">"Oʻz vaqtida"</string>
+    <string name="report_time_basis">"Kechikish qayd etilgan qabul vaqti bilan hisoblanadi. «Oʻz vaqtida» kechiktirilgandan keyin ham dastlabki reja vaqtini yozadi."</string>
+    <string name="report_explanation">"Oʻtkazilganlar hisoblanmaydi; erta qabul nol kechikish. Erta: %1$d."</string>
 </resources>
