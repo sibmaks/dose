@@ -1,5 +1,8 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#FFFFFFFF" android:pathData="M39,31a17,17 0,0 1,24 0l14,14a17,17 0,0 1,0 24a17,17 0,0 1,-24 0L39,55a17,17 0,0 1,0 -24z"/>
-    <path android:fillColor="#FF9489F6" android:pathData="M45,37L71,63L63,71L37,45z"/>
+    <!-- Symmetric capsule centered on the adaptive icon's (54,54) pivot. -->
+    <group android:rotation="-45" android:pivotX="54" android:pivotY="54">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M41,41A13,13 0,0 1,67 41V67A13,13 0,0 1,41 67Z"/>
+        <path android:fillColor="#FF9489F6" android:pathData="M41,54H67V67A13,13 0,0 1,41 67Z"/>
+    </group>
 </vector>
