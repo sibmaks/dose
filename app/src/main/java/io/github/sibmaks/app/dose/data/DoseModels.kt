@@ -14,6 +14,19 @@ enum class ScheduleKind(val label: String) {
     SPECIFIC_DATES("Specific dates"), WEEKDAYS("Days of week"), MONTH_DAYS("Days of month"), DAILY("Every day");
 }
 
+enum class ScheduleField { TIMES, DATES, START, END, BOUNDS, WEEKDAYS, MONTH_DAYS }
+enum class ScheduleIssue(val field: ScheduleField, val message: String) {
+    TIME_REQUIRED(ScheduleField.TIMES, "Choose at least one valid time."),
+    DUPLICATE_TIMES(ScheduleField.TIMES, "Remove duplicate times in this schedule."),
+    DATE_REQUIRED(ScheduleField.DATES, "Choose at least one specific date."),
+    INVALID_IMMEDIATE(ScheduleField.DATES, "An immediate reminder must contain one date and time."),
+    INVALID_START(ScheduleField.START, "Invalid schedule start."),
+    INVALID_BOUNDS(ScheduleField.BOUNDS, "Choose valid start and end dates."),
+    END_BEFORE_START(ScheduleField.END, "The end date must be on or after the start date."),
+    WEEKDAY_REQUIRED(ScheduleField.WEEKDAYS, "Select at least one weekday."),
+    MONTHDAY_REQUIRED(ScheduleField.MONTH_DAYS, "Select at least one day of the month."),
+}
+
 /** Bounds are inclusive; an omitted start is anchored to the day the rule was created. */
 data class DoseSchedule(
     val kind: ScheduleKind = ScheduleKind.DAILY,
@@ -26,20 +39,22 @@ data class DoseSchedule(
     val createdOn: String = LocalDate.now().toString(),
     val immediateAt: Long? = null,
 ) {
-    fun validationError(): String? = when {
-        times.isEmpty() || times.any { !DoseLogic.isTime(it) } -> "Choose at least one valid time."
-        times.distinct().size != times.size -> "Remove duplicate times in this schedule."
+    fun validationError(): String? = validationIssue()?.message
+
+    fun validationIssue(): ScheduleIssue? = when {
+        times.isEmpty() || times.any { !DoseLogic.isTime(it) } -> ScheduleIssue.TIME_REQUIRED
+        times.distinct().size != times.size -> ScheduleIssue.DUPLICATE_TIMES
         kind == ScheduleKind.SPECIFIC_DATES && (dates.isEmpty() || dates.any { !DoseLogic.isDate(it) }) ->
-            "Choose at least one specific date."
+            ScheduleIssue.DATE_REQUIRED
         immediateAt != null && (immediateAt <= 0 || kind != ScheduleKind.SPECIFIC_DATES || dates.size != 1 || times.size != 1) ->
-            "An immediate reminder must contain one date and time."
-        kind != ScheduleKind.SPECIFIC_DATES && !DoseLogic.isDate(createdOn) -> "Invalid schedule start."
+            ScheduleIssue.INVALID_IMMEDIATE
+        kind != ScheduleKind.SPECIFIC_DATES && !DoseLogic.isDate(createdOn) -> ScheduleIssue.INVALID_START
         kind != ScheduleKind.SPECIFIC_DATES && (from != null && !DoseLogic.isDate(from) || until != null && !DoseLogic.isDate(until)) ->
-            "Choose valid start and end dates."
+            ScheduleIssue.INVALID_BOUNDS
         kind != ScheduleKind.SPECIFIC_DATES && until != null && until < (from ?: createdOn) ->
-            "The end date must be on or after the start date."
-        kind == ScheduleKind.WEEKDAYS && (weekDays.isEmpty() || weekDays.any { it !in 1..7 }) -> "Select at least one weekday."
-        kind == ScheduleKind.MONTH_DAYS && (monthDays.isEmpty() || monthDays.any { it !in 1..31 }) -> "Select at least one day of the month."
+            ScheduleIssue.END_BEFORE_START
+        kind == ScheduleKind.WEEKDAYS && (weekDays.isEmpty() || weekDays.any { it !in 1..7 }) -> ScheduleIssue.WEEKDAY_REQUIRED
+        kind == ScheduleKind.MONTH_DAYS && (monthDays.isEmpty() || monthDays.any { it !in 1..31 }) -> ScheduleIssue.MONTHDAY_REQUIRED
         else -> null
     }
 
