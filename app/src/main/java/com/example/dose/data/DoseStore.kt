@@ -59,11 +59,7 @@ object DoseStore {
         val array = JSONArray(prefs(context).getString(LOGS, "[]"))
         (0 until array.length()).mapNotNull { i ->
             val obj = array.optJSONObject(i) ?: return@mapNotNull null
-            DoseLog(
-                obj.optString("date"), obj.optString("medicationId"),
-                obj.optString("medicationName"), obj.optString("dose"), obj.optString("time"),
-                obj.optString("status"), obj.optLong("recordedAt"),
-            ).takeIf { it.date.isNotBlank() && it.medicationId.isNotBlank() && DoseLogic.isTime(it.time) }
+            DoseLogJson.decode(obj)
         }
     }.getOrDefault(emptyList())
 
@@ -74,12 +70,7 @@ object DoseStore {
         (logs(context).filterNot {
             it.date == log.date && it.medicationId == log.medicationId && it.time == log.time
         } + log).forEach { item ->
-            array.put(JSONObject().apply {
-                put("date", item.date); put("medicationId", item.medicationId)
-                put("medicationName", item.medicationName); put("dose", item.dose)
-                put("time", item.time); put("status", item.status)
-                put("recordedAt", item.recordedAt)
-            })
+            array.put(DoseLogJson.encode(item))
         }
         prefs(context).edit().putString(LOGS, array.toString()).commit()
         clearSnooze(context, DoseLogic.slotKey(log.date, log.medicationId, log.time))
@@ -91,12 +82,7 @@ object DoseStore {
         logs(context).filterNot {
             it.date == date && it.medicationId == medicationId && it.time == time
         }.forEach { item ->
-            array.put(JSONObject().apply {
-                put("date", item.date); put("medicationId", item.medicationId)
-                put("medicationName", item.medicationName); put("dose", item.dose)
-                put("time", item.time); put("status", item.status)
-                put("recordedAt", item.recordedAt)
-            })
+            array.put(DoseLogJson.encode(item))
         }
         prefs(context).edit().putString(LOGS, array.toString()).commit()
     }
@@ -141,6 +127,7 @@ object DoseStore {
     fun newLog(item: DoseItem, status: String): DoseLog = DoseLog(
         item.date, item.medication.id, item.medication.name, item.medication.dose,
         item.time, status, System.currentTimeMillis(),
+        scheduledAt = DoseLogic.scheduledMillis(java.time.LocalDate.parse(item.date), item.time),
     )
 
 }

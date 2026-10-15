@@ -611,6 +611,7 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>) {
                 Text("Your recent dose activity, saved on this device.", fontSize = 14.sp, color = TextMuted)
             }
         }
+        item { DelayReportCard(logs, today) }
         if (groups.isEmpty()) {
             item { EmptyCard("No history yet", "Mark a dose as taken or skipped to build your history.", null) }
         }
@@ -647,7 +648,12 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>) {
                         Column(Modifier.weight(1f)) {
                             Text(log.medicationName, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             Text("Scheduled ${log.time} · ${log.dose}", color = TextMuted, fontSize = 12.sp)
-
+                            DoseReports.timing(log)?.let { timing ->
+                                val actual = java.time.Instant.ofEpochMilli(log.recordedAt).atZone(java.time.ZoneId.systemDefault())
+                                    .format(DateTimeFormatter.ofPattern("MMM d, HH:mm"))
+                                val difference = delayDuration(kotlin.math.abs(timing.differenceMillis).toDouble())
+                                Text("Taken $actual · $difference ${if (timing.differenceMillis < 0) "early" else "delay"}", color = TextMuted, fontSize = 12.sp)
+                            }
                         }
                         Text(
                             if (log.status == "taken") "Taken" else "Skipped",

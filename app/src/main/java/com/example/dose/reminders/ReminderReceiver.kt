@@ -36,7 +36,7 @@ class ReminderReceiver : BroadcastReceiver() {
                         it.date == date && it.medicationId == id && it.time == time
                     }) {
                     DoseStore.record(context, DoseLog(
-                        date, id, med.name, med.dose, time, if (intent.action == ACTION_SKIP) "skipped" else "taken", System.currentTimeMillis(),
+                        date, id, med.name, med.dose, time, if (intent.action == ACTION_SKIP) "skipped" else "taken", System.currentTimeMillis(), scheduledAt = slot.scheduledAt,
                     ))
                 }
                 ReminderScheduler.cancelSnooze(context, id, time, date)

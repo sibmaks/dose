@@ -119,6 +119,7 @@ object MedicationColors {
 data class DoseLog(
     val date: String, val medicationId: String, val medicationName: String, val dose: String,
     val time: String, val status: String, val recordedAt: Long,
+    val scheduledAt: Long? = null,
 )
 
 data class DoseItem(

@@ -22,6 +22,7 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - Six preset colors (including rose and amber) plus an RGB/hex color picker. Up to eight swatches appear, with frequently saved colors first and the current selection included. Usage persists across app restarts; pausing does not increase usage.
 - Taken, Skip, and Snooze 10 min notification actions; Taken, Skip, Undo, and due-dose Snooze actions in the dashboard.
 - Optional pop-up reminder window over other apps, with Taken, Snooze, Skip, and Later actions. Enable it from the settings gear and grant Android's Display over other apps access. A test pop-up is available without recording a dose.
+- History includes a Time to take report: average delay overall and per medication, with 7-day, 30-day, and all-time views. Each Taken entry also shows its click time and delay.
 - Reminders restored on reboot, clock/time-zone changes, package upgrades, and exact-alarm permission grants.
 
 ## Schedule behavior
@@ -33,6 +34,12 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - Alarms find the next unrecorded matching date for each medication/time. Recording Taken or Skip completes only that slot and advances its alarm; snoozes are stored separately.
 - Times follow the device's local time zone. Daylight-saving gaps and overlaps use Java's `ZonedDateTime` resolution (gaps move forward, overlaps use the earlier offset).
 - Existing daily medications migrate automatically to a daily rule. Recognizable dosage text such as `500 mg` splits into amount and unit; other text is preserved. IDs, colors, instructions, pause state, and dose history remain intact.
+
+## Delay report
+
+Delay is the time from the original scheduled deadline to the Taken click. Early clicks contribute zero delay; skipped and unrecorded doses are excluded. The average is weighted by taken doses, not by medication. Reporting periods use the scheduled date, including doses taken after midnight. Snoozing does not move the report baseline.
+
+New records persist their scheduled instant so later time-zone changes do not reinterpret that timestamp. Older records remain readable; their deadline is estimated from the stored date and time in the current time zone and the report labels these estimates. Renamed or deleted medications retain their historical report entries.
 
 ## Permissions and reliability
 
@@ -49,13 +56,14 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - `ui/DoseApp.kt`: dashboard, medication list, and history.
 - `ui/MedicationEditor.kt`: form, dose, schedule, and color controls.
 - `data/DoseModels.kt`: calendar rules, occurrence calculation, units, and color ordering.
-- `data/MedicationJson.kt` and `data/DoseStore.kt`: persistence and legacy migration.
+- `data/MedicationJson.kt`, `data/DoseLogJson.kt`, and `data/DoseStore.kt`: persistence and legacy migration.
+- `data/DoseReport.kt` and `ui/DelayReport.kt`: timing calculations and report UI.
 - `reminders/ReminderOverlayService.kt` and `ui/ReminderSettings.kt`: optional bounded overlay and permission controls.
 - `reminders/ReminderScheduler.kt` and `reminders/ReminderReceiver.kt`: alarms, notification actions, and delivery.
 - `app/src/test`: calendar boundaries, finite rules, monthly/leap dates, overlap deduplication, recorded slots, snoozes, time-zone resolution, colors, and JSON migration/round-trip tests.
 
-Verified on 2026-10-15: debug APK assembly succeeded, all 25 unit tests passed, and Android lint finished with no errors (warnings remain). No connected Android device or emulator image was available, so layout and real overlay/notification delivery and actions still need device verification.
+Verified on 2026-10-15: debug APK assembly succeeded, all 40 unit tests passed, and Android lint finished with no errors (warnings remain). No connected Android device or emulator image was available, so layout and real overlay/notification delivery and actions still need device verification.
 
-Device verification: enable overlay access and exact alarms, test the pop-up, then schedule two medications for the same minute and switch to another app. Check both appear and Taken/Skip/Snooze affect only the intended dose. Check Later/timeout preserve notifications, notification actions remove the corresponding pop-up, and disabling overlay access or pausing/deleting a medication clears its pop-up.
+Device verification: enable overlay access and exact alarms, test the pop-up, then schedule two medications for the same minute and switch to another app. Check both appear and Taken/Skip/Snooze affect only the intended dose. Check Later/timeout preserve notifications, notification actions remove the corresponding pop-up, and disabling overlay access or pausing/deleting a medication clears its pop-up. Confirm History reports the expected delay (including early clicks, snoozes, and a dose taken after midnight).
 
 The browser prototype in `design-reference/pill-reminder.html` is kept for reference and is not bundled in the APK.
