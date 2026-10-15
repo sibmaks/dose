@@ -58,6 +58,7 @@ class ReminderOverlayService : Service() {
         if (!enterForeground()) return START_NOT_STICKY
         val isPreview = intent?.getBooleanExtra(EXTRA_PREVIEW, false) == true
         val slot = intent?.let(ReminderSlot::from)
+        val newAlert = if (slot != null) slot.key !in slots else isPreview && slots.isEmpty()
         if (slot != null) { preview = false; slots[slot.key] = slot }
         else if (isPreview && slots.isEmpty()) preview = true
         if (!ReminderAlerts.permissionGranted(this) || (!preview && !ReminderAlerts.enabled(this)) || (!preview && slots.isEmpty())) {
@@ -67,6 +68,7 @@ class ReminderOverlayService : Service() {
         handler.postDelayed(expire, 120_000)
         handler.removeCallbacks(reconcile)
         reconcile.run()
+        if (newAlert && window != null) ReminderHaptics.vibrate(this)
         return START_NOT_STICKY
     }
 

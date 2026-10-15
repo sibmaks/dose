@@ -22,6 +22,7 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - Six preset colors (including rose and amber) plus an RGB/hex color picker. Up to eight swatches appear, with frequently saved colors first and the current selection included. Usage persists across app restarts; pausing does not increase usage.
 - Taken, Skip, and Snooze 10 min notification actions; Taken, Skip, Undo, and due-dose Snooze actions in the dashboard.
 - Optional pop-up reminder window over other apps, with Taken, Snooze, Skip, and Later actions. Enable it from the bell setup and grant Android's Display over other apps access. The pop-up uses purple pill-shaped actions, side-by-side Snooze and Skip controls, medication cards, and scheduled-time badges. The test pop-up shows the same controls using up to two existing medications (or an example); its buttons close the preview without recording a dose.
+- Pop-ups vibrate with two short pulses when a new reminder appears, including Test pop-up. Redrawing the window does not repeat vibration; device alarm/vibration settings still apply.
 - History includes a Time to take report: average delay overall and per medication, with 7-day, 30-day, and all-time views. Each Taken entry also shows its click time and delay.
 - Reminders restored on reboot, clock/time-zone changes, package upgrades, and exact-alarm permission grants.
 
