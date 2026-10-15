@@ -344,7 +344,6 @@ private fun TodayPage(
                             color = TextMuted, fontSize = 12.sp,
                         )
                     }
-                    Icon(Icons.Rounded.ChevronRight, null, tint = TextMuted)
                 }
             }
         }
