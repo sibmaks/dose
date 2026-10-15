@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.dose"
+    namespace = "io.github.sibmaks.app.dose"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.dose"
+        applicationId = "io.github.sibmaks.app.dose"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

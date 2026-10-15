@@ -1,5 +1,7 @@
 # Dose — Android medication reminder
 
+Android application ID and Kotlin package: `io.github.sibmaks.app.dose`. Changing from the earlier `com.example.dose` ID installs a separate app; Android does not transfer that app's private medication data automatically.
+
 Native Android adaptation of the Dose HTML/Vue prototype. Kotlin, Jetpack Compose and Material 3, AlarmManager, notifications, and on-device SharedPreferences/JSON. No account or server is needed at runtime.
 
 ## Build and run
