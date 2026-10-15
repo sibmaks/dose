@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Setări Android → Aplicații → Dose → Notificări"</string>
     <string name="overlay_settings_fallback">"Setări Android → Acces special → Afișare peste alte aplicații → Dose"</string>
     <string name="finish_reminder_setup">"Finalizează configurarea"</string>
-    <string name="how_should_dose_remind_you">"Cum să te anunțe Dose?"</string>
-    <string name="reminder_choices_hint">"Alege unul sau ambele moduri. Le poți schimba folosind clopoțelul."</string>
     <string name="notification_feed">"Lista de notificări"</string>
     <string name="notification_feed_hint">"Mementouri în notificări cu acțiuni de luare, amânare și omitere."</string>
     <string name="pop_up_over_other_apps">"Fereastră peste alte aplicații"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"Întârzierea folosește ora înregistrată a luării. „La timp” înregistrează ora programată inițial, chiar și după amânare."</string>
     <string name="report_explanation">"Dozele omise nu se includ; cele luate devreme au întârziere zero. Devreme: %1$d."</string>
     <string name="close_screen">"Închide ecranul"</string>
+    <string name="reminder_permission_intro">"Pentru mementouri în notificări și peste alte aplicații, Dose are nevoie de două permisiuni: notificări și afișare peste alte aplicații. Alege modurile dorite. Android poate cere și acces la alarme și mementouri pentru ore exacte."</string>
 </resources>

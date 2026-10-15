@@ -91,7 +91,7 @@ fun DoseApp() {
     val scope = rememberCoroutineScope()
     var editingId by rememberSaveable { mutableStateOf<String?>(null) }
     var showEditor by rememberSaveable { mutableStateOf(false) }
-    var showReminderSettings by rememberSaveable { mutableStateOf(false) }
+    var showReminderSettings by rememberSaveable { mutableStateOf(!ReminderAlerts.setupOffered(context)) }
     var showLanguagePicker by rememberSaveable { mutableStateOf(!AppLanguages.offered(context)) }
     val firstLanguageOffer = !AppLanguages.offered(context)
     val medications = remember(revision) { DoseStore.medications(context) }
@@ -125,6 +125,15 @@ fun DoseApp() {
 
     if (showLanguagePicker) {
         LanguagePicker(firstLanguageOffer, onDismiss = { showLanguagePicker = false })
+        return
+    }
+
+    if (showReminderSettings) {
+        ReminderSettingsScreen(reminderSetup, onDismiss = {
+            ReminderAlerts.markSetupOffered(context)
+            showReminderSettings = false
+            refresh()
+        }, onRefresh = ::refresh, onExactAlarms = { openExactAlarmSettings(context) })
         return
     }
 
@@ -221,10 +230,6 @@ fun DoseApp() {
         }
     }
 
-    if (showReminderSettings) {
-        ReminderSettingsDialog(reminderSetup, onDismiss = { showReminderSettings = false },
-            onRefresh = ::refresh, onExactAlarms = { openExactAlarmSettings(context) })
-    }
     if (showEditor) {
         MedicationEditor(
             original = editing,
@@ -293,6 +298,11 @@ private fun TodayPage(
         contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 10.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp),
     ) {
+        if (showSetupWarning) {
+            item {
+                InfoBanner(context.getString(R.string.reminder_setup_banner), context.getString(R.string.set_up_reminders), onReminderSetup)
+            }
+        }
         item {
             Column(Modifier.padding(top = 10.dp, bottom = 3.dp)) {
                 Eyebrow(day.uppercase(AppLanguages.locale(context)))
@@ -328,11 +338,6 @@ private fun TodayPage(
                         )
                     }
                 }
-            }
-        }
-        if (showSetupWarning) {
-            item {
-                InfoBanner(context.getString(R.string.reminder_setup_banner), context.getString(R.string.set_up_reminders), onReminderSetup)
             }
         }
         item {

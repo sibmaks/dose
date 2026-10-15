@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Android sazlamalary → Programmalar → Dose → Bildirişler"</string>
     <string name="overlay_settings_fallback">"Android sazlamalary → Ýörite giriş → Beýleki programmalaryň üstünde → Dose"</string>
     <string name="finish_reminder_setup">"Sazlamany tamamlaň"</string>
-    <string name="how_should_dose_remind_you">"Dose nähili ýatlatsyn?"</string>
-    <string name="reminder_choices_hint">"Bir ýa-da iki usuly saýlaň. Jaň düwmesi arkaly üýtgedip bilersiňiz."</string>
     <string name="notification_feed">"Bildiriş sanawy"</string>
     <string name="notification_feed_hint">"Sanawda içmek, yza süýşürmek we geçirmek düwmeli ýatlatmalar."</string>
     <string name="pop_up_over_other_apps">"Programmalaryň üstündäki penjire"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"Gijikme ýazylan içilen wagt boýunça hasaplanýar. «Wagtynda» yza süýşürilenden soň hem asyl bellenen wagty ýazýar."</string>
     <string name="report_explanation">"Geçirilenler hasaba alynmaýar; ir içilenler nol gijikme. Ir: %1$d."</string>
     <string name="close_screen">"Ekrany ýapmak"</string>
+    <string name="reminder_permission_intro">"Sanawda we programmalaryň üstünde ýatlatmak üçin Dose iki rugsat gerek: bildirişler we beýleki programmalaryň üstünde görkezmek. Islän usullaryňyzy saýlaň. Takyk wagt üçin Android duýduryşlara we ýatlatmalara giriş hem sorap biler."</string>
 </resources>

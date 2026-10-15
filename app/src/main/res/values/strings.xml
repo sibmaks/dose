@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Open Android Settings → Apps → Dose → Notifications"</string>
     <string name="overlay_settings_fallback">"Open Android Settings → Special app access → Display over other apps → Dose"</string>
     <string name="finish_reminder_setup">"Finish reminder setup"</string>
-    <string name="how_should_dose_remind_you">"How should Dose remind you?"</string>
-    <string name="reminder_choices_hint">"Choose one or both reminder styles. You can change these choices any time using the bell."</string>
     <string name="notification_feed">"Notification feed"</string>
     <string name="notification_feed_hint">"Keep reminders in your notification feed, with Taken, Snooze, and Skip actions."</string>
     <string name="pop_up_over_other_apps">"Pop-up over other apps"</string>
@@ -233,4 +231,5 @@
     <string name="report_time_basis">"Delay uses the recorded acceptance time. On Time records the original scheduled time, even after snoozing."</string>
     <string name="report_explanation">"Skipped doses are excluded; early acceptance counts as zero delay. Early: %1$d."</string>
     <string name="close_screen">"Close screen"</string>
+    <string name="reminder_permission_intro">"For reminders in the notification feed and over other apps, Dose needs two permissions: notifications and display over other apps. Choose the reminder styles you want. Android may also require Alarms &amp; reminders access for precise timing."</string>
 </resources>

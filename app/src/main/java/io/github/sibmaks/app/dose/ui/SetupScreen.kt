@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,8 +23,11 @@ import io.github.sibmaks.app.dose.R
 @Composable
 internal fun SetupScreen(title: String, onClose: () -> Unit, primaryLabel: String, onPrimary: () -> Unit,
                          secondaryLabel: String, onSecondary: () -> Unit = onClose,
+                         onBack: () -> Unit = onClose, pageKey: Any? = null,
                          content: @Composable ColumnScope.() -> Unit) {
-    BackHandler(onBack = onClose)
+    BackHandler(onBack = onBack)
+    val scroll = rememberScrollState()
+    LaunchedEffect(pageKey) { scroll.scrollTo(0) }
     Surface(color = Color(0xFFFAFBFE), modifier = Modifier.fillMaxSize()) {
         Surface(color = Color.White, shape = RoundedCornerShape(26.dp),
             modifier = Modifier.fillMaxSize().safeDrawingPadding().padding(12.dp)) {
@@ -33,7 +37,7 @@ internal fun SetupScreen(title: String, onClose: () -> Unit, primaryLabel: Strin
                     IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, stringResource(R.string.close_screen)) }
                 }
                 HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-                Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 12.dp),
+                Column(Modifier.weight(1f).verticalScroll(scroll).padding(horizontal = 20.dp, vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
                 Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     OutlinedButton(onClick = onSecondary, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) {

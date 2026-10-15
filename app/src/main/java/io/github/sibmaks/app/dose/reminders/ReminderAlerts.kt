@@ -45,6 +45,8 @@ object ReminderAlerts {
                 .forEach { manager.cancel(it.id) }
         }
     }
+    fun setupOffered(context: Context): Boolean = prefs(context).getBoolean("setup_offered", prefs(context).getBoolean("setup_reviewed", false))
+    fun markSetupOffered(context: Context) { prefs(context).edit().putBoolean("setup_offered", true).apply() }
     fun setupState(context: Context) = ReminderSetupState(
         reviewed = prefs(context).getBoolean("setup_reviewed", false),
         feedEnabled = feedEnabled(context), popupsEnabled = enabled(context),

@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Android-ի կարգավորումներ → Հավելվածներ → Dose → Ծանուցումներ"</string>
     <string name="overlay_settings_fallback">"Android-ի կարգավորումներ → Հատուկ հասանելիություն → Այլ հավելվածների վրայից → Dose"</string>
     <string name="finish_reminder_setup">"Ավարտեք կարգավորումը"</string>
-    <string name="how_should_dose_remind_you">"Ինչպե՞ս հիշեցնել ընդունման մասին։"</string>
-    <string name="reminder_choices_hint">"Ընտրեք մեկ կամ երկու եղանակը։ Փոխեք ընտրությունը զանգի կոճակով։"</string>
     <string name="notification_feed">"Ծանուցումների ցանկ"</string>
     <string name="notification_feed_hint">"Հիշեցումներ ցանկում՝ ընդունելու, հետաձգելու և բաց թողնելու կոճակներով։"</string>
     <string name="pop_up_over_other_apps">"Պատուհան այլ հավելվածների վրայից"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"Ուշացումը հաշվվում է գրանցված ընդունման ժամանակով։ «Ժամանակին»-ը գրանցում է սկզբնական պլանավորված ժամը՝ նաև հետաձգումից հետո։"</string>
     <string name="report_explanation">"Բաց թողնվածները չեն հաշվվում, վաղ ընդունումը՝ զրոյական ուշացում։ Վաղ՝ %1$d։"</string>
     <string name="close_screen">"Փակել էկրանը"</string>
+    <string name="reminder_permission_intro">"Ծանուցումների ցանկում և այլ հավելվածների վրայից հիշեցնելու համար Dose-ին անհրաժեշտ է երկու թույլտվություն՝ ծանուցումներ և այլ հավելվածների վրայից ցուցադրում։ Ընտրեք եղանակները։ Ճշգրիտ ժամի համար Android-ը կարող է նաև պահանջել զարթուցիչների և հիշեցումների հասանելիություն։"</string>
 </resources>

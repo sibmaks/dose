@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Android-ის პარამეტრები → აპები → Dose → შეტყობინებები"</string>
     <string name="overlay_settings_fallback">"Android-ის პარამეტრები → სპეციალური წვდომა → სხვა აპების ზემოთ → Dose"</string>
     <string name="finish_reminder_setup">"დაასრულეთ გამართვა"</string>
-    <string name="how_should_dose_remind_you">"როგორ შეგახსენოთ მიღება?"</string>
-    <string name="reminder_choices_hint">"აირჩიეთ ერთი ან ორივე გზა. არჩევანის შეცვლა ზარის ღილაკით შეგიძლიათ."</string>
     <string name="notification_feed">"შეტყობინებების სია"</string>
     <string name="notification_feed_hint">"შეხსენებები სიაში მიღების, გადადებისა და გამოტოვების ღილაკებით."</string>
     <string name="pop_up_over_other_apps">"ფანჯარა სხვა აპების ზემოთ"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"დაყოვნება აღრიცხული მიღების დროით ითვლება. „დროულად“ თავდაპირველ დაგეგმილ დროს ინახავს გადადების შემდეგაც."</string>
     <string name="report_explanation">"გამოტოვებული არ ითვლება; ადრეული მიღება ნულოვანი დაყოვნებაა. ადრე: %1$d."</string>
     <string name="close_screen">"ეკრანის დახურვა"</string>
+    <string name="reminder_permission_intro">"შეტყობინებების სიაში და სხვა აპების ზემოთ შეხსენებისთვის Dose-ს ორი ნებართვა სჭირდება: შეტყობინებები და სხვა აპების ზემოთ ჩვენება. აირჩიეთ სასურველი გზები. ზუსტი დროისთვის Android-მა შეიძლება მაღვიძარებისა და შეხსენებების ნებართვაც მოითხოვოს."</string>
 </resources>

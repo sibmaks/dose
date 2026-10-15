@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Android баптаулары → Қолданбалар → Dose → Хабарландырулар"</string>
     <string name="overlay_settings_fallback">"Android баптаулары → Арнайы рұқсат → Басқа қолданбалардың үстінен → Dose"</string>
     <string name="finish_reminder_setup">"Баптауды аяқтаңыз"</string>
-    <string name="how_should_dose_remind_you">"Dose қалай еске салсын?"</string>
-    <string name="reminder_choices_hint">"Бір не екі тәсілді таңдаңыз. Таңдауды қоңырау арқылы өзгертуге болады."</string>
     <string name="notification_feed">"Хабарландырулар таспасы"</string>
     <string name="notification_feed_hint">"Таспада қабылдау, кейінге қалдыру және өткізу түймелері бар еске салғыштар."</string>
     <string name="pop_up_over_other_apps">"Қолданбалардың үстіндегі терезе"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"Кешігу жазылған қабылдау уақытымен есептеледі. «Уақытында» кейінге қалдырғаннан кейін де бастапқы жоспарлы уақытты жазады."</string>
     <string name="report_explanation">"Өткізілгендер есептелмейді; ерте қабылдау — нөл кешігу. Ерте: %1$d."</string>
     <string name="close_screen">"Экранды жабу"</string>
+    <string name="reminder_permission_intro">"Таспада және қолданбалардың үстінде еске салу үшін Dose екі рұқсатты қажет етеді: хабарландырулар және басқа қолданбалардың үстінен көрсету. Қажетті тәсілдерді таңдаңыз. Дәл уақыт үшін Android дабылдар мен еске салғыштарға рұқсат сұрауы мүмкін."</string>
 </resources>

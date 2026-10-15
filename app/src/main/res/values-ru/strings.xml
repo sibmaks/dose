@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Настройки Android → Приложения → Dose → Уведомления"</string>
     <string name="overlay_settings_fallback">"Настройки Android → Специальный доступ → Поверх других приложений → Dose"</string>
     <string name="finish_reminder_setup">"Завершите настройку"</string>
-    <string name="how_should_dose_remind_you">"Как напоминать о приёме?"</string>
-    <string name="reminder_choices_hint">"Выберите один или оба способа. Изменить выбор можно через колокольчик."</string>
     <string name="notification_feed">"Лента уведомлений"</string>
     <string name="notification_feed_hint">"Напоминания в ленте с кнопками приёма, отсрочки и пропуска."</string>
     <string name="pop_up_over_other_apps">"Окно поверх приложений"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"Задержка считается по записанному времени приёма. «Вовремя» записывает исходное время по расписанию, даже после отсрочки."</string>
     <string name="report_explanation">"Пропуски исключены; ранний приём даёт нулевую задержку. Ранних: %1$d."</string>
     <string name="close_screen">"Закрыть экран"</string>
+    <string name="reminder_permission_intro">"Для напоминаний в ленте и поверх приложений Dose нужны два разрешения: уведомления и показ поверх других приложений. Выберите нужные способы. Для точного времени Android также может запросить доступ к будильникам и напоминаниям."</string>
 </resources>

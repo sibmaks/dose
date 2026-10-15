@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Налаштування Android → Програми → Dose → Сповіщення"</string>
     <string name="overlay_settings_fallback">"Налаштування Android → Спеціальний доступ → Поверх інших програм → Dose"</string>
     <string name="finish_reminder_setup">"Завершіть налаштування"</string>
-    <string name="how_should_dose_remind_you">"Як нагадувати про прийом?"</string>
-    <string name="reminder_choices_hint">"Виберіть один або обидва способи. Змінити вибір можна через дзвіночок."</string>
     <string name="notification_feed">"Стрічка сповіщень"</string>
     <string name="notification_feed_hint">"Нагадування в стрічці з кнопками прийому, відкладення й пропуску."</string>
     <string name="pop_up_over_other_apps">"Вікно поверх програм"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"Затримка рахується за записаним часом прийому. «Вчасно» записує початковий час за розкладом, навіть після відкладення."</string>
     <string name="report_explanation">"Пропуски виключено; ранній прийом дає нульову затримку. Ранніх: %1$d."</string>
     <string name="close_screen">"Закрити екран"</string>
+    <string name="reminder_permission_intro">"Для нагадувань у стрічці й поверх програм Dose потрібні два дозволи: сповіщення й показ поверх інших програм. Виберіть потрібні способи. Для точного часу Android також може запросити доступ до будильників і нагадувань."</string>
 </resources>

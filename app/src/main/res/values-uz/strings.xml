@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Android sozlamalari → Ilovalar → Dose → Bildirishnomalar"</string>
     <string name="overlay_settings_fallback">"Android sozlamalari → Maxsus ruxsat → Boshqa ilovalar ustida → Dose"</string>
     <string name="finish_reminder_setup">"Sozlashni tugating"</string>
-    <string name="how_should_dose_remind_you">"Dose qanday eslatsin?"</string>
-    <string name="reminder_choices_hint">"Bir yoki ikkala usulni tanlang. Qoʻngʻiroq tugmasi orqali oʻzgartirasiz."</string>
     <string name="notification_feed">"Bildirishnomalar roʻyxati"</string>
     <string name="notification_feed_hint">"Roʻyxatda qabul, kechiktirish va oʻtkazish tugmali eslatmalar."</string>
     <string name="pop_up_over_other_apps">"Ilovalar ustidagi oyna"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"Kechikish qayd etilgan qabul vaqti bilan hisoblanadi. «Oʻz vaqtida» kechiktirilgandan keyin ham dastlabki reja vaqtini yozadi."</string>
     <string name="report_explanation">"Oʻtkazilganlar hisoblanmaydi; erta qabul nol kechikish. Erta: %1$d."</string>
     <string name="close_screen">"Ekranni yopish"</string>
+    <string name="reminder_permission_intro">"Roʻyxatda va ilovalar ustida eslatish uchun Dose ikki ruxsatga muhtoj: bildirishnomalar va boshqa ilovalar ustida koʻrsatish. Kerakli usullarni tanlang. Aniq vaqt uchun Android signal va eslatmalarga ruxsat ham soʻrashi mumkin."</string>
 </resources>

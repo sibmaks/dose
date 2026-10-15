@@ -101,8 +101,6 @@
     <string name="notification_settings_fallback">"Android parametrləri → Tətbiqlər → Dose → Bildirişlər"</string>
     <string name="overlay_settings_fallback">"Android parametrləri → Xüsusi giriş → Digər tətbiqlərin üzərində → Dose"</string>
     <string name="finish_reminder_setup">"Qurulmanı tamamlayın"</string>
-    <string name="how_should_dose_remind_you">"Dose necə xatırlatsın?"</string>
-    <string name="reminder_choices_hint">"Bir və ya hər iki üsulu seçin. Seçimi zəng düyməsi ilə dəyişə bilərsiniz."</string>
     <string name="notification_feed">"Bildirişlər lenti"</string>
     <string name="notification_feed_hint">"Lentdə qəbul, təxirə salma və buraxma düyməli xatırlatmalar."</string>
     <string name="pop_up_over_other_apps">"Digər tətbiqlərin üzərində pəncərə"</string>
@@ -231,4 +229,5 @@
     <string name="report_time_basis">"Gecikmə qeydə alınmış qəbul vaxtına əsaslanır. «Vaxtında» təxirə salındıqdan sonra da ilkin plan vaxtını qeyd edir."</string>
     <string name="report_explanation">"Buraxılanlar daxil deyil; erkən qəbul sıfır gecikmədir. Erkən: %1$d."</string>
     <string name="close_screen">"Ekranı bağla"</string>
+    <string name="reminder_permission_intro">"Lentdə və digər tətbiqlərin üzərində xatırlatma üçün Dose iki icazə istəyir: bildirişlər və digər tətbiqlərin üzərində göstərmə. İstədiyiniz üsulları seçin. Dəqiq vaxt üçün Android siqnal və xatırlatma icazəsi də istəyə bilər."</string>
 </resources>
