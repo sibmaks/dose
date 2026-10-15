@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import com.example.dose.data.DoseLogic
 import com.example.dose.data.DoseStore
+import com.example.dose.data.Medication
 import java.time.LocalDate
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -77,6 +78,16 @@ object ReminderScheduler {
         val at = DoseLogic.nextOccurrence(medication, time, now, DoseStore.logs(app)) ?: return
         val dueDate = Instant.ofEpochMilli(at).atZone(now.zone).toLocalDate().toString()
         schedule(manager, at, primaryIntent(app, medicationId, time, dueDate), app)
+    }
+
+    /** Sends newly saved one-time requests even though their current minute has already begun. */
+    fun deliverImmediate(context: Context, medication: Medication, previous: Medication?) {
+        DoseLogic.newImmediateSchedules(medication, previous).forEach { rule ->
+            val slot = ReminderSlot(medication.id, rule.dates.single(), rule.times.single(), requireNotNull(rule.immediateAt))
+            context.sendBroadcast(slot.putInto(Intent(context, ReminderReceiver::class.java).apply {
+                action = ReminderReceiver.ACTION_REMIND
+            }))
+        }
     }
 
     /** Store the snooze so it survives device restart. */
@@ -151,7 +162,9 @@ object ReminderScheduler {
             putExtra(ReminderReceiver.EXTRA_TIME, time)
             if (date != null) {
                 putExtra(ReminderReceiver.EXTRA_DATE, date)
-                putExtra(ReminderReceiver.EXTRA_SCHEDULED_AT, scheduledAt ?: DoseLogic.scheduledMillis(LocalDate.parse(date), time))
+                val original = scheduledAt ?: DoseStore.medications(context).find { it.id == id }
+                    ?.scheduledMillis(LocalDate.parse(date), time) ?: DoseLogic.scheduledMillis(LocalDate.parse(date), time)
+                putExtra(ReminderReceiver.EXTRA_SCHEDULED_AT, original)
             }
         }
         return PendingIntent.getBroadcast(

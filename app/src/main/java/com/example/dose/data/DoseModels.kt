@@ -24,12 +24,15 @@ data class DoseSchedule(
     val from: String? = null,
     val until: String? = null,
     val createdOn: String = LocalDate.now().toString(),
+    val immediateAt: Long? = null,
 ) {
     fun validationError(): String? = when {
         times.isEmpty() || times.any { !DoseLogic.isTime(it) } -> "Choose at least one valid time."
         times.distinct().size != times.size -> "Remove duplicate times in this schedule."
         kind == ScheduleKind.SPECIFIC_DATES && (dates.isEmpty() || dates.any { !DoseLogic.isDate(it) }) ->
             "Choose at least one specific date."
+        immediateAt != null && (immediateAt <= 0 || kind != ScheduleKind.SPECIFIC_DATES || dates.size != 1 || times.size != 1) ->
+            "An immediate reminder must contain one date and time."
         kind != ScheduleKind.SPECIFIC_DATES && !DoseLogic.isDate(createdOn) -> "Invalid schedule start."
         kind != ScheduleKind.SPECIFIC_DATES && (from != null && !DoseLogic.isDate(from) || until != null && !DoseLogic.isDate(until)) ->
             "Choose valid start and end dates."
@@ -67,6 +70,15 @@ data class DoseSchedule(
         }
         return null
     }
+
+    companion object {
+        fun immediately(now: ZonedDateTime = ZonedDateTime.now()) = DoseSchedule(
+            kind = ScheduleKind.SPECIFIC_DATES,
+            times = listOf(now.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))),
+            dates = listOf(now.toLocalDate().toString()), createdOn = now.toLocalDate().toString(),
+            immediateAt = now.toInstant().toEpochMilli(),
+        )
+    }
 }
 
 data class Medication(
@@ -86,6 +98,9 @@ data class Medication(
     val dose: String get() = listOf(amount, quantity).filter { it.isNotBlank() }.joinToString(" ")
     val times: List<String> get() = schedules.flatMap { it.times }.distinct().sorted()
     fun timesOn(date: LocalDate): List<String> = schedules.filter { it.includes(date) }.flatMap { it.times }.distinct().sorted()
+    fun scheduledMillis(date: LocalDate, time: String, zone: ZoneId = ZoneId.systemDefault()): Long =
+        schedules.filter { it.includes(date) && time in it.times }.minOfOrNull { it.immediateAt ?: DoseLogic.scheduledMillis(date, time, zone) }
+            ?: DoseLogic.scheduledMillis(date, time, zone)
 }
 
 object DoseUnits {
@@ -148,12 +163,20 @@ object DoseLogic {
             var search = now.toLocalDate()
             repeat(recordedDates.size + 2) {
                 val date = rule.nextDate(search) ?: return@mapNotNull null
-                val at = scheduledMillis(date, time, now.zone)
+                val at = rule.immediateAt ?: scheduledMillis(date, time, now.zone)
                 if (at > now.toInstant().toEpochMilli() && date.toString() !in recordedDates) return@mapNotNull at
                 search = date.plusDays(1)
             }
             null
         }.minOrNull()
+    }
+
+    /** Delivery is an effect of saving a new immediate request, not of resuming the app. */
+    fun newImmediateSchedules(medication: Medication, previous: Medication?): List<DoseSchedule> {
+        if (!medication.active) return emptyList()
+        val existing = previous?.takeIf { it.id == medication.id }?.schedules.orEmpty()
+        return medication.schedules.filter { it.immediateAt != null && it.validationError() == null && it !in existing }
+            .distinctBy { it.dates.single() to it.times.single() }
     }
 
     fun todayItems(
@@ -167,7 +190,7 @@ object DoseLogic {
                 val key = slotKey(today, medication.id, time)
                 val logged = logIndex[key]
                 val snoozedUntil = snoozes[key]
-                val due = snoozedUntil ?: scheduledMillis(date, time)
+                val due = snoozedUntil ?: medication.scheduledMillis(date, time)
                 val status = when {
                     logged != null -> logged.status
                     snoozedUntil != null && nowMillis < snoozedUntil -> "snoozed"

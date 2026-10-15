@@ -86,10 +86,11 @@ fun DoseApp() {
     var revision by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState { Tab.entries.size }
     val scope = rememberCoroutineScope()
-    var editing by remember { mutableStateOf<Medication?>(null) }
-    var showEditor by remember { mutableStateOf(false) }
+    var editingId by rememberSaveable { mutableStateOf<String?>(null) }
+    var showEditor by rememberSaveable { mutableStateOf(false) }
     var showReminderSettings by rememberSaveable { mutableStateOf(false) }
     val medications = remember(revision) { DoseStore.medications(context) }
+    val editing = medications.find { it.id == editingId }
     val logs = remember(revision) { DoseStore.logs(context) }
     val snoozes = remember(revision) { DoseStore.snoozes(context) }
     val now = remember(revision) { System.currentTimeMillis() }
@@ -140,7 +141,7 @@ fun DoseApp() {
                         tint = if (reminderSetup.complete) Violet else TextMuted,
                     )
                 }
-                IconButton(onClick = { editing = null; showEditor = true }) {
+                IconButton(onClick = { editingId = null; showEditor = true }) {
                     Icon(Icons.Rounded.Add, contentDescription = "Add medication", tint = TextPrimary)
                 }
             }
@@ -172,7 +173,7 @@ fun DoseApp() {
                     hasMedications = medications.isNotEmpty(),
                     showSetupWarning = !reminderSetup.complete,
                     onReminderSetup = { showReminderSettings = true },
-                    onAdd = { editing = null; showEditor = true },
+                    onAdd = { editingId = null; showEditor = true },
                     onManage = { scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) } },
                     onRecord = { item, status ->
                         ReminderScheduler.cancelSnooze(context, item.medication.id, item.time, item.date)
@@ -194,8 +195,8 @@ fun DoseApp() {
                 )
                 Tab.Medications -> MedicationsPage(
                     modifier = Modifier.fillMaxSize(), medications = medications,
-                    onAdd = { editing = null; showEditor = true },
-                    onEdit = { med -> editing = med; showEditor = true },
+                    onAdd = { editingId = null; showEditor = true },
+                    onEdit = { med -> editingId = med.id; showEditor = true },
                     onToggle = { med ->
                         DoseStore.upsert(context, med.copy(active = !med.active))
                         ReminderScheduler.scheduleAll(context)
@@ -216,9 +217,11 @@ fun DoseApp() {
             original = editing,
             onDismiss = { showEditor = false },
             onSave = { med ->
+                val previous = editing
                 DoseStore.upsert(context, med)
                 DoseStore.recordColorUse(context, med.color)
                 ReminderScheduler.scheduleAll(context)
+                ReminderScheduler.deliverImmediate(context, med, previous)
                 refresh()
                 showEditor = false
                 scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) }

@@ -127,7 +127,7 @@ object DoseStore {
     fun newLog(item: DoseItem, status: String): DoseLog = DoseLog(
         item.date, item.medication.id, item.medication.name, item.medication.dose,
         item.time, status, System.currentTimeMillis(),
-        scheduledAt = DoseLogic.scheduledMillis(java.time.LocalDate.parse(item.date), item.time),
+        scheduledAt = item.medication.scheduledMillis(java.time.LocalDate.parse(item.date), item.time),
     )
 
 }

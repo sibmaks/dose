@@ -44,12 +44,13 @@ object MedicationJson {
         dates = strings(rule.optJSONArray("dates")), weekDays = ints(rule.optJSONArray("weekDays")),
         monthDays = ints(rule.optJSONArray("monthDays")), from = optional(rule, "from"), until = optional(rule, "until"),
         createdOn = rule.optString("createdOn", today.toString()),
+        immediateAt = if (rule.has("immediateAt") && !rule.isNull("immediateAt")) rule.getLong("immediateAt") else null,
     )
 
     fun encodeSchedule(rule: DoseSchedule): JSONObject = JSONObject().apply {
         put("kind", rule.kind.name); put("times", JSONArray(rule.times)); put("dates", JSONArray(rule.dates))
         put("weekDays", JSONArray(rule.weekDays)); put("monthDays", JSONArray(rule.monthDays))
-        put("from", rule.from ?: JSONObject.NULL); put("until", rule.until ?: JSONObject.NULL); put("createdOn", rule.createdOn)
+        put("from", rule.from ?: JSONObject.NULL); put("until", rule.until ?: JSONObject.NULL); put("createdOn", rule.createdOn); put("immediateAt", rule.immediateAt ?: JSONObject.NULL)
     }
 
     private fun optional(obj: JSONObject, key: String): String? = if (obj.isNull(key)) null else obj.optString(key).takeIf { it.isNotBlank() }
