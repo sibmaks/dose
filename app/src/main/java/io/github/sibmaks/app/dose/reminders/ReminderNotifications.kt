@@ -1,5 +1,7 @@
 package io.github.sibmaks.app.dose.reminders
 
+import io.github.sibmaks.app.dose.R
+import io.github.sibmaks.app.dose.localization.AppLanguages
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -12,11 +14,12 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
 object ReminderNotifications {
-    fun createChannel(context: Context) {
+    fun createChannel(sourceContext: Context) {
+        val context = AppLanguages.wrap(sourceContext)
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(NotificationChannel(ReminderReceiver.CHANNEL_ID,
-            "Medication reminders", NotificationManager.IMPORTANCE_HIGH).apply {
-            description = "Reminders for medication schedules you added"
+            context.getString(R.string.medication_reminders), NotificationManager.IMPORTANCE_HIGH).apply {
+            description = context.getString(R.string.notification_channel_description)
         })
     }
 

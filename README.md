@@ -6,7 +6,7 @@ Native Android adaptation of the Dose HTML/Vue prototype. Kotlin, Jetpack Compos
 
 ## Build and run
 
-Install JDK 17+, Android SDK API 35, and a compatible Android Studio. Open this folder and let Gradle sync, then run the app on Android 8.0+ (API 26+).
+Install JDK 21, Android SDK API 35, and a compatible Android Studio. Open this folder and let Gradle sync, then run the app on Android 8.0+ (API 26+).
 
 ```sh
 ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug
@@ -16,6 +16,8 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 
 ## Features
 
+- Shared launcher/header icon: the header loads the same adaptive icon resource as the Android launcher.
+- English, Russian, Belarusian, Armenian, Azerbaijani, Kazakh, Kyrgyz, Romanian, Tajik, Turkmen, Uzbek, Ukrainian, and Georgian interface translations. The globe button opens the language picker; first launch offers a choice while defaulting to the system language. Android 13+ also exposes the same languages under Settings → Apps → Dose → Language. Older Android versions use the in-app picker.
 - Today dashboard, upcoming/overdue doses, completion indicator, and seven-day local history. Swipe horizontally between Today, Medications, and History, or tap the matching bottom navigation item.
 - Add, edit, pause, and delete medications without removing previous dose history. Add/edit uses a guided sequence: name and color → form → amount and unit → schedules → optional instructions and final review. Other opens an additional optional custom-form text step. Back preserves entries and drafts survive rotation.
 - Name suggestions use an offline starter dictionary with English/Russian search plus previously saved names. Selecting a variant preselects its editable form. Free name input remains available. Catalog scope and primary references are in `docs/medication-dictionary.md`.
@@ -29,6 +31,14 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. The bundled Gradle wrapp
 - Pop-ups vibrate with two short pulses when a new reminder appears, including Test pop-up. Redrawing the window does not repeat vibration; device alarm/vibration settings still apply.
 - History includes a Time to take report: average delay overall and per medication, with 7-day, 30-day, and all-time views. Each Taken entry also shows its click time and delay.
 - Reminders restored on reboot, clock/time-zone changes, package upgrades, and exact-alarm permission grants.
+
+## Languages
+
+The app uses Android string resources for screens, medication form labels, editor errors, accessibility descriptions, notification actions/channels, and pop-up controls. Dates and report numbers use the selected locale. The language picker shows each language in its own script and includes **System language** to clear an explicit selection. Unsupported system languages fall back to English for app text. Language changes recreate the activity while preserving saved editor drafts. User-entered names, notes, custom forms/units, and stored schedule keys are not translated.
+
+Android 13+ uses the framework `LocaleManager` and `res/xml/locales_config.xml`, keeping the picker and Android app-language settings synchronized. Android 8–12 store the choice locally and wrap activity/background reminder contexts. Visible pop-ups refresh when the language changes without vibrating again. Existing notification text is not rewritten; new reminders use the current language. All languages are included in app bundles so switching works offline after installation.
+
+Translations have resource/format validation but have not been reviewed by native speakers. The medication-name starter catalog remains English/Russian; free input accepts names in any language.
 
 ## Schedule behavior
 
@@ -61,6 +71,7 @@ New records persist their scheduled instant so later time-zone changes do not re
 
 ## Source and validation
 
+- `localization/AppLanguages.kt`, `localization/Labels.kt`, `ui/LanguagePicker.kt`, and `res/values*/strings.xml`: locale selection, translated labels, and all 13 language bundles.
 - `ui/DoseApp.kt`: dashboard, medication list, and history.
 - `ui/MedicationEditor.kt`: form, dose, schedule, and color controls.
 - `data/DoseModels.kt`: calendar rules, occurrence calculation, units, and color ordering.
@@ -70,7 +81,9 @@ New records persist their scheduled instant so later time-zone changes do not re
 - `reminders/ReminderScheduler.kt` and `reminders/ReminderReceiver.kt`: alarms, notification actions, and delivery.
 - `app/src/test`: calendar boundaries, finite rules, monthly/leap dates, overlap deduplication, recorded slots, snoozes, time-zone resolution, colors, and JSON migration/round-trip tests.
 
-Verified on 2026-10-15: debug APK assembly succeeded, all 72 unit tests passed, and Android lint finished with no errors (warnings remain). No connected Android device or emulator image was available, so screen gestures, layout, system permission prompts, and real overlay/notification delivery and actions still need device verification.
+Verified on 2026-10-15: debug APK assembly succeeded, all 75 unit tests passed (including locale-list parity, complete translation coverage, and format-argument checks), and Android lint finished with no errors (warnings remain). No connected Android device or emulator image was available, so screen gestures, layout, system permission prompts, and real overlay/notification delivery and actions still need device verification.
+
+Language device verification: on a fresh install confirm the system-language offer appears once; dismiss it and restart. Use the globe picker to switch among the 13 languages and back to System language, then restart. On Android 13+, change the language through Android app settings and verify the picker agrees, including after process death. On Android 8–12, verify the choice survives restart and background reminders use it. Check long button labels, all editor steps, custom unit/form preservation, dates, report numbers, notification actions/channel names, and pop-ups. Switch languages with a draft open and with a pop-up visible; confirm no data loss or repeated vibration. Translation text still needs native-speaker review.
 
 Device verification: add/edit through all five steps, choose a suggested name then change its form, test Other with and without a label, use a custom unit, go Back, and rotate with an unfinished weekday selection. Choose Just right now, add instructions, and verify it fires once on save with popup vibration; edit the instructions and restart to check it does not repeat. Then swipe between all three screens and confirm bottom navigation stays synchronized; check the progress card no longer suggests an inactive action. Use the bell to choose feed only, pop-ups only, both, and neither; deny/revoke each permission and verify gray/purple status refreshes after returning from Settings. Check a disabled Medication reminders channel keeps the bell gray for feed users. Then enable overlay access and exact alarms, test the pop-up, then schedule two medications for the same minute and switch to another app. Check both appear and Taken/Skip/Snooze affect only the intended dose. Check Later/timeout preserve notifications, notification actions remove the corresponding pop-up, and disabling overlay access or pausing/deleting a medication clears its pop-up. Confirm History reports the expected delay (including early clicks, snoozes, and a dose taken after midnight).
 

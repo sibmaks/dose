@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.reminders
 
+import io.github.sibmaks.app.dose.localization.AppLanguages
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -29,6 +30,7 @@ class ReminderOverlayService : Service() {
     private var preview = false
     private var window: View? = null
     private var renderedKeys: List<String> = emptyList()
+    private var renderedLanguage: String? = null
     private val manager get() = getSystemService(WINDOW_SERVICE) as WindowManager
     private val expire = Runnable { finishAlert() }
     private val reconcile = object : Runnable {
@@ -46,7 +48,10 @@ class ReminderOverlayService : Service() {
                     (snoozes[slot.key] ?: 0L) > System.currentTimeMillis()
             }
             if (!preview && slots.isEmpty()) { finishAlert(); return }
-            if (window == null || renderedKeys != slots.keys.toList()) render()
+            val language = languageKey()
+            val languageChanged = renderedLanguage != null && renderedLanguage != language
+            if (languageChanged && !enterForeground()) return
+            if (window == null || renderedKeys != slots.keys.toList() || languageChanged) render()
             handler.postDelayed(this, 1_000)
         }
     }
@@ -73,11 +78,12 @@ class ReminderOverlayService : Service() {
     }
 
     private fun enterForeground(): Boolean {
+        val context = AppLanguages.wrap(this)
         val notifications = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notifications.createNotificationChannel(NotificationChannel(CHANNEL, "Reminder pop-up", NotificationManager.IMPORTANCE_LOW))
+        notifications.createNotificationChannel(NotificationChannel(CHANNEL, context.getString(R.string.reminder_pop_up), NotificationManager.IMPORTANCE_LOW))
         val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val notification = NotificationCompat.Builder(this, CHANNEL).setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Medication pop-up is open").setContentText("Take, snooze, skip, or close the pop-up.")
+            .setContentTitle(context.getString(R.string.medication_pop_up_is_open)).setContentText(context.getString(R.string.popup_service_hint))
             .setContentIntent(open).setOngoing(true).setSilent(true).build()
         return try {
             if (Build.VERSION.SDK_INT >= 34) startForeground(SERVICE_NOTIFICATION, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE)
@@ -91,7 +97,8 @@ class ReminderOverlayService : Service() {
     }
 
     private fun render() {
-        val themed = ContextThemeWrapper(this, R.style.Theme_Dose)
+        val context = AppLanguages.wrap(this)
+        val themed = ContextThemeWrapper(context, R.style.Theme_Dose)
         val medications = DoseStore.medications(this).associateBy { it.id }
         val entries = if (preview) {
             // Render the real controls in preview, with harmless actions and no saved dose changes.
@@ -119,13 +126,14 @@ class ReminderOverlayService : Service() {
         val height = popup.measuredHeight
         val params = WindowManager.LayoutParams(width, height, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-            PixelFormat.TRANSLUCENT).apply { gravity = Gravity.CENTER; setTitle("Dose medication reminder") }
+            PixelFormat.TRANSLUCENT).apply { gravity = Gravity.CENTER; setTitle(context.getString(R.string.dose_medication_reminder)) }
         try {
             window?.let { manager.removeView(it) }
             window = null
             manager.addView(popup, params)
             window = popup
             renderedKeys = slots.keys.toList()
+            renderedLanguage = languageKey()
         } catch (_: RuntimeException) {
             // Permission revocation / protected system surfaces must leave the ordinary reminder intact.
             finishAlert()
@@ -146,6 +154,8 @@ class ReminderOverlayService : Service() {
         stopSelf()
     }
     override fun onDestroy() { finishAlert(); super.onDestroy() }
+    private fun languageKey() = AppLanguages.selectedTag(this) + "|" + AppLanguages.systemLocales(this).toLanguageTags()
+
     private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()
     companion object {
         const val EXTRA_PREVIEW = "preview"

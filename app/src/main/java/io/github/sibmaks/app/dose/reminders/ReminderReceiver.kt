@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.reminders
 
+import io.github.sibmaks.app.dose.localization.*
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -62,9 +63,10 @@ class ReminderReceiver : BroadcastReceiver() {
     }
 
     private fun notify(
-        context: Context, medication: Medication,
+        sourceContext: Context, medication: Medication,
         id: String, time: String, date: String, notificationId: Int, scheduledAt: Long,
     ) {
+        val context = AppLanguages.wrap(sourceContext)
         if (!ReminderAlerts.feedEnabled(context) || !ReminderNotifications.allowed(context)) return
         ReminderNotifications.createChannel(context)
 
@@ -73,10 +75,10 @@ class ReminderReceiver : BroadcastReceiver() {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
-        val message = medication.doseDescription + if (medication.note.isBlank()) "" else " · ${medication.note}"
+        val message = medication.localizedDose(context) + if (medication.note.isBlank()) "" else " · ${medication.note}"
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(medication.form.iconResource())
-            .setContentTitle("Time for ${medication.name}")
+            .setContentTitle(context.getString(R.string.time_for_named, medication.name))
             .setContentText(message)
             .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .addExtras(Bundle().apply {
@@ -88,13 +90,13 @@ class ReminderReceiver : BroadcastReceiver() {
             .setContentIntent(open)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
-            .addAction(R.drawable.ic_notification, "Taken", ReminderScheduler.actionIntent(
+            .addAction(R.drawable.ic_notification, context.getString(R.string.taken), ReminderScheduler.actionIntent(
                 context, ACTION_TAKEN, id, time, date, scheduledAt,
             ))
-            .addAction(R.drawable.ic_notification, "Snooze 10 min", ReminderScheduler.actionIntent(
+            .addAction(R.drawable.ic_notification, context.getString(R.string.snooze_10_min), ReminderScheduler.actionIntent(
                 context, ACTION_SNOOZE, id, time, date, scheduledAt,
             ))
-            .addAction(R.drawable.ic_notification, "Skip", ReminderScheduler.actionIntent(
+            .addAction(R.drawable.ic_notification, context.getString(R.string.skip), ReminderScheduler.actionIntent(
                 context, ACTION_SKIP, id, time, date, scheduledAt,
             ))
             .build()

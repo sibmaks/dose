@@ -1,5 +1,7 @@
 package io.github.sibmaks.app.dose.ui
 
+import io.github.sibmaks.app.dose.localization.*
+import io.github.sibmaks.app.dose.R
 import android.Manifest
 import android.os.Build
 import android.widget.Toast
@@ -32,7 +34,7 @@ internal fun ReminderSettingsDialog(state: ReminderSetupState, onDismiss: () -> 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { onRefresh() }
     fun notificationSettings() {
         runCatching { ReminderNotifications.openSettings(context) }.onFailure {
-            Toast.makeText(context, "Open Android Settings → Apps → Dose → Notifications", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.notification_settings_fallback), Toast.LENGTH_LONG).show()
         }
     }
     fun requestFeedAccess() {
@@ -43,35 +45,35 @@ internal fun ReminderSettingsDialog(state: ReminderSetupState, onDismiss: () -> 
     }
     fun openOverlayAccess() {
         runCatching { ReminderAlerts.openPermission(context) }.onFailure {
-            Toast.makeText(context, "Open Android Settings → Special app access → Display over other apps → Dose", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.overlay_settings_fallback), Toast.LENGTH_LONG).show()
         }
     }
-    AlertDialog(onDismissRequest = onDismiss, title = { Text(if (accessStep) "Finish reminder setup" else "How should Dose remind you?") }, text = {
+    AlertDialog(onDismissRequest = onDismiss, title = { Text(if (accessStep) context.getString(R.string.finish_reminder_setup) else context.getString(R.string.how_should_dose_remind_you)) }, text = {
         Column(Modifier.heightIn(max = 460.dp).verticalScroll(scroll), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             if (!accessStep) {
-                Text("Choose one or both reminder styles. You can change these choices any time using the bell.", fontSize = 14.sp)
-                ReminderChoice("Notification feed", "Keep reminders in your notification feed, with Taken, Snooze, and Skip actions.", feed) { feed = it }
-                ReminderChoice("Pop-up over other apps", "Show a medication window above the app you are using.", popups) { popups = it }
-                if (!feed && !popups) Text("Both reminder styles will be turned off. Your medication schedules stay saved.", fontSize = 13.sp, color = TextMuted)
-                else Text("Next, allow the Android access needed for your choices.", fontSize = 13.sp, color = TextMuted)
+                Text(context.getString(R.string.reminder_choices_hint), fontSize = 14.sp)
+                ReminderChoice(context.getString(R.string.notification_feed), context.getString(R.string.notification_feed_hint), feed) { feed = it }
+                ReminderChoice(context.getString(R.string.pop_up_over_other_apps), context.getString(R.string.overlay_hint), popups) { popups = it }
+                if (!feed && !popups) Text(context.getString(R.string.reminders_disabled_hint), fontSize = 13.sp, color = TextMuted)
+                else Text(context.getString(R.string.reminder_access_hint), fontSize = 13.sp, color = TextMuted)
             } else {
-                Text("The bell turns purple when access for your chosen reminder styles is ready.", fontSize = 14.sp)
-                if (feed) AccessStatus("Notification feed", state.feedAllowed)
-                if (popups) AccessStatus("Display over other apps", state.overlayAllowed)
-                AccessStatus("Exact alarms", state.exactAlarmsAllowed)
+                Text(context.getString(R.string.reminder_ready_hint), fontSize = 14.sp)
+                if (feed) AccessStatus(context.getString(R.string.notification_feed), state.feedAllowed)
+                if (popups) AccessStatus(context.getString(R.string.display_over_other_apps), state.overlayAllowed)
+                AccessStatus(context.getString(R.string.exact_alarms), state.exactAlarmsAllowed)
                 when {
-                    feed && !state.feedAllowed -> Text("Allow notifications for Dose and its Medication reminders channel. If you previously denied access, Android settings will open.", fontSize = 13.sp)
-                    popups && !state.overlayAllowed -> Text("Enable Display over other apps for Dose in Android settings, then return here.", fontSize = 13.sp)
-                    !state.exactAlarmsAllowed -> Text("Allow Alarms & reminders for Dose so reminders can arrive on time while the app is closed.", fontSize = 13.sp)
-                    else -> Text("Your reminder setup is ready.", fontSize = 14.sp, color = Violet)
+                    feed && !state.feedAllowed -> Text(context.getString(R.string.notification_access_hint), fontSize = 13.sp)
+                    popups && !state.overlayAllowed -> Text(context.getString(R.string.overlay_access_hint), fontSize = 13.sp)
+                    !state.exactAlarmsAllowed -> Text(context.getString(R.string.exact_alarm_access_hint), fontSize = 13.sp)
+                    else -> Text(context.getString(R.string.your_reminder_setup_is_ready), fontSize = 14.sp, color = Violet)
                 }
-                if (feed && state.feedAllowed) TextButton(onClick = ::notificationSettings) { Text("Sound & notification settings") }
+                if (feed && state.feedAllowed) TextButton(onClick = ::notificationSettings) { Text(context.getString(R.string.sound_notification_settings)) }
                 if (popups) {
                     OutlinedButton(enabled = state.overlayAllowed, onClick = {
-                        if (!ReminderAlerts.preview(context)) Toast.makeText(context, "Android could not open the pop-up. Check display-over-apps access.", Toast.LENGTH_LONG).show()
-                    }) { Text("Test pop-up") }
-                    Text("Pop-ups close after 2 minutes without recording a dose${if (feed) "; feed notifications remain" else ""}. They do not unlock or wake the phone, and protected screens can hide them.", fontSize = 12.sp, color = TextMuted)
-                    if (!feed) Text("With feed notifications off, there is no dose notification to return to after the pop-up closes. Android may still show a temporary notification while the pop-up is open.", fontSize = 12.sp, color = TextMuted)
+                        if (!ReminderAlerts.preview(context)) Toast.makeText(context, context.getString(R.string.overlay_error), Toast.LENGTH_LONG).show()
+                    }) { Text(context.getString(R.string.test_pop_up)) }
+                    Text(context.getString(R.string.popup_limits), fontSize = 12.sp, color = TextMuted)
+                    if (!feed) Text(context.getString(R.string.popup_feed_disabled_hint), fontSize = 12.sp, color = TextMuted)
                 }
             }
         }
@@ -87,10 +89,10 @@ internal fun ReminderSettingsDialog(state: ReminderSetupState, onDismiss: () -> 
                 !state.exactAlarmsAllowed -> onExactAlarms()
                 else -> onDismiss()
             }
-        }) { Text(if (!accessStep) { if (feed || popups) "Continue" else "Turn off reminders" }
-            else when { feed && !state.feedAllowed -> "Allow notifications"; popups && !state.overlayAllowed -> "Allow pop-ups"; !state.exactAlarmsAllowed -> "Allow exact alarms"; else -> "Done" }) }
+        }) { Text(if (!accessStep) { if (feed || popups) context.getString(R.string.continue_action) else context.getString(R.string.turn_off_reminders) }
+            else when { feed && !state.feedAllowed -> context.getString(R.string.allow_notifications); popups && !state.overlayAllowed -> context.getString(R.string.allow_pop_ups); !state.exactAlarmsAllowed -> context.getString(R.string.allow_exact_alarms); else -> context.getString(R.string.done) }) }
     }, dismissButton = {
-        TextButton(onClick = { if (accessStep) accessStep = false else onDismiss() }) { Text(if (accessStep) "Back" else "Cancel") }
+        TextButton(onClick = { if (accessStep) accessStep = false else onDismiss() }) { Text(if (accessStep) context.getString(R.string.back) else context.getString(R.string.cancel)) }
     })
 }
 
@@ -107,8 +109,9 @@ private fun ReminderChoice(title: String, explanation: String, checked: Boolean,
 
 @Composable
 private fun AccessStatus(title: String, allowed: Boolean) {
+    val context = LocalContext.current
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(title, modifier = Modifier.weight(1f), fontSize = 14.sp)
-        Text(if (allowed) "Ready" else "Access needed", color = if (allowed) Violet else TextMuted, fontSize = 13.sp)
+        Text(if (allowed) context.getString(R.string.ready) else context.getString(R.string.access_needed), color = if (allowed) Violet else TextMuted, fontSize = 13.sp)
     }
 }

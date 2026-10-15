@@ -1,5 +1,7 @@
 package io.github.sibmaks.app.dose.reminders
 
+import io.github.sibmaks.app.dose.localization.*
+import io.github.sibmaks.app.dose.R
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -66,8 +68,8 @@ internal object ReminderPopupView {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(18), dp(20), dp(18), dp(16))
         }
-        content.addView(text(if (preview) "Test reminder" else "Time for your medication", 20f, true))
-        if (preview) content.addView(text("Preview only. These buttons close the test without recording a dose.", 13f, color = muted),
+        content.addView(text(if (preview) context.getString(R.string.test_reminder) else context.getString(R.string.time_for_your_medication), 20f, true))
+        if (preview) content.addView(text(context.getString(R.string.popup_preview_hint), 13f, color = muted),
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(8) })
         entries.forEach { entry ->
             val medication = entry.medication
@@ -83,12 +85,12 @@ internal object ReminderPopupView {
                 setColorFilter(medicationColor)
                 setPadding(dp(9), dp(9), dp(9), dp(9))
                 background = shape(ColorUtils.blendARGB(Color.WHITE, medicationColor, 0.12f), 14)
-                contentDescription = medication.formLabel
+                contentDescription = medication.localizedForm(context)
             }, LinearLayout.LayoutParams(dp(44), dp(44)))
             val description = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 addView(text(medication.name, 17f, true))
-                addView(text(medication.doseDescription, 13f, color = muted), LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                addView(text(medication.localizedDose(context), 13f, color = muted), LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(3) })
             }
             heading.addView(description, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
@@ -97,24 +99,24 @@ internal object ReminderPopupView {
             heading.addView(text(entry.time, 12f, true, violet).apply {
                 background = shape(lavender, 20)
                 setPadding(dp(10), dp(6), dp(10), dp(6))
-                contentDescription = "Scheduled ${entry.time}"
+                contentDescription = context.getString(R.string.scheduled_time, entry.time)
             })
             card.addView(heading)
             if (medication.note.isNotBlank()) card.addView(text(medication.note, 13f, color = muted),
                 LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(10) })
-            card.addView(pill("Taken", primary = true) { entry.onAction(ReminderReceiver.ACTION_TAKEN) },
+            card.addView(pill(context.getString(R.string.taken), primary = true) { entry.onAction(ReminderReceiver.ACTION_TAKEN) },
                 LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
             val secondary = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
-            secondary.addView(pill("Snooze 10 min") { entry.onAction(ReminderReceiver.ACTION_SNOOZE) },
+            secondary.addView(pill(context.getString(R.string.snooze_10_min)) { entry.onAction(ReminderReceiver.ACTION_SNOOZE) },
                 LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.4f).apply { marginEnd = dp(8) })
-            secondary.addView(pill("Skip", quiet = true) { entry.onAction(ReminderReceiver.ACTION_SKIP) },
+            secondary.addView(pill(context.getString(R.string.skip), quiet = true) { entry.onAction(ReminderReceiver.ACTION_SKIP) },
                 LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f))
             card.addView(secondary, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(8) })
             content.addView(card, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
         }
-        content.addView(pill(if (preview) "Close test" else if (keepNotification) "Later · keep notification" else "Later", quiet = true, onClick = onLater),
+        content.addView(pill(if (preview) context.getString(R.string.close_test) else if (keepNotification) context.getString(R.string.later_keep_notification) else context.getString(R.string.later), quiet = true, onClick = onLater),
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(16) })
         return ScrollView(context).apply {
             background = shape(Color.WHITE, 24)
