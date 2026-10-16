@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose
 
+import io.github.sibmaks.app.dose.appearance.AppAppearance
 import android.os.Bundle
 import android.content.Intent
 import androidx.compose.runtime.getValue
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
     override fun attachBaseContext(newBase: Context) { super.attachBaseContext(AppLanguages.wrap(newBase)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(AppAppearance.activityTheme(this))
         super.onCreate(savedInstanceState)
         if (intent.getBooleanExtra(DoseWidget.OPEN_TODAY, false)) {
             todayRequests++

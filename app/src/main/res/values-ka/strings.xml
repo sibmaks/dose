@@ -243,4 +243,8 @@
     <string name="suppository">"სუპოზიტორია"</string>
     <string name="custom_form_hint">"არასავალდებულო. „სხვა“-სთვის დატოვეთ ცარიელი."</string>
     <string name="all_medication_taken">"ყველა მიღებულია. ყოჩაღ!"</string>
+    <string name="change_theme">"თემა: %1$s. თემის შეცვლა"</string>
+    <string name="theme_system">"სისტემური (ავტომატური)"</string>
+    <string name="theme_light">"ნათელი"</string>
+    <string name="theme_dark">"მუქი"</string>
 </resources>

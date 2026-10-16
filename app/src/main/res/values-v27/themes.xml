@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Dose" parent="android:style/Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">#FAFBFE</item>
-        <item name="android:navigationBarColor">#FFFFFF</item>
-        <item name="android:windowLightStatusBar">true</item>
+    <style name="Theme.Dose.Light" parent="Theme.Dose.Base.Light">
         <item name="android:windowLightNavigationBar">true</item>
+    </style>
+    <style name="Theme.Dose.Dark" parent="Theme.Dose.Base.Dark">
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 </resources>

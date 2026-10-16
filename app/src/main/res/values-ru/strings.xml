@@ -243,4 +243,8 @@
     <string name="suppository">"Свеча"</string>
     <string name="custom_form_hint">"Необязательно. Оставьте пустым, чтобы использовать «Другое»."</string>
     <string name="all_medication_taken">"Всё принято. Отлично!"</string>
+    <string name="change_theme">"Тема: %1$s. Изменить тему"</string>
+    <string name="theme_system">"Системная (авто)"</string>
+    <string name="theme_light">"Светлая"</string>
+    <string name="theme_dark">"Тёмная"</string>
 </resources>

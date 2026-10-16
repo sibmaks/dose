@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.ui
 
+import io.github.sibmaks.app.dose.appearance.AppAppearance
 import android.app.TimePickerDialog
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -38,7 +39,7 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onEdit: () -
         primaryLabel = context.getString(if (item.log == null) R.string.save else R.string.done),
         onPrimary = { if (item.log == null) error = !onSave(reminderTime) else onDismiss() },
         secondaryLabel = context.getString(R.string.back)) {
-        Card(shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color(0xFFF8F6FF)),
+        Card(shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = SoftPanel),
             border = BorderStroke(1.dp, PanelBorder)) {
             Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -74,7 +75,7 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onEdit: () -
             Text(context.getString(R.string.reminder_time), fontWeight = FontWeight.Bold)
             OutlinedButton(onClick = {
                 val parsed = LocalTime.parse(reminderTime)
-                TimePickerDialog(context, { _, hour, minute ->
+                TimePickerDialog(context, AppAppearance.dialogTheme(context), { _, hour, minute ->
                     reminderTime = LocalTime.of(hour, minute).format(DateTimeFormatter.ofPattern("HH:mm"))
                     error = false
                 }, parsed.hour, parsed.minute, true).show()

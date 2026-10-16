@@ -245,4 +245,8 @@
     <string name="suppository">"Suppository"</string>
     <string name="custom_form_hint">"Optional. Leave it empty to use Other."</string>
     <string name="all_medication_taken">"All taken. Well done!"</string>
+    <string name="change_theme">"Theme: %1$s. Change theme"</string>
+    <string name="theme_system">"System (auto)"</string>
+    <string name="theme_light">"Light"</string>
+    <string name="theme_dark">"Dark"</string>
 </resources>

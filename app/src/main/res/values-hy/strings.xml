@@ -243,4 +243,8 @@
     <string name="suppository">"Մոմիկ"</string>
     <string name="custom_form_hint">"Ընտրովի է։ Դատարկ թողեք՝ «Այլ» օգտագործելու համար։"</string>
     <string name="all_medication_taken">"Բոլորն ընդունված են։ Ապրե՛ք։"</string>
+    <string name="change_theme">"Թեմա՝ %1$s։ Փոխել թեման"</string>
+    <string name="theme_system">"Համակարգային (ավտոմատ)"</string>
+    <string name="theme_light">"Բաց"</string>
+    <string name="theme_dark">"Մուգ"</string>
 </resources>

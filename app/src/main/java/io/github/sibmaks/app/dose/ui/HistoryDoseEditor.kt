@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.ui
 
+import io.github.sibmaks.app.dose.appearance.AppAppearance
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.compose.foundation.layout.*
@@ -51,7 +52,7 @@ internal fun HistoryDoseEditor(log: DoseLog, onDismiss: () -> Unit, onSave: (Lon
             Text(context.getString(R.string.taken_at), fontWeight = FontWeight.Bold)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedButton(onClick = {
-                    DatePickerDialog(context, { _, year, month, day ->
+                    DatePickerDialog(context, AppAppearance.dialogTheme(context), { _, year, month, day ->
                         at = LocalDate.of(year, month + 1, day).atTime(selected.toLocalTime()).atZone(zone).toInstant().toEpochMilli()
                         timeError = false; changedError = false
                     }, selected.year, selected.monthValue - 1, selected.dayOfMonth).apply {
@@ -61,7 +62,7 @@ internal fun HistoryDoseEditor(log: DoseLog, onDismiss: () -> Unit, onSave: (Lon
                     Text(selected.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(AppLanguages.locale(context))), maxLines = 1, softWrap = false)
                 }
                 OutlinedButton(onClick = {
-                    TimePickerDialog(context, { _, hour, minute ->
+                    TimePickerDialog(context, AppAppearance.dialogTheme(context), { _, hour, minute ->
                         at = selected.toLocalDate().atTime(hour, minute).atZone(zone).toInstant().toEpochMilli()
                         timeError = false; changedError = false
                     }, selected.hour, selected.minute, true).show()

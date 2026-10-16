@@ -54,26 +54,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-internal val Violet = Color(0xFF7163E5)
-internal val TextPrimary = Color(0xFF252B43)
-internal val TextMuted = Color(0xFF9599AC)
-private val Page = Color(0xFFFAFBFE)
-internal val PanelBorder = Color(0xFFEBECF5)
-private val Mint = Color(0xFF379D80)
-internal val Peach = Color(0xFFE78F5C)
-
-@Composable
-fun DoseTheme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colorScheme = lightColorScheme(
-            primary = Violet, onPrimary = Color.White,
-            background = Page, onBackground = TextPrimary,
-            surface = Color.White, onSurface = TextPrimary,
-        ),
-        content = content,
-    )
-}
-
 private enum class Tab(val title: Int, val icon: ImageVector) {
     Today(R.string.today, Icons.Rounded.Home),
     Medications(R.string.medications, Icons.Rounded.Medication),
@@ -219,20 +199,21 @@ fun DoseApp(openTodayRequest: Int = 0) {
         topBar = {
             Row(
                 modifier = Modifier.fillMaxWidth().background(Page).statusBarsPadding()
-                    .padding(horizontal = 22.dp, vertical = 14.dp),
+                    .padding(horizontal = 10.dp, vertical = 14.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AndroidView(
                     factory = { ImageView(it).apply { setImageResource(R.mipmap.ic_launcher) } },
-                    modifier = Modifier.size(39.dp),
+                    modifier = Modifier.size(36.dp),
                 )
-                Spacer(Modifier.width(9.dp))
+                Spacer(Modifier.width(7.dp))
                 Text("dose", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, color = TextPrimary)
                 Text(".", fontSize = 27.sp, fontWeight = FontWeight.ExtraBold, color = Violet)
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = { showLanguagePicker = true }) {
                     Icon(Icons.Rounded.Language, context.getString(R.string.app_language), tint = TextMuted)
                 }
+                ThemeButton()
                 IconButton(onClick = { showReminderSettings = true }) {
                     Icon(
                         if (reminderSetup.complete) Icons.Rounded.NotificationsActive else Icons.Outlined.Notifications,
@@ -246,7 +227,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
             }
         },
         bottomBar = {
-            NavigationBar(containerColor = Color.White, tonalElevation = 2.dp) {
+            NavigationBar(containerColor = Panel, tonalElevation = 2.dp) {
                 Tab.entries.forEach { target ->
                     NavigationBarItem(
                         selected = pagerState.currentPage == target.ordinal,
@@ -255,7 +236,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         label = { Text(context.getString(target.title), fontSize = 11.sp, fontWeight = FontWeight.Bold) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Violet, selectedTextColor = Violet,
-                            indicatorColor = Color(0xFFF0EDFF), unselectedIconColor = TextMuted,
+                            indicatorColor = AccentPanel, unselectedIconColor = TextMuted,
                             unselectedTextColor = TextMuted,
                         ),
                     )
@@ -361,7 +342,7 @@ private fun TodayPage(
         item {
             Card(
                 shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = Panel),
                 border = BorderStroke(1.dp, PanelBorder),
             ) {
                 Row(
@@ -371,7 +352,7 @@ private fun TodayPage(
                     Box(Modifier.size(70.dp), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator(
                             progress = { percent / 100f }, modifier = Modifier.fillMaxSize(),
-                            color = Violet, trackColor = Color(0xFFF0EDFC), strokeWidth = 7.dp,
+                            color = Violet, trackColor = AccentPanel, strokeWidth = 7.dp,
                         )
                         Text("$percent%", fontSize = 14.sp, fontWeight = FontWeight.ExtraBold)
                     }
@@ -413,7 +394,7 @@ private fun FeaturedCard(
     val context = LocalContext.current
     val item = group.firstOrNull()
     val distant = DoseGroups.isDistant(group, nowMillis)
-    Card(shape = RoundedCornerShape(27.dp), colors = CardDefaults.cardColors(containerColor = Violet)) {
+    Card(shape = RoundedCornerShape(27.dp), colors = CardDefaults.cardColors(containerColor = BrandViolet)) {
         Column(Modifier.fillMaxWidth().padding(23.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Rounded.Alarm, null, tint = Color(0xFFE5E0FF), modifier = Modifier.size(17.dp))
@@ -452,7 +433,7 @@ private fun FeaturedCard(
                     Button(
                         onClick = { if (group.size > 1) onRecordGroup(group, "taken") else onRecord(item, "taken") },
                         modifier = if (group.size > 1) Modifier.fillMaxWidth() else Modifier,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Violet),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = BrandViolet),
                         shape = RoundedCornerShape(12.dp),
                     ) {
                         Icon(Icons.Rounded.CheckCircle, null, modifier = Modifier.size(18.dp))
@@ -483,7 +464,7 @@ private fun FeaturedCard(
                 )
                 if (!hasMedications) {
                     Spacer(Modifier.height(14.dp))
-                    Button(onClick = onAdd, colors = ButtonDefaults.buttonColors(Color.White, contentColor = Violet)) {
+                    Button(onClick = onAdd, colors = ButtonDefaults.buttonColors(Color.White, contentColor = BrandViolet)) {
                         Icon(Icons.Rounded.Add, null)
                         Spacer(Modifier.width(5.dp))
                         Text(context.getString(R.string.add_medication))
@@ -506,7 +487,7 @@ private fun DoseCard(
     Card(
         onClick = { onOpen(item) },
         shape = RoundedCornerShape(19.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Panel),
         border = BorderStroke(1.dp, PanelBorder),
     ) {
         Row(Modifier.fillMaxWidth().padding(13.dp), verticalAlignment = Alignment.Top) {
@@ -541,9 +522,9 @@ private fun DoseCard(
 
 @Composable
 private fun CompactAction(label: String, icon: ImageVector?, secondary: Boolean = false, onClick: () -> Unit) {
-    val color = if (secondary) Color(0xFF83899D) else Violet
+    val color = if (secondary) TextMuted else Violet
     Surface(
-        onClick = onClick, color = if (secondary) Color(0xFFF6F7FB) else Color(0xFFF3F0FF),
+        onClick = onClick, color = if (secondary) SoftPanel else AccentPanel,
         shape = RoundedCornerShape(9.dp),
     ) {
         Row(Modifier.padding(horizontal = 9.dp, vertical = 7.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -560,12 +541,12 @@ private fun CompactAction(label: String, icon: ImageVector?, secondary: Boolean 
 internal fun StatusBadge(status: String) {
     val context = LocalContext.current
     val (label, color, background) = when (status) {
-        "taken" -> Triple(context.getString(R.string.taken), Mint, Color(0xFFE3F8EF))
-        "skipped" -> Triple(context.getString(R.string.skipped), TextMuted, Color(0xFFF1F2F7))
-        "due" -> Triple(context.getString(R.string.due_now), Peach, Color(0xFFFFF0E5))
-        "overdue" -> Triple(context.getString(R.string.overdue), Peach, Color(0xFFFFF0E5))
-        "snoozed" -> Triple(context.getString(R.string.snoozed), Color(0xFF648BB4), Color(0xFFEAF2FC))
-        else -> Triple(context.getString(R.string.upcoming), Violet, Color(0xFFF0EFFF))
+        "taken" -> Triple(context.getString(R.string.taken), Mint, themeColor(0xFFE3F8EF, 0xFF1B3C33))
+        "skipped" -> Triple(context.getString(R.string.skipped), TextMuted, SoftPanel)
+        "due" -> Triple(context.getString(R.string.due_now), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
+        "overdue" -> Triple(context.getString(R.string.overdue), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
+        "snoozed" -> Triple(context.getString(R.string.snoozed), themeColor(0xFF456F9B, 0xFFA3C9F3), themeColor(0xFFEAF2FC, 0xFF26384B))
+        else -> Triple(context.getString(R.string.upcoming), Violet, AccentPanel)
     }
     Box(Modifier.clip(RoundedCornerShape(8.dp)).background(background).padding(horizontal = 7.dp, vertical = 5.dp)) {
         Text(label, color = color, fontSize = 11.sp, fontWeight = FontWeight.Bold)
@@ -599,7 +580,7 @@ private fun MedicationsPage(
             items(medications, key = { it.id }) { med ->
                 Card(
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = Panel),
                     border = BorderStroke(1.dp, PanelBorder),
                     modifier = Modifier.alpha(if (med.active) 1f else 0.6f),
                 ) {
@@ -688,13 +669,13 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: Lazy
                 Card(
                     onClick = { onOpen(log) },
                     shape = RoundedCornerShape(15.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = Panel),
                     border = BorderStroke(1.dp, PanelBorder),
                 ) {
                     Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             Modifier.size(38.dp).clip(RoundedCornerShape(11.dp))
-                                .background(if (log.status == "taken") Color(0xFFE3F8EF) else Color(0xFFF1F2F7)),
+                                .background(if (log.status == "taken") themeColor(0xFFE3F8EF, 0xFF1B3C33) else SoftPanel),
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
@@ -728,7 +709,7 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: Lazy
 
 @Composable
 private fun Eyebrow(text: String) {
-    Text(text, color = Color(0xFF847AAD), fontWeight = FontWeight.ExtraBold, fontSize = 11.sp, letterSpacing = 1.1.sp)
+    Text(text, color = themeColor(0xFF796599, 0xFFB9A8DB), fontWeight = FontWeight.ExtraBold, fontSize = 11.sp, letterSpacing = 1.1.sp)
 }
 
 @Composable
@@ -748,12 +729,12 @@ internal fun palette(color: String): Pair<Color, Color> {
 
 @Composable
 private fun InfoBanner(message: String, action: String, onAction: () -> Unit) {
-    Surface(shape = RoundedCornerShape(16.dp), color = Color(0xFFF0EFFF)) {
+    Surface(shape = RoundedCornerShape(16.dp), color = AccentPanel) {
         Column(Modifier.padding(14.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Rounded.Info, null, tint = Violet, modifier = Modifier.size(19.dp))
                 Spacer(Modifier.width(10.dp))
-                Text(message, color = Color(0xFF6D6698), fontSize = 12.sp, modifier = Modifier.weight(1f))
+                Text(message, color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 12.sp, modifier = Modifier.weight(1f))
             }
             TextButton(onClick = onAction, modifier = Modifier.align(Alignment.End)) {
                 Text(action, fontWeight = FontWeight.Bold, fontSize = 12.sp)
@@ -767,7 +748,7 @@ private fun EmptyCard(title: String, explanation: String, onAdd: (() -> Unit)?) 
     val context = LocalContext.current
     Card(
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Panel),
         border = BorderStroke(1.dp, PanelBorder),
     ) {
         Column(

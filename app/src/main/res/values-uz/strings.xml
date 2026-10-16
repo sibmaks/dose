@@ -243,4 +243,8 @@
     <string name="suppository">"Shamcha"</string>
     <string name="custom_form_hint">"Ixtiyoriy. Boshqa uchun bo‘sh qoldiring."</string>
     <string name="all_medication_taken">"Hammasi qabul qilindi. Barakalla!"</string>
+    <string name="change_theme">"Mavzu: %1$s. Mavzuni oʻzgartirish"</string>
+    <string name="theme_system">"Tizim (avtomatik)"</string>
+    <string name="theme_light">"Yorugʻ"</string>
+    <string name="theme_dark">"Qorongʻi"</string>
 </resources>

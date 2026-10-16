@@ -21,7 +21,7 @@ internal fun DelayReportCard(logs: List<DoseLog>, today: LocalDate) {
     val context = LocalContext.current
     var days by remember { mutableStateOf<Int?>(7) }
     val report = remember(logs, days, today) { DoseReports.summarize(logs, days?.let { today.minusDays(it - 1L) }, today) }
-    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = androidx.compose.ui.graphics.Color.White), border = BorderStroke(1.dp, PanelBorder)) {
+    Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Panel), border = BorderStroke(1.dp, PanelBorder)) {
         Column(Modifier.fillMaxWidth().padding(17.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(context.getString(R.string.time_to_take), fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {

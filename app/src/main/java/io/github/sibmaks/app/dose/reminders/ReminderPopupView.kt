@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.reminders
 
+import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.localization.*
 import io.github.sibmaks.app.dose.R
 import android.content.Context
@@ -20,15 +21,18 @@ import io.github.sibmaks.app.dose.data.MedicationIconColors
 
 /** Explicit shapes and colors keep the pop-up consistent across device button themes. */
 internal object ReminderPopupView {
-    private val ink = Color.rgb(37, 43, 67)
-    private val muted = Color.rgb(111, 116, 139)
-    private val violet = Color.rgb(113, 99, 229)
-    private val lavender = Color.rgb(242, 239, 255)
-    private val border = Color.rgb(231, 228, 245)
-
     data class Entry(val medication: Medication, val time: String, val allowOnTime: Boolean = false, val onAction: (String) -> Unit)
 
     fun create(context: Context, entries: List<Entry>, keepNotification: Boolean, onLater: () -> Unit, onAll: (String) -> Unit): ScrollView {
+        val dark = AppAppearance.isDark(context)
+        val ink = if (dark) 0xFFE6E5F0.toInt() else Color.rgb(37, 43, 67)
+        val muted = if (dark) 0xFFB7B6C9.toInt() else 0xFF62677D.toInt()
+        val accent = if (dark) 0xFFC4B9FF.toInt() else 0xFF6958D6.toInt()
+        val violet = Color.rgb(113, 99, 229)
+        val lavender = if (dark) 0xFF342D52.toInt() else Color.rgb(242, 239, 255)
+        val border = if (dark) 0xFF393A49.toInt() else Color.rgb(231, 228, 245)
+        val surface = if (dark) 0xFF1C1D28.toInt() else Color.WHITE
+        val cardSurface = if (dark) 0xFF232430.toInt() else Color.rgb(250, 249, 254)
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
         fun shape(color: Int, radius: Int, stroke: Int? = null) = GradientDrawable().apply {
             setColor(color)
@@ -57,8 +61,8 @@ internal object ReminderPopupView {
             backgroundTintList = null
             stateListAnimator = null
             elevation = 0f
-            val fill = when { primary -> violet; quiet -> Color.WHITE; else -> lavender }
-            setTextColor(if (primary) Color.WHITE else if (quiet) muted else violet)
+            val fill = when { primary -> violet; quiet -> surface; else -> lavender }
+            setTextColor(if (primary) Color.WHITE else if (quiet) muted else accent)
             background = RippleDrawable(ColorStateList.valueOf(if (primary) 0x33FFFFFF else 0x1F7163E5),
                 shape(fill, 28, if (quiet) border else null), shape(Color.WHITE, 28))
             setOnClickListener { onClick() }
@@ -82,7 +86,7 @@ internal object ReminderPopupView {
             val card = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(dp(14), dp(14), dp(14), dp(14))
-                background = shape(Color.rgb(250, 249, 254), 20, border)
+                background = shape(cardSurface, 20, border)
             }
             val heading = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
             heading.addView(ImageView(context).apply {
@@ -101,7 +105,7 @@ internal object ReminderPopupView {
             heading.addView(description, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
                 marginStart = dp(10); marginEnd = dp(8)
             })
-            heading.addView(text(entry.time, 12f, true, violet).apply {
+            heading.addView(text(entry.time, 12f, true, accent).apply {
                 background = shape(lavender, 20)
                 setPadding(dp(10), dp(6), dp(10), dp(6))
                 contentDescription = context.getString(R.string.scheduled_time, entry.time)
@@ -128,7 +132,7 @@ internal object ReminderPopupView {
         content.addView(pill(if (keepNotification) context.getString(R.string.later_keep_notification) else context.getString(R.string.later), quiet = true, onClick = onLater),
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(16) })
         return ScrollView(context).apply {
-            background = shape(Color.WHITE, 24)
+            background = shape(surface, 24)
             clipToOutline = true
             isFillViewport = true
             addView(content)

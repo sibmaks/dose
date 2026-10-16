@@ -243,4 +243,8 @@
     <string name="suppository">"Шамъча"</string>
     <string name="custom_form_hint">"Ихтиёрӣ. Барои «Дигар» холӣ гузоред."</string>
     <string name="all_medication_taken">"Ҳама қабул шуд. Офарин!"</string>
+    <string name="change_theme">"Мавзӯъ: %1$s. Иваз кардани мавзӯъ"</string>
+    <string name="theme_system">"Системавӣ (худкор)"</string>
+    <string name="theme_light">"Равшан"</string>
+    <string name="theme_dark">"Торик"</string>
 </resources>

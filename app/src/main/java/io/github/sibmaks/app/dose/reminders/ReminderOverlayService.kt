@@ -1,6 +1,7 @@
 package io.github.sibmaks.app.dose.reminders
 
 import io.github.sibmaks.app.dose.localization.AppLanguages
+import io.github.sibmaks.app.dose.appearance.AppAppearance
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -30,6 +31,7 @@ class ReminderOverlayService : Service() {
     private var window: View? = null
     private var renderedKeys: List<String> = emptyList()
     private var renderedLanguage: String? = null
+    private var renderedDark: Boolean? = null
     private val manager get() = getSystemService(WINDOW_SERVICE) as WindowManager
     private val expire = Runnable { finishAlert() }
     private val reconcile = object : Runnable {
@@ -51,7 +53,7 @@ class ReminderOverlayService : Service() {
             val language = languageKey()
             val languageChanged = renderedLanguage != null && renderedLanguage != language
             if (languageChanged && !enterForeground()) return
-            if (window == null || renderedKeys != slots.keys.toList() || languageChanged) render()
+            if (window == null || renderedKeys != slots.keys.toList() || languageChanged || renderedDark != AppAppearance.isDark(this@ReminderOverlayService)) render()
             handler.postDelayed(this, 1_000)
         }
     }
@@ -96,7 +98,7 @@ class ReminderOverlayService : Service() {
 
     private fun render() {
         val context = AppLanguages.wrap(this)
-        val themed = ContextThemeWrapper(context, R.style.Theme_Dose)
+        val themed = ContextThemeWrapper(context, AppAppearance.activityTheme(context))
         val medications = DoseStore.medications(this).associateBy { it.id }
         val entries = slots.values.mapNotNull { slot ->
             medications[slot.medicationId]?.let { medication ->
@@ -132,6 +134,7 @@ class ReminderOverlayService : Service() {
             window = popup
             renderedKeys = slots.keys.toList()
             renderedLanguage = languageKey()
+            renderedDark = AppAppearance.isDark(context)
         } catch (_: RuntimeException) {
             // Permission revocation / protected system surfaces must leave the ordinary reminder intact.
             finishAlert()

@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.ui
 
+import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.localization.*
 import io.github.sibmaks.app.dose.R
 import android.app.DatePickerDialog
@@ -160,7 +161,7 @@ internal fun MedicationEditor(
 
     Dialog(onDismissRequest = ::previous, properties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
         Surface(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).fillMaxHeight(0.94f).imePadding(),
-            shape = RoundedCornerShape(26.dp), color = Color.White) {
+            shape = RoundedCornerShape(26.dp), color = Panel) {
             Column {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 10.dp, top = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(if (original == null) context.getString(R.string.add_medication) else context.getString(R.string.edit_medication), fontSize = 21.sp,
@@ -211,7 +212,7 @@ internal fun MedicationEditor(
                                     Surface(onClick = {
                                         name = suggestion.name; chooseForm(suggestion.form); customForm = if (suggestion.customForm.isBlank()) "" else suggestion.localizedForm(context)
                                         suggestedForm = suggestion.localizedForm(context); showSuggestions = false; keyboard?.hide()
-                                    }, shape = RoundedCornerShape(13.dp), color = Color(0xFFF5F2FF), modifier = Modifier.fillMaxWidth()) {
+                                    }, shape = RoundedCornerShape(13.dp), color = AccentPanel, modifier = Modifier.fillMaxWidth()) {
                                         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                                             Icon(painterResource(suggestion.form.iconResource()), null, tint = Violet, modifier = Modifier.size(25.dp))
                                             Column(Modifier.weight(1f)) {
@@ -243,7 +244,7 @@ internal fun MedicationEditor(
                             if (suggestedForm != null) Text(context.getString(R.string.change_suggested_form, suggestedForm.orEmpty()), color = TextMuted, fontSize = 13.sp)
                             localizedForms.forEach { choice ->
                                 Surface(onClick = { chooseForm(choice) }, shape = RoundedCornerShape(14.dp),
-                                    color = if (form == choice) Color(0xFFF0ECFF) else Color(0xFFF8F9FD), modifier = Modifier.fillMaxWidth()) {
+                                    color = if (form == choice) AccentPanel else SoftPanel, modifier = Modifier.fillMaxWidth()) {
                                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                         PillAvatar(color, choice, choice.localizedLabel(context))
                                         Text(choice.localizedLabel(context), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
@@ -282,7 +283,7 @@ internal fun MedicationEditor(
                         }
                         MedicationStep.DETAILS -> {
                             Text(context.getString(R.string.review_finish), fontSize = 19.sp, fontWeight = FontWeight.Bold)
-                            Surface(color = Color(0xFFF5F2FF), shape = RoundedCornerShape(16.dp)) {
+                            Surface(color = AccentPanel, shape = RoundedCornerShape(16.dp)) {
                                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                                     Text(name, fontWeight = FontWeight.Bold)
                                     Text((if (form == MedicationForm.OTHER) customForm.ifBlank { context.getString(R.string.other) } else form.localizedLabel(context)) + " · $amount ${localizedUnit(context, quantity)}", fontSize = 14.sp)
@@ -306,8 +307,8 @@ internal fun MedicationEditor(
                     if (original != null && step == MedicationStep.NAME) OutlinedButton(
                         onClick = { showDeleteConfirm = true },
                         modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).heightIn(min = 51.dp),
-                        shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFC45151)),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC45151)),
+                        shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
                     ) { Text(context.getString(R.string.delete_medication), fontWeight = FontWeight.Bold) }
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                         if (step != MedicationStep.NAME) OutlinedButton(onClick = ::previous, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) { Text(context.getString(R.string.back), fontWeight = FontWeight.Bold) }
@@ -322,7 +323,7 @@ internal fun MedicationEditor(
     colorPickerInitial?.let { initial -> ColorPicker(initial, onDismiss = { colorPickerInitial = null }, onChoose = { color = it; colorPickerInitial = null }) }
     if (showDeleteConfirm && original != null) AlertDialog(onDismissRequest = { showDeleteConfirm = false }, title = { Text(context.getString(R.string.delete_named, original.name)) },
         text = { Text(context.getString(R.string.delete_medication_hint)) },
-        confirmButton = { TextButton(onClick = { onDelete(original) }) { Text(context.getString(R.string.delete), color = Color(0xFFC45151)) } },
+        confirmButton = { TextButton(onClick = { onDelete(original) }) { Text(context.getString(R.string.delete), color = MaterialTheme.colorScheme.error) } },
         dismissButton = { TextButton(onClick = { showDeleteConfirm = false }) { Text(context.getString(R.string.cancel)) } })
 }
 
@@ -334,17 +335,17 @@ private fun ScheduleEditor(rule: DoseSchedule, number: Int, showValidation: Bool
     val errorColor = MaterialTheme.colorScheme.error
     fun pickDate(initial: String?, onPicked: (String) -> Unit) {
         val date = initial?.let(LocalDate::parse) ?: LocalDate.now()
-        DatePickerDialog(context, { _, year, month, day -> onPicked(LocalDate.of(year, month + 1, day).toString()) },
+        DatePickerDialog(context, AppAppearance.dialogTheme(context), { _, year, month, day -> onPicked(LocalDate.of(year, month + 1, day).toString()) },
             date.year, date.monthValue - 1, date.dayOfMonth).show()
     }
     fun pickTime(index: Int?, initial: String = "12:00") {
         val time = LocalTime.parse(initial)
-        TimePickerDialog(context, { _, hour, minute ->
+        TimePickerDialog(context, AppAppearance.dialogTheme(context), { _, hour, minute ->
             val formatted = "%02d:%02d".format(Locale.US, hour, minute)
             onChange(rule.copy(times = if (index == null) rule.times + formatted else rule.times.toMutableList().apply { set(index, formatted) }))
         }, time.hour, time.minute, true).show()
     }
-    Surface(shape = RoundedCornerShape(16.dp), color = Color(0xFFFAFAFE), border = androidx.compose.foundation.BorderStroke(1.dp, PanelBorder)) {
+    Surface(shape = RoundedCornerShape(16.dp), color = SoftPanel, border = androidx.compose.foundation.BorderStroke(1.dp, PanelBorder)) {
         Column(Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(context.getString(R.string.schedule_number, number), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
@@ -388,9 +389,9 @@ private fun ScheduleEditor(rule: DoseSchedule, number: Int, showValidation: Bool
                                 val selected = day in rule.monthDays
                                 Surface(onClick = { onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day)) },
                                     modifier = Modifier.weight(1f).height(40.dp).semantics { contentDescription = context.getString(R.string.day_description, day, if (selected) context.getString(R.string.selected_suffix) else "") },
-                                    shape = RoundedCornerShape(8.dp), color = if (selected) Violet else Color.White,
+                                    shape = RoundedCornerShape(8.dp), color = if (selected) Violet else Panel,
                                     border = androidx.compose.foundation.BorderStroke(1.dp, if (issue?.field == ScheduleField.MONTH_DAYS) errorColor else PanelBorder)) {
-                                    Box(contentAlignment = Alignment.Center) { Text("$day", fontSize = 12.sp, color = if (selected) Color.White else TextPrimary) }
+                                    Box(contentAlignment = Alignment.Center) { Text("$day", fontSize = 12.sp, color = if (selected) OnAccent else TextPrimary) }
                                 }
                             }
                             repeat(7 - row.size) { Spacer(Modifier.weight(1f)) }

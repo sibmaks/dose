@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.ui
 
+import io.github.sibmaks.app.dose.appearance.AppAppearance
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.compose.foundation.layout.*
@@ -47,14 +48,14 @@ internal fun NotificationPauseSection(onRefresh: () -> Unit) {
     Text(context.getString(R.string.until), style = MaterialTheme.typography.labelLarge)
     OutlinedButton(onClick = {
         val selected = LocalDate.parse(date)
-        DatePickerDialog(context, { _, year, month, day -> date = LocalDate.of(year, month + 1, day).toString(); error = false },
+        DatePickerDialog(context, AppAppearance.dialogTheme(context), { _, year, month, day -> date = LocalDate.of(year, month + 1, day).toString(); error = false },
             selected.year, selected.monthValue - 1, selected.dayOfMonth).apply {
             datePicker.minDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
         }.show()
     }, modifier = Modifier.fillMaxWidth()) { Text(LocalDate.parse(date).format(dateFormat)) }
     OutlinedButton(onClick = {
         val selected = LocalTime.parse(time)
-        TimePickerDialog(context, { _, hour, minute -> time = LocalTime.of(hour, minute).format(DateTimeFormatter.ofPattern("HH:mm")); error = false },
+        TimePickerDialog(context, AppAppearance.dialogTheme(context), { _, hour, minute -> time = LocalTime.of(hour, minute).format(DateTimeFormatter.ofPattern("HH:mm")); error = false },
             selected.hour, selected.minute, true).show()
     }, modifier = Modifier.fillMaxWidth()) { Text(time) }
     if (error) Text(context.getString(R.string.pause_time_error), color = MaterialTheme.colorScheme.error)

@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.ui.text.font.FontWeight
@@ -43,7 +42,7 @@ internal fun LanguagePicker(firstStart: Boolean, onDismiss: () -> Unit) {
         val options = listOf("" to stringResource(R.string.system_language)) + AppLanguages.supported.map { it.tag to it.nativeName }
         options.forEach { (tag, name) ->
             Surface(onClick = { selected = tag }, shape = RoundedCornerShape(14.dp),
-                color = if (selected == tag) Color(0xFFF0ECFF) else Color(0xFFF8F9FD), modifier = Modifier.fillMaxWidth()) {
+                color = if (selected == tag) AccentPanel else SoftPanel, modifier = Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     val flag = languageFlag(tag)
                     if (flag == null) Icon(Icons.Rounded.Language, null, tint = Violet, modifier = Modifier.size(36.dp))

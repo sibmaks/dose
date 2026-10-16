@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,8 +27,8 @@ internal fun SetupScreen(title: String, onClose: () -> Unit, primaryLabel: Strin
     BackHandler(onBack = onBack)
     val scroll = rememberScrollState()
     LaunchedEffect(pageKey) { scroll.scrollTo(0) }
-    Surface(color = Color(0xFFFAFBFE), modifier = Modifier.fillMaxSize()) {
-        Surface(color = Color.White, shape = RoundedCornerShape(26.dp),
+    Surface(color = Page, modifier = Modifier.fillMaxSize()) {
+        Surface(color = Panel, shape = RoundedCornerShape(26.dp),
             modifier = Modifier.fillMaxSize().safeDrawingPadding().padding(12.dp)) {
             Column {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 10.dp, top = 10.dp), verticalAlignment = Alignment.CenterVertically) {

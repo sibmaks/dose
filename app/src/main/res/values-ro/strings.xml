@@ -243,4 +243,8 @@
     <string name="suppository">"Supozitor"</string>
     <string name="custom_form_hint">"Opțional. Lasă gol pentru a folosi Altele."</string>
     <string name="all_medication_taken">"Toate luate. Bravo!"</string>
+    <string name="change_theme">"Temă: %1$s. Schimbă tema"</string>
+    <string name="theme_system">"Sistem (automat)"</string>
+    <string name="theme_light">"Deschisă"</string>
+    <string name="theme_dark">"Întunecată"</string>
 </resources>

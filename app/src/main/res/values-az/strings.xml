@@ -243,4 +243,8 @@
     <string name="suppository">"Şam"</string>
     <string name="custom_form_hint">"İstəyə bağlıdır. Digər üçün boş saxlayın."</string>
     <string name="all_medication_taken">"Hamısı qəbul edildi. Afərin!"</string>
+    <string name="change_theme">"Mövzu: %1$s. Mövzunu dəyiş"</string>
+    <string name="theme_system">"Sistem (avtomatik)"</string>
+    <string name="theme_light">"Açıq"</string>
+    <string name="theme_dark">"Tünd"</string>
 </resources>

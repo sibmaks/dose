@@ -243,4 +243,8 @@
     <string name="suppository">"Шамча"</string>
     <string name="custom_form_hint">"Милдеттүү эмес. «Башка» үчүн бош калтырыңыз."</string>
     <string name="all_medication_taken">"Баары кабыл алынды. Азамат!"</string>
+    <string name="change_theme">"Тема: %1$s. Теманы өзгөртүү"</string>
+    <string name="theme_system">"Системалык (авто)"</string>
+    <string name="theme_light">"Жарык"</string>
+    <string name="theme_dark">"Караңгы"</string>
 </resources>

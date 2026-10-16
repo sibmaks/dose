@@ -243,4 +243,8 @@
     <string name="suppository">"Şem"</string>
     <string name="custom_form_hint">"Hökmany däl. Başga görnüşini ulanmak üçin boş goýuň."</string>
     <string name="all_medication_taken">"Ählisi kabul edildi. Berekella!"</string>
+    <string name="change_theme">"Tema: %1$s. Temany üýtget"</string>
+    <string name="theme_system">"Ulgam (awtomatik)"</string>
+    <string name="theme_light">"Açyk"</string>
+    <string name="theme_dark">"Garaňky"</string>
 </resources>

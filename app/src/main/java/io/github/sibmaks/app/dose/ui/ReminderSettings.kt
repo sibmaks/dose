@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -136,7 +135,7 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
 @Composable
 private fun ReminderChoice(title: String, explanation: String, checked: Boolean, enabled: Boolean,
                            accessHint: String?, onChange: (Boolean) -> Unit) {
-    Surface(shape = RoundedCornerShape(14.dp), color = if (checked) Color(0xFFF0ECFF) else Color(0xFFF8F9FD)) {
+    Surface(shape = RoundedCornerShape(14.dp), color = if (checked) AccentPanel else SoftPanel) {
         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(title, fontWeight = FontWeight.Bold, fontSize = 15.sp)

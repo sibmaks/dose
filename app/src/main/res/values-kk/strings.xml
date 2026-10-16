@@ -243,4 +243,8 @@
     <string name="suppository">"Суппозиторий"</string>
     <string name="custom_form_hint">"Міндетті емес. «Басқа» үшін бос қалдырыңыз."</string>
     <string name="all_medication_taken">"Бәрі қабылданды. Жарайсыз!"</string>
+    <string name="change_theme">"Тақырып: %1$s. Тақырыпты өзгерту"</string>
+    <string name="theme_system">"Жүйелік (автоматты)"</string>
+    <string name="theme_light">"Ашық"</string>
+    <string name="theme_dark">"Қараңғы"</string>
 </resources>
