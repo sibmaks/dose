@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.github.sibmaks.app.dose.MainActivity
 import io.github.sibmaks.app.dose.R
+import io.github.sibmaks.app.dose.data.DoseGroups
 import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseStore
 import io.github.sibmaks.app.dose.data.Medication
@@ -20,6 +21,10 @@ import java.time.LocalDate
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         try {
+            if (intent.action == GroupDoseActions.TAKEN || intent.action == GroupDoseActions.SKIP) {
+                GroupDoseActions.receive(context, intent)
+                return
+            }
             val slot = ReminderSlot.from(intent) ?: return
             val id = slot.medicationId
             val time = slot.time
@@ -58,14 +63,14 @@ class ReminderReceiver : BroadcastReceiver() {
                     if (DoseStore.logs(context).any {
                             it.date == date && it.medicationId == id && it.time == time
                         }) return
-                    if (intent.action == ACTION_SNOOZE_FIRED) {
-                        DoseStore.clearSnooze(context, "${date}|${id}|${time}")
-                    }
+                    // Retain the elapsed snooze instant for grouping and snapshot validation.
+                    // Recording, rescheduling or a new snooze clears/replaces it.
                     if (NotificationPause.isPaused(context)) return
                     notify(context, med, id, time, date, notificationId, slot.scheduledAt)
                     ReminderAlerts.show(context, slot)
                 }
             }
+            if (intent.action != ACTION_REMIND && intent.action != ACTION_SNOOZE_FIRED) refreshVisible(context)
         } finally { io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(context) }
     }
 
@@ -100,11 +105,19 @@ class ReminderReceiver : BroadcastReceiver() {
             .setContentIntent(open)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
-        if (DoseLogic.canRecordOnTime(DoseStore.wasDeferred(context, "$date|$id|$time"), scheduledAt, System.currentTimeMillis())) {
-            // Android's action row is limited to three buttons. The expanded custom view keeps all four.
+        val items = DoseLogic.todayItems(DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context),
+            overrides = DoseStore.timeOverrides(context))
+        val group = DoseGroups.together(items, items.find { it.medication.id == id && it.time == time && it.date == date })
+        if (group.size > 1) {
+            builder.setContentTitle(context.getString(R.string.several_medicines, group.size))
+                .setContentText(group.joinToString(", ") { it.medication.name })
+        }
+        val onTime = DoseLogic.canRecordOnTime(DoseStore.wasDeferred(context, "$date|$id|$time"), scheduledAt, System.currentTimeMillis())
+        if (group.size > 1 || onTime) {
+            // Custom rows retain the individual actions alongside the two group actions.
             builder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomBigContentView(DeferredNotificationViews.expanded(context, medication, date, time, scheduledAt))
-                .setCustomHeadsUpContentView(DeferredNotificationViews.headsUp(context, medication, date, time, scheduledAt))
+                .setCustomBigContentView(DeferredNotificationViews.expanded(context, medication, date, time, scheduledAt, group, onTime))
+                .setCustomHeadsUpContentView(DeferredNotificationViews.headsUp(context, medication, date, time, scheduledAt, group, onTime))
         } else {
             builder.addAction(R.drawable.ic_notification, context.getString(R.string.taken), ReminderScheduler.actionIntent(context, ACTION_TAKEN, id, time, date, scheduledAt))
                 .addAction(R.drawable.ic_notification, context.getString(R.string.snooze_10_min), ReminderScheduler.actionIntent(context, ACTION_SNOOZE, id, time, date, scheduledAt))
@@ -131,6 +144,23 @@ class ReminderReceiver : BroadcastReceiver() {
         const val EXTRA_DATE = "date"
         const val EXTRA_SCHEDULED_AT = "scheduledAt"
         const val CHANNEL_ID = "dose_reminders_v1"
+
+        /** Refresh only already visible reminders, without resurrecting dismissed ones. */
+        fun refreshVisible(context: Context) {
+            val manager = context.getSystemService(android.app.NotificationManager::class.java)
+            manager.activeNotifications.forEach { posted ->
+                val extras = posted.notification.extras
+                val id = extras.getString(EXTRA_MEDICATION_ID) ?: return@forEach
+                val date = extras.getString(EXTRA_DATE) ?: return@forEach
+                val time = extras.getString(EXTRA_TIME) ?: return@forEach
+                val slot = ReminderSlot(id, date, time, extras.getLong(EXTRA_SCHEDULED_AT))
+                val item = DoseLogic.todayItems(DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context),
+                    overrides = DoseStore.timeOverrides(context)).find { it.id == slot.key }
+                if (item == null || item.log != null || item.scheduledAt != slot.scheduledAt ||
+                    (item.snoozedUntil ?: 0L) > System.currentTimeMillis()) manager.cancel(posted.id)
+                else refreshNotification(context, slot)
+            }
+        }
 
         fun refreshNotification(context: Context, slot: ReminderSlot) {
             val med = DoseStore.medications(context).find { it.id == slot.medicationId && it.active && slot.time in it.timesOn(LocalDate.parse(slot.date)) } ?: return

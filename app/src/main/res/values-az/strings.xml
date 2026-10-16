@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Rəng seçmək üçün barmağınızı dairədə sürüşdürün. Mərkəz ağ, kənar isə tam doymuşdur."</string>
     <string name="brightness">"Parlaqlıq"</string>
     <string name="color_hex_error">"Rəngi #RRGGBB formatında daxil edin."</string>
+    <string name="taken_all">"Hamısını qəbul et"</string>
+    <string name="skip_all">"Hamısını ötür"</string>
+    <string name="several_medicines">"Qəbul ediləcək dərmanlar: %1$d"</string>
 </resources>

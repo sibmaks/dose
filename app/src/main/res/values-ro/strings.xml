@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Glisați degetul pe cerc pentru a alege o culoare. Centrul este alb, marginea are saturație maximă."</string>
     <string name="brightness">"Luminozitate"</string>
     <string name="color_hex_error">"Introduceți culoarea în formatul #RRGGBB."</string>
+    <string name="taken_all">"Luate toate"</string>
+    <string name="skip_all">"Omite toate"</string>
+    <string name="several_medicines">"Medicamente de luat: %1$d"</string>
 </resources>

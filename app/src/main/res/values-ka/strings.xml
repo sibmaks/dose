@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"ფერის ასარჩევად გაასრიალეთ თითი წრეზე. ცენტრი თეთრია, კიდე სრულად გაჯერებულია."</string>
     <string name="brightness">"სიკაშკაშე"</string>
     <string name="color_hex_error">"შეიყვანეთ ფერი #RRGGBB ფორმატით."</string>
+    <string name="taken_all">"ყველას მიღება"</string>
+    <string name="skip_all">"ყველას გამოტოვება"</string>
+    <string name="several_medicines">"მისაღები წამლები: %1$d"</string>
 </resources>

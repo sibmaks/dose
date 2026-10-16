@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Rang tanlash uchun barmogʻingizni doira boʻylab suring. Markaz oq, cheti esa toʻliq toʻyingan."</string>
     <string name="brightness">"Yorqinlik"</string>
     <string name="color_hex_error">"Rangni #RRGGBB formatida kiriting."</string>
+    <string name="taken_all">"Hammasini qabul qilish"</string>
+    <string name="skip_all">"Hammasini o‘tkazib yuborish"</string>
+    <string name="several_medicines">"Qabul qilinadigan dorilar: %1$d"</string>
 </resources>

@@ -28,7 +28,7 @@ internal object ReminderPopupView {
 
     data class Entry(val medication: Medication, val time: String, val allowOnTime: Boolean = false, val onAction: (String) -> Unit)
 
-    fun create(context: Context, entries: List<Entry>, keepNotification: Boolean, onLater: () -> Unit): ScrollView {
+    fun create(context: Context, entries: List<Entry>, keepNotification: Boolean, onLater: () -> Unit, onAll: (String) -> Unit): ScrollView {
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
         fun shape(color: Int, radius: Int, stroke: Int? = null) = GradientDrawable().apply {
             setColor(color)
@@ -68,6 +68,14 @@ internal object ReminderPopupView {
             setPadding(dp(18), dp(20), dp(18), dp(16))
         }
         content.addView(text(context.getString(R.string.time_for_your_medication), 20f, true))
+        if (entries.size > 1) {
+            content.addView(text(context.getString(R.string.several_medicines, entries.size), 14f, color = muted),
+                LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
+            content.addView(pill(context.getString(R.string.taken_all), primary = true) { onAll("taken") },
+                LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
+            content.addView(pill(context.getString(R.string.skip_all), quiet = true) { onAll("skipped") },
+                LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
+        }
         entries.forEach { entry ->
             val medication = entry.medication
             val (medicationColor, iconBackground) = MedicationIconColors.palette(medication.color)

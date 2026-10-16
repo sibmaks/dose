@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Գույն ընտրելու համար շարժեք մատը շրջանի վրա։ Կենտրոնը սպիտակ է, եզրը՝ հագեցած։"</string>
     <string name="brightness">"Պայծառություն"</string>
     <string name="color_hex_error">"Մուտքագրեք գույնը #RRGGBB ձևաչափով։"</string>
+    <string name="taken_all">"Ընդունել բոլորը"</string>
+    <string name="skip_all">"Բաց թողնել բոլորը"</string>
+    <string name="several_medicines">"Ընդունման դեղեր՝ %1$d"</string>
 </resources>

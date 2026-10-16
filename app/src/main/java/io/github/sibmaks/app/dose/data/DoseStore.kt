@@ -81,6 +81,26 @@ object DoseStore {
         clearDeferred(context, DoseLogic.slotKey(log.date, log.medicationId, log.time))
     }
 
+    /** One commit records the whole group with one click time and clears its deferred state. */
+    @Synchronized
+    fun recordGroup(context: Context, members: List<DoseGroups.Member>, status: String): List<DoseItem> {
+        require(status == "taken" || status == "skipped")
+        val now = System.currentTimeMillis()
+        val existing = logs(context)
+        val snoozes = snoozes(context)
+        val current = DoseLogic.todayItems(medications(context), existing, snoozes, now,
+            overrides = timeOverrides(context))
+        val selected = DoseGroups.eligible(current, members)
+        if (selected.isEmpty()) return emptyList()
+        val keys = selected.map { it.id }.toSet()
+        val array = JSONArray()
+        (existing + DoseGroups.logs(selected, status, now)).forEach { array.put(DoseLogJson.encode(it)) }
+        prefs(context).edit().putString(LOGS, array.toString())
+            .putString(SNOOZES, JSONObject(snoozes.filterKeys { it !in keys }).toString())
+            .putStringSet(DEFERRED, deferred(context) - keys).commit()
+        return selected
+    }
+
     @Synchronized
     fun undo(context: Context, date: String, medicationId: String, time: String) {
         val array = JSONArray()

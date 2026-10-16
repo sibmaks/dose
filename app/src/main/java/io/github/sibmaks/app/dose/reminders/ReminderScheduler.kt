@@ -65,6 +65,7 @@ object ReminderScheduler {
         prefs.edit().putStringSet(SLOTS, newSlots).commit()
         NotificationPause.restore(app)
         rescheduleSnoozes(app, manager)
+        ReminderReceiver.refreshVisible(app)
         io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(app)
     }
 
@@ -126,7 +127,7 @@ object ReminderScheduler {
                 schedule(manager, until, snoozeIntent(context, id, time, date), context)
             } else {
                 manager.cancel(snoozeIntent(context, id, time, date))
-                DoseStore.clearSnooze(context, key)
+                if (!valid) DoseStore.clearSnooze(context, key)
             }
         }
     }

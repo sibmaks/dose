@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Түстү тандоо үчүн тегерек боюнча манжаңызды жылдырыңыз. Ортосу ак, четтери каныккан түстө."</string>
     <string name="brightness">"Жарыктык"</string>
     <string name="color_hex_error">"Түстү #RRGGBB форматында жазыңыз."</string>
+    <string name="taken_all">"Баарын кабыл алуу"</string>
+    <string name="skip_all">"Баарын өткөрүп жиберүү"</string>
+    <string name="several_medicines">"Кабыл алынуучу дарылар: %1$d"</string>
 </resources>

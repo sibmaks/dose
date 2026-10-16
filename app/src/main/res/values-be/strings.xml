@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Правядзіце пальцам па крузе, каб выбраць колер. У цэнтры — белы, па краі — насычаныя колеры."</string>
     <string name="brightness">"Яркасць"</string>
     <string name="color_hex_error">"Увядзіце колер у фармаце #RRGGBB."</string>
+    <string name="taken_all">"Прыняць усе"</string>
+    <string name="skip_all">"Прапусціць усе"</string>
+    <string name="several_medicines">"Трэба прыняць лекаў: %1$d"</string>
 </resources>

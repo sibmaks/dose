@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Reňk saýlamak üçin tegelekde barmagyňyzy süýşüriň. Merkezi ak, gyrasy doly doýgun reňkdir."</string>
     <string name="brightness">"Ýagtylyk"</string>
     <string name="color_hex_error">"Reňki #RRGGBB görnüşinde giriziň."</string>
+    <string name="taken_all">"Ählisini kabul et"</string>
+    <string name="skip_all">"Ählisini geçir"</string>
+    <string name="several_medicines">"Kabul edilmeli dermanlar: %1$d"</string>
 </resources>

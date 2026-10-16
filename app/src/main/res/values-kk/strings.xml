@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Түсті таңдау үшін шеңбер бойымен саусағыңызды жылжытыңыз. Ортасы ақ, шеті қанық түсті."</string>
     <string name="brightness">"Жарықтық"</string>
     <string name="color_hex_error">"Түсті #RRGGBB пішімінде енгізіңіз."</string>
+    <string name="taken_all">"Барлығын қабылдау"</string>
+    <string name="skip_all">"Барлығын өткізіп жіберу"</string>
+    <string name="several_medicines">"Қабылдайтын дәрілер: %1$d"</string>
 </resources>

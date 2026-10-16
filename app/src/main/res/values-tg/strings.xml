@@ -231,4 +231,7 @@
     <string name="color_wheel_hint">"Барои интихоби ранг ангуштро рӯи доира ҳаракат диҳед. Марказ сафед, канор серранг аст."</string>
     <string name="brightness">"Равшанӣ"</string>
     <string name="color_hex_error">"Рангро дар шакли #RRGGBB ворид кунед."</string>
+    <string name="taken_all">"Ҳамаро қабул кардан"</string>
+    <string name="skip_all">"Ҳамаро гузаронидан"</string>
+    <string name="several_medicines">"Доруҳо барои қабул: %1$d"</string>
 </resources>

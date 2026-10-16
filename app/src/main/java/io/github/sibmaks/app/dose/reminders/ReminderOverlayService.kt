@@ -107,8 +107,16 @@ class ReminderOverlayService : Service() {
                 }
             }
         }
+        val current = DoseLogic.todayItems(DoseStore.medications(this), DoseStore.logs(this), DoseStore.snoozes(this),
+            overrides = DoseStore.timeOverrides(this))
+        val members = DoseGroups.snapshot(current.filter { item -> slots[item.id]?.scheduledAt == item.scheduledAt })
         val popup = ReminderPopupView.create(themed, entries,
-            keepNotification = ReminderAlerts.feedEnabled(this) && ReminderNotifications.allowed(this), onLater = ::deferAlerts)
+            keepNotification = ReminderAlerts.feedEnabled(this) && ReminderNotifications.allowed(this), onLater = ::deferAlerts,
+            onAll = { status ->
+                GroupDoseActions.record(this, members, status)
+                handler.removeCallbacks(reconcile)
+                reconcile.run()
+            })
         val metrics = resources.displayMetrics
         val width = minOf(metrics.widthPixels - dp(32), dp(420)).coerceAtLeast(1)
         popup.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
