@@ -232,7 +232,7 @@ internal fun MedicationEditor(
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                         if (step != MedicationStep.NAME) OutlinedButton(onClick = ::previous, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) { Text(context.getString(R.string.back), fontWeight = FontWeight.Bold) }
                         Button(onClick = ::advance, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) {
-                            Text(if (step == MedicationStep.DETAILS) { if (original == null) context.getString(R.string.add_medication) else context.getString(R.string.save_changes) } else context.getString(R.string.continue_action), fontWeight = FontWeight.Bold)
+                            Text(if (step == MedicationStep.DETAILS) context.getString(R.string.save) else context.getString(R.string.continue_action), fontWeight = FontWeight.Bold)
                         }
                     }
                 }

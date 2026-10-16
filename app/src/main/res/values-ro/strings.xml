@@ -230,4 +230,5 @@
     <string name="report_explanation">"Dozele omise nu se includ; cele luate devreme au întârziere zero. Devreme: %1$d."</string>
     <string name="close_screen">"Închide ecranul"</string>
     <string name="reminder_permission_intro">"Pentru mementouri în notificări și peste alte aplicații, Dose are nevoie de două permisiuni: notificări și afișare peste alte aplicații. Alege modurile dorite. Android poate cere și acces la alarme și mementouri pentru ore exacte."</string>
+    <string name="save">"Salvează"</string>
 </resources>

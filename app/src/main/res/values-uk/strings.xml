@@ -230,4 +230,5 @@
     <string name="report_explanation">"Пропуски виключено; ранній прийом дає нульову затримку. Ранніх: %1$d."</string>
     <string name="close_screen">"Закрити екран"</string>
     <string name="reminder_permission_intro">"Для нагадувань у стрічці й поверх програм Dose потрібні два дозволи: сповіщення й показ поверх інших програм. Виберіть потрібні способи. Для точного часу Android також може запросити доступ до будильників і нагадувань."</string>
+    <string name="save">"Зберегти"</string>
 </resources>

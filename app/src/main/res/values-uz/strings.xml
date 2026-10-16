@@ -230,4 +230,5 @@
     <string name="report_explanation">"Oʻtkazilganlar hisoblanmaydi; erta qabul nol kechikish. Erta: %1$d."</string>
     <string name="close_screen">"Ekranni yopish"</string>
     <string name="reminder_permission_intro">"Roʻyxatda va ilovalar ustida eslatish uchun Dose ikki ruxsatga muhtoj: bildirishnomalar va boshqa ilovalar ustida koʻrsatish. Kerakli usullarni tanlang. Aniq vaqt uchun Android signal va eslatmalarga ruxsat ham soʻrashi mumkin."</string>
+    <string name="save">"Saqlash"</string>
 </resources>

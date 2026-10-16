@@ -230,4 +230,5 @@
     <string name="report_explanation">"Geçirilenler hasaba alynmaýar; ir içilenler nol gijikme. Ir: %1$d."</string>
     <string name="close_screen">"Ekrany ýapmak"</string>
     <string name="reminder_permission_intro">"Sanawda we programmalaryň üstünde ýatlatmak üçin Dose iki rugsat gerek: bildirişler we beýleki programmalaryň üstünde görkezmek. Islän usullaryňyzy saýlaň. Takyk wagt üçin Android duýduryşlara we ýatlatmalara giriş hem sorap biler."</string>
+    <string name="save">"Ýatda sakla"</string>
 </resources>
