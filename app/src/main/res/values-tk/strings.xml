@@ -224,4 +224,9 @@
     <string name="resume_notifications">"Habarnamalary häzir dowam et"</string>
     <string name="reminders_disabled_hint">"Ýatlatmalar öçürildi. Derman tertipleriňiz saklanýar."</string>
     <string name="pause_time_error">"Geljekki senäni we wagty saýlaň."</string>
+    <string name="dose_label">"Doza"</string>
+    <string name="dose_status">"Ýagdaý"</string>
+    <string name="snoozed_until">"Yza süýşürildi"</string>
+    <string name="skipped_at">"Geçirilen wagty"</string>
+    <string name="recorded_dose">"Bellige alnan doza"</string>
 </resources>

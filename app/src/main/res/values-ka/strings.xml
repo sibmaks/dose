@@ -224,4 +224,9 @@
     <string name="resume_notifications">"შეტყობინებების ახლა განახლება"</string>
     <string name="reminders_disabled_hint">"შეხსენებები გამორთულია. წამლების განრიგები შენახულია."</string>
     <string name="pause_time_error">"აირჩიეთ მომავალი თარიღი და დრო."</string>
+    <string name="dose_label">"დოზა"</string>
+    <string name="dose_status">"სტატუსი"</string>
+    <string name="snoozed_until">"გადადებულია"</string>
+    <string name="skipped_at">"გამოტოვების დრო"</string>
+    <string name="recorded_dose">"აღრიცხული დოზა"</string>
 </resources>

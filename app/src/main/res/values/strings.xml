@@ -226,4 +226,9 @@
     <string name="resume_notifications">"Resume notifications now"</string>
     <string name="reminders_disabled_hint">"Reminders are off. Your medication schedules stay saved."</string>
     <string name="pause_time_error">"Choose a future date and time."</string>
+    <string name="dose_label">"Dose"</string>
+    <string name="dose_status">"Status"</string>
+    <string name="snoozed_until">"Snoozed until"</string>
+    <string name="skipped_at">"Skipped at"</string>
+    <string name="recorded_dose">"Recorded dose"</string>
 </resources>

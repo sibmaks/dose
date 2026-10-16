@@ -224,4 +224,9 @@
     <string name="resume_notifications">"Վերսկսել ծանուցումները հիմա"</string>
     <string name="reminders_disabled_hint">"Հիշեցումներն անջատված են։ Դեղերի ժամանակացույցերը պահպանված են։"</string>
     <string name="pause_time_error">"Ընտրեք ապագա ամսաթիվ և ժամ։"</string>
+    <string name="dose_label">"Դեղաչափ"</string>
+    <string name="dose_status">"Կարգավիճակ"</string>
+    <string name="snoozed_until">"Հետաձգված է մինչև"</string>
+    <string name="skipped_at">"Բաց թողնելու ժամը"</string>
+    <string name="recorded_dose">"Գրանցված դեղաչափ"</string>
 </resources>

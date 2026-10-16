@@ -224,4 +224,9 @@
     <string name="resume_notifications">"Возобновить уведомления сейчас"</string>
     <string name="reminders_disabled_hint">"Напоминания выключены. Ваши расписания приёма лекарств сохранены."</string>
     <string name="pause_time_error">"Выберите будущую дату и время."</string>
+    <string name="dose_label">"Доза"</string>
+    <string name="dose_status">"Статус"</string>
+    <string name="snoozed_until">"Отложено до"</string>
+    <string name="skipped_at">"Время пропуска"</string>
+    <string name="recorded_dose">"Записанная доза"</string>
 </resources>

@@ -224,4 +224,9 @@
     <string name="resume_notifications">"Reia notificările acum"</string>
     <string name="reminders_disabled_hint">"Mementourile sunt dezactivate. Programele medicamentelor rămân salvate."</string>
     <string name="pause_time_error">"Alegeți o dată și o oră viitoare."</string>
+    <string name="dose_label">"Doză"</string>
+    <string name="dose_status">"Stare"</string>
+    <string name="snoozed_until">"Amânat până la"</string>
+    <string name="skipped_at">"Ora omiterii"</string>
+    <string name="recorded_dose">"Doza înregistrată"</string>
 </resources>

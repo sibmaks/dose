@@ -224,4 +224,9 @@
     <string name="resume_notifications">"Bildirishnomalarni hozir davom ettirish"</string>
     <string name="reminders_disabled_hint">"Eslatmalar oʻchirilgan. Dori jadvallaringiz saqlanadi."</string>
     <string name="pause_time_error">"Kelajak sana va vaqtni tanlang."</string>
+    <string name="dose_label">"Doza"</string>
+    <string name="dose_status">"Holat"</string>
+    <string name="snoozed_until">"Keyinga qoldirildi"</string>
+    <string name="skipped_at">"Oʻtkazib yuborish vaqti"</string>
+    <string name="recorded_dose">"Qayd etilgan doza"</string>
 </resources>

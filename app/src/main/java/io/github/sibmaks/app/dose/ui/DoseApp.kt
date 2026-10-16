@@ -143,9 +143,37 @@ fun DoseApp(openTodayRequest: Int = 0) {
         return
     }
 
+    if (showEditor) {
+        MedicationEditor(
+            original = editing,
+            onDismiss = { showEditor = false },
+            onSave = { med ->
+                val previous = editing
+                DoseStore.upsert(context, med)
+                DoseStore.recordColorUse(context, med.color)
+                ReminderScheduler.scheduleAll(context)
+                ReminderScheduler.deliverImmediate(context, med, previous)
+                refresh()
+                showEditor = false
+                if (todayDoseId == null) scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) }
+            },
+            onDelete = { med ->
+                DoseStore.delete(context, med.id)
+                todayDoseId = null
+                ReminderScheduler.scheduleAll(context)
+                refresh()
+                showEditor = false
+            },
+        )
+    }
+
     val selectedDose = items.find { it.id == todayDoseId }
+    LaunchedEffect(todayDoseId, selectedDose?.id, showEditor) {
+        if (todayDoseId != null && selectedDose == null && !showEditor) todayDoseId = null
+    }
     if (selectedDose != null) {
-        TodayDoseEditor(selectedDose, onDismiss = { todayDoseId = null }, onSave = { acceptedAt, time ->
+        TodayDoseEditor(selectedDose, onDismiss = { todayDoseId = null },
+            onEdit = { editingId = selectedDose.medication.id; showEditor = true }, onSave = { acceptedAt, time ->
             val success = if (acceptedAt != null) DoseStore.acceptToday(context, selectedDose.id, acceptedAt)
             else DoseStore.moveToday(context, selectedDose.id, time)
             if (success) {
@@ -252,29 +280,6 @@ fun DoseApp(openTodayRequest: Int = 0) {
                 Tab.History -> HistoryPage(modifier = Modifier.fillMaxSize(), logs = logs)
             }
         }
-    }
-
-    if (showEditor) {
-        MedicationEditor(
-            original = editing,
-            onDismiss = { showEditor = false },
-            onSave = { med ->
-                val previous = editing
-                DoseStore.upsert(context, med)
-                DoseStore.recordColorUse(context, med.color)
-                ReminderScheduler.scheduleAll(context)
-                ReminderScheduler.deliverImmediate(context, med, previous)
-                refresh()
-                showEditor = false
-                scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) }
-            },
-            onDelete = { med ->
-                DoseStore.delete(context, med.id)
-                ReminderScheduler.scheduleAll(context)
-                refresh()
-                showEditor = false
-            },
-        )
     }
 }
 
@@ -512,7 +517,7 @@ private fun CompactAction(label: String, icon: ImageVector?, secondary: Boolean 
 }
 
 @Composable
-private fun StatusBadge(status: String) {
+internal fun StatusBadge(status: String) {
     val context = LocalContext.current
     val (label, color, background) = when (status) {
         "taken" -> Triple(context.getString(R.string.taken), Mint, Color(0xFFE3F8EF))
@@ -683,7 +688,7 @@ private fun Eyebrow(text: String) {
 }
 
 @Composable
-private fun PillAvatar(color: String, form: MedicationForm, label: String) {
+internal fun PillAvatar(color: String, form: MedicationForm, label: String) {
     val (foreground, background) = palette(color)
     Box(
         Modifier.size(49.dp).clip(RoundedCornerShape(16.dp)).background(background),

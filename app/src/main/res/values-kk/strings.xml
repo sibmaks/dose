@@ -224,4 +224,9 @@
     <string name="resume_notifications">"Хабарландыруларды қазір жалғастыру"</string>
     <string name="reminders_disabled_hint">"Еске салулар өшірілген. Дәрі қабылдау кестелеріңіз сақталған."</string>
     <string name="pause_time_error">"Болашақ күн мен уақытты таңдаңыз."</string>
+    <string name="dose_label">"Доза"</string>
+    <string name="dose_status">"Мәртебе"</string>
+    <string name="snoozed_until">"Кейінге қалдырылды"</string>
+    <string name="skipped_at">"Өткізіп жіберу уақыты"</string>
+    <string name="recorded_dose">"Тіркелген доза"</string>
 </resources>
