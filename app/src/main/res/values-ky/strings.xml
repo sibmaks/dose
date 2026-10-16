@@ -229,4 +229,9 @@
     <string name="save">"Сактоо"</string>
     <string name="instructions">"Нускамалар"</string>
     <string name="instructions_required">"Нускамаларды жазыңыз же аларды кошууну өчүрүңүз."</string>
+    <string name="today_only_hint">"Өзгөртүүлөр бүгүнкү ушул дозага гана тиешелүү."</string>
+    <string name="reminder_time">"Эскертүү убактысы"</string>
+    <string name="taken_at">"Кабыл алуу убактысы"</string>
+    <string name="acceptance_time_error">"Бүгүнкү өтүп кеткен убакытты тандаңыз."</string>
+    <string name="today_time_error">"Бүгүн башка дозалардан айырмаланган келечектеги убакытты тандаңыз. Белгиленген дозаны жылдырууга болбойт."</string>
 </resources>

@@ -229,4 +229,9 @@
     <string name="save">"Захира кардан"</string>
     <string name="instructions">"Дастурҳо"</string>
     <string name="instructions_required">"Дастурҳоро ворид кунед ё илова кардани онҳоро хомӯш кунед."</string>
+    <string name="today_only_hint">"Тағйирот танҳо ба ин вояи имрӯза дахл дорад."</string>
+    <string name="reminder_time">"Вақти ёдрасӣ"</string>
+    <string name="taken_at">"Вақти қабул"</string>
+    <string name="acceptance_time_error">"Вақти аллакай гузаштаи имрӯзро интихоб кунед."</string>
+    <string name="today_time_error">"Вақти ояндаи имрӯзро аз вояҳои дигар фарқкунанда интихоб кунед. Вояҳои сабтшударо кӯчондан мумкин нест."</string>
 </resources>

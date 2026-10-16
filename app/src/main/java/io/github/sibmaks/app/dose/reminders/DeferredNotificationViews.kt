@@ -14,7 +14,7 @@ internal object DeferredNotificationViews {
         create(context, R.layout.notification_deferred_heads_up, med, date, time, scheduledAt, false)
     private fun create(context: Context, layout: Int, med: Medication, date: String, time: String, scheduledAt: Long, expanded: Boolean) = RemoteViews(context.packageName, layout).apply {
         setTextViewText(R.id.medication_name, med.name)
-        if (expanded) setTextViewText(R.id.medication_detail, med.localizedDose(context) + " · " + context.getString(R.string.scheduled_time, time) + if (med.note.isBlank()) "" else " · ${med.note}")
+        if (expanded) setTextViewText(R.id.medication_detail, med.localizedDose(context) + " · " + context.getString(R.string.scheduled_time, java.time.Instant.ofEpochMilli(scheduledAt).atZone(java.time.ZoneId.systemDefault()).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))) + if (med.note.isBlank()) "" else " · ${med.note}")
         val actions = listOf(
             Triple(R.id.take_now, R.string.taken, ReminderReceiver.ACTION_TAKEN),
             Triple(R.id.take_on_time, R.string.on_time, ReminderReceiver.ACTION_ON_TIME),

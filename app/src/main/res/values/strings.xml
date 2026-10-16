@@ -231,4 +231,9 @@
     <string name="save">"Save"</string>
     <string name="instructions">"Instructions"</string>
     <string name="instructions_required">"Enter instructions or turn off Add instructions."</string>
+    <string name="today_only_hint">"Changes apply to this dose today only."</string>
+    <string name="reminder_time">"Reminder time"</string>
+    <string name="taken_at">"Taken at"</string>
+    <string name="acceptance_time_error">"Choose a time today that has already passed."</string>
+    <string name="today_time_error">"Choose a future time today that is different from this medication’s other doses. Recorded doses cannot be moved."</string>
 </resources>

@@ -229,4 +229,9 @@
     <string name="save">"შენახვა"</string>
     <string name="instructions">"ინსტრუქციები"</string>
     <string name="instructions_required">"შეიყვანეთ ინსტრუქციები ან გამორთეთ მათი დამატება."</string>
+    <string name="today_only_hint">"ცვლილებები მხოლოდ დღევანდელ ამ დოზას ეხება."</string>
+    <string name="reminder_time">"შეხსენების დრო"</string>
+    <string name="taken_at">"მიღების დრო"</string>
+    <string name="acceptance_time_error">"აირჩიეთ დღევანდელი უკვე გასული დრო."</string>
+    <string name="today_time_error">"აირჩიეთ დღევანდელი მომავალი დრო, სხვა დოზებისგან განსხვავებული. აღრიცხული დოზა ვერ გადაიტანება."</string>
 </resources>

@@ -229,4 +229,9 @@
     <string name="save">"Ýatda sakla"</string>
     <string name="instructions">"Görkezmeler"</string>
     <string name="instructions_required">"Görkezmeleri giriziň ýa-da olary goşmagy öçüriň."</string>
+    <string name="today_only_hint">"Üýtgeşmeler diňe şu günki şu doza degişlidir."</string>
+    <string name="reminder_time">"Ýatlatma wagty"</string>
+    <string name="taken_at">"Kabul edilen wagty"</string>
+    <string name="acceptance_time_error">"Şu gün eýýäm geçen wagty saýlaň."</string>
+    <string name="today_time_error">"Şu gün beýleki dozalaryňkydan tapawutly geljek wagty saýlaň. Bellige alnan dozalary süýşürip bolmaýar."</string>
 </resources>

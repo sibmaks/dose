@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.data
 
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
@@ -160,6 +161,8 @@ data class DoseLog(
 data class DoseItem(
     val medication: Medication, val date: String, val time: String, val log: DoseLog?,
     val snoozedUntil: Long?, val dueMillis: Long, val status: String,
+    val scheduledTime: String = time,
+    val scheduledAt: Long = medication.scheduledMillis(LocalDate.parse(date), time),
 ) {
     val id: String get() = "${date}|${medication.id}|$time"
 }
@@ -167,7 +170,7 @@ data class DoseItem(
 object DoseLogic {
     /** Snoozing changes alert delivery, never the original dose deadline. */
     fun isDistantDose(item: DoseItem, nowMillis: Long): Boolean =
-        item.medication.scheduledMillis(LocalDate.parse(item.date), item.time) - nowMillis > 30 * 60_000L
+        item.scheduledAt - nowMillis > 30 * 60_000L
 
     fun canRecordOnTime(deferred: Boolean, scheduledAt: Long, nowMillis: Long): Boolean =
         deferred && nowMillis >= scheduledAt
@@ -188,15 +191,34 @@ object DoseLogic {
     fun scheduledMillis(date: LocalDate, time: String, zone: ZoneId = ZoneId.systemDefault()): Long =
         ZonedDateTime.of(date, LocalTime.parse(time), zone).toInstant().toEpochMilli()
 
+    fun effectiveScheduledMillis(medication: Medication, date: LocalDate, time: String,
+                                 overrides: Map<String, String>, zone: ZoneId = ZoneId.systemDefault()): Long =
+        overrides[slotKey(date.toString(), medication.id, time)]?.takeIf(::isTime)
+            ?.let { scheduledMillis(date, it, zone) } ?: medication.scheduledMillis(date, time, zone)
+
+    fun canMoveToday(item: DoseItem, newTime: String, items: List<DoseItem>, now: ZonedDateTime): Boolean =
+        item.date == now.toLocalDate().toString() && item.log == null && isTime(newTime) &&
+            scheduledMillis(now.toLocalDate(), newTime, now.zone) > now.toInstant().toEpochMilli() &&
+            items.none { it.id != item.id && it.medication.id == item.medication.id && it.scheduledTime == newTime }
+
+    fun acceptedAt(item: DoseItem, at: Long, nowMillis: Long, zone: ZoneId = ZoneId.systemDefault()): DoseLog {
+        require(item.date == Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate().toString())
+        require(at <= nowMillis && Instant.ofEpochMilli(at).atZone(zone).toLocalDate().toString() == item.date)
+        return DoseLog(item.date, item.medication.id, item.medication.name, item.medication.dose,
+            item.time, "taken", at, item.log?.scheduledAt ?: item.scheduledAt,
+            onTime = at == (item.log?.scheduledAt ?: item.scheduledAt), clickedAt = nowMillis)
+    }
+
     /** Finds the next unrecorded slot across all rules, including finite and distant schedules. */
-    fun nextOccurrence(medication: Medication, time: String, now: ZonedDateTime, logs: List<DoseLog>): Long? {
+    fun nextOccurrence(medication: Medication, time: String, now: ZonedDateTime, logs: List<DoseLog>, overrides: Map<String, String> = emptyMap()): Long? {
         if (!medication.active || !isTime(time)) return null
         val recordedDates = logs.filter { it.medicationId == medication.id && it.time == time }.map { it.date }.toSet()
         return medication.schedules.filter { time in it.times }.mapNotNull { rule ->
             var search = now.toLocalDate()
             repeat(recordedDates.size + 2) {
                 val date = rule.nextDate(search) ?: return@mapNotNull null
-                val at = rule.immediateAt ?: scheduledMillis(date, time, now.zone)
+                val override = overrides[slotKey(date.toString(), medication.id, time)]?.takeIf(::isTime)
+                val at = override?.let { scheduledMillis(date, it, now.zone) } ?: rule.immediateAt ?: scheduledMillis(date, time, now.zone)
                 if (at > now.toInstant().toEpochMilli() && date.toString() !in recordedDates) return@mapNotNull at
                 search = date.plusDays(1)
             }
@@ -215,6 +237,7 @@ object DoseLogic {
     fun todayItems(
         medications: List<Medication>, logs: List<DoseLog>, snoozes: Map<String, Long>,
         nowMillis: Long = System.currentTimeMillis(), date: LocalDate = LocalDate.now(),
+        overrides: Map<String, String> = emptyMap(),
     ): List<DoseItem> {
         val today = dateKey(date)
         val logIndex = logs.filter { it.date == today }.associateBy { slotKey(it.date, it.medicationId, it.time) }
@@ -223,7 +246,9 @@ object DoseLogic {
                 val key = slotKey(today, medication.id, time)
                 val logged = logIndex[key]
                 val snoozedUntil = snoozes[key]
-                val due = snoozedUntil ?: medication.scheduledMillis(date, time)
+                val scheduledTime = overrides[key]?.takeIf(::isTime) ?: time
+                val scheduledAt = effectiveScheduledMillis(medication, date, time, overrides)
+                val due = snoozedUntil ?: scheduledAt
                 val status = when {
                     logged != null -> logged.status
                     snoozedUntil != null && nowMillis < snoozedUntil -> "snoozed"
@@ -231,8 +256,8 @@ object DoseLogic {
                     nowMillis - due >= 30 * 60_000L -> "overdue"
                     else -> "due"
                 }
-                DoseItem(medication, today, time, logged, snoozedUntil, due, status)
+                DoseItem(medication, today, time, logged, snoozedUntil, due, status, scheduledTime, scheduledAt)
             }
-        }.sortedWith(compareBy({ it.time }, { it.medication.name }))
+        }.sortedWith(compareBy({ it.scheduledTime }, { it.medication.name }))
     }
 }

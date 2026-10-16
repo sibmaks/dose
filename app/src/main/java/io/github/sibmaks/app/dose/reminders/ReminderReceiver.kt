@@ -25,6 +25,8 @@ class ReminderReceiver : BroadcastReceiver() {
         val date = slot.date
         val scheduledDate = LocalDate.parse(date)
         val med = DoseStore.medications(context).find { it.id == id && it.active && time in it.timesOn(scheduledDate) }
+        // Ignore actions from a notification whose one-day deadline has since changed.
+        if (med != null && slot.scheduledAt != DoseLogic.effectiveScheduledMillis(med, scheduledDate, time, DoseStore.timeOverrides(context))) return
         val notificationId = notificationId(id, time, date)
         when (intent.action) {
             ACTION_TAKEN, ACTION_ON_TIME, ACTION_SKIP -> {
@@ -87,6 +89,7 @@ class ReminderReceiver : BroadcastReceiver() {
                 putString(EXTRA_MEDICATION_ID, id)
                 putString(EXTRA_TIME, time)
                 putString(EXTRA_DATE, date)
+                putLong(EXTRA_SCHEDULED_AT, scheduledAt)
             })
             .setAutoCancel(true)
             .setSilent(silent)

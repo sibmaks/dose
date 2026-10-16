@@ -229,4 +229,9 @@
     <string name="save">"Saqlash"</string>
     <string name="instructions">"Koʻrsatmalar"</string>
     <string name="instructions_required">"Koʻrsatmalarni kiriting yoki ularni qoʻshishni oʻchiring."</string>
+    <string name="today_only_hint">"Oʻzgarishlar faqat bugungi shu dozaga tegishli."</string>
+    <string name="reminder_time">"Eslatma vaqti"</string>
+    <string name="taken_at">"Qabul vaqti"</string>
+    <string name="acceptance_time_error">"Bugun allaqachon oʻtgan vaqtni tanlang."</string>
+    <string name="today_time_error">"Bugun boshqa dozalardan farqli kelajak vaqtni tanlang. Qayd etilgan dozalarni koʻchirish mumkin emas."</string>
 </resources>

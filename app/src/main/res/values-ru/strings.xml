@@ -229,4 +229,9 @@
     <string name="save">"Сохранить"</string>
     <string name="instructions">"Инструкции"</string>
     <string name="instructions_required">"Введите инструкции или отключите «Добавить инструкции»."</string>
+    <string name="today_only_hint">"Изменения действуют только для этой дозы сегодня."</string>
+    <string name="reminder_time">"Время напоминания"</string>
+    <string name="taken_at">"Время приёма"</string>
+    <string name="acceptance_time_error">"Выберите уже наступившее время сегодня."</string>
+    <string name="today_time_error">"Выберите будущее время сегодня, отличное от других доз этого лекарства. Отмеченные дозы перенести нельзя."</string>
 </resources>

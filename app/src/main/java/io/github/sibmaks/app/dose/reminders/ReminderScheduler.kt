@@ -47,14 +47,15 @@ object ReminderScheduler {
             val time = extras.getString(ReminderReceiver.EXTRA_TIME) ?: return@forEach
             val date = extras.getString(ReminderReceiver.EXTRA_DATE) ?: return@forEach
             val scheduledDate = runCatching { LocalDate.parse(date) }.getOrNull()
-            val valid = scheduledDate != null && medications.any { it.id == id && time in it.timesOn(scheduledDate) } &&
+            val valid = scheduledDate != null && medications.any { it.id == id && time in it.timesOn(scheduledDate) &&
+                extras.getLong(ReminderReceiver.EXTRA_SCHEDULED_AT, 0L) == DoseLogic.effectiveScheduledMillis(it, scheduledDate, time, DoseStore.timeOverrides(app)) } &&
                 logs.none { it.date == date && it.medicationId == id && it.time == time }
             if (!valid) notifications.cancel(posted.id)
         }
         val newSlots = mutableSetOf<String>()
         medications.forEach { med ->
             med.times.forEach timeLoop@ { time ->
-                val at = DoseLogic.nextOccurrence(med, time, now, logs) ?: return@timeLoop
+                val at = DoseLogic.nextOccurrence(med, time, now, logs, DoseStore.timeOverrides(app)) ?: return@timeLoop
                 val dueDate = Instant.ofEpochMilli(at).atZone(now.zone).toLocalDate().toString()
                 val intent = primaryIntent(app, med.id, time, dueDate)
                 schedule(manager, at, intent, app)
@@ -75,7 +76,7 @@ object ReminderScheduler {
         val medication = DoseStore.medications(app).find { it.id == medicationId && it.active }
         if (medication == null || time !in medication.times) return
         val now = ZonedDateTime.now()
-        val at = DoseLogic.nextOccurrence(medication, time, now, DoseStore.logs(app)) ?: return
+        val at = DoseLogic.nextOccurrence(medication, time, now, DoseStore.logs(app), DoseStore.timeOverrides(app)) ?: return
         val dueDate = Instant.ofEpochMilli(at).atZone(now.zone).toLocalDate().toString()
         schedule(manager, at, primaryIntent(app, medicationId, time, dueDate), app)
     }
@@ -164,7 +165,7 @@ object ReminderScheduler {
             if (date != null) {
                 putExtra(ReminderReceiver.EXTRA_DATE, date)
                 val original = scheduledAt ?: DoseStore.medications(context).find { it.id == id }
-                    ?.scheduledMillis(LocalDate.parse(date), time) ?: DoseLogic.scheduledMillis(LocalDate.parse(date), time)
+                    ?.let { DoseLogic.effectiveScheduledMillis(it, LocalDate.parse(date), time, DoseStore.timeOverrides(context)) } ?: DoseLogic.scheduledMillis(LocalDate.parse(date), time)
                 putExtra(ReminderReceiver.EXTRA_SCHEDULED_AT, original)
             }
         }

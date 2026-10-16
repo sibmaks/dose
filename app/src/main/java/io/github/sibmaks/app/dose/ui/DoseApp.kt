@@ -89,6 +89,7 @@ fun DoseApp() {
     var revision by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState { Tab.entries.size }
     val scope = rememberCoroutineScope()
+    var todayDoseId by rememberSaveable { mutableStateOf<String?>(null) }
     var editingId by rememberSaveable { mutableStateOf<String?>(null) }
     var showEditor by rememberSaveable { mutableStateOf(false) }
     var showReminderSettings by rememberSaveable { mutableStateOf(!ReminderAlerts.setupOffered(context)) }
@@ -99,8 +100,9 @@ fun DoseApp() {
     val logs = remember(revision) { DoseStore.logs(context) }
     val snoozes = remember(revision) { DoseStore.snoozes(context) }
     val now = remember(revision) { System.currentTimeMillis() }
-    val items = remember(medications, logs, snoozes, now) {
-        DoseLogic.todayItems(medications, logs, snoozes, now)
+    val overrides = remember(revision) { DoseStore.timeOverrides(context) }
+    val items = remember(medications, logs, snoozes, now, overrides) {
+        DoseLogic.todayItems(medications, logs, snoozes, now, overrides = overrides)
     }
     val reminderSetup = remember(revision) { ReminderAlerts.setupState(context) }
 
@@ -134,6 +136,24 @@ fun DoseApp() {
             showReminderSettings = false
             refresh()
         }, onRefresh = ::refresh, onExactAlarms = { openExactAlarmSettings(context) })
+        return
+    }
+
+    val selectedDose = items.find { it.id == todayDoseId }
+    if (selectedDose != null) {
+        TodayDoseEditor(selectedDose, onDismiss = { todayDoseId = null }, onSave = { acceptance, time ->
+            val success = if (acceptance) DoseStore.acceptToday(context, selectedDose.id,
+                DoseLogic.scheduledMillis(LocalDate.parse(selectedDose.date), time))
+            else DoseStore.moveToday(context, selectedDose.id, time)
+            if (success) {
+                ReminderScheduler.cancelSnooze(context, selectedDose.medication.id, selectedDose.time, selectedDose.date)
+                cancelDoseNotification(context, selectedDose)
+                ReminderScheduler.scheduleAll(context)
+                todayDoseId = null
+                refresh()
+            }
+            success
+        })
         return
     }
 
@@ -196,6 +216,7 @@ fun DoseApp() {
                     showSetupWarning = !reminderSetup.complete,
                     onReminderSetup = { showReminderSettings = true },
                     onAdd = { editingId = null; showEditor = true },
+                    onOpen = { todayDoseId = it.id },
                     onManage = { scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) } },
                     onRecord = { item, status ->
                         ReminderScheduler.cancelSnooze(context, item.medication.id, item.time, item.date)
@@ -283,6 +304,7 @@ private fun TodayPage(
     onRecord: (DoseItem, String) -> Unit,
     onUndo: (DoseItem) -> Unit,
     onSnooze: (DoseItem) -> Unit,
+    onOpen: (DoseItem) -> Unit,
 ) {
     val context = LocalContext.current
     val pending = items.filter { it.log == null }
@@ -352,7 +374,7 @@ private fun TodayPage(
                 if (hasMedications) null else onAdd) }
         } else {
             items(items, key = { it.id }) { item ->
-                DoseCard(item, onRecord = onRecord, onUndo = onUndo, onSnooze = onSnooze)
+                DoseCard(item, onRecord = onRecord, onUndo = onUndo, onSnooze = onSnooze, onOpen = onOpen)
             }
         }
     }
@@ -381,7 +403,7 @@ private fun FeaturedCard(
                     if (item.status == "snoozed" && item.snoozedUntil != null) {
                         java.time.Instant.ofEpochMilli(item.snoozedUntil).atZone(java.time.ZoneId.systemDefault())
                             .toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                    } else item.time,
+                    } else item.scheduledTime,
                     fontSize = 38.sp, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -436,9 +458,11 @@ private fun DoseCard(
     onRecord: (DoseItem, String) -> Unit,
     onUndo: (DoseItem) -> Unit,
     onSnooze: (DoseItem) -> Unit,
+    onOpen: (DoseItem) -> Unit,
 ) {
     val context = LocalContext.current
     Card(
+        onClick = { onOpen(item) },
         shape = RoundedCornerShape(19.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, PanelBorder),
@@ -471,7 +495,7 @@ private fun DoseCard(
             }
             Spacer(Modifier.width(7.dp))
             Column(horizontalAlignment = Alignment.End) {
-                Text(item.time, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
+                Text(item.scheduledTime, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
                 Spacer(Modifier.height(5.dp))
                 StatusBadge(item.status)
             }

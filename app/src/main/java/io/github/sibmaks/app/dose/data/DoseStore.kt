@@ -11,6 +11,7 @@ object DoseStore {
     private const val MEDICATIONS = "medications"
     private const val LOGS = "logs"
     private const val SNOOZES = "snoozes"
+    private const val OVERRIDES = "daily_time_overrides"
     private const val DEFERRED = "deferred_slots"
 
     private fun prefs(context: Context) = context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
@@ -51,6 +52,7 @@ object DoseStore {
         val array = JSONArray()
         remaining.forEach { array.put(MedicationJson.encode(it)) }
         prefs(context).edit().putString(MEDICATIONS, array.toString()).commit()
+        saveOverrides(context, timeOverrides(context).filterKeys { !it.contains("|$medicationId|") })
         val remainingSnoozes = snoozes(context).filterKeys { !it.contains("|$medicationId|") }
         saveSnoozes(context, remainingSnoozes)
         prefs(context).edit().putStringSet(DEFERRED, deferred(context).filterNot { it.contains("|$medicationId|") }.toSet()).commit()
@@ -110,6 +112,40 @@ object DoseStore {
         prefs(context).edit().putString(SNOOZES, obj.toString()).commit()
     }
 
+    @Synchronized
+    fun timeOverrides(context: Context): Map<String, String> = runCatching {
+        val obj = JSONObject(prefs(context).getString(OVERRIDES, "{}") ?: "{}")
+        obj.keys().asSequence().associateWith { obj.optString(it) }.filterValues(DoseLogic::isTime)
+    }.getOrDefault(emptyMap())
+
+    private fun saveOverrides(context: Context, values: Map<String, String>) {
+        prefs(context).edit().putString(OVERRIDES, JSONObject(values).toString()).commit()
+    }
+
+    /** The original slot key stays stable for alarms, snoozes, logs, and undo. */
+    @Synchronized
+    fun moveToday(context: Context, slotKey: String, newTime: String): Boolean {
+        val now = java.time.ZonedDateTime.now()
+        val overrides = timeOverrides(context)
+        val items = DoseLogic.todayItems(medications(context), logs(context), snoozes(context), overrides = overrides)
+        val item = items.find { it.id == slotKey } ?: return false
+        if (!DoseLogic.canMoveToday(item, newTime, items, now)) return false
+        // Old dates have no effect and can be discarded when making a new daily exception.
+        saveOverrides(context, overrides.filterKeys { it.startsWith("${item.date}|") } + (slotKey to newTime))
+        clearSnooze(context, slotKey)
+        clearDeferred(context, slotKey)
+        return true
+    }
+
+    @Synchronized
+    fun acceptToday(context: Context, slotKey: String, at: Long): Boolean {
+        val item = DoseLogic.todayItems(medications(context), logs(context), snoozes(context),
+            overrides = timeOverrides(context)).find { it.id == slotKey } ?: return false
+        val log = runCatching { DoseLogic.acceptedAt(item, at, System.currentTimeMillis()) }.getOrNull() ?: return false
+        record(context, log)
+        return true
+    }
+
     fun newMedication(name: String, amount: String, quantity: String, schedules: List<DoseSchedule>, note: String, color: String, form: MedicationForm) =
         Medication(UUID.randomUUID().toString(), name, amount, quantity, schedules, note, color, form = form)
 
@@ -141,7 +177,7 @@ object DoseStore {
 
     fun newLog(item: DoseItem, status: String): DoseLog = DoseLogic.recordedLog(
         item.medication, item.date, item.time, if (status == "on_time") "taken" else status,
-        item.medication.scheduledMillis(java.time.LocalDate.parse(item.date), item.time),
+        item.scheduledAt,
         System.currentTimeMillis(), onTime = status == "on_time",
     )
 

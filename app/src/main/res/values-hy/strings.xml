@@ -229,4 +229,9 @@
     <string name="save">"Պահպանել"</string>
     <string name="instructions">"Հրահանգներ"</string>
     <string name="instructions_required">"Մուտքագրեք հրահանգները կամ անջատեք դրանց ավելացումը։"</string>
+    <string name="today_only_hint">"Փոփոխությունները վերաբերում են միայն այսօրվա այս դեղաչափին։"</string>
+    <string name="reminder_time">"Հիշեցման ժամը"</string>
+    <string name="taken_at">"Ընդունման ժամը"</string>
+    <string name="acceptance_time_error">"Ընտրեք այսօրվա արդեն անցած ժամը։"</string>
+    <string name="today_time_error">"Ընտրեք այսօրվա ապագա ժամ՝ տարբեր մյուս դեղաչափերից։ Գրանցված դեղաչափերը տեղափոխել չի կարելի։"</string>
 </resources>

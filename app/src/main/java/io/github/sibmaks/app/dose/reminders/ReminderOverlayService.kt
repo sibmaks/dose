@@ -43,7 +43,8 @@ class ReminderOverlayService : Service() {
             val snoozes = DoseStore.snoozes(this@ReminderOverlayService)
             slots.entries.removeAll { (_, slot) ->
                 val date = LocalDate.parse(slot.date)
-                date != LocalDate.now() || medications.none { it.id == slot.medicationId && it.active && slot.time in it.timesOn(date) } ||
+                date != LocalDate.now() || medications.none { it.id == slot.medicationId && it.active && slot.time in it.timesOn(date) &&
+                    slot.scheduledAt == DoseLogic.effectiveScheduledMillis(it, date, slot.time, DoseStore.timeOverrides(this@ReminderOverlayService)) } ||
                     logs.any { it.date == slot.date && it.medicationId == slot.medicationId && it.time == slot.time } ||
                     (snoozes[slot.key] ?: 0L) > System.currentTimeMillis()
             }
@@ -109,7 +110,7 @@ class ReminderOverlayService : Service() {
         } else {
             slots.values.mapNotNull { slot ->
                 medications[slot.medicationId]?.let { medication ->
-                    ReminderPopupView.Entry(medication, slot.time, DoseLogic.canRecordOnTime(DoseStore.wasDeferred(this, slot.key), slot.scheduledAt, System.currentTimeMillis())) { action ->
+                    ReminderPopupView.Entry(medication, java.time.Instant.ofEpochMilli(slot.scheduledAt).atZone(java.time.ZoneId.systemDefault()).toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")), DoseLogic.canRecordOnTime(DoseStore.wasDeferred(this, slot.key), slot.scheduledAt, System.currentTimeMillis())) { action ->
                         ReminderScheduler.actionIntent(this, action, slot.medicationId, slot.time, slot.date, slot.scheduledAt).send()
                         slots.remove(slot.key)
                         if (slots.isEmpty()) finishAlert() else render()
