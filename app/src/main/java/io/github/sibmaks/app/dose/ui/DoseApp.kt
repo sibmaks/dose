@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -210,9 +211,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                 Text("dose", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, color = TextPrimary)
                 Text(".", fontSize = 27.sp, fontWeight = FontWeight.ExtraBold, color = Violet)
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = { showLanguagePicker = true }) {
-                    Icon(Icons.Rounded.Language, context.getString(R.string.app_language), tint = TextMuted)
-                }
+                LanguageButton(onClick = { showLanguagePicker = true })
                 ThemeButton()
                 IconButton(onClick = { showReminderSettings = true }) {
                     Icon(
@@ -287,6 +286,27 @@ fun DoseApp(openTodayRequest: Int = 0) {
                     },
                 )
                 Tab.History -> HistoryPage(modifier = Modifier.fillMaxSize(), logs = logs, listState = historyScroll, onOpen = { historyDoseId = DoseHistory.key(it) })
+            }
+        }
+    }
+}
+
+@Composable
+private fun LanguageButton(onClick: () -> Unit) {
+    val context = LocalContext.current
+    val selected = AppLanguages.supported.firstOrNull {
+        it.tag == AppLanguages.selectedTag(context).substringBefore('-')
+    }
+    val description = context.getString(R.string.app_language) + ": " +
+        (selected?.nativeName ?: context.getString(R.string.system_language))
+    IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = description }) {
+        if (selected == null) {
+            Icon(Icons.Rounded.Language, null, tint = TextMuted)
+        } else {
+            Box(Modifier.size(28.dp).border(1.5.dp, TextMuted, CircleShape), contentAlignment = Alignment.Center) {
+                Text(selected.tag.uppercase(java.util.Locale.ROOT), color = TextMuted,
+                    fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 1,
+                    modifier = Modifier.clearAndSetSemantics {})
             }
         }
     }
