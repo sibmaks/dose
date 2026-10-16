@@ -116,12 +116,7 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
     }
 
     SetupScreen(title = context.getString(R.string.set_up_reminders), onClose = onDismiss,
-        primaryLabel = context.getString(R.string.done), onPrimary = {
-            val current = ReminderAlerts.setupState(context)
-            ReminderAlerts.saveChoices(context, current.feedChecked, current.popupsChecked)
-            onDismiss()
-        }, secondaryLabel = context.getString(R.string.later), showSecondary = !state.complete) {
-        Text(context.getString(R.string.reminder_permission_intro), fontSize = 14.sp)
+        secondaryLabel = context.getString(R.string.later), showSecondary = !state.complete) {
         ReminderChoice(context.getString(R.string.notification_feed), context.getString(R.string.notification_feed_hint),
             state.feedChecked, pendingStyle == null, accessHint(ReminderStyle.FEED)) { choose(ReminderStyle.FEED, it) }
         ReminderChoice(context.getString(R.string.pop_up_over_other_apps), context.getString(R.string.overlay_hint),
@@ -130,10 +125,7 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
         if (state.feedChecked) TextButton(onClick = {
             launchSettings(ReminderNotifications.settingsIntent(context), R.string.notification_settings_fallback)
         }) { Text(context.getString(R.string.sound_notification_settings)) }
-        if (state.popupsChecked) {
-            Text(context.getString(R.string.popup_limits), fontSize = 12.sp, color = TextMuted)
-            if (!state.feedChecked) Text(context.getString(R.string.popup_feed_disabled_hint), fontSize = 12.sp, color = TextMuted)
-        }
+        if (state.popupsChecked && !state.feedChecked) Text(context.getString(R.string.popup_feed_disabled_hint), fontSize = 12.sp, color = TextMuted)
         if (showPauseControls) {
             HorizontalDivider(color = PanelBorder)
             NotificationPauseSection(onRefresh)

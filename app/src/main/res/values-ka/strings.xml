@@ -145,7 +145,6 @@
     <string name="monthly_days">"ყოველთვიურად: %1$s"</string>
     <string name="from_date">" · %1$s-დან"</string>
     <string name="until_date">" %1$s-მდე"</string>
-    <string name="popup_limits">"ფანჯარა 2 წუთში იხურება მიღების აღრიცხვის გარეშე. ტელეფონს არ აღვიძებს და არ ხსნის. დაცულმა ეკრანებმა შეიძლება დამალოს. ჩართული სიის შეტყობინებები რჩება."</string>
     <string name="period_days">"%1$d დღე"</string>
     <string name="average_delay_count">"საშუალო დაყოვნება · მიღებულია: %1$d"</string>
     <string name="taken_count">"მიღებულია: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · დღეს"</string>
     <string name="widget_description">"დღევანდელი შემდეგი აღურიცხავი დოზა და მისი დრო."</string>
     <string name="widget_open_today">"შეეხეთ დღევანდელი განრიგის გასახსნელად"</string>
-    <string name="reminder_permission_intro">"Dose შეხსენებებისთვის Android-ის ორ ნებართვას იყენებს: შეტყობინებებს და სხვა აპებზე გამოსაჩენ ფანჯრებს. აირჩიეთ შეხსენების გზები."</string>
     <string name="pause_notifications">"ყველა შეტყობინების შეჩერება"</string>
     <string name="notifications_paused_until">"შეტყობინებები შეჩერებულია %1$s-მდე"</string>
     <string name="resume_notifications">"შეტყობინებების ახლა განახლება"</string>

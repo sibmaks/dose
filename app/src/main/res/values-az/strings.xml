@@ -145,7 +145,6 @@
     <string name="monthly_days">"Hər ay: %1$s"</string>
     <string name="from_date">" · başlanğıc %1$s"</string>
     <string name="until_date">" son %1$s"</string>
-    <string name="popup_limits">"Pəncərə 2 dəqiqədən sonra qəbul qeydi olmadan bağlanır. Telefonun kilidini açmır və oyatmır. Qorunan ekranlar onu gizlədə bilər. Aktiv lent bildirişləri qalır."</string>
     <string name="period_days">"%1$d gün"</string>
     <string name="average_delay_count">"Orta gecikmə · Qəbul: %1$d"</string>
     <string name="taken_count">"Qəbul: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Bu gün"</string>
     <string name="widget_description">"Bu günün növbəti qeyd edilməmiş dozası və vaxtı."</string>
     <string name="widget_open_today">"Bu günü açmaq üçün toxunun"</string>
-    <string name="reminder_permission_intro">"Dose xatırlatmalar üçün iki Android icazəsindən istifadə edir: bildiriş lentində bildirişlər və digər tətbiqlərin üzərində pəncərələr. İstədiyiniz üsulları seçin."</string>
     <string name="pause_notifications">"Bütün bildirişləri dayandır"</string>
     <string name="notifications_paused_until">"Bildirişlər %1$s tarixinədək dayandırılıb"</string>
     <string name="resume_notifications">"Bildirişləri indi bərpa et"</string>

@@ -145,7 +145,6 @@
     <string name="monthly_days">"Har oy: %1$s"</string>
     <string name="from_date">" · %1$s dan"</string>
     <string name="until_date">" %1$s gacha"</string>
-    <string name="popup_limits">"Oyna 2 daqiqadan keyin qabulni qayd etmasdan yopiladi. Telefonni uygʻotmaydi va qulfini ochmaydi. Himoyalangan ekranlar uni yashirishi mumkin. Yoqilgan roʻyxat bildirishnomalari qoladi."</string>
     <string name="period_days">"%1$d kun"</string>
     <string name="average_delay_count">"Oʻrtacha kechikish · Qabul: %1$d"</string>
     <string name="taken_count">"Qabul: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Bugun"</string>
     <string name="widget_description">"Bugungi navbatdagi qayd etilmagan doza va uning vaqti."</string>
     <string name="widget_open_today">"Bugunni ochish uchun bosing"</string>
-    <string name="reminder_permission_intro">"Dose eslatmalar uchun ikkita Android ruxsatidan foydalanadi: bildirishnomalar va boshqa ilovalar ustidagi oynalar. Kerakli usullarni tanlang."</string>
     <string name="pause_notifications">"Barcha bildirishnomalarni toʻxtatib turish"</string>
     <string name="notifications_paused_until">"Bildirishnomalar %1$s gacha toʻxtatildi"</string>
     <string name="resume_notifications">"Bildirishnomalarni hozir davom ettirish"</string>

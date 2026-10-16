@@ -145,7 +145,6 @@
     <string name="monthly_days">"Ежемесячно: %1$s"</string>
     <string name="from_date">" · с %1$s"</string>
     <string name="until_date">" до %1$s"</string>
-    <string name="popup_limits">"Окно закроется через 2 минуты без записи приёма. Оно не разблокирует и не будит телефон; защищённые экраны могут его скрывать. Включённые уведомления в ленте останутся."</string>
     <string name="period_days">"%1$d дн."</string>
     <string name="average_delay_count">"Средняя задержка · Принято: %1$d"</string>
     <string name="taken_count">"Принято: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Сегодня"</string>
     <string name="widget_description">"Ближайшая неотмеченная доза на сегодня и время её приёма."</string>
     <string name="widget_open_today">"Нажмите, чтобы открыть «Сегодня»"</string>
-    <string name="reminder_permission_intro">"Для напоминаний Dose использует два разрешения Android: уведомления в ленте и всплывающие окна поверх других приложений. Выберите нужные способы."</string>
     <string name="pause_notifications">"Приостановить все уведомления"</string>
     <string name="notifications_paused_until">"Уведомления приостановлены до %1$s"</string>
     <string name="resume_notifications">"Возобновить уведомления сейчас"</string>

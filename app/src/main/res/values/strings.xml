@@ -146,7 +146,6 @@
     <string name="monthly_days">"Monthly: %1$s"</string>
     <string name="from_date">" · from %1$s"</string>
     <string name="until_date">" until %1$s"</string>
-    <string name="popup_limits">"Pop-ups close after 2 minutes without recording a dose. They do not unlock or wake the phone. Protected screens may hide them. Enabled feed notifications remain."</string>
     <string name="period_days">"%1$d days"</string>
     <string name="average_delay_count">"Average delay · Taken: %1$d"</string>
     <string name="taken_count">"Taken: %1$d"</string>
@@ -217,7 +216,6 @@
     <string name="widget_name">"Dose · Today"</string>
     <string name="widget_description">"See your next pending dose and its time for today."</string>
     <string name="widget_open_today">"Tap to open Today"</string>
-    <string name="reminder_permission_intro">"Dose uses two Android permissions for reminders: notifications in your feed and pop-ups over other apps. Choose how you want to be reminded."</string>
     <string name="pause_notifications">"Pause all notifications"</string>
     <string name="notifications_paused_until">"Notifications paused until %1$s"</string>
     <string name="resume_notifications">"Resume notifications now"</string>

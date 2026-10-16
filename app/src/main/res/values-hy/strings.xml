@@ -145,7 +145,6 @@
     <string name="monthly_days">"Ամեն ամիս՝ %1$s"</string>
     <string name="from_date">" · սկսած %1$s"</string>
     <string name="until_date">" մինչև %1$s"</string>
-    <string name="popup_limits">"Պատուհանը փակվում է 2 րոպեից՝ առանց ընդունում գրանցելու։ Այն չի բացում կողպեքը և չի արթնացնում հեռախոսը։ Պաշտպանված էկրանները կարող են թաքցնել այն։ Միացված ծանուցումները մնում են։"</string>
     <string name="period_days">"%1$d օր"</string>
     <string name="average_delay_count">"Միջին ուշացում · Ընդունված՝ %1$d"</string>
     <string name="taken_count">"Ընդունված՝ %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Այսօր"</string>
     <string name="widget_description">"Այսօրվա հաջորդ չգրանցված դեղաչափը և ժամը։"</string>
     <string name="widget_open_today">"Սեղմեք՝ «Այսօր»-ը բացելու համար"</string>
-    <string name="reminder_permission_intro">"Dose-ը հիշեցումների համար օգտագործում է Android-ի երկու թույլտվություն՝ ծանուցումներ և այլ հավելվածների վրայի պատուհաններ։ Ընտրեք հիշեցման եղանակները։"</string>
     <string name="pause_notifications">"Դադարեցնել բոլոր ծանուցումները"</string>
     <string name="notifications_paused_until">"Ծանուցումները դադարեցված են մինչև %1$s"</string>
     <string name="resume_notifications">"Վերսկսել ծանուցումները հիմա"</string>

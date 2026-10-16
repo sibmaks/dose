@@ -145,7 +145,6 @@
     <string name="monthly_days">"Щомісяця: %1$s"</string>
     <string name="from_date">" · з %1$s"</string>
     <string name="until_date">" до %1$s"</string>
-    <string name="popup_limits">"Вікно закриється через 2 хвилини без запису прийому. Воно не розблоковує й не будить телефон; захищені екрани можуть його приховувати. Увімкнені сповіщення в стрічці залишаться."</string>
     <string name="period_days">"%1$d дн."</string>
     <string name="average_delay_count">"Середня затримка · Прийнято: %1$d"</string>
     <string name="taken_count">"Прийнято: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Сьогодні"</string>
     <string name="widget_description">"Найближча невідмічена доза на сьогодні та час її прийому."</string>
     <string name="widget_open_today">"Натисніть, щоб відкрити «Сьогодні»"</string>
-    <string name="reminder_permission_intro">"Для нагадувань Dose використовує два дозволи Android: сповіщення у стрічці та вікна поверх інших застосунків. Виберіть потрібні способи."</string>
     <string name="pause_notifications">"Призупинити всі сповіщення"</string>
     <string name="notifications_paused_until">"Сповіщення призупинено до %1$s"</string>
     <string name="resume_notifications">"Відновити сповіщення зараз"</string>

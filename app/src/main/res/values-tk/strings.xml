@@ -145,7 +145,6 @@
     <string name="monthly_days">"Her aý: %1$s"</string>
     <string name="from_date">" · %1$s başlap"</string>
     <string name="until_date">" %1$s çenli"</string>
-    <string name="popup_limits">"Penjire 2 minutdan dozany bellemezden ýapylýar. Telefony oýarmaýar ýa-da gulpuny açmaýar. Goragly ekranlar ony gizläp biler. Açyk sanaw bildirişleri galýar."</string>
     <string name="period_days">"%1$d gün"</string>
     <string name="average_delay_count">"Ortaça gijikme · Içildi: %1$d"</string>
     <string name="taken_count">"Içildi: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Şu gün"</string>
     <string name="widget_description">"Şu günki indiki bellige alynmadyk doza we onuň wagty."</string>
     <string name="widget_open_today">"Şu güni açmak üçin basyň"</string>
-    <string name="reminder_permission_intro">"Dose ýatlatmalar üçin iki Android rugsadyny ulanýar: habarnamalar we beýleki programmalaryň üstündäki penjireler. Isleýän usullaryňyzy saýlaň."</string>
     <string name="pause_notifications">"Ähli habarnamalary wagtlaýyn duruz"</string>
     <string name="notifications_paused_until">"Habarnamalar %1$s çenli duruzyldy"</string>
     <string name="resume_notifications">"Habarnamalary häzir dowam et"</string>

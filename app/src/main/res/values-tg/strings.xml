@@ -145,7 +145,6 @@
     <string name="monthly_days">"Ҳар моҳ: %1$s"</string>
     <string name="from_date">" · аз %1$s"</string>
     <string name="until_date">" то %1$s"</string>
-    <string name="popup_limits">"Равзана пас аз 2 дақиқа бе қайди қабул баста мешавад. Телефонро бедор ё қулфкушо намекунад. Экранҳои муҳофизатшуда метавонанд онро пинҳон кунанд. Огоҳиҳои фаъол мемонанд."</string>
     <string name="period_days">"%1$d рӯз"</string>
     <string name="average_delay_count">"Таъхири миёна · Қабул: %1$d"</string>
     <string name="taken_count">"Қабул: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Имрӯз"</string>
     <string name="widget_description">"Вояи навбатии сабтнашудаи имрӯз ва вақти он."</string>
     <string name="widget_open_today">"Барои кушодани «Имрӯз» пахш кунед"</string>
-    <string name="reminder_permission_intro">"Dose барои ёдрасӣ ду иҷозати Android-ро истифода мебарад: огоҳиҳо ва равзанаҳо болои барномаҳои дигар. Усулҳои дилхоҳро интихоб кунед."</string>
     <string name="pause_notifications">"Таваққуфи ҳамаи огоҳиҳо"</string>
     <string name="notifications_paused_until">"Огоҳиҳо то %1$s таваққуф карда шудаанд"</string>
     <string name="resume_notifications">"Огоҳиҳоро ҳозир идома додан"</string>

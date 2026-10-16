@@ -145,7 +145,6 @@
     <string name="monthly_days">"Ай сайын: %1$s"</string>
     <string name="from_date">" · %1$s баштап"</string>
     <string name="until_date">" %1$s чейин"</string>
-    <string name="popup_limits">"Терезе 2 мүнөттөн кийин кабыл алууну жазбастан жабылат. Телефонду ойготпойт жана кулпусун ачпайт. Корголгон экрандар жашырышы мүмкүн. Күйгүзүлгөн тизме билдирмелери калат."</string>
     <string name="period_days">"%1$d күн"</string>
     <string name="average_delay_count">"Орточо кечигүү · Кабыл алынды: %1$d"</string>
     <string name="taken_count">"Кабыл алынды: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Бүгүн"</string>
     <string name="widget_description">"Бүгүнкү кийинки белгиленбеген доза жана анын убактысы."</string>
     <string name="widget_open_today">"«Бүгүн» барагын ачуу үчүн басыңыз"</string>
-    <string name="reminder_permission_intro">"Dose эскертүүлөр үчүн Android тутумунун эки уруксатын колдонот: билдирүүлөр жана башка колдонмолордун үстүндөгү терезелер. Керектүү ыкмаларды тандаңыз."</string>
     <string name="pause_notifications">"Бардык билдирүүлөрдү тындыруу"</string>
     <string name="notifications_paused_until">"Билдирүүлөр %1$s чейин тындырылды"</string>
     <string name="resume_notifications">"Билдирүүлөрдү азыр улантуу"</string>

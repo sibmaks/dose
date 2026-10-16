@@ -145,7 +145,6 @@
     <string name="monthly_days">"Lunar: %1$s"</string>
     <string name="from_date">" · de la %1$s"</string>
     <string name="until_date">" până la %1$s"</string>
-    <string name="popup_limits">"Fereastra se închide după 2 minute fără a înregistra doza. Nu deblochează și nu trezește telefonul. Ecranele protejate o pot ascunde. Notificările activate rămân."</string>
     <string name="period_days">"%1$d zile"</string>
     <string name="average_delay_count">"Întârziere medie · Luate: %1$d"</string>
     <string name="taken_count">"Luate: %1$d"</string>
@@ -215,7 +214,6 @@
     <string name="widget_name">"Dose · Astăzi"</string>
     <string name="widget_description">"Următoarea doză neînregistrată de astăzi și ora ei."</string>
     <string name="widget_open_today">"Atingeți pentru a deschide Astăzi"</string>
-    <string name="reminder_permission_intro">"Dose folosește două permisiuni Android pentru mementouri: notificări și ferestre peste alte aplicații. Alegeți cum doriți să primiți mementourile."</string>
     <string name="pause_notifications">"Pauză pentru toate notificările"</string>
     <string name="notifications_paused_until">"Notificările sunt întrerupte până la %1$s"</string>
     <string name="resume_notifications">"Reia notificările acum"</string>
