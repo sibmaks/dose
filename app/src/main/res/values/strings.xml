@@ -238,4 +238,8 @@
     <string name="several_medicines">"Medicines to take: %1$d"</string>
     <string name="mark_all_as_taken">"Mark all as taken"</string>
     <string name="widget_more_doses">"More doses: %1$d · Open Today"</string>
+    <string name="delete_history_entry">"Delete history entry"</string>
+    <string name="delete_history_hint">"Remove this dose entry from history?"</string>
+    <string name="history_time_error">"Choose a date and time that has already passed."</string>
+    <string name="history_changed_error">"This entry changed. Reopen it and try again."</string>
 </resources>

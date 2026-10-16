@@ -236,4 +236,8 @@
     <string name="several_medicines">"Medicamente de luat: %1$d"</string>
     <string name="mark_all_as_taken">"Marchează toate ca luate"</string>
     <string name="widget_more_doses">"Alte doze: %1$d · Deschide Azi"</string>
+    <string name="delete_history_entry">"Șterge înregistrarea"</string>
+    <string name="delete_history_hint">"Ștergi această înregistrare a dozei din istoric?"</string>
+    <string name="history_time_error">"Alege o dată și o oră din trecut."</string>
+    <string name="history_changed_error">"Înregistrarea s-a schimbat. Redeschide-o și încearcă din nou."</string>
 </resources>

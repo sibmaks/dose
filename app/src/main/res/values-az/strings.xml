@@ -236,4 +236,8 @@
     <string name="several_medicines">"Qəbul ediləcək dərmanlar: %1$d"</string>
     <string name="mark_all_as_taken">"Hamısını qəbul edilmiş kimi qeyd et"</string>
     <string name="widget_more_doses">"Digər dozalar: %1$d · Bu günü aç"</string>
+    <string name="delete_history_entry">"Tarixçə qeydini sil"</string>
+    <string name="delete_history_hint">"Bu doza qeydini tarixçədən silmək istəyirsiniz?"</string>
+    <string name="history_time_error">"Artıq keçmiş tarix və vaxt seçin."</string>
+    <string name="history_changed_error">"Bu qeyd dəyişib. Yenidən açın və təkrar cəhd edin."</string>
 </resources>

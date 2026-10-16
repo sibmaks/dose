@@ -236,4 +236,8 @@
     <string name="several_medicines">"Потрібно прийняти ліків: %1$d"</string>
     <string name="mark_all_as_taken">"Позначити всі прийнятими"</string>
     <string name="widget_more_doses">"Ще доз: %1$d · Відкрити «Сьогодні»"</string>
+    <string name="delete_history_entry">"Видалити запис з історії"</string>
+    <string name="delete_history_hint">"Видалити цей запис про дозу з історії?"</string>
+    <string name="history_time_error">"Виберіть дату й час, які вже минули."</string>
+    <string name="history_changed_error">"Запис змінився. Відкрийте його знову й повторіть."</string>
 </resources>

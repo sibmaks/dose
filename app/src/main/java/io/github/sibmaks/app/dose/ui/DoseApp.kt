@@ -91,6 +91,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
     val todayScroll = rememberLazyListState()
     val medicationsScroll = rememberLazyListState()
     val historyScroll = rememberLazyListState()
+    var historyDoseId by rememberSaveable { mutableStateOf<String?>(null) }
     var todayDoseId by rememberSaveable { mutableStateOf<String?>(null) }
     var editingId by rememberSaveable { mutableStateOf<String?>(null) }
     var showEditor by rememberSaveable { mutableStateOf(false) }
@@ -102,6 +103,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
             pagerState.scrollToPage(Tab.Today.ordinal)
             showEditor = false
             todayDoseId = null
+            historyDoseId = null
             if (ReminderAlerts.setupOffered(context)) showReminderSettings = false
             if (AppLanguages.offered(context)) showLanguagePicker = false
         }
@@ -191,6 +193,24 @@ fun DoseApp(openTodayRequest: Int = 0) {
             }
             success
         })
+        return
+    }
+
+    val selectedHistory = logs.find { DoseHistory.key(it) == historyDoseId }
+    LaunchedEffect(historyDoseId, selectedHistory) {
+        if (historyDoseId != null && selectedHistory == null) historyDoseId = null
+    }
+    if (selectedHistory != null) {
+        HistoryDoseEditor(selectedHistory, onDismiss = { historyDoseId = null },
+            onSave = { at ->
+                val saved = DoseStore.correctHistoryTime(context, selectedHistory, at)
+                if (saved) { ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh() }
+                saved
+            }, onDelete = {
+                val deleted = DoseStore.deleteHistory(context, selectedHistory)
+                if (deleted) { ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh() }
+                deleted
+            })
         return
     }
 
@@ -285,7 +305,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         refresh()
                     },
                 )
-                Tab.History -> HistoryPage(modifier = Modifier.fillMaxSize(), logs = logs, listState = historyScroll)
+                Tab.History -> HistoryPage(modifier = Modifier.fillMaxSize(), logs = logs, listState = historyScroll, onOpen = { historyDoseId = DoseHistory.key(it) })
             }
         }
     }
@@ -626,7 +646,7 @@ private fun MedicationsPage(
 }
 
 @Composable
-private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: LazyListState) {
+private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: LazyListState, onOpen: (DoseLog) -> Unit) {
     val context = LocalContext.current
     val today = LocalDate.now()
     val dates = (0..6).map { today.minusDays(it.toLong()) }
@@ -666,6 +686,7 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: Lazy
             }
             items(dayLogs, key = { "${it.date}|${it.medicationId}|${it.time}" }) { log ->
                 Card(
+                    onClick = { onOpen(log) },
                     shape = RoundedCornerShape(15.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     border = BorderStroke(1.dp, PanelBorder),

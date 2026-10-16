@@ -236,4 +236,8 @@
     <string name="several_medicines">"Qabul qilinadigan dorilar: %1$d"</string>
     <string name="mark_all_as_taken">"Hammasini qabul qilingan deb belgilash"</string>
     <string name="widget_more_doses">"Qolgan dozalar: %1$d · Bugunni ochish"</string>
+    <string name="delete_history_entry">"Tarix yozuvini o‘chirish"</string>
+    <string name="delete_history_hint">"Bu doza yozuvi tarixdan o‘chirilsinmi?"</string>
+    <string name="history_time_error">"O‘tib ketgan sana va vaqtni tanlang."</string>
+    <string name="history_changed_error">"Yozuv o‘zgardi. Uni qayta ochib, yana urinib ko‘ring."</string>
 </resources>

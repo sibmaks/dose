@@ -236,4 +236,8 @@
     <string name="several_medicines">"მისაღები წამლები: %1$d"</string>
     <string name="mark_all_as_taken">"ყველას მიღებულად მონიშვნა"</string>
     <string name="widget_more_doses">"სხვა დოზები: %1$d · დღევანდელის გახსნა"</string>
+    <string name="delete_history_entry">"ისტორიის ჩანაწერის წაშლა"</string>
+    <string name="delete_history_hint">"წაიშალოს ამ დოზის ჩანაწერი ისტორიიდან?"</string>
+    <string name="history_time_error">"აირჩიეთ უკვე გასული თარიღი და დრო."</string>
+    <string name="history_changed_error">"ჩანაწერი შეიცვალა. ხელახლა გახსენით და სცადეთ."</string>
 </resources>

@@ -236,4 +236,8 @@
     <string name="several_medicines">"Доруҳо барои қабул: %1$d"</string>
     <string name="mark_all_as_taken">"Ҳамаро қабулшуда қайд кардан"</string>
     <string name="widget_more_doses">"Вояҳои дигар: %1$d · Кушодани Имрӯз"</string>
+    <string name="delete_history_entry">"Нест кардани сабти таърих"</string>
+    <string name="delete_history_hint">"Ин сабти воя аз таърих нест карда шавад?"</string>
+    <string name="history_time_error">"Сана ва вақти гузаштаро интихоб кунед."</string>
+    <string name="history_changed_error">"Сабт тағйир ёфт. Онро боз кушоед ва такрор кунед."</string>
 </resources>

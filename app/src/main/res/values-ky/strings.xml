@@ -236,4 +236,8 @@
     <string name="several_medicines">"Кабыл алынуучу дарылар: %1$d"</string>
     <string name="mark_all_as_taken">"Баарын кабыл алынды деп белгилөө"</string>
     <string name="widget_more_doses">"Дагы дозалар: %1$d · Бүгүнкүнү ачуу"</string>
+    <string name="delete_history_entry">"Тарых жазуусун өчүрүү"</string>
+    <string name="delete_history_hint">"Бул доза жазуусун тарыхтан өчүрөсүзбү?"</string>
+    <string name="history_time_error">"Өтүп кеткен күндү жана убакытты тандаңыз."</string>
+    <string name="history_changed_error">"Жазуу өзгөрдү. Кайра ачып, аракет кылыңыз."</string>
 </resources>

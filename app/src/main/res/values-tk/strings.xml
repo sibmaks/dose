@@ -236,4 +236,8 @@
     <string name="several_medicines">"Kabul edilmeli dermanlar: %1$d"</string>
     <string name="mark_all_as_taken">"Ählisini kabul edildi diýip belle"</string>
     <string name="widget_more_doses">"Beýleki dozalar: %1$d · Şu güni aç"</string>
+    <string name="delete_history_entry">"Taryh ýazgysyny poz"</string>
+    <string name="delete_history_hint">"Bu doza ýazgysyny taryhdan pozmalymy?"</string>
+    <string name="history_time_error">"Geçen senäni we wagty saýlaň."</string>
+    <string name="history_changed_error">"Bu ýazgy üýtgedi. Täzeden açyň we synanyşyň."</string>
 </resources>

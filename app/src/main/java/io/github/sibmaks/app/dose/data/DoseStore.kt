@@ -102,6 +102,22 @@ object DoseStore {
     }
 
     @Synchronized
+    fun correctHistoryTime(context: Context, expected: DoseLog, at: Long): Boolean {
+        val corrected = runCatching { DoseHistory.correctTakenAt(expected, at, System.currentTimeMillis()) }.getOrNull() ?: return false
+        return replaceHistory(context, expected, corrected)
+    }
+
+    @Synchronized
+    fun deleteHistory(context: Context, expected: DoseLog): Boolean = replaceHistory(context, expected, null)
+
+    private fun replaceHistory(context: Context, expected: DoseLog, replacement: DoseLog?): Boolean {
+        val updated = DoseHistory.replace(logs(context), expected, replacement) ?: return false
+        val array = JSONArray()
+        updated.forEach { array.put(DoseLogJson.encode(it)) }
+        return prefs(context).edit().putString(LOGS, array.toString()).commit()
+    }
+
+    @Synchronized
     fun undo(context: Context, date: String, medicationId: String, time: String) {
         val array = JSONArray()
         logs(context).filterNot {
