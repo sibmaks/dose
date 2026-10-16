@@ -104,6 +104,7 @@ private fun ColorWheel(selection: ColorWheelSelection, onChoose: (ColorWheelSele
         val radius = (size.minDimension / 2f - inset).coerceAtLeast(1f)
         drawCircle(Brush.sweepGradient(listOf(Color.Red, Color.Yellow, Color.Green, Color.Cyan, Color.Blue, Color.Magenta, Color.Red), center), radius)
         drawCircle(Brush.radialGradient(listOf(Color.White, Color.White.copy(alpha = 0f)), center, radius), radius)
+        drawCircle(Color.Black.copy(alpha = 1f - selection.brightness), radius)
         val (dx, dy) = selection.point(radius)
         val marker = center + Offset(dx, dy)
         drawCircle(Color(android.graphics.Color.parseColor(selection.hex())), 8.dp.toPx(), marker)
