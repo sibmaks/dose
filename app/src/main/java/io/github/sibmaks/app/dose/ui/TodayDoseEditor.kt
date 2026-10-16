@@ -59,7 +59,6 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onEdit: () -
                     StatusBadge(item.status)
                 }
                 DoseDetail(context.getString(R.string.medication_form), medication.localizedForm(context))
-                DoseDetail(context.getString(R.string.color), localizedColor(context, medication.color))
                 DoseDetail(context.getString(R.string.reminder_time), formattedTime(item.log?.scheduledAt ?: item.scheduledAt))
                 if (item.log == null) item.snoozedUntil?.let {
                     DoseDetail(context.getString(R.string.snoozed_until), formattedTime(it))
