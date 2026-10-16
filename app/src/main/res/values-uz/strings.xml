@@ -234,4 +234,7 @@
     <string name="taken_at">"Qabul vaqti"</string>
     <string name="acceptance_time_error">"Bugun allaqachon oʻtgan vaqtni tanlang."</string>
     <string name="today_time_error">"Bugun boshqa dozalardan farqli kelajak vaqtni tanlang. Qayd etilgan dozalarni koʻchirish mumkin emas."</string>
+    <string name="widget_name">"Dose · Bugun"</string>
+    <string name="widget_description">"Bugungi navbatdagi qayd etilmagan doza va uning vaqti."</string>
+    <string name="widget_open_today">"Bugunni ochish uchun bosing"</string>
 </resources>

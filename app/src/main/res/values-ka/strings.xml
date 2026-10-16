@@ -234,4 +234,7 @@
     <string name="taken_at">"მიღების დრო"</string>
     <string name="acceptance_time_error">"აირჩიეთ დღევანდელი უკვე გასული დრო."</string>
     <string name="today_time_error">"აირჩიეთ დღევანდელი მომავალი დრო, სხვა დოზებისგან განსხვავებული. აღრიცხული დოზა ვერ გადაიტანება."</string>
+    <string name="widget_name">"Dose · დღეს"</string>
+    <string name="widget_description">"დღევანდელი შემდეგი აღურიცხავი დოზა და მისი დრო."</string>
+    <string name="widget_open_today">"შეეხეთ დღევანდელი განრიგის გასახსნელად"</string>
 </resources>

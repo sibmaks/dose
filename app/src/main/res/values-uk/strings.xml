@@ -234,4 +234,7 @@
     <string name="taken_at">"Час прийому"</string>
     <string name="acceptance_time_error">"Виберіть час сьогодні, який уже настав."</string>
     <string name="today_time_error">"Виберіть майбутній час сьогодні, відмінний від інших доз. Відмічені дози перенести не можна."</string>
+    <string name="widget_name">"Dose · Сьогодні"</string>
+    <string name="widget_description">"Найближча невідмічена доза на сьогодні та час її прийому."</string>
+    <string name="widget_open_today">"Натисніть, щоб відкрити «Сьогодні»"</string>
 </resources>

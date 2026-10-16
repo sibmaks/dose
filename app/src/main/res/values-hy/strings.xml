@@ -234,4 +234,7 @@
     <string name="taken_at">"Ընդունման ժամը"</string>
     <string name="acceptance_time_error">"Ընտրեք այսօրվա արդեն անցած ժամը։"</string>
     <string name="today_time_error">"Ընտրեք այսօրվա ապագա ժամ՝ տարբեր մյուս դեղաչափերից։ Գրանցված դեղաչափերը տեղափոխել չի կարելի։"</string>
+    <string name="widget_name">"Dose · Այսօր"</string>
+    <string name="widget_description">"Այսօրվա հաջորդ չգրանցված դեղաչափը և ժամը։"</string>
+    <string name="widget_open_today">"Սեղմեք՝ «Այսօր»-ը բացելու համար"</string>
 </resources>

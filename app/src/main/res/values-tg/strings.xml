@@ -234,4 +234,7 @@
     <string name="taken_at">"Вақти қабул"</string>
     <string name="acceptance_time_error">"Вақти аллакай гузаштаи имрӯзро интихоб кунед."</string>
     <string name="today_time_error">"Вақти ояндаи имрӯзро аз вояҳои дигар фарқкунанда интихоб кунед. Вояҳои сабтшударо кӯчондан мумкин нест."</string>
+    <string name="widget_name">"Dose · Имрӯз"</string>
+    <string name="widget_description">"Вояи навбатии сабтнашудаи имрӯз ва вақти он."</string>
+    <string name="widget_open_today">"Барои кушодани «Имрӯз» пахш кунед"</string>
 </resources>

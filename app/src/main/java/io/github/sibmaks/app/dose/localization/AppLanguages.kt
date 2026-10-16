@@ -40,6 +40,7 @@ object AppLanguages {
         } else {
             preferences(context).edit().putString("language", tag).commit()
         }
+        io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(context)
     }
 
     fun wrap(context: Context): Context {

@@ -49,6 +49,10 @@ Translations have resource/format validation but have not been reviewed by nativ
 - Times follow the device's local time zone. Daylight-saving gaps and overlaps use Java's `ZonedDateTime` resolution (gaps move forward, overlaps use the earlier offset).
 - Existing daily medications migrate automatically to a daily rule. Recognizable dosage text such as `500 mg` splits into amount and unit; other text is preserved. IDs, colors, instructions, pause state, and dose history remain intact.
 
+## Home-screen widget
+
+Add **Dose · Today** from the Android launcher’s widget picker. It shows the earliest pending dose for today, its reminder time, medication form, and dosage. A due/overdue dose stays visible until resolved. Snoozes and today-only changes are reflected; completed/empty days show no pending dose. Tap it to open Today. It refreshes on dose actions, scheduled time transitions, midnight, clock/time-zone changes, reboot, and language changes, with Android’s periodic widget updates as a fallback.
+
 ## Delay report
 
 Delay is the time from the original scheduled deadline to the recorded acceptance time. Taken uses the actual click time; On Time explicitly uses the original scheduled instant, even after snoozing, and contributes zero delay. The original click timestamp is also retained. Early clicks contribute zero delay; skipped and unrecorded doses are excluded. The average is weighted by taken doses, not by medication. Reporting periods use the scheduled date, including doses taken after midnight. Snoozing does not move the report baseline.

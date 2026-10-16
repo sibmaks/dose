@@ -64,12 +64,14 @@ object ReminderScheduler {
         }
         prefs.edit().putStringSet(SLOTS, newSlots).commit()
         rescheduleSnoozes(app, manager)
+        io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(app)
     }
 
 
     /** Only updates the affected slot so simultaneous alarms are not accidentally canceled. */
     @Synchronized
     fun refreshSlot(context: Context, medicationId: String, time: String) {
+        io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(context)
         val app = context.applicationContext
         val manager = app.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         manager.cancel(primaryIntent(app, medicationId, time))
@@ -98,6 +100,7 @@ object ReminderScheduler {
         val key = DoseLogic.slotKey(date, medicationId, time)
         DoseStore.putSnooze(context, key, until)
         scheduleSnooze(context, medicationId, time, date, until)
+        io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(context)
     }
 
     fun cancelSnooze(context: Context, medicationId: String, time: String, date: String) {

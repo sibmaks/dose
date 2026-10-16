@@ -234,4 +234,7 @@
     <string name="taken_at">"Ora administrării"</string>
     <string name="acceptance_time_error">"Alegeți o oră de astăzi care a trecut deja."</string>
     <string name="today_time_error">"Alegeți o oră viitoare astăzi, diferită de celelalte doze. Dozele înregistrate nu pot fi mutate."</string>
+    <string name="widget_name">"Dose · Astăzi"</string>
+    <string name="widget_description">"Următoarea doză neînregistrată de astăzi și ora ei."</string>
+    <string name="widget_open_today">"Atingeți pentru a deschide Astăzi"</string>
 </resources>

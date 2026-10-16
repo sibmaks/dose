@@ -1,6 +1,11 @@
 package io.github.sibmaks.app.dose
 
 import android.os.Bundle
+import android.content.Intent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableIntStateOf
+import io.github.sibmaks.app.dose.widget.DoseWidget
 import android.content.Context
 import io.github.sibmaks.app.dose.localization.AppLanguages
 import androidx.activity.ComponentActivity
@@ -12,15 +17,23 @@ import io.github.sibmaks.app.dose.ui.DoseApp
 import io.github.sibmaks.app.dose.ui.DoseTheme
 
 class MainActivity : ComponentActivity() {
+    private var todayRequests by mutableIntStateOf(0)
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (intent.getBooleanExtra(DoseWidget.OPEN_TODAY, false)) todayRequests++
+    }
+
     override fun attachBaseContext(newBase: Context) { super.attachBaseContext(AppLanguages.wrap(newBase)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (intent.getBooleanExtra(DoseWidget.OPEN_TODAY, false)) todayRequests++
         enableEdgeToEdge()
         ReminderNotifications.createChannel(this)
         ReminderScheduler.scheduleAll(this)
         setContent {
-            DoseTheme { DoseApp() }
+            DoseTheme { DoseApp(todayRequests) }
         }
     }
 }

@@ -234,4 +234,7 @@
     <string name="taken_at">"Qəbul vaxtı"</string>
     <string name="acceptance_time_error">"Bu gün artıq keçmiş vaxtı seçin."</string>
     <string name="today_time_error">"Bu gün digər dozalardan fərqli gələcək vaxt seçin. Qeyd edilmiş dozalar dəyişdirilə bilməz."</string>
+    <string name="widget_name">"Dose · Bu gün"</string>
+    <string name="widget_description">"Bu günün növbəti qeyd edilməmiş dozası və vaxtı."</string>
+    <string name="widget_open_today">"Bu günü açmaq üçün toxunun"</string>
 </resources>

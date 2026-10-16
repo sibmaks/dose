@@ -19,6 +19,7 @@ import java.time.LocalDate
 
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        try {
         val slot = ReminderSlot.from(intent) ?: return
         val id = slot.medicationId
         val time = slot.time
@@ -64,6 +65,7 @@ class ReminderReceiver : BroadcastReceiver() {
                 ReminderAlerts.show(context, slot)
             }
         }
+        } finally { io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(context) }
     }
 
     private fun notify(

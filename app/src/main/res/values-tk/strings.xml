@@ -234,4 +234,7 @@
     <string name="taken_at">"Kabul edilen wagty"</string>
     <string name="acceptance_time_error">"Şu gün eýýäm geçen wagty saýlaň."</string>
     <string name="today_time_error">"Şu gün beýleki dozalaryňkydan tapawutly geljek wagty saýlaň. Bellige alnan dozalary süýşürip bolmaýar."</string>
+    <string name="widget_name">"Dose · Şu gün"</string>
+    <string name="widget_description">"Şu günki indiki bellige alynmadyk doza we onuň wagty."</string>
+    <string name="widget_open_today">"Şu güni açmak üçin basyň"</string>
 </resources>

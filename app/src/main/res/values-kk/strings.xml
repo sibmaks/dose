@@ -234,4 +234,7 @@
     <string name="taken_at">"Қабылдау уақыты"</string>
     <string name="acceptance_time_error">"Бүгінгі өтіп кеткен уақытты таңдаңыз."</string>
     <string name="today_time_error">"Бүгінгі басқа дозалардан бөлек болашақ уақытты таңдаңыз. Белгіленген дозаны жылжыту мүмкін емес."</string>
+    <string name="widget_name">"Dose · Бүгін"</string>
+    <string name="widget_description">"Бүгінгі келесі белгіленбеген доза және оның уақыты."</string>
+    <string name="widget_open_today">"«Бүгін» бетін ашу үшін түртіңіз"</string>
 </resources>

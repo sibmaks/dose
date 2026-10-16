@@ -83,7 +83,7 @@ private enum class Tab(val title: Int, val icon: ImageVector) {
 }
 
 @Composable
-fun DoseApp() {
+fun DoseApp(openTodayRequest: Int = 0) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var revision by remember { mutableIntStateOf(0) }
@@ -95,6 +95,15 @@ fun DoseApp() {
     var showReminderSettings by rememberSaveable { mutableStateOf(!ReminderAlerts.setupOffered(context)) }
     var showLanguagePicker by rememberSaveable { mutableStateOf(!AppLanguages.offered(context)) }
     val firstLanguageOffer = !AppLanguages.offered(context)
+    LaunchedEffect(openTodayRequest) {
+        if (openTodayRequest > 0) {
+            pagerState.scrollToPage(Tab.Today.ordinal)
+            showEditor = false
+            todayDoseId = null
+            if (ReminderAlerts.setupOffered(context)) showReminderSettings = false
+            if (AppLanguages.offered(context)) showLanguagePicker = false
+        }
+    }
     val medications = remember(revision) { DoseStore.medications(context) }
     val editing = medications.find { it.id == editingId }
     val logs = remember(revision) { DoseStore.logs(context) }
