@@ -57,7 +57,8 @@ internal fun MedicationEditor(
     val context = LocalContext.current
     var name by rememberSaveable { mutableStateOf(original?.name.orEmpty()) }
     var amount by rememberSaveable { mutableStateOf(original?.amount.orEmpty()) }
-    var quantity by rememberSaveable { mutableStateOf(original?.quantity ?: "mg") }
+    var quantity by rememberSaveable { mutableStateOf(original?.quantity ?: DoseUnits.defaultFor(MedicationForm.PILL)) }
+    var automaticUnit by rememberSaveable { mutableStateOf(original == null) }
     var form by rememberSaveable { mutableStateOf(original?.form ?: MedicationForm.PILL) }
     var customForm by rememberSaveable { mutableStateOf(original?.customForm.orEmpty()) }
     var note by rememberSaveable { mutableStateOf(original?.note.orEmpty()) }
@@ -80,6 +81,14 @@ internal fun MedicationEditor(
     val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
     LaunchedEffect(step) { scroll.scrollTo(0) }
 
+    fun chooseForm(chosen: MedicationForm) {
+        quantity = DoseUnits.forFormChange(chosen, quantity, automaticUnit)
+        form = chosen
+    }
+    fun chooseUnit(chosen: String) {
+        quantity = chosen.take(40)
+        automaticUnit = false
+    }
     fun previous() {
         keyboard?.hide()
         if (step == MedicationStep.NAME) onDismiss() else step = MedicationEditorFlow.previous(step, form)
@@ -148,7 +157,7 @@ internal fun MedicationEditor(
                                 Text(context.getString(R.string.name_suggestions), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                 suggestions.forEach { suggestion ->
                                     Surface(onClick = {
-                                        name = suggestion.name; form = suggestion.form; customForm = if (suggestion.customForm.isBlank()) "" else suggestion.localizedForm(context)
+                                        name = suggestion.name; chooseForm(suggestion.form); customForm = if (suggestion.customForm.isBlank()) "" else suggestion.localizedForm(context)
                                         suggestedForm = suggestion.localizedForm(context); showSuggestions = false; keyboard?.hide()
                                     }, shape = RoundedCornerShape(13.dp), color = Color(0xFFF5F2FF), modifier = Modifier.fillMaxWidth()) {
                                         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -182,7 +191,7 @@ internal fun MedicationEditor(
                             Text(context.getString(R.string.choose_form, name), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                             if (suggestedForm != null) Text(context.getString(R.string.change_suggested_form, suggestedForm.orEmpty()), color = TextMuted, fontSize = 13.sp)
                             MedicationForm.entries.forEach { choice ->
-                                Surface(onClick = { form = choice }, shape = RoundedCornerShape(14.dp),
+                                Surface(onClick = { chooseForm(choice) }, shape = RoundedCornerShape(14.dp),
                                     color = if (form == choice) Color(0xFFF0ECFF) else Color(0xFFF8F9FD), modifier = Modifier.fillMaxWidth()) {
                                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                         Icon(painterResource(choice.iconResource()), null, tint = Violet, modifier = Modifier.size(30.dp))
@@ -202,12 +211,12 @@ internal fun MedicationEditor(
                             OutlinedTextField(amount, { amount = it.take(70) }, label = { Text(context.getString(R.string.amount)) }, placeholder = { Text(context.getString(R.string.e_g_500)) },
                                 isError = showValidation && amount.isBlank(), supportingText = { if (showValidation && amount.isBlank()) Text(context.getString(R.string.amount_required)) },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true, modifier = Modifier.fillMaxWidth())
-                            OutlinedTextField(localizedUnit(context, quantity), { quantity = it.take(40) }, label = { Text(context.getString(R.string.unit)) }, placeholder = { Text(context.getString(R.string.choose_below_or_type_your_own)) },
+                            OutlinedTextField(localizedUnit(context, quantity), ::chooseUnit, label = { Text(context.getString(R.string.unit)) }, placeholder = { Text(context.getString(R.string.choose_below_or_type_your_own)) },
                                 isError = showValidation && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount),
                                 supportingText = { if (showValidation && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount)) Text(context.getString(R.string.unit_required)) },
                                 singleLine = true, modifier = Modifier.fillMaxWidth())
                             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                DoseUnits.common.forEach { unit -> FilterChip(selected = quantity == unit, onClick = { quantity = unit }, label = { Text(localizedUnit(context, unit)) }) }
+                                DoseUnits.common.forEach { unit -> FilterChip(selected = quantity == unit, onClick = { chooseUnit(unit) }, label = { Text(localizedUnit(context, unit)) }) }
                             }
                         }
                         MedicationStep.SCHEDULE -> {

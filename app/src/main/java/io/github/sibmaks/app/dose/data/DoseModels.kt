@@ -121,6 +121,20 @@ data class Medication(
 
 object DoseUnits {
     val common = listOf("mg", "ml", "g", "mcg", "IU", "tablet", "capsule", "drop", "spray", "puff")
+    fun defaultFor(form: MedicationForm): String = when (form) {
+        MedicationForm.PILL -> "tablet"
+        MedicationForm.CAPSULE -> "capsule"
+        MedicationForm.LIQUID, MedicationForm.INJECTION -> "ml"
+        MedicationForm.SPRAY -> "spray"
+        MedicationForm.DROPS -> "drop"
+        MedicationForm.CREAM -> "g"
+        MedicationForm.OTHER -> ""
+    }
+
+    /** Only an untouched default follows form changes; saved and user-entered units stay intact. */
+    fun forFormChange(form: MedicationForm, current: String, automatic: Boolean): String =
+        if (automatic) defaultFor(form) else current
+
     /** Preserve unstructured legacy text instead of discarding or guessing it. */
     fun splitLegacy(dose: String): Pair<String, String> {
         val match = Regex("^([0-9]+(?:[.,][0-9]+)?(?:/[0-9]+)?)\\s+(.+)$").matchEntire(dose.trim())
