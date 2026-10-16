@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"Равзана болои барномаҳо"</string>
     <string name="overlay_hint">"Намоиши равзанаи дору болои барномаи кушода."</string>
     <string name="reminders_disabled_hint">"Ҳар ду усул хомӯш мешаванд. Ҷадвалҳо нигоҳ дошта мешаванд."</string>
-    <string name="reminder_access_hint">"Сипас иҷозатҳои зарурии Android-ро диҳед."</string>
     <string name="reminder_ready_hint">"Пас аз додани иҷозатҳо занг бунафш мешавад."</string>
     <string name="display_over_other_apps">"Болои дигар барномаҳо"</string>
     <string name="exact_alarms">"Зангҳои дақиқ"</string>
@@ -225,7 +224,6 @@
     <string name="upcoming_dose">"Қабули оянда"</string>
     <string name="on_time">"Сари вақт"</string>
     <string name="close_screen">"Бастани экран"</string>
-    <string name="reminder_permission_intro">"Барои ёдраскуниҳо дар рӯйхат ва болои барномаҳо Dose ба ду иҷозат ниёз дорад: огоҳиҳо ва намоиш болои дигар барномаҳо. Усулҳои дилхоҳро интихоб кунед. Барои вақти дақиқ Android метавонад иҷозати зангҳо ва ёдраскуниҳоро низ талаб кунад."</string>
     <string name="save">"Захира кардан"</string>
     <string name="instructions">"Дастурҳо"</string>
     <string name="instructions_required">"Дастурҳоро ворид кунед ё илова кардани онҳоро хомӯш кунед."</string>
@@ -237,4 +235,11 @@
     <string name="widget_name">"Dose · Имрӯз"</string>
     <string name="widget_description">"Вояи навбатии сабтнашудаи имрӯз ва вақти он."</string>
     <string name="widget_open_today">"Барои кушодани «Имрӯз» пахш кунед"</string>
+    <string name="reminder_permission_intro">"Dose барои ёдрасӣ ду иҷозати Android-ро истифода мебарад: огоҳиҳо ва равзанаҳо болои барномаҳои дигар. Усулҳои дилхоҳро интихоб кунед."</string>
+    <string name="pause_notifications">"Таваққуфи ҳамаи огоҳиҳо"</string>
+    <string name="pause_hours">"Соат"</string>
+    <string name="pause_days">"Рӯз"</string>
+    <string name="notifications_paused_until">"Огоҳиҳо то %1$s таваққуф карда шудаанд"</string>
+    <string name="resume_notifications">"Огоҳиҳоро ҳозир идома додан"</string>
+    <string name="pause_time_error">"Давомнокии мусбатро ворид кунед ё сана ва вақти ояндаро интихоб кунед."</string>
 </resources>

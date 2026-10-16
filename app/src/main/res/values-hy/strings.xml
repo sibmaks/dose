@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"Պատուհան այլ հավելվածների վրայից"</string>
     <string name="overlay_hint">"Ցուցադրել դեղի պատուհանը բաց հավելվածի վրայից։"</string>
     <string name="reminders_disabled_hint">"Երկու եղանակն էլ կանջատվեն։ Ժամանակացույցերը կպահպանվեն։"</string>
-    <string name="reminder_access_hint">"Հաջորդիվ տրամադրեք անհրաժեշտ Android թույլտվությունները։"</string>
     <string name="reminder_ready_hint">"Զանգը կդառնա մանուշակագույն, երբ թույլտվությունները պատրաստ լինեն։"</string>
     <string name="display_over_other_apps">"Այլ հավելվածների վրայից"</string>
     <string name="exact_alarms">"Ճշգրիտ ազդանշաններ"</string>
@@ -225,7 +224,6 @@
     <string name="upcoming_dose">"Առաջիկա ընդունում"</string>
     <string name="on_time">"Ժամանակին"</string>
     <string name="close_screen">"Փակել էկրանը"</string>
-    <string name="reminder_permission_intro">"Ծանուցումների ցանկում և այլ հավելվածների վրայից հիշեցնելու համար Dose-ին անհրաժեշտ է երկու թույլտվություն՝ ծանուցումներ և այլ հավելվածների վրայից ցուցադրում։ Ընտրեք եղանակները։ Ճշգրիտ ժամի համար Android-ը կարող է նաև պահանջել զարթուցիչների և հիշեցումների հասանելիություն։"</string>
     <string name="save">"Պահպանել"</string>
     <string name="instructions">"Հրահանգներ"</string>
     <string name="instructions_required">"Մուտքագրեք հրահանգները կամ անջատեք դրանց ավելացումը։"</string>
@@ -237,4 +235,11 @@
     <string name="widget_name">"Dose · Այսօր"</string>
     <string name="widget_description">"Այսօրվա հաջորդ չգրանցված դեղաչափը և ժամը։"</string>
     <string name="widget_open_today">"Սեղմեք՝ «Այսօր»-ը բացելու համար"</string>
+    <string name="reminder_permission_intro">"Dose-ը հիշեցումների համար օգտագործում է Android-ի երկու թույլտվություն՝ ծանուցումներ և այլ հավելվածների վրայի պատուհաններ։ Ընտրեք հիշեցման եղանակները։"</string>
+    <string name="pause_notifications">"Դադարեցնել բոլոր ծանուցումները"</string>
+    <string name="pause_hours">"Ժամեր"</string>
+    <string name="pause_days">"Օրեր"</string>
+    <string name="notifications_paused_until">"Ծանուցումները դադարեցված են մինչև %1$s"</string>
+    <string name="resume_notifications">"Վերսկսել ծանուցումները հիմա"</string>
+    <string name="pause_time_error">"Մուտքագրեք դրական տևողություն կամ ընտրեք ապագա ամսաթիվ և ժամ։"</string>
 </resources>

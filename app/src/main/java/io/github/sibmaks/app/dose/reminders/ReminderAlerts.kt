@@ -58,11 +58,11 @@ object ReminderAlerts {
         context.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}")))
     }
     fun show(context: Context, slot: ReminderSlot) {
-        if (!enabled(context) || !permissionGranted(context)) return
+        if (NotificationPause.isPaused(context) || !enabled(context) || !permissionGranted(context)) return
         start(context, slot.putInto(Intent(context, ReminderOverlayService::class.java)))
     }
     fun preview(context: Context): Boolean {
-        if (!permissionGranted(context)) return false
+        if (NotificationPause.isPaused(context) || !permissionGranted(context)) return false
         return start(context, Intent(context, ReminderOverlayService::class.java).putExtra(ReminderOverlayService.EXTRA_PREVIEW, true))
     }
     private fun start(context: Context, intent: Intent): Boolean = try {

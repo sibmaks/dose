@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"ფანჯარა სხვა აპების ზემოთ"</string>
     <string name="overlay_hint">"წამლის ფანჯრის ჩვენება გახსნილი აპის ზემოთ."</string>
     <string name="reminders_disabled_hint">"ორივე გზა გამოირთვება. განრიგები შენარჩუნდება."</string>
-    <string name="reminder_access_hint">"შემდეგ მიანიჭეთ საჭირო Android-ის ნებართვები."</string>
     <string name="reminder_ready_hint">"ნებართვების მინიჭების შემდეგ ზარი იისფერი გახდება."</string>
     <string name="display_over_other_apps">"სხვა აპების ზემოთ ჩვენება"</string>
     <string name="exact_alarms">"ზუსტი მაღვიძარები"</string>
@@ -225,7 +224,6 @@
     <string name="upcoming_dose">"მომავალი მიღება"</string>
     <string name="on_time">"დროულად"</string>
     <string name="close_screen">"ეკრანის დახურვა"</string>
-    <string name="reminder_permission_intro">"შეტყობინებების სიაში და სხვა აპების ზემოთ შეხსენებისთვის Dose-ს ორი ნებართვა სჭირდება: შეტყობინებები და სხვა აპების ზემოთ ჩვენება. აირჩიეთ სასურველი გზები. ზუსტი დროისთვის Android-მა შეიძლება მაღვიძარებისა და შეხსენებების ნებართვაც მოითხოვოს."</string>
     <string name="save">"შენახვა"</string>
     <string name="instructions">"ინსტრუქციები"</string>
     <string name="instructions_required">"შეიყვანეთ ინსტრუქციები ან გამორთეთ მათი დამატება."</string>
@@ -237,4 +235,11 @@
     <string name="widget_name">"Dose · დღეს"</string>
     <string name="widget_description">"დღევანდელი შემდეგი აღურიცხავი დოზა და მისი დრო."</string>
     <string name="widget_open_today">"შეეხეთ დღევანდელი განრიგის გასახსნელად"</string>
+    <string name="reminder_permission_intro">"Dose შეხსენებებისთვის Android-ის ორ ნებართვას იყენებს: შეტყობინებებს და სხვა აპებზე გამოსაჩენ ფანჯრებს. აირჩიეთ შეხსენების გზები."</string>
+    <string name="pause_notifications">"ყველა შეტყობინების შეჩერება"</string>
+    <string name="pause_hours">"საათი"</string>
+    <string name="pause_days">"დღე"</string>
+    <string name="notifications_paused_until">"შეტყობინებები შეჩერებულია %1$s-მდე"</string>
+    <string name="resume_notifications">"შეტყობინებების ახლა განახლება"</string>
+    <string name="pause_time_error">"შეიყვანეთ დადებითი ხანგრძლივობა ან აირჩიეთ მომავალი თარიღი და დრო."</string>
 </resources>

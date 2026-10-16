@@ -63,6 +63,7 @@ object ReminderScheduler {
             }
         }
         prefs.edit().putStringSet(SLOTS, newSlots).commit()
+        NotificationPause.restore(app)
         rescheduleSnoozes(app, manager)
         io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(app)
     }

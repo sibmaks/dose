@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"Вікно поверх програм"</string>
     <string name="overlay_hint">"Показувати вікно прийому поверх відкритої програми."</string>
     <string name="reminders_disabled_hint">"Обидва способи буде вимкнено. Розклади збережуться."</string>
-    <string name="reminder_access_hint">"Далі надайте потрібні дозволи Android."</string>
     <string name="reminder_ready_hint">"Дзвіночок стане фіолетовим, коли дозволи буде надано."</string>
     <string name="display_over_other_apps">"Поверх інших програм"</string>
     <string name="exact_alarms">"Точні нагадування"</string>
@@ -225,7 +224,6 @@
     <string name="upcoming_dose">"Майбутній прийом"</string>
     <string name="on_time">"Вчасно"</string>
     <string name="close_screen">"Закрити екран"</string>
-    <string name="reminder_permission_intro">"Для нагадувань у стрічці й поверх програм Dose потрібні два дозволи: сповіщення й показ поверх інших програм. Виберіть потрібні способи. Для точного часу Android також може запросити доступ до будильників і нагадувань."</string>
     <string name="save">"Зберегти"</string>
     <string name="instructions">"Інструкції"</string>
     <string name="instructions_required">"Введіть інструкції або вимкніть їх додавання."</string>
@@ -237,4 +235,11 @@
     <string name="widget_name">"Dose · Сьогодні"</string>
     <string name="widget_description">"Найближча невідмічена доза на сьогодні та час її прийому."</string>
     <string name="widget_open_today">"Натисніть, щоб відкрити «Сьогодні»"</string>
+    <string name="reminder_permission_intro">"Для нагадувань Dose використовує два дозволи Android: сповіщення у стрічці та вікна поверх інших застосунків. Виберіть потрібні способи."</string>
+    <string name="pause_notifications">"Призупинити всі сповіщення"</string>
+    <string name="pause_hours">"Години"</string>
+    <string name="pause_days">"Дні"</string>
+    <string name="notifications_paused_until">"Сповіщення призупинено до %1$s"</string>
+    <string name="resume_notifications">"Відновити сповіщення зараз"</string>
+    <string name="pause_time_error">"Введіть додатну тривалість або виберіть майбутню дату й час."</string>
 </resources>

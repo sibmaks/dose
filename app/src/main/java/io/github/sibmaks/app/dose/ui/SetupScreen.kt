@@ -23,7 +23,7 @@ import io.github.sibmaks.app.dose.R
 @Composable
 internal fun SetupScreen(title: String, onClose: () -> Unit, primaryLabel: String, onPrimary: () -> Unit,
                          secondaryLabel: String, onSecondary: () -> Unit = onClose,
-                         onBack: () -> Unit = onClose, pageKey: Any? = null,
+                         onBack: () -> Unit = onClose, pageKey: Any? = null, showSecondary: Boolean = true,
                          content: @Composable ColumnScope.() -> Unit) {
     BackHandler(onBack = onBack)
     val scroll = rememberScrollState()
@@ -40,7 +40,7 @@ internal fun SetupScreen(title: String, onClose: () -> Unit, primaryLabel: Strin
                 Column(Modifier.weight(1f).verticalScroll(scroll).padding(horizontal = 20.dp, vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
                 Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    OutlinedButton(onClick = onSecondary, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) {
+                    if (showSecondary) OutlinedButton(onClick = onSecondary, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) {
                         Text(secondaryLabel, fontWeight = FontWeight.Bold)
                     }
                     Button(onClick = onPrimary, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) {

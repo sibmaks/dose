@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"Окно поверх приложений"</string>
     <string name="overlay_hint">"Показывать окно приёма поверх открытого приложения."</string>
     <string name="reminders_disabled_hint">"Оба способа будут отключены. Расписания сохранятся."</string>
-    <string name="reminder_access_hint">"Далее предоставьте необходимые разрешения Android."</string>
     <string name="reminder_ready_hint">"Колокольчик станет фиолетовым, когда разрешения будут предоставлены."</string>
     <string name="display_over_other_apps">"Поверх других приложений"</string>
     <string name="exact_alarms">"Точные напоминания"</string>
@@ -225,7 +224,6 @@
     <string name="upcoming_dose">"Предстоящий приём"</string>
     <string name="on_time">"Вовремя"</string>
     <string name="close_screen">"Закрыть экран"</string>
-    <string name="reminder_permission_intro">"Для напоминаний в ленте и поверх приложений Dose нужны два разрешения: уведомления и показ поверх других приложений. Выберите нужные способы. Для точного времени Android также может запросить доступ к будильникам и напоминаниям."</string>
     <string name="save">"Сохранить"</string>
     <string name="instructions">"Инструкции"</string>
     <string name="instructions_required">"Введите инструкции или отключите «Добавить инструкции»."</string>
@@ -237,4 +235,11 @@
     <string name="widget_name">"Dose · Сегодня"</string>
     <string name="widget_description">"Ближайшая неотмеченная доза на сегодня и время её приёма."</string>
     <string name="widget_open_today">"Нажмите, чтобы открыть «Сегодня»"</string>
+    <string name="reminder_permission_intro">"Для напоминаний Dose использует два разрешения Android: уведомления в ленте и всплывающие окна поверх других приложений. Выберите нужные способы."</string>
+    <string name="pause_notifications">"Приостановить все уведомления"</string>
+    <string name="pause_hours">"Часы"</string>
+    <string name="pause_days">"Дни"</string>
+    <string name="notifications_paused_until">"Уведомления приостановлены до %1$s"</string>
+    <string name="resume_notifications">"Возобновить уведомления сейчас"</string>
+    <string name="pause_time_error">"Введите положительную длительность или выберите будущую дату и время."</string>
 </resources>

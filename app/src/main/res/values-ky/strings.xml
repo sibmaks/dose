@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"Колдонмолордун үстүндөгү терезе"</string>
     <string name="overlay_hint">"Ачык колдонмонун үстүндө дары терезесин көрсөтүү."</string>
     <string name="reminders_disabled_hint">"Эки ыкма тең өчүрүлөт. Жадыбалдар сакталат."</string>
-    <string name="reminder_access_hint">"Эми керектүү Android уруксаттарын бериңиз."</string>
     <string name="reminder_ready_hint">"Уруксаттар берилгенде коңгуроо кызгылт көк болот."</string>
     <string name="display_over_other_apps">"Башка колдонмолордун үстүнөн"</string>
     <string name="exact_alarms">"Так ойготкучтар"</string>
@@ -225,7 +224,6 @@
     <string name="upcoming_dose">"Алдыдагы кабыл алуу"</string>
     <string name="on_time">"Өз убагында"</string>
     <string name="close_screen">"Экранды жабуу"</string>
-    <string name="reminder_permission_intro">"Тизмеде жана колдонмолордун үстүндө эскертүү үчүн Dose эки уруксатты талап кылат: билдирмелер жана башка колдонмолордун үстүнөн көрсөтүү. Каалаган ыкмаларды тандаңыз. Так убакыт үчүн Android ойготкучтарга уруксат да сурашы мүмкүн."</string>
     <string name="save">"Сактоо"</string>
     <string name="instructions">"Нускамалар"</string>
     <string name="instructions_required">"Нускамаларды жазыңыз же аларды кошууну өчүрүңүз."</string>
@@ -237,4 +235,11 @@
     <string name="widget_name">"Dose · Бүгүн"</string>
     <string name="widget_description">"Бүгүнкү кийинки белгиленбеген доза жана анын убактысы."</string>
     <string name="widget_open_today">"«Бүгүн» барагын ачуу үчүн басыңыз"</string>
+    <string name="reminder_permission_intro">"Dose эскертүүлөр үчүн Android тутумунун эки уруксатын колдонот: билдирүүлөр жана башка колдонмолордун үстүндөгү терезелер. Керектүү ыкмаларды тандаңыз."</string>
+    <string name="pause_notifications">"Бардык билдирүүлөрдү тындыруу"</string>
+    <string name="pause_hours">"Саат"</string>
+    <string name="pause_days">"Күн"</string>
+    <string name="notifications_paused_until">"Билдирүүлөр %1$s чейин тындырылды"</string>
+    <string name="resume_notifications">"Билдирүүлөрдү азыр улантуу"</string>
+    <string name="pause_time_error">"Оң узактыкты жазыңыз же келечектеги күндү жана убакытты тандаңыз."</string>
 </resources>

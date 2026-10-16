@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"Ilovalar ustidagi oyna"</string>
     <string name="overlay_hint">"Ochiq ilova ustida dori oynasini koʻrsatish."</string>
     <string name="reminders_disabled_hint">"Ikkala usul oʻchiriladi. Jadvallar saqlanadi."</string>
-    <string name="reminder_access_hint">"Keyin zarur Android ruxsatlarini bering."</string>
     <string name="reminder_ready_hint">"Ruxsatlar berilganda qoʻngʻiroq binafsha boʻladi."</string>
     <string name="display_over_other_apps">"Boshqa ilovalar ustida"</string>
     <string name="exact_alarms">"Aniq signallar"</string>
@@ -225,7 +224,6 @@
     <string name="upcoming_dose">"Kelgusi qabul"</string>
     <string name="on_time">"Oʻz vaqtida"</string>
     <string name="close_screen">"Ekranni yopish"</string>
-    <string name="reminder_permission_intro">"Roʻyxatda va ilovalar ustida eslatish uchun Dose ikki ruxsatga muhtoj: bildirishnomalar va boshqa ilovalar ustida koʻrsatish. Kerakli usullarni tanlang. Aniq vaqt uchun Android signal va eslatmalarga ruxsat ham soʻrashi mumkin."</string>
     <string name="save">"Saqlash"</string>
     <string name="instructions">"Koʻrsatmalar"</string>
     <string name="instructions_required">"Koʻrsatmalarni kiriting yoki ularni qoʻshishni oʻchiring."</string>
@@ -237,4 +235,11 @@
     <string name="widget_name">"Dose · Bugun"</string>
     <string name="widget_description">"Bugungi navbatdagi qayd etilmagan doza va uning vaqti."</string>
     <string name="widget_open_today">"Bugunni ochish uchun bosing"</string>
+    <string name="reminder_permission_intro">"Dose eslatmalar uchun ikkita Android ruxsatidan foydalanadi: bildirishnomalar va boshqa ilovalar ustidagi oynalar. Kerakli usullarni tanlang."</string>
+    <string name="pause_notifications">"Barcha bildirishnomalarni toʻxtatib turish"</string>
+    <string name="pause_hours">"Soat"</string>
+    <string name="pause_days">"Kun"</string>
+    <string name="notifications_paused_until">"Bildirishnomalar %1$s gacha toʻxtatildi"</string>
+    <string name="resume_notifications">"Bildirishnomalarni hozir davom ettirish"</string>
+    <string name="pause_time_error">"Musbat davomiylikni kiriting yoki kelajak sana va vaqtni tanlang."</string>
 </resources>

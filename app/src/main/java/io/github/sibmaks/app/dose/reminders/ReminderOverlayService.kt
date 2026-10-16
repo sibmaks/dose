@@ -35,7 +35,7 @@ class ReminderOverlayService : Service() {
     private val expire = Runnable { finishAlert() }
     private val reconcile = object : Runnable {
         override fun run() {
-            if (!ReminderAlerts.permissionGranted(this@ReminderOverlayService) || (!preview && !ReminderAlerts.enabled(this@ReminderOverlayService))) {
+            if (NotificationPause.isPaused(this@ReminderOverlayService) || !ReminderAlerts.permissionGranted(this@ReminderOverlayService) || (!preview && !ReminderAlerts.enabled(this@ReminderOverlayService))) {
                 finishAlert(); return
             }
             val medications = DoseStore.medications(this@ReminderOverlayService)
@@ -67,14 +67,14 @@ class ReminderOverlayService : Service() {
         val newAlert = if (slot != null) slot.key !in slots else isPreview && slots.isEmpty()
         if (slot != null) { preview = false; slots[slot.key] = slot }
         else if (isPreview && slots.isEmpty()) preview = true
-        if (!ReminderAlerts.permissionGranted(this) || (!preview && !ReminderAlerts.enabled(this)) || (!preview && slots.isEmpty())) {
+        if (NotificationPause.isPaused(this) || !ReminderAlerts.permissionGranted(this) || (!preview && !ReminderAlerts.enabled(this)) || (!preview && slots.isEmpty())) {
             finishAlert(); return START_NOT_STICKY
         }
         handler.removeCallbacks(expire)
         handler.postDelayed(expire, 120_000)
         handler.removeCallbacks(reconcile)
         reconcile.run()
-        if (newAlert && window != null) ReminderHaptics.vibrate(this)
+        if (newAlert && window != null && !NotificationPause.isPaused(this)) ReminderHaptics.vibrate(this)
         return START_NOT_STICKY
     }
 

@@ -29,6 +29,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/upcoming_dose_widget" />
         </receiver>
         <receiver android:name=".reminders.ReminderReceiver" android:exported="false" />
+        <receiver android:name=".reminders.NotificationPauseReceiver" android:exported="false" />
         <receiver android:name=".reminders.RestoreReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

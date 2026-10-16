@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"Pop-up over other apps"</string>
     <string name="overlay_hint">"Show a medication window above the app you are using."</string>
     <string name="reminders_disabled_hint">"Both reminder styles will be turned off. Your medication schedules stay saved."</string>
-    <string name="reminder_access_hint">"Next, allow the Android access needed for your choices."</string>
     <string name="reminder_ready_hint">"The bell turns purple when access for your chosen reminder styles is ready."</string>
     <string name="display_over_other_apps">"Display over other apps"</string>
     <string name="exact_alarms">"Exact alarms"</string>
@@ -227,7 +226,6 @@
     <string name="upcoming_dose">"Upcoming dose"</string>
     <string name="on_time">"On Time"</string>
     <string name="close_screen">"Close screen"</string>
-    <string name="reminder_permission_intro">"For reminders in the notification feed and over other apps, Dose needs two permissions: notifications and display over other apps. Choose the reminder styles you want. Android may also require Alarms &amp; reminders access for precise timing."</string>
     <string name="save">"Save"</string>
     <string name="instructions">"Instructions"</string>
     <string name="instructions_required">"Enter instructions or turn off Add instructions."</string>
@@ -239,4 +237,11 @@
     <string name="widget_name">"Dose · Today"</string>
     <string name="widget_description">"See your next pending dose and its time for today."</string>
     <string name="widget_open_today">"Tap to open Today"</string>
+    <string name="reminder_permission_intro">"Dose uses two Android permissions for reminders: notifications in your feed and pop-ups over other apps. Choose how you want to be reminded."</string>
+    <string name="pause_notifications">"Pause all notifications"</string>
+    <string name="pause_hours">"Hours"</string>
+    <string name="pause_days">"Days"</string>
+    <string name="notifications_paused_until">"Notifications paused until %1$s"</string>
+    <string name="resume_notifications">"Resume notifications now"</string>
+    <string name="pause_time_error">"Enter a positive duration or choose a future date and time."</string>
 </resources>

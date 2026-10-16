@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.ReminderSetupState
+import io.github.sibmaks.app.dose.reminders.NotificationPause
 import io.github.sibmaks.app.dose.reminders.ReminderAlerts
 import io.github.sibmaks.app.dose.reminders.ReminderNotifications
 
@@ -28,6 +29,8 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
     var feed by rememberSaveable { mutableStateOf(state.feedEnabled) }
     var popups by rememberSaveable { mutableStateOf(if (state.reviewed) state.popupsEnabled else true) }
     var accessStep by rememberSaveable { mutableStateOf(false) }
+    var pauseRevision by remember { mutableIntStateOf(0) }
+    val paused = remember(pauseRevision) { NotificationPause.isPaused(context) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { onRefresh() }
     fun notificationSettings() {
         runCatching { ReminderNotifications.openSettings(context) }.onFailure {
@@ -67,13 +70,12 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
             }
         }, secondaryLabel = context.getString(if (accessStep) R.string.back else R.string.later),
         onSecondary = { if (accessStep) accessStep = false else onDismiss() },
-        onBack = { if (accessStep) accessStep = false else onDismiss() }, pageKey = accessStep) {
+        onBack = { if (accessStep) accessStep = false else onDismiss() }, pageKey = accessStep, showSecondary = accessStep || !state.complete) {
         if (!accessStep) {
             Text(context.getString(R.string.reminder_permission_intro), fontSize = 14.sp)
             ReminderChoice(context.getString(R.string.notification_feed), context.getString(R.string.notification_feed_hint), feed) { feed = it }
             ReminderChoice(context.getString(R.string.pop_up_over_other_apps), context.getString(R.string.overlay_hint), popups) { popups = it }
             if (!feed && !popups) Text(context.getString(R.string.reminders_disabled_hint), fontSize = 13.sp, color = TextMuted)
-            else Text(context.getString(R.string.reminder_access_hint), fontSize = 13.sp, color = TextMuted)
         } else {
             Text(context.getString(R.string.reminder_ready_hint), fontSize = 14.sp)
             if (feed) AccessStatus(context.getString(R.string.notification_feed), state.feedAllowed)
@@ -87,13 +89,15 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
             }
             if (feed && state.feedAllowed) TextButton(onClick = ::notificationSettings) { Text(context.getString(R.string.sound_notification_settings)) }
             if (popups) {
-                OutlinedButton(enabled = state.overlayAllowed, onClick = {
+                OutlinedButton(enabled = state.overlayAllowed && !paused, onClick = {
                     if (!ReminderAlerts.preview(context)) Toast.makeText(context, context.getString(R.string.overlay_error), Toast.LENGTH_LONG).show()
                 }) { Text(context.getString(R.string.test_pop_up)) }
                 Text(context.getString(R.string.popup_limits), fontSize = 12.sp, color = TextMuted)
                 if (!feed) Text(context.getString(R.string.popup_feed_disabled_hint), fontSize = 12.sp, color = TextMuted)
             }
         }
+        HorizontalDivider(color = PanelBorder)
+        NotificationPauseSection { pauseRevision++; onRefresh() }
     }
 }
 

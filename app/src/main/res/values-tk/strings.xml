@@ -105,7 +105,6 @@
     <string name="pop_up_over_other_apps">"Programmalaryň üstündäki penjire"</string>
     <string name="overlay_hint">"Açyk programmanyň üstünde derman penjiresini görkezmek."</string>
     <string name="reminders_disabled_hint">"Iki usul hem öçüriler. Tertipler saklanar."</string>
-    <string name="reminder_access_hint">"Soň zerur Android rugsatlaryny beriň."</string>
     <string name="reminder_ready_hint">"Rugsatlar berlende jaň melewşe bolar."</string>
     <string name="display_over_other_apps">"Beýleki programmalaryň üstünde"</string>
     <string name="exact_alarms">"Takyk duýduryşlar"</string>
@@ -225,7 +224,6 @@
     <string name="upcoming_dose">"Indiki doza"</string>
     <string name="on_time">"Wagtynda"</string>
     <string name="close_screen">"Ekrany ýapmak"</string>
-    <string name="reminder_permission_intro">"Sanawda we programmalaryň üstünde ýatlatmak üçin Dose iki rugsat gerek: bildirişler we beýleki programmalaryň üstünde görkezmek. Islän usullaryňyzy saýlaň. Takyk wagt üçin Android duýduryşlara we ýatlatmalara giriş hem sorap biler."</string>
     <string name="save">"Ýatda sakla"</string>
     <string name="instructions">"Görkezmeler"</string>
     <string name="instructions_required">"Görkezmeleri giriziň ýa-da olary goşmagy öçüriň."</string>
@@ -237,4 +235,11 @@
     <string name="widget_name">"Dose · Şu gün"</string>
     <string name="widget_description">"Şu günki indiki bellige alynmadyk doza we onuň wagty."</string>
     <string name="widget_open_today">"Şu güni açmak üçin basyň"</string>
+    <string name="reminder_permission_intro">"Dose ýatlatmalar üçin iki Android rugsadyny ulanýar: habarnamalar we beýleki programmalaryň üstündäki penjireler. Isleýän usullaryňyzy saýlaň."</string>
+    <string name="pause_notifications">"Ähli habarnamalary wagtlaýyn duruz"</string>
+    <string name="pause_hours">"Sagat"</string>
+    <string name="pause_days">"Gün"</string>
+    <string name="notifications_paused_until">"Habarnamalar %1$s çenli duruzyldy"</string>
+    <string name="resume_notifications">"Habarnamalary häzir dowam et"</string>
+    <string name="pause_time_error">"Oňyn dowamlylygy giriziň ýa-da geljekki senäni we wagty saýlaň."</string>
 </resources>
