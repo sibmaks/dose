@@ -97,11 +97,9 @@ internal fun MedicationEditor(
         MedicationStep.DETAILS -> if (addInstructions && note.isBlank()) context.getString(R.string.instructions_required) else null
         else -> null
     }
-    fun advance() {
+    fun save() {
         keyboard?.hide()
         showValidation = true
-        if (stepError(step) != null) return
-        if (step != MedicationStep.DETAILS) { step = MedicationEditorFlow.next(step, form); showValidation = false; return }
         val invalidStep = steps.firstOrNull { stepError(it) != null }
         if (invalidStep != null) { step = invalidStep; return }
         val rules = schedules.map { it.copy(times = it.times.sorted(), dates = it.dates.distinct().sorted(), weekDays = it.weekDays.sorted(), monthDays = it.monthDays.sorted()) }
@@ -111,6 +109,14 @@ internal fun MedicationEditor(
                 customForm = if (form == MedicationForm.OTHER) customForm.trim() else "",
                 active = original?.active ?: true))
     }
+    fun advance() {
+        if (step == MedicationStep.DETAILS) { save(); return }
+        keyboard?.hide()
+        showValidation = true
+        if (stepError(step) != null) return
+        step = MedicationEditorFlow.next(step, form)
+        showValidation = false
+    }
 
     Dialog(onDismissRequest = ::previous, properties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
         Surface(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).fillMaxHeight(0.94f).imePadding(),
@@ -119,6 +125,9 @@ internal fun MedicationEditor(
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 10.dp, top = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(if (original == null) context.getString(R.string.add_medication) else context.getString(R.string.edit_medication), fontSize = 21.sp,
                         fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+                    if (original != null && step != MedicationStep.DETAILS) TextButton(onClick = ::save) {
+                        Text(context.getString(R.string.save), fontWeight = FontWeight.Bold)
+                    }
                     IconButton(onClick = onDismiss) { Icon(Icons.Rounded.Close, context.getString(R.string.close_medication_editor)) }
                 }
                 Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
