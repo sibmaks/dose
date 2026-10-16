@@ -4,6 +4,7 @@ import io.github.sibmaks.app.dose.localization.*
 import io.github.sibmaks.app.dose.R
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
@@ -128,10 +131,29 @@ internal fun MedicationEditor(
         showValidation = false
     }
 
+    val onSwipeForward by rememberUpdatedState(newValue = {
+        if (step != MedicationStep.DETAILS) advance()
+        else { keyboard?.hide(); showValidation = true }
+    })
+    val onSwipeBack by rememberUpdatedState(newValue = { if (step != MedicationStep.NAME) previous() })
+    val swipeThreshold = with(LocalDensity.current) { 72.dp.toPx() }
+
     Dialog(onDismissRequest = ::previous, properties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
         Surface(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).fillMaxHeight(0.94f).imePadding(),
             shape = RoundedCornerShape(26.dp), color = Color.White) {
-            Column {
+            Column(Modifier.pointerInput(swipeThreshold) {
+                var distance = 0f
+                detectHorizontalDragGestures(
+                    onDragStart = { distance = 0f },
+                    onDragCancel = { distance = 0f },
+                    onDragEnd = {
+                        if (distance <= -swipeThreshold) onSwipeForward()
+                        else if (distance >= swipeThreshold) onSwipeBack()
+                        distance = 0f
+                    },
+                    onHorizontalDrag = { change, delta -> change.consume(); distance += delta },
+                )
+            }) {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 10.dp, top = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(if (original == null) context.getString(R.string.add_medication) else context.getString(R.string.edit_medication), fontSize = 21.sp,
                         fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
