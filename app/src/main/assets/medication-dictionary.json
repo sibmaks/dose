@@ -1,114 +1,8172 @@
 {
   "paracetamol": {
     "localizations": {
-      "en": ["Paracetamol"],
-      "ru": ["Парацетамол"]
+      "en": [
+        "Paracetamol"
+      ],
+      "ru": [
+        "Парацетамол"
+      ],
+      "be": [
+        "Парацэтамол"
+      ],
+      "hy": [
+        "Պարացետամոլ"
+      ],
+      "az": [
+        "Parasetamol"
+      ],
+      "kk": [
+        "Парацетамол"
+      ],
+      "ky": [
+        "Парацетамол"
+      ],
+      "ro": [
+        "Paracetamol"
+      ],
+      "tg": [
+        "Парасетамол"
+      ],
+      "tk": [
+        "Parasetamol"
+      ],
+      "uz": [
+        "Paratsetamol"
+      ],
+      "uk": [
+        "Парацетамол"
+      ],
+      "ka": [
+        "პარაცეტამოლი"
+      ]
     },
-    "forms": ["PILL", "CAPSULE", "LIQUID"],
-    "aliases": ["acetaminophen"]
+    "forms": [
+      "PILL",
+      "CAPSULE",
+      "LIQUID",
+      "SUPPOSITORY"
+    ],
+    "aliases": [
+      "acetaminophen"
+    ]
   },
   "ibuprofen": {
     "localizations": {
-      "en": ["Ibuprofen"],
-      "ru": ["Ибупрофен"]
+      "en": [
+        "Ibuprofen"
+      ],
+      "ru": [
+        "Ибупрофен"
+      ],
+      "be": [
+        "Ібупрафен"
+      ],
+      "hy": [
+        "Իբուպրոֆեն"
+      ],
+      "az": [
+        "İbuprofen"
+      ],
+      "kk": [
+        "Ибупрофен"
+      ],
+      "ky": [
+        "Ибупрофен"
+      ],
+      "ro": [
+        "Ibuprofen"
+      ],
+      "tg": [
+        "Ибупрофен"
+      ],
+      "tk": [
+        "Ibuprofen"
+      ],
+      "uz": [
+        "Ibuprofen"
+      ],
+      "uk": [
+        "Ібупрофен"
+      ],
+      "ka": [
+        "იბუპროფენი"
+      ]
     },
-    "forms": ["PILL", "CAPSULE", "LIQUID"],
+    "forms": [
+      "PILL",
+      "CAPSULE",
+      "LIQUID",
+      "GEL",
+      "SPRAY"
+    ],
     "aliases": []
   },
   "amoxicillin": {
     "localizations": {
-      "en": ["Amoxicillin"],
-      "ru": ["Амоксициллин"]
+      "en": [
+        "Amoxicillin"
+      ],
+      "ru": [
+        "Амоксициллин"
+      ],
+      "be": [
+        "Амаксіцылін"
+      ],
+      "hy": [
+        "Ամոքսիցիլին"
+      ],
+      "az": [
+        "Amoksisillin"
+      ],
+      "kk": [
+        "Амоксициллин"
+      ],
+      "ky": [
+        "Амоксициллин"
+      ],
+      "ro": [
+        "Amoxicilină"
+      ],
+      "tg": [
+        "Амоксициллин"
+      ],
+      "tk": [
+        "Amoksisillin"
+      ],
+      "uz": [
+        "Amoksitsillin"
+      ],
+      "uk": [
+        "Амоксицилін"
+      ],
+      "ka": [
+        "ამოქსიცილინი"
+      ]
     },
-    "forms": ["CAPSULE", "LIQUID"],
+    "forms": [
+      "CAPSULE",
+      "LIQUID"
+    ],
     "aliases": []
   },
   "cetirizine": {
     "localizations": {
-      "en": ["Cetirizine"],
-      "ru": ["Цетиризин"]
+      "en": [
+        "Cetirizine"
+      ],
+      "ru": [
+        "Цетиризин"
+      ],
+      "be": [
+        "Цэтырызін"
+      ],
+      "hy": [
+        "Ցետիրիզին"
+      ],
+      "az": [
+        "Setirizin"
+      ],
+      "kk": [
+        "Цетиризин"
+      ],
+      "ky": [
+        "Цетиризин"
+      ],
+      "ro": [
+        "Cetirizină"
+      ],
+      "tg": [
+        "Сетиризин"
+      ],
+      "tk": [
+        "Setirizin"
+      ],
+      "uz": [
+        "Setirizin"
+      ],
+      "uk": [
+        "Цетиризин"
+      ],
+      "ka": [
+        "ცეტირიზინი"
+      ]
     },
-    "forms": ["PILL", "LIQUID"],
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
     "aliases": []
   },
   "omeprazole": {
     "localizations": {
-      "en": ["Omeprazole"],
-      "ru": ["Омепразол"]
+      "en": [
+        "Omeprazole"
+      ],
+      "ru": [
+        "Омепразол"
+      ],
+      "be": [
+        "Амепразол"
+      ],
+      "hy": [
+        "Օմեպրազոլ"
+      ],
+      "az": [
+        "Omeprazol"
+      ],
+      "kk": [
+        "Омепразол"
+      ],
+      "ky": [
+        "Омепразол"
+      ],
+      "ro": [
+        "Omeprazol"
+      ],
+      "tg": [
+        "Омепразол"
+      ],
+      "tk": [
+        "Omeprazol"
+      ],
+      "uz": [
+        "Omeprazol"
+      ],
+      "uk": [
+        "Омепразол"
+      ],
+      "ka": [
+        "ომეპრაზოლი"
+      ]
     },
-    "forms": ["CAPSULE", "PILL", "LIQUID"],
+    "forms": [
+      "CAPSULE",
+      "PILL",
+      "LIQUID"
+    ],
     "aliases": []
   },
   "hydrocortisone": {
     "localizations": {
-      "en": ["Hydrocortisone"],
-      "ru": ["Гидрокортизон"]
+      "en": [
+        "Hydrocortisone"
+      ],
+      "ru": [
+        "Гидрокортизон"
+      ],
+      "be": [
+        "Гідракартызон"
+      ],
+      "hy": [
+        "Հիդրոկորտիզոն"
+      ],
+      "az": [
+        "Hidrokortizon"
+      ],
+      "kk": [
+        "Гидрокортизон"
+      ],
+      "ky": [
+        "Гидрокортизон"
+      ],
+      "ro": [
+        "Hidrocortizon"
+      ],
+      "tg": [
+        "Гидрокортизон"
+      ],
+      "tk": [
+        "Gidrokortizon"
+      ],
+      "uz": [
+        "Gidrokortizon"
+      ],
+      "uk": [
+        "Гідрокортизон"
+      ],
+      "ka": [
+        "ჰიდროკორტიზონი"
+      ]
     },
-    "forms": ["CREAM"],
+    "forms": [
+      "CREAM",
+      "OINTMENT",
+      "SUPPOSITORY",
+      "PILL"
+    ],
     "aliases": []
   },
   "vitamin_d3": {
     "localizations": {
-      "en": ["Vitamin D3"],
-      "ru": ["Витамин D3", "Колекальциферол", "Холекальциферол"]
+      "en": [
+        "Vitamin D3"
+      ],
+      "ru": [
+        "Витамин D3",
+        "Колекальциферол",
+        "Холекальциферол"
+      ],
+      "be": [
+        "Вітамін D3"
+      ],
+      "hy": [
+        "Վիտամին D3"
+      ],
+      "az": [
+        "D3 vitamini"
+      ],
+      "kk": [
+        "D3 дәрумені"
+      ],
+      "ky": [
+        "D3 витамини"
+      ],
+      "ro": [
+        "Vitamina D3"
+      ],
+      "tg": [
+        "Витамини D3"
+      ],
+      "tk": [
+        "D3 witamini"
+      ],
+      "uz": [
+        "D3 vitamini"
+      ],
+      "uk": [
+        "Вітамін D3"
+      ],
+      "ka": [
+        "ვიტამინი D3"
+      ]
     },
-    "forms": ["PILL", "CAPSULE", "DROPS", "LIQUID"],
-    "aliases": ["colecalciferol", "cholecalciferol"]
+    "forms": [
+      "PILL",
+      "CAPSULE",
+      "DROPS",
+      "LIQUID"
+    ],
+    "aliases": [
+      "colecalciferol",
+      "cholecalciferol"
+    ]
   },
   "calcium": {
     "localizations": {
-      "en": ["Calcium"],
-      "ru": ["Кальций"]
+      "en": [
+        "Calcium"
+      ],
+      "ru": [
+        "Кальций"
+      ],
+      "be": [
+        "Кальцый"
+      ],
+      "hy": [
+        "Կալցիում"
+      ],
+      "az": [
+        "Kalsium"
+      ],
+      "kk": [
+        "Кальций"
+      ],
+      "ky": [
+        "Кальций"
+      ],
+      "ro": [
+        "Calciu"
+      ],
+      "tg": [
+        "Калсий"
+      ],
+      "tk": [
+        "Kalsiý"
+      ],
+      "uz": [
+        "Kalsiy"
+      ],
+      "uk": [
+        "Кальцій"
+      ],
+      "ka": [
+        "კალციუმი"
+      ]
     },
-    "forms": ["PILL"],
+    "forms": [
+      "PILL"
+    ],
     "aliases": []
   },
   "alfacalcidol": {
     "localizations": {
-      "en": ["Alfacalcidol"],
-      "ru": ["Альфакальцидол", "Альфокальцидол"]
+      "en": [
+        "Alfacalcidol"
+      ],
+      "ru": [
+        "Альфакальцидол",
+        "Альфокальцидол"
+      ],
+      "be": [
+        "Альфакальцыдол"
+      ],
+      "hy": [
+        "Ալֆակալցիդոլ"
+      ],
+      "az": [
+        "Alfakalsidol"
+      ],
+      "kk": [
+        "Альфакальцидол"
+      ],
+      "ky": [
+        "Альфакальцидол"
+      ],
+      "ro": [
+        "Alfacalcidol"
+      ],
+      "tg": [
+        "Алфакалсидол"
+      ],
+      "tk": [
+        "Alfakalsidol"
+      ],
+      "uz": [
+        "Alfakalsidol"
+      ],
+      "uk": [
+        "Альфакальцидол"
+      ],
+      "ka": [
+        "ალფაკალციდოლი"
+      ]
     },
-    "forms": ["CAPSULE", "DROPS"],
+    "forms": [
+      "CAPSULE",
+      "DROPS"
+    ],
     "aliases": []
   },
   "loratadine": {
     "localizations": {
-      "en": ["Loratadine"],
-      "ru": ["Лоратадин"]
+      "en": [
+        "Loratadine"
+      ],
+      "ru": [
+        "Лоратадин"
+      ],
+      "be": [
+        "Ларатадын"
+      ],
+      "hy": [
+        "Լորատադին"
+      ],
+      "az": [
+        "Loratadin"
+      ],
+      "kk": [
+        "Лоратадин"
+      ],
+      "ky": [
+        "Лоратадин"
+      ],
+      "ro": [
+        "Loratadină"
+      ],
+      "tg": [
+        "Лоратадин"
+      ],
+      "tk": [
+        "Loratadin"
+      ],
+      "uz": [
+        "Loratadin"
+      ],
+      "uk": [
+        "Лоратадин"
+      ],
+      "ka": [
+        "ლორატადინი"
+      ]
     },
-    "forms": ["PILL", "LIQUID"],
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
     "aliases": []
   },
   "metformin": {
     "localizations": {
-      "en": ["Metformin"],
-      "ru": ["Метформин"]
+      "en": [
+        "Metformin"
+      ],
+      "ru": [
+        "Метформин"
+      ],
+      "be": [
+        "Метфармін"
+      ],
+      "hy": [
+        "Մետֆորմին"
+      ],
+      "az": [
+        "Metformin"
+      ],
+      "kk": [
+        "Метформин"
+      ],
+      "ky": [
+        "Метформин"
+      ],
+      "ro": [
+        "Metformină"
+      ],
+      "tg": [
+        "Метформин"
+      ],
+      "tk": [
+        "Metformin"
+      ],
+      "uz": [
+        "Metformin"
+      ],
+      "uk": [
+        "Метформін"
+      ],
+      "ka": [
+        "მეტფორმინი"
+      ]
     },
-    "forms": ["PILL", "LIQUID"],
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
     "aliases": []
   },
   "levothyroxine": {
     "localizations": {
-      "en": ["Levothyroxine"],
-      "ru": ["Левотироксин", "Левотероксин", "Тироксин", "Л-тироксин", "Тероксин"]
+      "en": [
+        "Levothyroxine"
+      ],
+      "ru": [
+        "Левотироксин",
+        "Левотероксин",
+        "Тироксин",
+        "Л-тироксин",
+        "Тероксин"
+      ],
+      "be": [
+        "Леватыраксін"
+      ],
+      "hy": [
+        "Լևոթիրոքսին"
+      ],
+      "az": [
+        "Levotiroksin"
+      ],
+      "kk": [
+        "Левотироксин"
+      ],
+      "ky": [
+        "Левотироксин"
+      ],
+      "ro": [
+        "Levotiroxină"
+      ],
+      "tg": [
+        "Левотироксин"
+      ],
+      "tk": [
+        "Lewotiroksin"
+      ],
+      "uz": [
+        "Levotiroksin"
+      ],
+      "uk": [
+        "Левотироксин"
+      ],
+      "ka": [
+        "ლევოთიროქსინი"
+      ]
     },
-    "forms": ["PILL", "LIQUID"],
-    "aliases": ["thyroxine"]
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": [
+      "thyroxine"
+    ]
   },
   "insulin": {
     "localizations": {
-      "en": ["Insulin"],
-      "ru": ["Инсулин"]
+      "en": [
+        "Insulin"
+      ],
+      "ru": [
+        "Инсулин"
+      ],
+      "be": [
+        "Інсулін"
+      ],
+      "hy": [
+        "Ինսուլին"
+      ],
+      "az": [
+        "İnsulin"
+      ],
+      "kk": [
+        "Инсулин"
+      ],
+      "ky": [
+        "Инсулин"
+      ],
+      "ro": [
+        "Insulină"
+      ],
+      "tg": [
+        "Инсулин"
+      ],
+      "tk": [
+        "Insulin"
+      ],
+      "uz": [
+        "Insulin"
+      ],
+      "uk": [
+        "Інсулін"
+      ],
+      "ka": [
+        "ინსულინი"
+      ]
     },
-    "forms": ["INJECTION"],
+    "forms": [
+      "INJECTION"
+    ],
     "aliases": []
   },
   "salbutamol": {
     "localizations": {
-      "en": ["Salbutamol"],
-      "ru": ["Сальбутамол"]
+      "en": [
+        "Salbutamol"
+      ],
+      "ru": [
+        "Сальбутамол"
+      ],
+      "be": [
+        "Сальбутамол"
+      ],
+      "hy": [
+        "Սալբուտամոլ"
+      ],
+      "az": [
+        "Salbutamol"
+      ],
+      "kk": [
+        "Сальбутамол"
+      ],
+      "ky": [
+        "Сальбутамол"
+      ],
+      "ro": [
+        "Salbutamol"
+      ],
+      "tg": [
+        "Салбутамол"
+      ],
+      "tk": [
+        "Salbutamol"
+      ],
+      "uz": [
+        "Salbutamol"
+      ],
+      "uk": [
+        "Сальбутамол"
+      ],
+      "ka": [
+        "სალბუტამოლი"
+      ]
     },
-    "forms": ["INHALER"],
-    "aliases": ["albuterol"]
+    "forms": [
+      "INHALER"
+    ],
+    "aliases": [
+      "albuterol"
+    ]
+  },
+  "amlodipine": {
+    "localizations": {
+      "en": [
+        "Amlodipine"
+      ],
+      "ru": [
+        "Амлодипин"
+      ],
+      "be": [
+        "Амладыпін"
+      ],
+      "hy": [
+        "Ամլոդիպին"
+      ],
+      "az": [
+        "Amlodipin"
+      ],
+      "kk": [
+        "Амлодипин"
+      ],
+      "ky": [
+        "Амлодипин"
+      ],
+      "ro": [
+        "Amlodipină"
+      ],
+      "tg": [
+        "Амлодипин"
+      ],
+      "tk": [
+        "Amlodipin"
+      ],
+      "uz": [
+        "Amlodipin"
+      ],
+      "uk": [
+        "Амлодипін"
+      ],
+      "ka": [
+        "ამლოდიპინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "lisinopril": {
+    "localizations": {
+      "en": [
+        "Lisinopril"
+      ],
+      "ru": [
+        "Лизиноприл"
+      ],
+      "be": [
+        "Лизиноприл"
+      ],
+      "hy": [
+        "Լիզինոպրիլ"
+      ],
+      "az": [
+        "Lisinopril"
+      ],
+      "kk": [
+        "Лизиноприл"
+      ],
+      "ky": [
+        "Лизиноприл"
+      ],
+      "ro": [
+        "Lisinopril"
+      ],
+      "tg": [
+        "Лизиноприл"
+      ],
+      "tk": [
+        "Lisinopril"
+      ],
+      "uz": [
+        "Lisinopril"
+      ],
+      "uk": [
+        "Лизиноприл"
+      ],
+      "ka": [
+        "ლიზინოპრილი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "losartan": {
+    "localizations": {
+      "en": [
+        "Losartan"
+      ],
+      "ru": [
+        "Лозартан"
+      ],
+      "be": [
+        "Лазартан"
+      ],
+      "hy": [
+        "Լոզարտան"
+      ],
+      "az": [
+        "Losartan"
+      ],
+      "kk": [
+        "Лозартан"
+      ],
+      "ky": [
+        "Лозартан"
+      ],
+      "ro": [
+        "Losartan"
+      ],
+      "tg": [
+        "Лозартан"
+      ],
+      "tk": [
+        "Lozartan"
+      ],
+      "uz": [
+        "Lozartan"
+      ],
+      "uk": [
+        "Лозартан"
+      ],
+      "ka": [
+        "ლოზარტანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "valsartan": {
+    "localizations": {
+      "en": [
+        "Valsartan"
+      ],
+      "ru": [
+        "Валсартан"
+      ],
+      "be": [
+        "Валсартан"
+      ],
+      "hy": [
+        "Վալսարտան"
+      ],
+      "az": [
+        "Valsartan"
+      ],
+      "kk": [
+        "Валсартан"
+      ],
+      "ky": [
+        "Валсартан"
+      ],
+      "ro": [
+        "Valsartan"
+      ],
+      "tg": [
+        "Валсартан"
+      ],
+      "tk": [
+        "Valsartan"
+      ],
+      "uz": [
+        "Valsartan"
+      ],
+      "uk": [
+        "Валсартан"
+      ],
+      "ka": [
+        "ვალსარტანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "candesartan": {
+    "localizations": {
+      "en": [
+        "Candesartan"
+      ],
+      "ru": [
+        "Кандесартан"
+      ],
+      "be": [
+        "Кандесартан"
+      ],
+      "hy": [
+        "Կանդեսարտան"
+      ],
+      "az": [
+        "Candesartan"
+      ],
+      "kk": [
+        "Кандесартан"
+      ],
+      "ky": [
+        "Кандесартан"
+      ],
+      "ro": [
+        "Candesartan"
+      ],
+      "tg": [
+        "Кандесартан"
+      ],
+      "tk": [
+        "Candesartan"
+      ],
+      "uz": [
+        "Candesartan"
+      ],
+      "uk": [
+        "Кандесартан"
+      ],
+      "ka": [
+        "კანდესარტანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "olmesartan": {
+    "localizations": {
+      "en": [
+        "Olmesartan"
+      ],
+      "ru": [
+        "Олмесартан"
+      ],
+      "be": [
+        "Олмесартан"
+      ],
+      "hy": [
+        "Ոլմեսարտան"
+      ],
+      "az": [
+        "Olmesartan"
+      ],
+      "kk": [
+        "Олмесартан"
+      ],
+      "ky": [
+        "Олмесартан"
+      ],
+      "ro": [
+        "Olmesartan"
+      ],
+      "tg": [
+        "Олмесартан"
+      ],
+      "tk": [
+        "Olmesartan"
+      ],
+      "uz": [
+        "Olmesartan"
+      ],
+      "uk": [
+        "Олмесартан"
+      ],
+      "ka": [
+        "ოლმესარტანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "telmisartan": {
+    "localizations": {
+      "en": [
+        "Telmisartan"
+      ],
+      "ru": [
+        "Телмисартан"
+      ],
+      "be": [
+        "Телмисартан"
+      ],
+      "hy": [
+        "Տելմիսարտան"
+      ],
+      "az": [
+        "Telmisartan"
+      ],
+      "kk": [
+        "Телмисартан"
+      ],
+      "ky": [
+        "Телмисартан"
+      ],
+      "ro": [
+        "Telmisartan"
+      ],
+      "tg": [
+        "Телмисартан"
+      ],
+      "tk": [
+        "Telmisartan"
+      ],
+      "uz": [
+        "Telmisartan"
+      ],
+      "uk": [
+        "Телмисартан"
+      ],
+      "ka": [
+        "ტელმისარტანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "enalapril": {
+    "localizations": {
+      "en": [
+        "Enalapril"
+      ],
+      "ru": [
+        "Эналаприл"
+      ],
+      "be": [
+        "Эналаприл"
+      ],
+      "hy": [
+        "Էնալապրիլ"
+      ],
+      "az": [
+        "Enalapril"
+      ],
+      "kk": [
+        "Эналаприл"
+      ],
+      "ky": [
+        "Эналаприл"
+      ],
+      "ro": [
+        "Enalapril"
+      ],
+      "tg": [
+        "Эналаприл"
+      ],
+      "tk": [
+        "Enalapril"
+      ],
+      "uz": [
+        "Enalapril"
+      ],
+      "uk": [
+        "Эналаприл"
+      ],
+      "ka": [
+        "ენალაპრილი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "ramipril": {
+    "localizations": {
+      "en": [
+        "Ramipril"
+      ],
+      "ru": [
+        "Рамиприл"
+      ],
+      "be": [
+        "Рамиприл"
+      ],
+      "hy": [
+        "Րամիպրիլ"
+      ],
+      "az": [
+        "Ramipril"
+      ],
+      "kk": [
+        "Рамиприл"
+      ],
+      "ky": [
+        "Рамиприл"
+      ],
+      "ro": [
+        "Ramipril"
+      ],
+      "tg": [
+        "Рамиприл"
+      ],
+      "tk": [
+        "Ramipril"
+      ],
+      "uz": [
+        "Ramipril"
+      ],
+      "uk": [
+        "Рамиприл"
+      ],
+      "ka": [
+        "რამიპრილი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "perindopril": {
+    "localizations": {
+      "en": [
+        "Perindopril"
+      ],
+      "ru": [
+        "Периндоприл"
+      ],
+      "be": [
+        "Периндоприл"
+      ],
+      "hy": [
+        "Պերինդոպրիլ"
+      ],
+      "az": [
+        "Perindopril"
+      ],
+      "kk": [
+        "Периндоприл"
+      ],
+      "ky": [
+        "Периндоприл"
+      ],
+      "ro": [
+        "Perindopril"
+      ],
+      "tg": [
+        "Периндоприл"
+      ],
+      "tk": [
+        "Perindopril"
+      ],
+      "uz": [
+        "Perindopril"
+      ],
+      "uk": [
+        "Периндоприл"
+      ],
+      "ka": [
+        "პერინდოპრილი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "bisoprolol": {
+    "localizations": {
+      "en": [
+        "Bisoprolol"
+      ],
+      "ru": [
+        "Бисопролол"
+      ],
+      "be": [
+        "Бісапралол"
+      ],
+      "hy": [
+        "Բիսոպրոլոլ"
+      ],
+      "az": [
+        "Bisoprolol"
+      ],
+      "kk": [
+        "Бисопролол"
+      ],
+      "ky": [
+        "Бисопролол"
+      ],
+      "ro": [
+        "Bisoprolol"
+      ],
+      "tg": [
+        "Бисопролол"
+      ],
+      "tk": [
+        "Bisoprolol"
+      ],
+      "uz": [
+        "Bisoprolol"
+      ],
+      "uk": [
+        "Бісопролол"
+      ],
+      "ka": [
+        "ბისოპროლოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "metoprolol": {
+    "localizations": {
+      "en": [
+        "Metoprolol"
+      ],
+      "ru": [
+        "Метопролол"
+      ],
+      "be": [
+        "Метопролол"
+      ],
+      "hy": [
+        "Մետոպրոլոլ"
+      ],
+      "az": [
+        "Metoprolol"
+      ],
+      "kk": [
+        "Метопролол"
+      ],
+      "ky": [
+        "Метопролол"
+      ],
+      "ro": [
+        "Metoprolol"
+      ],
+      "tg": [
+        "Метопролол"
+      ],
+      "tk": [
+        "Metoprolol"
+      ],
+      "uz": [
+        "Metoprolol"
+      ],
+      "uk": [
+        "Метопролол"
+      ],
+      "ka": [
+        "მეტოპროლოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "nebivolol": {
+    "localizations": {
+      "en": [
+        "Nebivolol"
+      ],
+      "ru": [
+        "Небиволол"
+      ],
+      "be": [
+        "Небиволол"
+      ],
+      "hy": [
+        "Նեբիվոլոլ"
+      ],
+      "az": [
+        "Nebivolol"
+      ],
+      "kk": [
+        "Небиволол"
+      ],
+      "ky": [
+        "Небиволол"
+      ],
+      "ro": [
+        "Nebivolol"
+      ],
+      "tg": [
+        "Небиволол"
+      ],
+      "tk": [
+        "Nebivolol"
+      ],
+      "uz": [
+        "Nebivolol"
+      ],
+      "uk": [
+        "Небиволол"
+      ],
+      "ka": [
+        "ნებივოლოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "carvedilol": {
+    "localizations": {
+      "en": [
+        "Carvedilol"
+      ],
+      "ru": [
+        "Карведилол"
+      ],
+      "be": [
+        "Карведилол"
+      ],
+      "hy": [
+        "Կարվեդիլոլ"
+      ],
+      "az": [
+        "Carvedilol"
+      ],
+      "kk": [
+        "Карведилол"
+      ],
+      "ky": [
+        "Карведилол"
+      ],
+      "ro": [
+        "Carvedilol"
+      ],
+      "tg": [
+        "Карведилол"
+      ],
+      "tk": [
+        "Carvedilol"
+      ],
+      "uz": [
+        "Carvedilol"
+      ],
+      "uk": [
+        "Карведилол"
+      ],
+      "ka": [
+        "კარვედილოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "atenolol": {
+    "localizations": {
+      "en": [
+        "Atenolol"
+      ],
+      "ru": [
+        "Атенолол"
+      ],
+      "be": [
+        "Атенолол"
+      ],
+      "hy": [
+        "Ատենոլոլ"
+      ],
+      "az": [
+        "Atenolol"
+      ],
+      "kk": [
+        "Атенолол"
+      ],
+      "ky": [
+        "Атенолол"
+      ],
+      "ro": [
+        "Atenolol"
+      ],
+      "tg": [
+        "Атенолол"
+      ],
+      "tk": [
+        "Atenolol"
+      ],
+      "uz": [
+        "Atenolol"
+      ],
+      "uk": [
+        "Атенолол"
+      ],
+      "ka": [
+        "ატენოლოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "propranolol": {
+    "localizations": {
+      "en": [
+        "Propranolol"
+      ],
+      "ru": [
+        "Пропранолол"
+      ],
+      "be": [
+        "Пропранолол"
+      ],
+      "hy": [
+        "Պրոպրանոլոլ"
+      ],
+      "az": [
+        "Propranolol"
+      ],
+      "kk": [
+        "Пропранолол"
+      ],
+      "ky": [
+        "Пропранолол"
+      ],
+      "ro": [
+        "Propranolol"
+      ],
+      "tg": [
+        "Пропранолол"
+      ],
+      "tk": [
+        "Propranolol"
+      ],
+      "uz": [
+        "Propranolol"
+      ],
+      "uk": [
+        "Пропранолол"
+      ],
+      "ka": [
+        "პროპრანოლოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "hydrochlorothiazide": {
+    "localizations": {
+      "en": [
+        "Hydrochlorothiazide"
+      ],
+      "ru": [
+        "Гидрохлоротиазид"
+      ],
+      "be": [
+        "Гидрохлоротиазид"
+      ],
+      "hy": [
+        "Գիդրոխլորոտիազիդ"
+      ],
+      "az": [
+        "Hydrochlorothiazid"
+      ],
+      "kk": [
+        "Гидрохлоротиазид"
+      ],
+      "ky": [
+        "Гидрохлоротиазид"
+      ],
+      "ro": [
+        "Hydrochlorothiazidă"
+      ],
+      "tg": [
+        "Гидрохлоротиазид"
+      ],
+      "tk": [
+        "Hydrochlorothiazid"
+      ],
+      "uz": [
+        "Hydrochlorothiazid"
+      ],
+      "uk": [
+        "Гидрохлоротиазид"
+      ],
+      "ka": [
+        "გიდროხლოროტიაზიდი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": [
+      "HCTZ"
+    ]
+  },
+  "indapamide": {
+    "localizations": {
+      "en": [
+        "Indapamide"
+      ],
+      "ru": [
+        "Индапамид"
+      ],
+      "be": [
+        "Индапамид"
+      ],
+      "hy": [
+        "Ինդապամիդ"
+      ],
+      "az": [
+        "Indapamid"
+      ],
+      "kk": [
+        "Индапамид"
+      ],
+      "ky": [
+        "Индапамид"
+      ],
+      "ro": [
+        "Indapamidă"
+      ],
+      "tg": [
+        "Индапамид"
+      ],
+      "tk": [
+        "Indapamid"
+      ],
+      "uz": [
+        "Indapamid"
+      ],
+      "uk": [
+        "Индапамид"
+      ],
+      "ka": [
+        "ინდაპამიდი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": [
+      "indapamid"
+    ]
+  },
+  "furosemide": {
+    "localizations": {
+      "en": [
+        "Furosemide"
+      ],
+      "ru": [
+        "Фуросемид"
+      ],
+      "be": [
+        "Фуросемид"
+      ],
+      "hy": [
+        "Ֆուրոսեմիդ"
+      ],
+      "az": [
+        "Furosemid"
+      ],
+      "kk": [
+        "Фуросемид"
+      ],
+      "ky": [
+        "Фуросемид"
+      ],
+      "ro": [
+        "Furosemidă"
+      ],
+      "tg": [
+        "Фуросемид"
+      ],
+      "tk": [
+        "Furosemid"
+      ],
+      "uz": [
+        "Furosemid"
+      ],
+      "uk": [
+        "Фуросемид"
+      ],
+      "ka": [
+        "ფუროსემიდი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": [
+      "frusemide"
+    ]
+  },
+  "torasemide": {
+    "localizations": {
+      "en": [
+        "Torasemide"
+      ],
+      "ru": [
+        "Торасемид"
+      ],
+      "be": [
+        "Торасемид"
+      ],
+      "hy": [
+        "Տորասեմիդ"
+      ],
+      "az": [
+        "Torasemid"
+      ],
+      "kk": [
+        "Торасемид"
+      ],
+      "ky": [
+        "Торасемид"
+      ],
+      "ro": [
+        "Torasemidă"
+      ],
+      "tg": [
+        "Торасемид"
+      ],
+      "tk": [
+        "Torasemid"
+      ],
+      "uz": [
+        "Torasemid"
+      ],
+      "uk": [
+        "Торасемид"
+      ],
+      "ka": [
+        "ტორასემიდი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": [
+      "torsemide"
+    ]
+  },
+  "spironolactone": {
+    "localizations": {
+      "en": [
+        "Spironolactone"
+      ],
+      "ru": [
+        "Спиронолактон"
+      ],
+      "be": [
+        "Спиронолактон"
+      ],
+      "hy": [
+        "Սպիրոնոլակտոն"
+      ],
+      "az": [
+        "Spironolactone"
+      ],
+      "kk": [
+        "Спиронолактон"
+      ],
+      "ky": [
+        "Спиронолактон"
+      ],
+      "ro": [
+        "Spironolactonă"
+      ],
+      "tg": [
+        "Спиронолактон"
+      ],
+      "tk": [
+        "Spironolactone"
+      ],
+      "uz": [
+        "Spironolactone"
+      ],
+      "uk": [
+        "Спиронолактон"
+      ],
+      "ka": [
+        "სპირონოლაკტონი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "eplerenone": {
+    "localizations": {
+      "en": [
+        "Eplerenone"
+      ],
+      "ru": [
+        "Эплеренон"
+      ],
+      "be": [
+        "Эплеренон"
+      ],
+      "hy": [
+        "Էպլերենոն"
+      ],
+      "az": [
+        "Eplerenone"
+      ],
+      "kk": [
+        "Эплеренон"
+      ],
+      "ky": [
+        "Эплеренон"
+      ],
+      "ro": [
+        "Eplerenonă"
+      ],
+      "tg": [
+        "Эплеренон"
+      ],
+      "tk": [
+        "Eplerenone"
+      ],
+      "uz": [
+        "Eplerenone"
+      ],
+      "uk": [
+        "Эплеренон"
+      ],
+      "ka": [
+        "ეპლერენონი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "nifedipine": {
+    "localizations": {
+      "en": [
+        "Nifedipine"
+      ],
+      "ru": [
+        "Нифедипин"
+      ],
+      "be": [
+        "Нифедипін"
+      ],
+      "hy": [
+        "Նիֆեդիպին"
+      ],
+      "az": [
+        "Nifedipin"
+      ],
+      "kk": [
+        "Нифедипин"
+      ],
+      "ky": [
+        "Нифедипин"
+      ],
+      "ro": [
+        "Nifedipină"
+      ],
+      "tg": [
+        "Нифедипин"
+      ],
+      "tk": [
+        "Nifedipin"
+      ],
+      "uz": [
+        "Nifedipin"
+      ],
+      "uk": [
+        "Нифедипін"
+      ],
+      "ka": [
+        "ნიფედიპინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "verapamil": {
+    "localizations": {
+      "en": [
+        "Verapamil"
+      ],
+      "ru": [
+        "Верапамил"
+      ],
+      "be": [
+        "Верапамил"
+      ],
+      "hy": [
+        "Վերապամիլ"
+      ],
+      "az": [
+        "Verapamil"
+      ],
+      "kk": [
+        "Верапамил"
+      ],
+      "ky": [
+        "Верапамил"
+      ],
+      "ro": [
+        "Verapamil"
+      ],
+      "tg": [
+        "Верапамил"
+      ],
+      "tk": [
+        "Verapamil"
+      ],
+      "uz": [
+        "Verapamil"
+      ],
+      "uk": [
+        "Верапамил"
+      ],
+      "ka": [
+        "ვერაპამილი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "diltiazem": {
+    "localizations": {
+      "en": [
+        "Diltiazem"
+      ],
+      "ru": [
+        "Дилтиазем"
+      ],
+      "be": [
+        "Дилтиазем"
+      ],
+      "hy": [
+        "Դիլտիազեմ"
+      ],
+      "az": [
+        "Diltiazem"
+      ],
+      "kk": [
+        "Дилтиазем"
+      ],
+      "ky": [
+        "Дилтиазем"
+      ],
+      "ro": [
+        "Diltiazem"
+      ],
+      "tg": [
+        "Дилтиазем"
+      ],
+      "tk": [
+        "Diltiazem"
+      ],
+      "uz": [
+        "Diltiazem"
+      ],
+      "uk": [
+        "Дилтиазем"
+      ],
+      "ka": [
+        "დილტიაზემი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CAPSULE"
+    ],
+    "aliases": []
+  },
+  "doxazosin": {
+    "localizations": {
+      "en": [
+        "Doxazosin"
+      ],
+      "ru": [
+        "Доксазозин"
+      ],
+      "be": [
+        "Доксазозін"
+      ],
+      "hy": [
+        "Դոկսազոզին"
+      ],
+      "az": [
+        "Doxazosin"
+      ],
+      "kk": [
+        "Доксазозин"
+      ],
+      "ky": [
+        "Доксазозин"
+      ],
+      "ro": [
+        "Doxazosin"
+      ],
+      "tg": [
+        "Доксазозин"
+      ],
+      "tk": [
+        "Doxazosin"
+      ],
+      "uz": [
+        "Doxazosin"
+      ],
+      "uk": [
+        "Доксазозін"
+      ],
+      "ka": [
+        "დოკსაზოზინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "ivabradine": {
+    "localizations": {
+      "en": [
+        "Ivabradine"
+      ],
+      "ru": [
+        "Ивабрадин"
+      ],
+      "be": [
+        "Ивабрадін"
+      ],
+      "hy": [
+        "Իվաբրադին"
+      ],
+      "az": [
+        "Ivabradin"
+      ],
+      "kk": [
+        "Ивабрадин"
+      ],
+      "ky": [
+        "Ивабрадин"
+      ],
+      "ro": [
+        "Ivabradină"
+      ],
+      "tg": [
+        "Ивабрадин"
+      ],
+      "tk": [
+        "Ivabradin"
+      ],
+      "uz": [
+        "Ivabradin"
+      ],
+      "uk": [
+        "Ивабрадін"
+      ],
+      "ka": [
+        "ივაბრადინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "sacubitril_valsartan": {
+    "localizations": {
+      "en": [
+        "Sacubitril / valsartan"
+      ],
+      "ru": [
+        "Сакубитрил / валсартан"
+      ],
+      "be": [
+        "Сакубитрил / валсартан"
+      ],
+      "hy": [
+        "Սակուբիտրիլ / վալսարտան"
+      ],
+      "az": [
+        "Sacubitril / valsartan"
+      ],
+      "kk": [
+        "Сакубитрил / валсартан"
+      ],
+      "ky": [
+        "Сакубитрил / валсартан"
+      ],
+      "ro": [
+        "Sacubitril / valsartan"
+      ],
+      "tg": [
+        "Сакубитрил / валсартан"
+      ],
+      "tk": [
+        "Sacubitril / valsartan"
+      ],
+      "uz": [
+        "Sacubitril / valsartan"
+      ],
+      "uk": [
+        "Сакубитрил / валсартан"
+      ],
+      "ka": [
+        "საკუბიტრილ / ვალსარტანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": [
+      "sacubitril-valsartan"
+    ]
+  },
+  "atorvastatin": {
+    "localizations": {
+      "en": [
+        "Atorvastatin"
+      ],
+      "ru": [
+        "Аторвастатин"
+      ],
+      "be": [
+        "Атарвастацін"
+      ],
+      "hy": [
+        "Ատորվաստատին"
+      ],
+      "az": [
+        "Atorvastatin"
+      ],
+      "kk": [
+        "Аторвастатин"
+      ],
+      "ky": [
+        "Аторвастатин"
+      ],
+      "ro": [
+        "Atorvastatină"
+      ],
+      "tg": [
+        "Аторвастатин"
+      ],
+      "tk": [
+        "Atorwastatin"
+      ],
+      "uz": [
+        "Atorvastatin"
+      ],
+      "uk": [
+        "Аторвастатин"
+      ],
+      "ka": [
+        "ატორვასტატინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "rosuvastatin": {
+    "localizations": {
+      "en": [
+        "Rosuvastatin"
+      ],
+      "ru": [
+        "Розувастатин"
+      ],
+      "be": [
+        "Разувастацін"
+      ],
+      "hy": [
+        "Ռոզուվաստատին"
+      ],
+      "az": [
+        "Rozuvastatin"
+      ],
+      "kk": [
+        "Розувастатин"
+      ],
+      "ky": [
+        "Розувастатин"
+      ],
+      "ro": [
+        "Rosuvastatină"
+      ],
+      "tg": [
+        "Розувастатин"
+      ],
+      "tk": [
+        "Rozuwastatin"
+      ],
+      "uz": [
+        "Rozuvastatin"
+      ],
+      "uk": [
+        "Розувастатин"
+      ],
+      "ka": [
+        "როზუვასტატინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "simvastatin": {
+    "localizations": {
+      "en": [
+        "Simvastatin"
+      ],
+      "ru": [
+        "Симвастатин"
+      ],
+      "be": [
+        "Симвастатін"
+      ],
+      "hy": [
+        "Սիմվաստատին"
+      ],
+      "az": [
+        "Simvastatin"
+      ],
+      "kk": [
+        "Симвастатин"
+      ],
+      "ky": [
+        "Симвастатин"
+      ],
+      "ro": [
+        "Simvastatină"
+      ],
+      "tg": [
+        "Симвастатин"
+      ],
+      "tk": [
+        "Simvastatin"
+      ],
+      "uz": [
+        "Simvastatin"
+      ],
+      "uk": [
+        "Симвастатин"
+      ],
+      "ka": [
+        "სიმვასტატინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "pravastatin": {
+    "localizations": {
+      "en": [
+        "Pravastatin"
+      ],
+      "ru": [
+        "Правастатин"
+      ],
+      "be": [
+        "Правастатін"
+      ],
+      "hy": [
+        "Պրավաստատին"
+      ],
+      "az": [
+        "Pravastatin"
+      ],
+      "kk": [
+        "Правастатин"
+      ],
+      "ky": [
+        "Правастатин"
+      ],
+      "ro": [
+        "Pravastatină"
+      ],
+      "tg": [
+        "Правастатин"
+      ],
+      "tk": [
+        "Pravastatin"
+      ],
+      "uz": [
+        "Pravastatin"
+      ],
+      "uk": [
+        "Правастатин"
+      ],
+      "ka": [
+        "პრავასტატინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "ezetimibe": {
+    "localizations": {
+      "en": [
+        "Ezetimibe"
+      ],
+      "ru": [
+        "Эзетимиб"
+      ],
+      "be": [
+        "Эзетимиб"
+      ],
+      "hy": [
+        "Էզետիմիբ"
+      ],
+      "az": [
+        "Ezetimibe"
+      ],
+      "kk": [
+        "Эзетимиб"
+      ],
+      "ky": [
+        "Эзетимиб"
+      ],
+      "ro": [
+        "Ezetimibe"
+      ],
+      "tg": [
+        "Эзетимиб"
+      ],
+      "tk": [
+        "Ezetimibe"
+      ],
+      "uz": [
+        "Ezetimibe"
+      ],
+      "uk": [
+        "Эзетимиб"
+      ],
+      "ka": [
+        "ეზეტიმიბი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "fenofibrate": {
+    "localizations": {
+      "en": [
+        "Fenofibrate"
+      ],
+      "ru": [
+        "Фенофибрат"
+      ],
+      "be": [
+        "Фенофибрат"
+      ],
+      "hy": [
+        "Ֆենոֆիբրատ"
+      ],
+      "az": [
+        "Fenofibrate"
+      ],
+      "kk": [
+        "Фенофибрат"
+      ],
+      "ky": [
+        "Фенофибрат"
+      ],
+      "ro": [
+        "Fenofibrate"
+      ],
+      "tg": [
+        "Фенофибрат"
+      ],
+      "tk": [
+        "Fenofibrate"
+      ],
+      "uz": [
+        "Fenofibrate"
+      ],
+      "uk": [
+        "Фенофибрат"
+      ],
+      "ka": [
+        "ფენოფიბრატი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CAPSULE"
+    ],
+    "aliases": []
+  },
+  "acetylsalicylic_acid": {
+    "localizations": {
+      "en": [
+        "Acetylsalicylic acid"
+      ],
+      "ru": [
+        "Ацетилсалициловая кислота"
+      ],
+      "be": [
+        "Ацэтыльсаліцылавая кіслата"
+      ],
+      "hy": [
+        "Ացետիլսալիցիլաթթու"
+      ],
+      "az": [
+        "Asetilsalisil turşusu"
+      ],
+      "kk": [
+        "Ацетилсалицил қышқылы"
+      ],
+      "ky": [
+        "Ацетилсалицил кислотасы"
+      ],
+      "ro": [
+        "Acid acetilsalicilic"
+      ],
+      "tg": [
+        "Кислотаи атсетилсалитсил"
+      ],
+      "tk": [
+        "Asetilsalisil turşusy"
+      ],
+      "uz": [
+        "Atsetilsalitsil kislotasi"
+      ],
+      "uk": [
+        "Ацетилсаліцилова кислота"
+      ],
+      "ka": [
+        "აცეტილსალიცილის მჟავა"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": [
+      "aspirin",
+      "ASA"
+    ]
+  },
+  "clopidogrel": {
+    "localizations": {
+      "en": [
+        "Clopidogrel"
+      ],
+      "ru": [
+        "Клопидогрел"
+      ],
+      "be": [
+        "Клопидогрел"
+      ],
+      "hy": [
+        "Կլոպիդոգրել"
+      ],
+      "az": [
+        "Clopidogrel"
+      ],
+      "kk": [
+        "Клопидогрел"
+      ],
+      "ky": [
+        "Клопидогрел"
+      ],
+      "ro": [
+        "Clopidogrel"
+      ],
+      "tg": [
+        "Клопидогрел"
+      ],
+      "tk": [
+        "Clopidogrel"
+      ],
+      "uz": [
+        "Clopidogrel"
+      ],
+      "uk": [
+        "Клопидогрел"
+      ],
+      "ka": [
+        "კლოპიდოგრელი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "ticagrelor": {
+    "localizations": {
+      "en": [
+        "Ticagrelor"
+      ],
+      "ru": [
+        "Тикагрелор"
+      ],
+      "be": [
+        "Тикагрелор"
+      ],
+      "hy": [
+        "Տիկագրելոր"
+      ],
+      "az": [
+        "Ticagrelor"
+      ],
+      "kk": [
+        "Тикагрелор"
+      ],
+      "ky": [
+        "Тикагрелор"
+      ],
+      "ro": [
+        "Ticagrelor"
+      ],
+      "tg": [
+        "Тикагрелор"
+      ],
+      "tk": [
+        "Ticagrelor"
+      ],
+      "uz": [
+        "Ticagrelor"
+      ],
+      "uk": [
+        "Тикагрелор"
+      ],
+      "ka": [
+        "ტიკაგრელორი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "apixaban": {
+    "localizations": {
+      "en": [
+        "Apixaban"
+      ],
+      "ru": [
+        "Апиксабан"
+      ],
+      "be": [
+        "Апіксабан"
+      ],
+      "hy": [
+        "Ապիքսաբան"
+      ],
+      "az": [
+        "Apiksaban"
+      ],
+      "kk": [
+        "Апиксабан"
+      ],
+      "ky": [
+        "Апиксабан"
+      ],
+      "ro": [
+        "Apixaban"
+      ],
+      "tg": [
+        "Апиксабан"
+      ],
+      "tk": [
+        "Apiksaban"
+      ],
+      "uz": [
+        "Apiksaban"
+      ],
+      "uk": [
+        "Апіксабан"
+      ],
+      "ka": [
+        "აპიქსაბანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "rivaroxaban": {
+    "localizations": {
+      "en": [
+        "Rivaroxaban"
+      ],
+      "ru": [
+        "Ривароксабан"
+      ],
+      "be": [
+        "Рывараксабан"
+      ],
+      "hy": [
+        "Ռիվարոքսաբան"
+      ],
+      "az": [
+        "Rivaroksaban"
+      ],
+      "kk": [
+        "Ривароксабан"
+      ],
+      "ky": [
+        "Ривароксабан"
+      ],
+      "ro": [
+        "Rivaroxaban"
+      ],
+      "tg": [
+        "Ривароксабан"
+      ],
+      "tk": [
+        "Riwaroksaban"
+      ],
+      "uz": [
+        "Rivaroksaban"
+      ],
+      "uk": [
+        "Ривароксабан"
+      ],
+      "ka": [
+        "რივაროქსაბანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "dabigatran": {
+    "localizations": {
+      "en": [
+        "Dabigatran"
+      ],
+      "ru": [
+        "Дабигатран"
+      ],
+      "be": [
+        "Дабигатран"
+      ],
+      "hy": [
+        "Դաբիգատրան"
+      ],
+      "az": [
+        "Dabigatran"
+      ],
+      "kk": [
+        "Дабигатран"
+      ],
+      "ky": [
+        "Дабигатран"
+      ],
+      "ro": [
+        "Dabigatran"
+      ],
+      "tg": [
+        "Дабигатран"
+      ],
+      "tk": [
+        "Dabigatran"
+      ],
+      "uz": [
+        "Dabigatran"
+      ],
+      "uk": [
+        "Дабигатран"
+      ],
+      "ka": [
+        "დაბიგატრანი"
+      ]
+    },
+    "forms": [
+      "CAPSULE"
+    ],
+    "aliases": [
+      "dabigatran etexilate"
+    ]
+  },
+  "warfarin": {
+    "localizations": {
+      "en": [
+        "Warfarin"
+      ],
+      "ru": [
+        "Варфарин"
+      ],
+      "be": [
+        "Варфарін"
+      ],
+      "hy": [
+        "Վարֆարին"
+      ],
+      "az": [
+        "Warfarin"
+      ],
+      "kk": [
+        "Варфарин"
+      ],
+      "ky": [
+        "Варфарин"
+      ],
+      "ro": [
+        "Warfarin"
+      ],
+      "tg": [
+        "Варфарин"
+      ],
+      "tk": [
+        "Warfarin"
+      ],
+      "uz": [
+        "Warfarin"
+      ],
+      "uk": [
+        "Варфарін"
+      ],
+      "ka": [
+        "ვარფარინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "edoxaban": {
+    "localizations": {
+      "en": [
+        "Edoxaban"
+      ],
+      "ru": [
+        "Эдоксабан"
+      ],
+      "be": [
+        "Эдоксабан"
+      ],
+      "hy": [
+        "Էդոկսաբան"
+      ],
+      "az": [
+        "Edoxaban"
+      ],
+      "kk": [
+        "Эдоксабан"
+      ],
+      "ky": [
+        "Эдоксабан"
+      ],
+      "ro": [
+        "Edoxaban"
+      ],
+      "tg": [
+        "Эдоксабан"
+      ],
+      "tk": [
+        "Edoxaban"
+      ],
+      "uz": [
+        "Edoxaban"
+      ],
+      "uk": [
+        "Эдоксабан"
+      ],
+      "ka": [
+        "ედოკსაბანი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "amiodarone": {
+    "localizations": {
+      "en": [
+        "Amiodarone"
+      ],
+      "ru": [
+        "Амиодарон"
+      ],
+      "be": [
+        "Амиодарон"
+      ],
+      "hy": [
+        "Ամիոդարոն"
+      ],
+      "az": [
+        "Amiodarone"
+      ],
+      "kk": [
+        "Амиодарон"
+      ],
+      "ky": [
+        "Амиодарон"
+      ],
+      "ro": [
+        "Amiodaronă"
+      ],
+      "tg": [
+        "Амиодарон"
+      ],
+      "tk": [
+        "Amiodarone"
+      ],
+      "uz": [
+        "Amiodarone"
+      ],
+      "uk": [
+        "Амиодарон"
+      ],
+      "ka": [
+        "ამიოდარონი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "sitagliptin": {
+    "localizations": {
+      "en": [
+        "Sitagliptin"
+      ],
+      "ru": [
+        "Ситаглиптин"
+      ],
+      "be": [
+        "Ситаглиптін"
+      ],
+      "hy": [
+        "Սիտագլիպտին"
+      ],
+      "az": [
+        "Sitagliptin"
+      ],
+      "kk": [
+        "Ситаглиптин"
+      ],
+      "ky": [
+        "Ситаглиптин"
+      ],
+      "ro": [
+        "Sitagliptin"
+      ],
+      "tg": [
+        "Ситаглиптин"
+      ],
+      "tk": [
+        "Sitagliptin"
+      ],
+      "uz": [
+        "Sitagliptin"
+      ],
+      "uk": [
+        "Ситаглиптін"
+      ],
+      "ka": [
+        "სიტაგლიპტინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "linagliptin": {
+    "localizations": {
+      "en": [
+        "Linagliptin"
+      ],
+      "ru": [
+        "Линаглиптин"
+      ],
+      "be": [
+        "Линаглиптін"
+      ],
+      "hy": [
+        "Լինագլիպտին"
+      ],
+      "az": [
+        "Linagliptin"
+      ],
+      "kk": [
+        "Линаглиптин"
+      ],
+      "ky": [
+        "Линаглиптин"
+      ],
+      "ro": [
+        "Linagliptin"
+      ],
+      "tg": [
+        "Линаглиптин"
+      ],
+      "tk": [
+        "Linagliptin"
+      ],
+      "uz": [
+        "Linagliptin"
+      ],
+      "uk": [
+        "Линаглиптін"
+      ],
+      "ka": [
+        "ლინაგლიპტინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "vildagliptin": {
+    "localizations": {
+      "en": [
+        "Vildagliptin"
+      ],
+      "ru": [
+        "Вилдаглиптин"
+      ],
+      "be": [
+        "Вилдаглиптін"
+      ],
+      "hy": [
+        "Վիլդագլիպտին"
+      ],
+      "az": [
+        "Vildagliptin"
+      ],
+      "kk": [
+        "Вилдаглиптин"
+      ],
+      "ky": [
+        "Вилдаглиптин"
+      ],
+      "ro": [
+        "Vildagliptin"
+      ],
+      "tg": [
+        "Вилдаглиптин"
+      ],
+      "tk": [
+        "Vildagliptin"
+      ],
+      "uz": [
+        "Vildagliptin"
+      ],
+      "uk": [
+        "Вилдаглиптін"
+      ],
+      "ka": [
+        "ვილდაგლიპტინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "dapagliflozin": {
+    "localizations": {
+      "en": [
+        "Dapagliflozin"
+      ],
+      "ru": [
+        "Дапаглифлозин"
+      ],
+      "be": [
+        "Дапаглифлозін"
+      ],
+      "hy": [
+        "Դապագլիֆլոզին"
+      ],
+      "az": [
+        "Dapagliflozin"
+      ],
+      "kk": [
+        "Дапаглифлозин"
+      ],
+      "ky": [
+        "Дапаглифлозин"
+      ],
+      "ro": [
+        "Dapagliflozin"
+      ],
+      "tg": [
+        "Дапаглифлозин"
+      ],
+      "tk": [
+        "Dapagliflozin"
+      ],
+      "uz": [
+        "Dapagliflozin"
+      ],
+      "uk": [
+        "Дапаглифлозін"
+      ],
+      "ka": [
+        "დაპაგლიფლოზინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "empagliflozin": {
+    "localizations": {
+      "en": [
+        "Empagliflozin"
+      ],
+      "ru": [
+        "Эмпаглифлозин"
+      ],
+      "be": [
+        "Эмпаглифлозін"
+      ],
+      "hy": [
+        "Էմպագլիֆլոզին"
+      ],
+      "az": [
+        "Empagliflozin"
+      ],
+      "kk": [
+        "Эмпаглифлозин"
+      ],
+      "ky": [
+        "Эмпаглифлозин"
+      ],
+      "ro": [
+        "Empagliflozin"
+      ],
+      "tg": [
+        "Эмпаглифлозин"
+      ],
+      "tk": [
+        "Empagliflozin"
+      ],
+      "uz": [
+        "Empagliflozin"
+      ],
+      "uk": [
+        "Эмпаглифлозін"
+      ],
+      "ka": [
+        "ემპაგლიფლოზინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "gliclazide": {
+    "localizations": {
+      "en": [
+        "Gliclazide"
+      ],
+      "ru": [
+        "Гликлазид"
+      ],
+      "be": [
+        "Гликлазид"
+      ],
+      "hy": [
+        "Գլիկլազիդ"
+      ],
+      "az": [
+        "Gliclazid"
+      ],
+      "kk": [
+        "Гликлазид"
+      ],
+      "ky": [
+        "Гликлазид"
+      ],
+      "ro": [
+        "Gliclazidă"
+      ],
+      "tg": [
+        "Гликлазид"
+      ],
+      "tk": [
+        "Gliclazid"
+      ],
+      "uz": [
+        "Gliclazid"
+      ],
+      "uk": [
+        "Гликлазид"
+      ],
+      "ka": [
+        "გლიკლაზიდი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "glimepiride": {
+    "localizations": {
+      "en": [
+        "Glimepiride"
+      ],
+      "ru": [
+        "Глимепирид"
+      ],
+      "be": [
+        "Глимепирид"
+      ],
+      "hy": [
+        "Գլիմեպիրիդ"
+      ],
+      "az": [
+        "Glimepirid"
+      ],
+      "kk": [
+        "Глимепирид"
+      ],
+      "ky": [
+        "Глимепирид"
+      ],
+      "ro": [
+        "Glimepiridă"
+      ],
+      "tg": [
+        "Глимепирид"
+      ],
+      "tk": [
+        "Glimepirid"
+      ],
+      "uz": [
+        "Glimepirid"
+      ],
+      "uk": [
+        "Глимепирид"
+      ],
+      "ka": [
+        "გლიმეპირიდი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "pioglitazone": {
+    "localizations": {
+      "en": [
+        "Pioglitazone"
+      ],
+      "ru": [
+        "Пиоглитазон"
+      ],
+      "be": [
+        "Пиоглитазон"
+      ],
+      "hy": [
+        "Պիոգլիտազոն"
+      ],
+      "az": [
+        "Pioglitazone"
+      ],
+      "kk": [
+        "Пиоглитазон"
+      ],
+      "ky": [
+        "Пиоглитазон"
+      ],
+      "ro": [
+        "Pioglitazonă"
+      ],
+      "tg": [
+        "Пиоглитазон"
+      ],
+      "tk": [
+        "Pioglitazone"
+      ],
+      "uz": [
+        "Pioglitazone"
+      ],
+      "uk": [
+        "Пиоглитазон"
+      ],
+      "ka": [
+        "პიოგლიტაზონი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "semaglutide": {
+    "localizations": {
+      "en": [
+        "Semaglutide"
+      ],
+      "ru": [
+        "Семаглутид"
+      ],
+      "be": [
+        "Семаглутид"
+      ],
+      "hy": [
+        "Սեմագլուտիդ"
+      ],
+      "az": [
+        "Semaglutid"
+      ],
+      "kk": [
+        "Семаглутид"
+      ],
+      "ky": [
+        "Семаглутид"
+      ],
+      "ro": [
+        "Semaglutidă"
+      ],
+      "tg": [
+        "Семаглутид"
+      ],
+      "tk": [
+        "Semaglutid"
+      ],
+      "uz": [
+        "Semaglutid"
+      ],
+      "uk": [
+        "Семаглутид"
+      ],
+      "ka": [
+        "სემაგლუტიდი"
+      ]
+    },
+    "forms": [
+      "INJECTION",
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "liraglutide": {
+    "localizations": {
+      "en": [
+        "Liraglutide"
+      ],
+      "ru": [
+        "Лираглутид"
+      ],
+      "be": [
+        "Лираглутид"
+      ],
+      "hy": [
+        "Լիրագլուտիդ"
+      ],
+      "az": [
+        "Liraglutid"
+      ],
+      "kk": [
+        "Лираглутид"
+      ],
+      "ky": [
+        "Лираглутид"
+      ],
+      "ro": [
+        "Liraglutidă"
+      ],
+      "tg": [
+        "Лираглутид"
+      ],
+      "tk": [
+        "Liraglutid"
+      ],
+      "uz": [
+        "Liraglutid"
+      ],
+      "uk": [
+        "Лираглутид"
+      ],
+      "ka": [
+        "ლირაგლუტიდი"
+      ]
+    },
+    "forms": [
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "dulaglutide": {
+    "localizations": {
+      "en": [
+        "Dulaglutide"
+      ],
+      "ru": [
+        "Дулаглутид"
+      ],
+      "be": [
+        "Дулаглутид"
+      ],
+      "hy": [
+        "Դուլագլուտիդ"
+      ],
+      "az": [
+        "Dulaglutid"
+      ],
+      "kk": [
+        "Дулаглутид"
+      ],
+      "ky": [
+        "Дулаглутид"
+      ],
+      "ro": [
+        "Dulaglutidă"
+      ],
+      "tg": [
+        "Дулаглутид"
+      ],
+      "tk": [
+        "Dulaglutid"
+      ],
+      "uz": [
+        "Dulaglutid"
+      ],
+      "uk": [
+        "Дулаглутид"
+      ],
+      "ka": [
+        "დულაგლუტიდი"
+      ]
+    },
+    "forms": [
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "insulin_glargine": {
+    "localizations": {
+      "en": [
+        "Insulin glargine"
+      ],
+      "ru": [
+        "Инсулин гларгин"
+      ],
+      "be": [
+        "Інсулін гларгін"
+      ],
+      "hy": [
+        "Ինսուլին գլարգին"
+      ],
+      "az": [
+        "İnsulin qlarqin"
+      ],
+      "kk": [
+        "Инсулин гларгин"
+      ],
+      "ky": [
+        "Инсулин гларгин"
+      ],
+      "ro": [
+        "Insulină glargin"
+      ],
+      "tg": [
+        "Инсулин гларгин"
+      ],
+      "tk": [
+        "Insulin glargin"
+      ],
+      "uz": [
+        "Insulin glargin"
+      ],
+      "uk": [
+        "Інсулін гларгін"
+      ],
+      "ka": [
+        "ინსულინი გლარგინი"
+      ]
+    },
+    "forms": [
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "insulin_aspart": {
+    "localizations": {
+      "en": [
+        "Insulin aspart"
+      ],
+      "ru": [
+        "Инсулин аспарт"
+      ],
+      "be": [
+        "Інсулін аспарт"
+      ],
+      "hy": [
+        "Ինսուլին ասպարտ"
+      ],
+      "az": [
+        "İnsulin aspart"
+      ],
+      "kk": [
+        "Инсулин аспарт"
+      ],
+      "ky": [
+        "Инсулин аспарт"
+      ],
+      "ro": [
+        "Insulină aspart"
+      ],
+      "tg": [
+        "Инсулин аспарт"
+      ],
+      "tk": [
+        "Insulin aspart"
+      ],
+      "uz": [
+        "Insulin aspart"
+      ],
+      "uk": [
+        "Інсулін аспарт"
+      ],
+      "ka": [
+        "ინსულინი ასპარტი"
+      ]
+    },
+    "forms": [
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "insulin_lispro": {
+    "localizations": {
+      "en": [
+        "Insulin lispro"
+      ],
+      "ru": [
+        "Инсулин лизпро"
+      ],
+      "be": [
+        "Інсулін лізпра"
+      ],
+      "hy": [
+        "Ինսուլին լիզպրո"
+      ],
+      "az": [
+        "İnsulin lispro"
+      ],
+      "kk": [
+        "Инсулин лизпро"
+      ],
+      "ky": [
+        "Инсулин лизпро"
+      ],
+      "ro": [
+        "Insulină lispro"
+      ],
+      "tg": [
+        "Инсулин лизпро"
+      ],
+      "tk": [
+        "Insulin lispro"
+      ],
+      "uz": [
+        "Insulin lispro"
+      ],
+      "uk": [
+        "Інсулін лізпро"
+      ],
+      "ka": [
+        "ინსულინი ლიზპრო"
+      ]
+    },
+    "forms": [
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "thiamazole": {
+    "localizations": {
+      "en": [
+        "Thiamazole"
+      ],
+      "ru": [
+        "Тиамазол"
+      ],
+      "be": [
+        "Тиамазол"
+      ],
+      "hy": [
+        "Տիամազոլ"
+      ],
+      "az": [
+        "Thiamazol"
+      ],
+      "kk": [
+        "Тиамазол"
+      ],
+      "ky": [
+        "Тиамазол"
+      ],
+      "ro": [
+        "Thiamazol"
+      ],
+      "tg": [
+        "Тиамазол"
+      ],
+      "tk": [
+        "Thiamazol"
+      ],
+      "uz": [
+        "Thiamazol"
+      ],
+      "uk": [
+        "Тиамазол"
+      ],
+      "ka": [
+        "ტიამაზოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": [
+      "methimazole"
+    ]
+  },
+  "carbimazole": {
+    "localizations": {
+      "en": [
+        "Carbimazole"
+      ],
+      "ru": [
+        "Карбимазол"
+      ],
+      "be": [
+        "Карбимазол"
+      ],
+      "hy": [
+        "Կարբիմազոլ"
+      ],
+      "az": [
+        "Carbimazol"
+      ],
+      "kk": [
+        "Карбимазол"
+      ],
+      "ky": [
+        "Карбимазол"
+      ],
+      "ro": [
+        "Carbimazol"
+      ],
+      "tg": [
+        "Карбимазол"
+      ],
+      "tk": [
+        "Carbimazol"
+      ],
+      "uz": [
+        "Carbimazol"
+      ],
+      "uk": [
+        "Карбимазол"
+      ],
+      "ka": [
+        "კარბიმაზოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "pantoprazole": {
+    "localizations": {
+      "en": [
+        "Pantoprazole"
+      ],
+      "ru": [
+        "Пантопразол"
+      ],
+      "be": [
+        "Пантапразол"
+      ],
+      "hy": [
+        "Պանտոպրազոլ"
+      ],
+      "az": [
+        "Pantoprazol"
+      ],
+      "kk": [
+        "Пантопразол"
+      ],
+      "ky": [
+        "Пантопразол"
+      ],
+      "ro": [
+        "Pantoprazol"
+      ],
+      "tg": [
+        "Пантопразол"
+      ],
+      "tk": [
+        "Pantoprazol"
+      ],
+      "uz": [
+        "Pantoprazol"
+      ],
+      "uk": [
+        "Пантопразол"
+      ],
+      "ka": [
+        "პანტოპრაზოლი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "esomeprazole": {
+    "localizations": {
+      "en": [
+        "Esomeprazole"
+      ],
+      "ru": [
+        "Эзомепразол"
+      ],
+      "be": [
+        "Эзомепразол"
+      ],
+      "hy": [
+        "Էզոմեպրազոլ"
+      ],
+      "az": [
+        "Esomeprazol"
+      ],
+      "kk": [
+        "Эзомепразол"
+      ],
+      "ky": [
+        "Эзомепразол"
+      ],
+      "ro": [
+        "Esomeprazol"
+      ],
+      "tg": [
+        "Эзомепразол"
+      ],
+      "tk": [
+        "Esomeprazol"
+      ],
+      "uz": [
+        "Esomeprazol"
+      ],
+      "uk": [
+        "Эзомепразол"
+      ],
+      "ka": [
+        "ეზომეპრაზოლი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CAPSULE"
+    ],
+    "aliases": []
+  },
+  "rabeprazole": {
+    "localizations": {
+      "en": [
+        "Rabeprazole"
+      ],
+      "ru": [
+        "Рабепразол"
+      ],
+      "be": [
+        "Рабепразол"
+      ],
+      "hy": [
+        "Րաբեպրազոլ"
+      ],
+      "az": [
+        "Rabeprazol"
+      ],
+      "kk": [
+        "Рабепразол"
+      ],
+      "ky": [
+        "Рабепразол"
+      ],
+      "ro": [
+        "Rabeprazol"
+      ],
+      "tg": [
+        "Рабепразол"
+      ],
+      "tk": [
+        "Rabeprazol"
+      ],
+      "uz": [
+        "Rabeprazol"
+      ],
+      "uk": [
+        "Рабепразол"
+      ],
+      "ka": [
+        "რაბეპრაზოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "famotidine": {
+    "localizations": {
+      "en": [
+        "Famotidine"
+      ],
+      "ru": [
+        "Фамотидин"
+      ],
+      "be": [
+        "Фамотидін"
+      ],
+      "hy": [
+        "Ֆամոտիդին"
+      ],
+      "az": [
+        "Famotidin"
+      ],
+      "kk": [
+        "Фамотидин"
+      ],
+      "ky": [
+        "Фамотидин"
+      ],
+      "ro": [
+        "Famotidină"
+      ],
+      "tg": [
+        "Фамотидин"
+      ],
+      "tk": [
+        "Famotidin"
+      ],
+      "uz": [
+        "Famotidin"
+      ],
+      "uk": [
+        "Фамотидін"
+      ],
+      "ka": [
+        "ფამოტიდინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "ursodeoxycholic_acid": {
+    "localizations": {
+      "en": [
+        "Ursodeoxycholic acid"
+      ],
+      "ru": [
+        "Урсодезоксихолевая кислота"
+      ],
+      "be": [
+        "Урсадэзаксіхолевая кіслата"
+      ],
+      "hy": [
+        "Ուրսոդեօքսիխոլաթթու"
+      ],
+      "az": [
+        "Ursodeoksixol turşusu"
+      ],
+      "kk": [
+        "Урсодезоксихол қышқылы"
+      ],
+      "ky": [
+        "Урсодезоксихол кислотасы"
+      ],
+      "ro": [
+        "Acid ursodeoxicolic"
+      ],
+      "tg": [
+        "Кислотаи урсодезоксихол"
+      ],
+      "tk": [
+        "Ursodezoksihol turşusy"
+      ],
+      "uz": [
+        "Ursodezoksixol kislotasi"
+      ],
+      "uk": [
+        "Урсодезоксихолева кислота"
+      ],
+      "ka": [
+        "ურსოდეზოქსიქოლის მჟავა"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "PILL"
+    ],
+    "aliases": [
+      "ursodiol",
+      "UDCA"
+    ]
+  },
+  "mesalazine": {
+    "localizations": {
+      "en": [
+        "Mesalazine"
+      ],
+      "ru": [
+        "Месалазин"
+      ],
+      "be": [
+        "Месалазін"
+      ],
+      "hy": [
+        "Մեսալազին"
+      ],
+      "az": [
+        "Mesalazin"
+      ],
+      "kk": [
+        "Месалазин"
+      ],
+      "ky": [
+        "Месалазин"
+      ],
+      "ro": [
+        "Mesalazină"
+      ],
+      "tg": [
+        "Месалазин"
+      ],
+      "tk": [
+        "Mesalazin"
+      ],
+      "uz": [
+        "Mesalazin"
+      ],
+      "uk": [
+        "Месалазін"
+      ],
+      "ka": [
+        "მესალაზინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "SUPPOSITORY"
+    ],
+    "aliases": [
+      "mesalamine"
+    ]
+  },
+  "lactulose": {
+    "localizations": {
+      "en": [
+        "Lactulose"
+      ],
+      "ru": [
+        "Лактулоза"
+      ],
+      "be": [
+        "Лактулоза"
+      ],
+      "hy": [
+        "Լակտուլոզա"
+      ],
+      "az": [
+        "Lactulose"
+      ],
+      "kk": [
+        "Лактулоза"
+      ],
+      "ky": [
+        "Лактулоза"
+      ],
+      "ro": [
+        "Lactulose"
+      ],
+      "tg": [
+        "Лактулоза"
+      ],
+      "tk": [
+        "Lactulose"
+      ],
+      "uz": [
+        "Lactulose"
+      ],
+      "uk": [
+        "Лактулоза"
+      ],
+      "ka": [
+        "ლაკტულოზა"
+      ]
+    },
+    "forms": [
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "macrogol": {
+    "localizations": {
+      "en": [
+        "Macrogol"
+      ],
+      "ru": [
+        "Макрогол"
+      ],
+      "be": [
+        "Макрогол"
+      ],
+      "hy": [
+        "Մակրոգոլ"
+      ],
+      "az": [
+        "Macrogol"
+      ],
+      "kk": [
+        "Макрогол"
+      ],
+      "ky": [
+        "Макрогол"
+      ],
+      "ro": [
+        "Macrogol"
+      ],
+      "tg": [
+        "Макрогол"
+      ],
+      "tk": [
+        "Macrogol"
+      ],
+      "uz": [
+        "Macrogol"
+      ],
+      "uk": [
+        "Макрогол"
+      ],
+      "ka": [
+        "მაკროგოლი"
+      ]
+    },
+    "forms": [
+      "POWDER",
+      "LIQUID"
+    ],
+    "aliases": [
+      "polyethylene glycol",
+      "PEG"
+    ]
+  },
+  "levocetirizine": {
+    "localizations": {
+      "en": [
+        "Levocetirizine"
+      ],
+      "ru": [
+        "Левоцетиризин"
+      ],
+      "be": [
+        "Левоцетиризін"
+      ],
+      "hy": [
+        "Լեվոցետիրիզին"
+      ],
+      "az": [
+        "Levocetirizin"
+      ],
+      "kk": [
+        "Левоцетиризин"
+      ],
+      "ky": [
+        "Левоцетиризин"
+      ],
+      "ro": [
+        "Levocetirizină"
+      ],
+      "tg": [
+        "Левоцетиризин"
+      ],
+      "tk": [
+        "Levocetirizin"
+      ],
+      "uz": [
+        "Levocetirizin"
+      ],
+      "uk": [
+        "Левоцетиризін"
+      ],
+      "ka": [
+        "ლევოცეტირიზინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "desloratadine": {
+    "localizations": {
+      "en": [
+        "Desloratadine"
+      ],
+      "ru": [
+        "Дезлоратадин"
+      ],
+      "be": [
+        "Дезлоратадін"
+      ],
+      "hy": [
+        "Դեզլորատադին"
+      ],
+      "az": [
+        "Desloratadin"
+      ],
+      "kk": [
+        "Дезлоратадин"
+      ],
+      "ky": [
+        "Дезлоратадин"
+      ],
+      "ro": [
+        "Desloratadină"
+      ],
+      "tg": [
+        "Дезлоратадин"
+      ],
+      "tk": [
+        "Desloratadin"
+      ],
+      "uz": [
+        "Desloratadin"
+      ],
+      "uk": [
+        "Дезлоратадін"
+      ],
+      "ka": [
+        "დეზლორატადინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "fexofenadine": {
+    "localizations": {
+      "en": [
+        "Fexofenadine"
+      ],
+      "ru": [
+        "Фексофенадин"
+      ],
+      "be": [
+        "Фексофенадін"
+      ],
+      "hy": [
+        "Ֆեկսոֆենադին"
+      ],
+      "az": [
+        "Fexofenadin"
+      ],
+      "kk": [
+        "Фексофенадин"
+      ],
+      "ky": [
+        "Фексофенадин"
+      ],
+      "ro": [
+        "Fexofenadină"
+      ],
+      "tg": [
+        "Фексофенадин"
+      ],
+      "tk": [
+        "Fexofenadin"
+      ],
+      "uz": [
+        "Fexofenadin"
+      ],
+      "uk": [
+        "Фексофенадін"
+      ],
+      "ka": [
+        "ფეკსოფენადინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "montelukast": {
+    "localizations": {
+      "en": [
+        "Montelukast"
+      ],
+      "ru": [
+        "Монтелукаст"
+      ],
+      "be": [
+        "Мантэлукаст"
+      ],
+      "hy": [
+        "Մոնտելուկաստ"
+      ],
+      "az": [
+        "Montelukast"
+      ],
+      "kk": [
+        "Монтелукаст"
+      ],
+      "ky": [
+        "Монтелукаст"
+      ],
+      "ro": [
+        "Montelukast"
+      ],
+      "tg": [
+        "Монтелукаст"
+      ],
+      "tk": [
+        "Montelukast"
+      ],
+      "uz": [
+        "Montelukast"
+      ],
+      "uk": [
+        "Монтелукаст"
+      ],
+      "ka": [
+        "მონტელუკასტი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "budesonide": {
+    "localizations": {
+      "en": [
+        "Budesonide"
+      ],
+      "ru": [
+        "Будесонид"
+      ],
+      "be": [
+        "Будесонид"
+      ],
+      "hy": [
+        "Բուդեսոնիդ"
+      ],
+      "az": [
+        "Budesonid"
+      ],
+      "kk": [
+        "Будесонид"
+      ],
+      "ky": [
+        "Будесонид"
+      ],
+      "ro": [
+        "Budesonidă"
+      ],
+      "tg": [
+        "Будесонид"
+      ],
+      "tk": [
+        "Budesonid"
+      ],
+      "uz": [
+        "Budesonid"
+      ],
+      "uk": [
+        "Будесонид"
+      ],
+      "ka": [
+        "ბუდესონიდი"
+      ]
+    },
+    "forms": [
+      "SPRAY",
+      "INHALER"
+    ],
+    "aliases": [
+      "budesonid"
+    ]
+  },
+  "beclometasone": {
+    "localizations": {
+      "en": [
+        "Beclometasone"
+      ],
+      "ru": [
+        "Беклометазон"
+      ],
+      "be": [
+        "Беклометазон"
+      ],
+      "hy": [
+        "Բեկլոմետազոն"
+      ],
+      "az": [
+        "Beclometasone"
+      ],
+      "kk": [
+        "Беклометазон"
+      ],
+      "ky": [
+        "Беклометазон"
+      ],
+      "ro": [
+        "Beclometasonă"
+      ],
+      "tg": [
+        "Беклометазон"
+      ],
+      "tk": [
+        "Beclometasone"
+      ],
+      "uz": [
+        "Beclometasone"
+      ],
+      "uk": [
+        "Беклометазон"
+      ],
+      "ka": [
+        "ბეკლომეტაზონი"
+      ]
+    },
+    "forms": [
+      "SPRAY",
+      "INHALER"
+    ],
+    "aliases": [
+      "beclomethasone"
+    ]
+  },
+  "fluticasone": {
+    "localizations": {
+      "en": [
+        "Fluticasone"
+      ],
+      "ru": [
+        "Флутиказон"
+      ],
+      "be": [
+        "Флутиказон"
+      ],
+      "hy": [
+        "Ֆլուտիկազոն"
+      ],
+      "az": [
+        "Fluticasone"
+      ],
+      "kk": [
+        "Флутиказон"
+      ],
+      "ky": [
+        "Флутиказон"
+      ],
+      "ro": [
+        "Fluticasonă"
+      ],
+      "tg": [
+        "Флутиказон"
+      ],
+      "tk": [
+        "Fluticasone"
+      ],
+      "uz": [
+        "Fluticasone"
+      ],
+      "uk": [
+        "Флутиказон"
+      ],
+      "ka": [
+        "ფლუტიკაზონი"
+      ]
+    },
+    "forms": [
+      "SPRAY",
+      "INHALER",
+      "CREAM",
+      "OINTMENT"
+    ],
+    "aliases": []
+  },
+  "mometasone": {
+    "localizations": {
+      "en": [
+        "Mometasone"
+      ],
+      "ru": [
+        "Мометазон"
+      ],
+      "be": [
+        "Мометазон"
+      ],
+      "hy": [
+        "Մոմետազոն"
+      ],
+      "az": [
+        "Mometasone"
+      ],
+      "kk": [
+        "Мометазон"
+      ],
+      "ky": [
+        "Мометазон"
+      ],
+      "ro": [
+        "Mometasonă"
+      ],
+      "tg": [
+        "Мометазон"
+      ],
+      "tk": [
+        "Mometasone"
+      ],
+      "uz": [
+        "Mometasone"
+      ],
+      "uk": [
+        "Мометазон"
+      ],
+      "ka": [
+        "მომეტაზონი"
+      ]
+    },
+    "forms": [
+      "SPRAY",
+      "CREAM",
+      "OINTMENT",
+      "INHALER"
+    ],
+    "aliases": []
+  },
+  "formoterol": {
+    "localizations": {
+      "en": [
+        "Formoterol"
+      ],
+      "ru": [
+        "Формотерол"
+      ],
+      "be": [
+        "Формотерол"
+      ],
+      "hy": [
+        "Ֆորմոտերոլ"
+      ],
+      "az": [
+        "Formoterol"
+      ],
+      "kk": [
+        "Формотерол"
+      ],
+      "ky": [
+        "Формотерол"
+      ],
+      "ro": [
+        "Formoterol"
+      ],
+      "tg": [
+        "Формотерол"
+      ],
+      "tk": [
+        "Formoterol"
+      ],
+      "uz": [
+        "Formoterol"
+      ],
+      "uk": [
+        "Формотерол"
+      ],
+      "ka": [
+        "ფორმოტეროლი"
+      ]
+    },
+    "forms": [
+      "INHALER"
+    ],
+    "aliases": []
+  },
+  "salmeterol": {
+    "localizations": {
+      "en": [
+        "Salmeterol"
+      ],
+      "ru": [
+        "Салметерол"
+      ],
+      "be": [
+        "Салметерол"
+      ],
+      "hy": [
+        "Սալմետերոլ"
+      ],
+      "az": [
+        "Salmeterol"
+      ],
+      "kk": [
+        "Салметерол"
+      ],
+      "ky": [
+        "Салметерол"
+      ],
+      "ro": [
+        "Salmeterol"
+      ],
+      "tg": [
+        "Салметерол"
+      ],
+      "tk": [
+        "Salmeterol"
+      ],
+      "uz": [
+        "Salmeterol"
+      ],
+      "uk": [
+        "Салметерол"
+      ],
+      "ka": [
+        "სალმეტეროლი"
+      ]
+    },
+    "forms": [
+      "INHALER"
+    ],
+    "aliases": []
+  },
+  "tiotropium": {
+    "localizations": {
+      "en": [
+        "Tiotropium"
+      ],
+      "ru": [
+        "Тиотропий"
+      ],
+      "be": [
+        "Тиотропий"
+      ],
+      "hy": [
+        "Տիոտրոպիյ"
+      ],
+      "az": [
+        "Tiotropium"
+      ],
+      "kk": [
+        "Тиотропий"
+      ],
+      "ky": [
+        "Тиотропий"
+      ],
+      "ro": [
+        "Tiotropium"
+      ],
+      "tg": [
+        "Тиотропий"
+      ],
+      "tk": [
+        "Tiotropium"
+      ],
+      "uz": [
+        "Tiotropium"
+      ],
+      "uk": [
+        "Тиотропий"
+      ],
+      "ka": [
+        "ტიოტროპიი"
+      ]
+    },
+    "forms": [
+      "INHALER"
+    ],
+    "aliases": []
+  },
+  "ipratropium": {
+    "localizations": {
+      "en": [
+        "Ipratropium"
+      ],
+      "ru": [
+        "Ипратропий"
+      ],
+      "be": [
+        "Ипратропий"
+      ],
+      "hy": [
+        "Իպրատրոպիյ"
+      ],
+      "az": [
+        "Ipratropium"
+      ],
+      "kk": [
+        "Ипратропий"
+      ],
+      "ky": [
+        "Ипратропий"
+      ],
+      "ro": [
+        "Ipratropium"
+      ],
+      "tg": [
+        "Ипратропий"
+      ],
+      "tk": [
+        "Ipratropium"
+      ],
+      "uz": [
+        "Ipratropium"
+      ],
+      "uk": [
+        "Ипратропий"
+      ],
+      "ka": [
+        "იპრატროპიი"
+      ]
+    },
+    "forms": [
+      "SPRAY",
+      "INHALER"
+    ],
+    "aliases": []
+  },
+  "budesonide_formoterol": {
+    "localizations": {
+      "en": [
+        "Budesonide / formoterol"
+      ],
+      "ru": [
+        "Будесонид / формотерол"
+      ],
+      "be": [
+        "Будесонид / формотерол"
+      ],
+      "hy": [
+        "Բուդեսոնիդ / ֆորմոտերոլ"
+      ],
+      "az": [
+        "Budesonid / formoterol"
+      ],
+      "kk": [
+        "Будесонид / формотерол"
+      ],
+      "ky": [
+        "Будесонид / формотерол"
+      ],
+      "ro": [
+        "Budesonidă / formoterol"
+      ],
+      "tg": [
+        "Будесонид / формотерол"
+      ],
+      "tk": [
+        "Budesonid / formoterol"
+      ],
+      "uz": [
+        "Budesonid / formoterol"
+      ],
+      "uk": [
+        "Будесонид / формотерол"
+      ],
+      "ka": [
+        "ბუდესონიდ / ფორმოტეროლი"
+      ]
+    },
+    "forms": [
+      "INHALER"
+    ],
+    "aliases": []
+  },
+  "fluticasone_salmeterol": {
+    "localizations": {
+      "en": [
+        "Fluticasone / salmeterol"
+      ],
+      "ru": [
+        "Флутиказон / салметерол"
+      ],
+      "be": [
+        "Флутиказон / салметерол"
+      ],
+      "hy": [
+        "Ֆլուտիկազոն / սալմետերոլ"
+      ],
+      "az": [
+        "Fluticasone / salmeterol"
+      ],
+      "kk": [
+        "Флутиказон / салметерол"
+      ],
+      "ky": [
+        "Флутиказон / салметерол"
+      ],
+      "ro": [
+        "Fluticasonă / salmeterol"
+      ],
+      "tg": [
+        "Флутиказон / салметерол"
+      ],
+      "tk": [
+        "Fluticasone / salmeterol"
+      ],
+      "uz": [
+        "Fluticasone / salmeterol"
+      ],
+      "uk": [
+        "Флутиказон / салметерол"
+      ],
+      "ka": [
+        "ფლუტიკაზონ / სალმეტეროლი"
+      ]
+    },
+    "forms": [
+      "INHALER"
+    ],
+    "aliases": []
+  },
+  "azelastine": {
+    "localizations": {
+      "en": [
+        "Azelastine"
+      ],
+      "ru": [
+        "Азеластин"
+      ],
+      "be": [
+        "Азеластін"
+      ],
+      "hy": [
+        "Ազելաստին"
+      ],
+      "az": [
+        "Azelastin"
+      ],
+      "kk": [
+        "Азеластин"
+      ],
+      "ky": [
+        "Азеластин"
+      ],
+      "ro": [
+        "Azelastină"
+      ],
+      "tg": [
+        "Азеластин"
+      ],
+      "tk": [
+        "Azelastin"
+      ],
+      "uz": [
+        "Azelastin"
+      ],
+      "uk": [
+        "Азеластін"
+      ],
+      "ka": [
+        "აზელასტინი"
+      ]
+    },
+    "forms": [
+      "SPRAY",
+      "DROPS"
+    ],
+    "aliases": []
+  },
+  "sodium_cromoglicate": {
+    "localizations": {
+      "en": [
+        "Sodium cromoglicate"
+      ],
+      "ru": [
+        "Кромогликат натрия"
+      ],
+      "be": [
+        "Кромаглікат натрыю"
+      ],
+      "hy": [
+        "Նատրիումի քրոմոգլիկատ"
+      ],
+      "az": [
+        "Natrium kromoqlikat"
+      ],
+      "kk": [
+        "Натрий кромогликаты"
+      ],
+      "ky": [
+        "Натрий кромогликаты"
+      ],
+      "ro": [
+        "Cromoglicat de sodiu"
+      ],
+      "tg": [
+        "Кромогликати натрий"
+      ],
+      "tk": [
+        "Natriý kromoglikaty"
+      ],
+      "uz": [
+        "Natriy kromoglikat"
+      ],
+      "uk": [
+        "Кромоглікат натрію"
+      ],
+      "ka": [
+        "ნატრიუმის კრომოგლიკატი"
+      ]
+    },
+    "forms": [
+      "DROPS",
+      "SPRAY"
+    ],
+    "aliases": [
+      "cromolyn sodium"
+    ]
+  },
+  "sertraline": {
+    "localizations": {
+      "en": [
+        "Sertraline"
+      ],
+      "ru": [
+        "Сертралин"
+      ],
+      "be": [
+        "Сертралін"
+      ],
+      "hy": [
+        "Սերտրալին"
+      ],
+      "az": [
+        "Sertralin"
+      ],
+      "kk": [
+        "Сертралин"
+      ],
+      "ky": [
+        "Сертралин"
+      ],
+      "ro": [
+        "Sertralină"
+      ],
+      "tg": [
+        "Сертралин"
+      ],
+      "tk": [
+        "Sertralin"
+      ],
+      "uz": [
+        "Sertralin"
+      ],
+      "uk": [
+        "Сертралін"
+      ],
+      "ka": [
+        "სერტრალინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "escitalopram": {
+    "localizations": {
+      "en": [
+        "Escitalopram"
+      ],
+      "ru": [
+        "Эсциталопрам"
+      ],
+      "be": [
+        "Эсцыталапрам"
+      ],
+      "hy": [
+        "Էսցիտալոպրամ"
+      ],
+      "az": [
+        "Essitalopram"
+      ],
+      "kk": [
+        "Эсциталопрам"
+      ],
+      "ky": [
+        "Эсциталопрам"
+      ],
+      "ro": [
+        "Escitalopram"
+      ],
+      "tg": [
+        "Эсситалопрам"
+      ],
+      "tk": [
+        "Essitalopram"
+      ],
+      "uz": [
+        "Essitalopram"
+      ],
+      "uk": [
+        "Есциталопрам"
+      ],
+      "ka": [
+        "ესციტალოპრამი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "citalopram": {
+    "localizations": {
+      "en": [
+        "Citalopram"
+      ],
+      "ru": [
+        "Циталопрам"
+      ],
+      "be": [
+        "Циталопрам"
+      ],
+      "hy": [
+        "Ցիտալոպրամ"
+      ],
+      "az": [
+        "Citalopram"
+      ],
+      "kk": [
+        "Циталопрам"
+      ],
+      "ky": [
+        "Циталопрам"
+      ],
+      "ro": [
+        "Citalopram"
+      ],
+      "tg": [
+        "Циталопрам"
+      ],
+      "tk": [
+        "Citalopram"
+      ],
+      "uz": [
+        "Citalopram"
+      ],
+      "uk": [
+        "Циталопрам"
+      ],
+      "ka": [
+        "ციტალოპრამი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "fluoxetine": {
+    "localizations": {
+      "en": [
+        "Fluoxetine"
+      ],
+      "ru": [
+        "Флуоксетин"
+      ],
+      "be": [
+        "Флуоксетін"
+      ],
+      "hy": [
+        "Ֆլուոկսետին"
+      ],
+      "az": [
+        "Fluoxetin"
+      ],
+      "kk": [
+        "Флуоксетин"
+      ],
+      "ky": [
+        "Флуоксетин"
+      ],
+      "ro": [
+        "Fluoxetină"
+      ],
+      "tg": [
+        "Флуоксетин"
+      ],
+      "tk": [
+        "Fluoxetin"
+      ],
+      "uz": [
+        "Fluoxetin"
+      ],
+      "uk": [
+        "Флуоксетін"
+      ],
+      "ka": [
+        "ფლუოკსეტინი"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "paroxetine": {
+    "localizations": {
+      "en": [
+        "Paroxetine"
+      ],
+      "ru": [
+        "Пароксетин"
+      ],
+      "be": [
+        "Пароксетін"
+      ],
+      "hy": [
+        "Պարոկսետին"
+      ],
+      "az": [
+        "Paroxetin"
+      ],
+      "kk": [
+        "Пароксетин"
+      ],
+      "ky": [
+        "Пароксетин"
+      ],
+      "ro": [
+        "Paroxetină"
+      ],
+      "tg": [
+        "Пароксетин"
+      ],
+      "tk": [
+        "Paroxetin"
+      ],
+      "uz": [
+        "Paroxetin"
+      ],
+      "uk": [
+        "Пароксетін"
+      ],
+      "ka": [
+        "პაროკსეტინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "venlafaxine": {
+    "localizations": {
+      "en": [
+        "Venlafaxine"
+      ],
+      "ru": [
+        "Венлафаксин"
+      ],
+      "be": [
+        "Венлафаксін"
+      ],
+      "hy": [
+        "Վենլաֆակսին"
+      ],
+      "az": [
+        "Venlafaxin"
+      ],
+      "kk": [
+        "Венлафаксин"
+      ],
+      "ky": [
+        "Венлафаксин"
+      ],
+      "ro": [
+        "Venlafaxină"
+      ],
+      "tg": [
+        "Венлафаксин"
+      ],
+      "tk": [
+        "Venlafaxin"
+      ],
+      "uz": [
+        "Venlafaxin"
+      ],
+      "uk": [
+        "Венлафаксін"
+      ],
+      "ka": [
+        "ვენლაფაკსინი"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "duloxetine": {
+    "localizations": {
+      "en": [
+        "Duloxetine"
+      ],
+      "ru": [
+        "Дулоксетин"
+      ],
+      "be": [
+        "Дулоксетін"
+      ],
+      "hy": [
+        "Դուլոկսետին"
+      ],
+      "az": [
+        "Duloxetin"
+      ],
+      "kk": [
+        "Дулоксетин"
+      ],
+      "ky": [
+        "Дулоксетин"
+      ],
+      "ro": [
+        "Duloxetină"
+      ],
+      "tg": [
+        "Дулоксетин"
+      ],
+      "tk": [
+        "Duloxetin"
+      ],
+      "uz": [
+        "Duloxetin"
+      ],
+      "uk": [
+        "Дулоксетін"
+      ],
+      "ka": [
+        "დულოკსეტინი"
+      ]
+    },
+    "forms": [
+      "CAPSULE"
+    ],
+    "aliases": []
+  },
+  "mirtazapine": {
+    "localizations": {
+      "en": [
+        "Mirtazapine"
+      ],
+      "ru": [
+        "Миртазапин"
+      ],
+      "be": [
+        "Миртазапін"
+      ],
+      "hy": [
+        "Միրտազապին"
+      ],
+      "az": [
+        "Mirtazapin"
+      ],
+      "kk": [
+        "Миртазапин"
+      ],
+      "ky": [
+        "Миртазапин"
+      ],
+      "ro": [
+        "Mirtazapină"
+      ],
+      "tg": [
+        "Миртазапин"
+      ],
+      "tk": [
+        "Mirtazapin"
+      ],
+      "uz": [
+        "Mirtazapin"
+      ],
+      "uk": [
+        "Миртазапін"
+      ],
+      "ka": [
+        "მირტაზაპინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "amitriptyline": {
+    "localizations": {
+      "en": [
+        "Amitriptyline"
+      ],
+      "ru": [
+        "Амитриптилин"
+      ],
+      "be": [
+        "Амитриптилін"
+      ],
+      "hy": [
+        "Ամիտրիպտիլին"
+      ],
+      "az": [
+        "Amitriptylin"
+      ],
+      "kk": [
+        "Амитриптилин"
+      ],
+      "ky": [
+        "Амитриптилин"
+      ],
+      "ro": [
+        "Amitriptylină"
+      ],
+      "tg": [
+        "Амитриптилин"
+      ],
+      "tk": [
+        "Amitriptylin"
+      ],
+      "uz": [
+        "Amitriptylin"
+      ],
+      "uk": [
+        "Амитриптилін"
+      ],
+      "ka": [
+        "ამიტრიპტილინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "trazodone": {
+    "localizations": {
+      "en": [
+        "Trazodone"
+      ],
+      "ru": [
+        "Тразодон"
+      ],
+      "be": [
+        "Тразодон"
+      ],
+      "hy": [
+        "Տրազոդոն"
+      ],
+      "az": [
+        "Trazodone"
+      ],
+      "kk": [
+        "Тразодон"
+      ],
+      "ky": [
+        "Тразодон"
+      ],
+      "ro": [
+        "Trazodonă"
+      ],
+      "tg": [
+        "Тразодон"
+      ],
+      "tk": [
+        "Trazodone"
+      ],
+      "uz": [
+        "Trazodone"
+      ],
+      "uk": [
+        "Тразодон"
+      ],
+      "ka": [
+        "ტრაზოდონი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "bupropion": {
+    "localizations": {
+      "en": [
+        "Bupropion"
+      ],
+      "ru": [
+        "Бупропион"
+      ],
+      "be": [
+        "Бупропион"
+      ],
+      "hy": [
+        "Բուպրոպիոն"
+      ],
+      "az": [
+        "Bupropion"
+      ],
+      "kk": [
+        "Бупропион"
+      ],
+      "ky": [
+        "Бупропион"
+      ],
+      "ro": [
+        "Bupropion"
+      ],
+      "tg": [
+        "Бупропион"
+      ],
+      "tk": [
+        "Bupropion"
+      ],
+      "uz": [
+        "Bupropion"
+      ],
+      "uk": [
+        "Бупропион"
+      ],
+      "ka": [
+        "ბუპროპიონი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": [
+      "amfebutamone"
+    ]
+  },
+  "pregabalin": {
+    "localizations": {
+      "en": [
+        "Pregabalin"
+      ],
+      "ru": [
+        "Прегабалин"
+      ],
+      "be": [
+        "Прегабалін"
+      ],
+      "hy": [
+        "Պրեգաբալին"
+      ],
+      "az": [
+        "Pregabalin"
+      ],
+      "kk": [
+        "Прегабалин"
+      ],
+      "ky": [
+        "Прегабалин"
+      ],
+      "ro": [
+        "Pregabalin"
+      ],
+      "tg": [
+        "Прегабалин"
+      ],
+      "tk": [
+        "Pregabalin"
+      ],
+      "uz": [
+        "Pregabalin"
+      ],
+      "uk": [
+        "Прегабалін"
+      ],
+      "ka": [
+        "პრეგაბალინი"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "gabapentin": {
+    "localizations": {
+      "en": [
+        "Gabapentin"
+      ],
+      "ru": [
+        "Габапентин"
+      ],
+      "be": [
+        "Габапентін"
+      ],
+      "hy": [
+        "Գաբապենտին"
+      ],
+      "az": [
+        "Gabapentin"
+      ],
+      "kk": [
+        "Габапентин"
+      ],
+      "ky": [
+        "Габапентин"
+      ],
+      "ro": [
+        "Gabapentin"
+      ],
+      "tg": [
+        "Габапентин"
+      ],
+      "tk": [
+        "Gabapentin"
+      ],
+      "uz": [
+        "Gabapentin"
+      ],
+      "uk": [
+        "Габапентін"
+      ],
+      "ka": [
+        "გაბაპენტინი"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "carbamazepine": {
+    "localizations": {
+      "en": [
+        "Carbamazepine"
+      ],
+      "ru": [
+        "Карбамазепин"
+      ],
+      "be": [
+        "Карбамазепін"
+      ],
+      "hy": [
+        "Կարբամազեպին"
+      ],
+      "az": [
+        "Carbamazepin"
+      ],
+      "kk": [
+        "Карбамазепин"
+      ],
+      "ky": [
+        "Карбамазепин"
+      ],
+      "ro": [
+        "Carbamazepină"
+      ],
+      "tg": [
+        "Карбамазепин"
+      ],
+      "tk": [
+        "Carbamazepin"
+      ],
+      "uz": [
+        "Carbamazepin"
+      ],
+      "uk": [
+        "Карбамазепін"
+      ],
+      "ka": [
+        "კარბამაზეპინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "lamotrigine": {
+    "localizations": {
+      "en": [
+        "Lamotrigine"
+      ],
+      "ru": [
+        "Ламотриджин"
+      ],
+      "be": [
+        "Ламотриджін"
+      ],
+      "hy": [
+        "Լամոտրիդժին"
+      ],
+      "az": [
+        "Lamotrigin"
+      ],
+      "kk": [
+        "Ламотриджин"
+      ],
+      "ky": [
+        "Ламотриджин"
+      ],
+      "ro": [
+        "Lamotrigină"
+      ],
+      "tg": [
+        "Ламотриджин"
+      ],
+      "tk": [
+        "Lamotrigin"
+      ],
+      "uz": [
+        "Lamotrigin"
+      ],
+      "uk": [
+        "Ламотриджін"
+      ],
+      "ka": [
+        "ლამოტრიდჟინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "valproic_acid": {
+    "localizations": {
+      "en": [
+        "Valproic acid"
+      ],
+      "ru": [
+        "Вальпроевая кислота"
+      ],
+      "be": [
+        "Вальпраевая кіслата"
+      ],
+      "hy": [
+        "Վալպրոյաթթու"
+      ],
+      "az": [
+        "Valproik turşu"
+      ],
+      "kk": [
+        "Вальпрой қышқылы"
+      ],
+      "ky": [
+        "Вальпрой кислотасы"
+      ],
+      "ro": [
+        "Acid valproic"
+      ],
+      "tg": [
+        "Кислотаи валпроат"
+      ],
+      "tk": [
+        "Walproý turşusy"
+      ],
+      "uz": [
+        "Valproat kislotasi"
+      ],
+      "uk": [
+        "Вальпроєва кислота"
+      ],
+      "ka": [
+        "ვალპროის მჟავა"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CAPSULE",
+      "LIQUID"
+    ],
+    "aliases": [
+      "valproate"
+    ]
+  },
+  "levetiracetam": {
+    "localizations": {
+      "en": [
+        "Levetiracetam"
+      ],
+      "ru": [
+        "Леветирацетам"
+      ],
+      "be": [
+        "Леветирацетам"
+      ],
+      "hy": [
+        "Լեվետիրացետամ"
+      ],
+      "az": [
+        "Levetiracetam"
+      ],
+      "kk": [
+        "Леветирацетам"
+      ],
+      "ky": [
+        "Леветирацетам"
+      ],
+      "ro": [
+        "Levetiracetam"
+      ],
+      "tg": [
+        "Леветирацетам"
+      ],
+      "tk": [
+        "Levetiracetam"
+      ],
+      "uz": [
+        "Levetiracetam"
+      ],
+      "uk": [
+        "Леветирацетам"
+      ],
+      "ka": [
+        "ლევეტირაცეტამი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "topiramate": {
+    "localizations": {
+      "en": [
+        "Topiramate"
+      ],
+      "ru": [
+        "Топирамат"
+      ],
+      "be": [
+        "Топирамат"
+      ],
+      "hy": [
+        "Տոպիրամատ"
+      ],
+      "az": [
+        "Topiramate"
+      ],
+      "kk": [
+        "Топирамат"
+      ],
+      "ky": [
+        "Топирамат"
+      ],
+      "ro": [
+        "Topiramate"
+      ],
+      "tg": [
+        "Топирамат"
+      ],
+      "tk": [
+        "Topiramate"
+      ],
+      "uz": [
+        "Topiramate"
+      ],
+      "uk": [
+        "Топирамат"
+      ],
+      "ka": [
+        "ტოპირამატი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CAPSULE"
+    ],
+    "aliases": []
+  },
+  "quetiapine": {
+    "localizations": {
+      "en": [
+        "Quetiapine"
+      ],
+      "ru": [
+        "Кветиапин"
+      ],
+      "be": [
+        "Кветиапін"
+      ],
+      "hy": [
+        "Կվետիապին"
+      ],
+      "az": [
+        "Quetiapin"
+      ],
+      "kk": [
+        "Кветиапин"
+      ],
+      "ky": [
+        "Кветиапин"
+      ],
+      "ro": [
+        "Quetiapină"
+      ],
+      "tg": [
+        "Кветиапин"
+      ],
+      "tk": [
+        "Quetiapin"
+      ],
+      "uz": [
+        "Quetiapin"
+      ],
+      "uk": [
+        "Кветиапін"
+      ],
+      "ka": [
+        "კვეტიაპინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "aripiprazole": {
+    "localizations": {
+      "en": [
+        "Aripiprazole"
+      ],
+      "ru": [
+        "Арипипразол"
+      ],
+      "be": [
+        "Арипипразол"
+      ],
+      "hy": [
+        "Արիպիպրազոլ"
+      ],
+      "az": [
+        "Aripiprazol"
+      ],
+      "kk": [
+        "Арипипразол"
+      ],
+      "ky": [
+        "Арипипразол"
+      ],
+      "ro": [
+        "Aripiprazol"
+      ],
+      "tg": [
+        "Арипипразол"
+      ],
+      "tk": [
+        "Aripiprazol"
+      ],
+      "uz": [
+        "Aripiprazol"
+      ],
+      "uk": [
+        "Арипипразол"
+      ],
+      "ka": [
+        "არიპიპრაზოლი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "risperidone": {
+    "localizations": {
+      "en": [
+        "Risperidone"
+      ],
+      "ru": [
+        "Рисперидон"
+      ],
+      "be": [
+        "Рисперидон"
+      ],
+      "hy": [
+        "Րիսպերիդոն"
+      ],
+      "az": [
+        "Risperidone"
+      ],
+      "kk": [
+        "Рисперидон"
+      ],
+      "ky": [
+        "Рисперидон"
+      ],
+      "ro": [
+        "Risperidonă"
+      ],
+      "tg": [
+        "Рисперидон"
+      ],
+      "tk": [
+        "Risperidone"
+      ],
+      "uz": [
+        "Risperidone"
+      ],
+      "uk": [
+        "Рисперидон"
+      ],
+      "ka": [
+        "რისპერიდონი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "olanzapine": {
+    "localizations": {
+      "en": [
+        "Olanzapine"
+      ],
+      "ru": [
+        "Оланзапин"
+      ],
+      "be": [
+        "Оланзапін"
+      ],
+      "hy": [
+        "Ոլանզապին"
+      ],
+      "az": [
+        "Olanzapin"
+      ],
+      "kk": [
+        "Оланзапин"
+      ],
+      "ky": [
+        "Оланзапин"
+      ],
+      "ro": [
+        "Olanzapină"
+      ],
+      "tg": [
+        "Оланзапин"
+      ],
+      "tk": [
+        "Olanzapin"
+      ],
+      "uz": [
+        "Olanzapin"
+      ],
+      "uk": [
+        "Оланзапін"
+      ],
+      "ka": [
+        "ოლანზაპინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "lithium_carbonate": {
+    "localizations": {
+      "en": [
+        "Lithium carbonate"
+      ],
+      "ru": [
+        "Лития карбонат"
+      ],
+      "be": [
+        "Карбанат літыю"
+      ],
+      "hy": [
+        "Լիթիումի կարբոնատ"
+      ],
+      "az": [
+        "Litium karbonat"
+      ],
+      "kk": [
+        "Литий карбонаты"
+      ],
+      "ky": [
+        "Литий карбонаты"
+      ],
+      "ro": [
+        "Carbonat de litiu"
+      ],
+      "tg": [
+        "Карбонати литий"
+      ],
+      "tk": [
+        "Litiý karbonaty"
+      ],
+      "uz": [
+        "Litiy karbonat"
+      ],
+      "uk": [
+        "Літію карбонат"
+      ],
+      "ka": [
+        "ლითიუმის კარბონატი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "melatonin": {
+    "localizations": {
+      "en": [
+        "Melatonin"
+      ],
+      "ru": [
+        "Мелатонин"
+      ],
+      "be": [
+        "Мелатонін"
+      ],
+      "hy": [
+        "Մելատոնին"
+      ],
+      "az": [
+        "Melatonin"
+      ],
+      "kk": [
+        "Мелатонин"
+      ],
+      "ky": [
+        "Мелатонин"
+      ],
+      "ro": [
+        "Melatonin"
+      ],
+      "tg": [
+        "Мелатонин"
+      ],
+      "tk": [
+        "Melatonin"
+      ],
+      "uz": [
+        "Melatonin"
+      ],
+      "uk": [
+        "Мелатонін"
+      ],
+      "ka": [
+        "მელატონინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CAPSULE",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "naproxen": {
+    "localizations": {
+      "en": [
+        "Naproxen"
+      ],
+      "ru": [
+        "Напроксен"
+      ],
+      "be": [
+        "Напроксен"
+      ],
+      "hy": [
+        "Նապրոկսեն"
+      ],
+      "az": [
+        "Naproxen"
+      ],
+      "kk": [
+        "Напроксен"
+      ],
+      "ky": [
+        "Напроксен"
+      ],
+      "ro": [
+        "Naproxen"
+      ],
+      "tg": [
+        "Напроксен"
+      ],
+      "tk": [
+        "Naproxen"
+      ],
+      "uz": [
+        "Naproxen"
+      ],
+      "uk": [
+        "Напроксен"
+      ],
+      "ka": [
+        "ნაპროკსენი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "diclofenac": {
+    "localizations": {
+      "en": [
+        "Diclofenac"
+      ],
+      "ru": [
+        "Диклофенак"
+      ],
+      "be": [
+        "Диклофенак"
+      ],
+      "hy": [
+        "Դիկլոֆենակ"
+      ],
+      "az": [
+        "Diclofenac"
+      ],
+      "kk": [
+        "Диклофенак"
+      ],
+      "ky": [
+        "Диклофенак"
+      ],
+      "ro": [
+        "Diclofenac"
+      ],
+      "tg": [
+        "Диклофенак"
+      ],
+      "tk": [
+        "Diclofenac"
+      ],
+      "uz": [
+        "Diclofenac"
+      ],
+      "uk": [
+        "Диклофенак"
+      ],
+      "ka": [
+        "დიკლოფენაკი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION",
+      "DROPS",
+      "GEL",
+      "CAPSULE",
+      "PATCH",
+      "SUPPOSITORY"
+    ],
+    "aliases": []
+  },
+  "meloxicam": {
+    "localizations": {
+      "en": [
+        "Meloxicam"
+      ],
+      "ru": [
+        "Мелоксикам"
+      ],
+      "be": [
+        "Мелоксикам"
+      ],
+      "hy": [
+        "Մելոկսիկամ"
+      ],
+      "az": [
+        "Meloxicam"
+      ],
+      "kk": [
+        "Мелоксикам"
+      ],
+      "ky": [
+        "Мелоксикам"
+      ],
+      "ro": [
+        "Meloxicam"
+      ],
+      "tg": [
+        "Мелоксикам"
+      ],
+      "tk": [
+        "Meloxicam"
+      ],
+      "uz": [
+        "Meloxicam"
+      ],
+      "uk": [
+        "Мелоксикам"
+      ],
+      "ka": [
+        "მელოკსიკამი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "celecoxib": {
+    "localizations": {
+      "en": [
+        "Celecoxib"
+      ],
+      "ru": [
+        "Целекоксиб"
+      ],
+      "be": [
+        "Целекоксиб"
+      ],
+      "hy": [
+        "Ցելեկոկսիբ"
+      ],
+      "az": [
+        "Celecoxib"
+      ],
+      "kk": [
+        "Целекоксиб"
+      ],
+      "ky": [
+        "Целекоксиб"
+      ],
+      "ro": [
+        "Celecoxib"
+      ],
+      "tg": [
+        "Целекоксиб"
+      ],
+      "tk": [
+        "Celecoxib"
+      ],
+      "uz": [
+        "Celecoxib"
+      ],
+      "uk": [
+        "Целекоксиб"
+      ],
+      "ka": [
+        "ცელეკოკსიბი"
+      ]
+    },
+    "forms": [
+      "CAPSULE"
+    ],
+    "aliases": []
+  },
+  "allopurinol": {
+    "localizations": {
+      "en": [
+        "Allopurinol"
+      ],
+      "ru": [
+        "Аллопуринол"
+      ],
+      "be": [
+        "Аллопуринол"
+      ],
+      "hy": [
+        "Ալլոպուրինոլ"
+      ],
+      "az": [
+        "Allopurinol"
+      ],
+      "kk": [
+        "Аллопуринол"
+      ],
+      "ky": [
+        "Аллопуринол"
+      ],
+      "ro": [
+        "Allopurinol"
+      ],
+      "tg": [
+        "Аллопуринол"
+      ],
+      "tk": [
+        "Allopurinol"
+      ],
+      "uz": [
+        "Allopurinol"
+      ],
+      "uk": [
+        "Аллопуринол"
+      ],
+      "ka": [
+        "ალლოპურინოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "febuxostat": {
+    "localizations": {
+      "en": [
+        "Febuxostat"
+      ],
+      "ru": [
+        "Фебуксостат"
+      ],
+      "be": [
+        "Фебуксостат"
+      ],
+      "hy": [
+        "Ֆեբուկսոստատ"
+      ],
+      "az": [
+        "Febuxostat"
+      ],
+      "kk": [
+        "Фебуксостат"
+      ],
+      "ky": [
+        "Фебуксостат"
+      ],
+      "ro": [
+        "Febuxostat"
+      ],
+      "tg": [
+        "Фебуксостат"
+      ],
+      "tk": [
+        "Febuxostat"
+      ],
+      "uz": [
+        "Febuxostat"
+      ],
+      "uk": [
+        "Фебуксостат"
+      ],
+      "ka": [
+        "ფებუკსოსტატი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "colchicine": {
+    "localizations": {
+      "en": [
+        "Colchicine"
+      ],
+      "ru": [
+        "Колхицин"
+      ],
+      "be": [
+        "Колхицін"
+      ],
+      "hy": [
+        "Կոլխիցին"
+      ],
+      "az": [
+        "Colchicin"
+      ],
+      "kk": [
+        "Колхицин"
+      ],
+      "ky": [
+        "Колхицин"
+      ],
+      "ro": [
+        "Colchicină"
+      ],
+      "tg": [
+        "Колхицин"
+      ],
+      "tk": [
+        "Colchicin"
+      ],
+      "uz": [
+        "Colchicin"
+      ],
+      "uk": [
+        "Колхицін"
+      ],
+      "ka": [
+        "კოლხიცინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "hydroxychloroquine": {
+    "localizations": {
+      "en": [
+        "Hydroxychloroquine"
+      ],
+      "ru": [
+        "Гидроксихлорохин"
+      ],
+      "be": [
+        "Гидроксихлорохін"
+      ],
+      "hy": [
+        "Գիդրոկսիխլորոխին"
+      ],
+      "az": [
+        "Hydroxychloroquin"
+      ],
+      "kk": [
+        "Гидроксихлорохин"
+      ],
+      "ky": [
+        "Гидроксихлорохин"
+      ],
+      "ro": [
+        "Hydroxychloroquină"
+      ],
+      "tg": [
+        "Гидроксихлорохин"
+      ],
+      "tk": [
+        "Hydroxychloroquin"
+      ],
+      "uz": [
+        "Hydroxychloroquin"
+      ],
+      "uk": [
+        "Гидроксихлорохін"
+      ],
+      "ka": [
+        "გიდროკსიხლოროხინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "methotrexate": {
+    "localizations": {
+      "en": [
+        "Methotrexate"
+      ],
+      "ru": [
+        "Метотрексат"
+      ],
+      "be": [
+        "Метотрексат"
+      ],
+      "hy": [
+        "Մետոտրեկսատ"
+      ],
+      "az": [
+        "Methotrexate"
+      ],
+      "kk": [
+        "Метотрексат"
+      ],
+      "ky": [
+        "Метотрексат"
+      ],
+      "ro": [
+        "Methotrexate"
+      ],
+      "tg": [
+        "Метотрексат"
+      ],
+      "tk": [
+        "Methotrexate"
+      ],
+      "uz": [
+        "Methotrexate"
+      ],
+      "uk": [
+        "Метотрексат"
+      ],
+      "ka": [
+        "მეტოტრეკსატი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "sulfasalazine": {
+    "localizations": {
+      "en": [
+        "Sulfasalazine"
+      ],
+      "ru": [
+        "Сульфасалазин"
+      ],
+      "be": [
+        "Сульфасалазін"
+      ],
+      "hy": [
+        "Սուլֆասալազին"
+      ],
+      "az": [
+        "Sulfasalazin"
+      ],
+      "kk": [
+        "Сульфасалазин"
+      ],
+      "ky": [
+        "Сульфасалазин"
+      ],
+      "ro": [
+        "Sulfasalazină"
+      ],
+      "tg": [
+        "Сульфасалазин"
+      ],
+      "tk": [
+        "Sulfasalazin"
+      ],
+      "uz": [
+        "Sulfasalazin"
+      ],
+      "uk": [
+        "Сульфасалазін"
+      ],
+      "ka": [
+        "სულფასალაზინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "leflunomide": {
+    "localizations": {
+      "en": [
+        "Leflunomide"
+      ],
+      "ru": [
+        "Лефлуномид"
+      ],
+      "be": [
+        "Лефлуномид"
+      ],
+      "hy": [
+        "Լեֆլունոմիդ"
+      ],
+      "az": [
+        "Leflunomid"
+      ],
+      "kk": [
+        "Лефлуномид"
+      ],
+      "ky": [
+        "Лефлуномид"
+      ],
+      "ro": [
+        "Leflunomidă"
+      ],
+      "tg": [
+        "Лефлуномид"
+      ],
+      "tk": [
+        "Leflunomid"
+      ],
+      "uz": [
+        "Leflunomid"
+      ],
+      "uk": [
+        "Лефлуномид"
+      ],
+      "ka": [
+        "ლეფლუნომიდი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "alendronic_acid": {
+    "localizations": {
+      "en": [
+        "Alendronic acid"
+      ],
+      "ru": [
+        "Алендроновая кислота"
+      ],
+      "be": [
+        "Алендронавая кіслата"
+      ],
+      "hy": [
+        "Ալենդրոնաթթու"
+      ],
+      "az": [
+        "Alendron turşusu"
+      ],
+      "kk": [
+        "Алендрон қышқылы"
+      ],
+      "ky": [
+        "Алендрон кислотасы"
+      ],
+      "ro": [
+        "Acid alendronic"
+      ],
+      "tg": [
+        "Кислотаи алендрон"
+      ],
+      "tk": [
+        "Alendron turşusy"
+      ],
+      "uz": [
+        "Alendron kislotasi"
+      ],
+      "uk": [
+        "Алендронова кислота"
+      ],
+      "ka": [
+        "ალენდრონის მჟავა"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": [
+      "alendronate"
+    ]
+  },
+  "risedronate": {
+    "localizations": {
+      "en": [
+        "Risedronate"
+      ],
+      "ru": [
+        "Ризедронат"
+      ],
+      "be": [
+        "Ризедронат"
+      ],
+      "hy": [
+        "Րիզեդրոնատ"
+      ],
+      "az": [
+        "Risedronate"
+      ],
+      "kk": [
+        "Ризедронат"
+      ],
+      "ky": [
+        "Ризедронат"
+      ],
+      "ro": [
+        "Risedronate"
+      ],
+      "tg": [
+        "Ризедронат"
+      ],
+      "tk": [
+        "Risedronate"
+      ],
+      "uz": [
+        "Risedronate"
+      ],
+      "uk": [
+        "Ризедронат"
+      ],
+      "ka": [
+        "რიზედრონატი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "denosumab": {
+    "localizations": {
+      "en": [
+        "Denosumab"
+      ],
+      "ru": [
+        "Деносумаб"
+      ],
+      "be": [
+        "Деносумаб"
+      ],
+      "hy": [
+        "Դենոսումաբ"
+      ],
+      "az": [
+        "Denosumab"
+      ],
+      "kk": [
+        "Деносумаб"
+      ],
+      "ky": [
+        "Деносумаб"
+      ],
+      "ro": [
+        "Denosumab"
+      ],
+      "tg": [
+        "Деносумаб"
+      ],
+      "tk": [
+        "Denosumab"
+      ],
+      "uz": [
+        "Denosumab"
+      ],
+      "uk": [
+        "Деносумаб"
+      ],
+      "ka": [
+        "დენოსუმაბი"
+      ]
+    },
+    "forms": [
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "baclofen": {
+    "localizations": {
+      "en": [
+        "Baclofen"
+      ],
+      "ru": [
+        "Баклофен"
+      ],
+      "be": [
+        "Баклофен"
+      ],
+      "hy": [
+        "Բակլոֆեն"
+      ],
+      "az": [
+        "Baclofen"
+      ],
+      "kk": [
+        "Баклофен"
+      ],
+      "ky": [
+        "Баклофен"
+      ],
+      "ro": [
+        "Baclofen"
+      ],
+      "tg": [
+        "Баклофен"
+      ],
+      "tk": [
+        "Baclofen"
+      ],
+      "uz": [
+        "Baclofen"
+      ],
+      "uk": [
+        "Баклофен"
+      ],
+      "ka": [
+        "ბაკლოფენი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "tamsulosin": {
+    "localizations": {
+      "en": [
+        "Tamsulosin"
+      ],
+      "ru": [
+        "Тамсулозин"
+      ],
+      "be": [
+        "Тамсулозін"
+      ],
+      "hy": [
+        "Տամսուլոզին"
+      ],
+      "az": [
+        "Tamsulosin"
+      ],
+      "kk": [
+        "Тамсулозин"
+      ],
+      "ky": [
+        "Тамсулозин"
+      ],
+      "ro": [
+        "Tamsulosin"
+      ],
+      "tg": [
+        "Тамсулозин"
+      ],
+      "tk": [
+        "Tamsulosin"
+      ],
+      "uz": [
+        "Tamsulosin"
+      ],
+      "uk": [
+        "Тамсулозін"
+      ],
+      "ka": [
+        "ტამსულოზინი"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "finasteride": {
+    "localizations": {
+      "en": [
+        "Finasteride"
+      ],
+      "ru": [
+        "Финастерид"
+      ],
+      "be": [
+        "Финастерид"
+      ],
+      "hy": [
+        "Ֆինաստերիդ"
+      ],
+      "az": [
+        "Finasterid"
+      ],
+      "kk": [
+        "Финастерид"
+      ],
+      "ky": [
+        "Финастерид"
+      ],
+      "ro": [
+        "Finasteridă"
+      ],
+      "tg": [
+        "Финастерид"
+      ],
+      "tk": [
+        "Finasterid"
+      ],
+      "uz": [
+        "Finasterid"
+      ],
+      "uk": [
+        "Финастерид"
+      ],
+      "ka": [
+        "ფინასტერიდი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "dutasteride": {
+    "localizations": {
+      "en": [
+        "Dutasteride"
+      ],
+      "ru": [
+        "Дутастерид"
+      ],
+      "be": [
+        "Дутастерид"
+      ],
+      "hy": [
+        "Դուտաստերիդ"
+      ],
+      "az": [
+        "Dutasterid"
+      ],
+      "kk": [
+        "Дутастерид"
+      ],
+      "ky": [
+        "Дутастерид"
+      ],
+      "ro": [
+        "Dutasteridă"
+      ],
+      "tg": [
+        "Дутастерид"
+      ],
+      "tk": [
+        "Dutasterid"
+      ],
+      "uz": [
+        "Dutasterid"
+      ],
+      "uk": [
+        "Дутастерид"
+      ],
+      "ka": [
+        "დუტასტერიდი"
+      ]
+    },
+    "forms": [
+      "CAPSULE"
+    ],
+    "aliases": []
+  },
+  "solifenacin": {
+    "localizations": {
+      "en": [
+        "Solifenacin"
+      ],
+      "ru": [
+        "Солифенацин"
+      ],
+      "be": [
+        "Солифенацін"
+      ],
+      "hy": [
+        "Սոլիֆենացին"
+      ],
+      "az": [
+        "Solifenacin"
+      ],
+      "kk": [
+        "Солифенацин"
+      ],
+      "ky": [
+        "Солифенацин"
+      ],
+      "ro": [
+        "Solifenacin"
+      ],
+      "tg": [
+        "Солифенацин"
+      ],
+      "tk": [
+        "Solifenacin"
+      ],
+      "uz": [
+        "Solifenacin"
+      ],
+      "uk": [
+        "Солифенацін"
+      ],
+      "ka": [
+        "სოლიფენაცინი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "mirabegron": {
+    "localizations": {
+      "en": [
+        "Mirabegron"
+      ],
+      "ru": [
+        "Мирабегрон"
+      ],
+      "be": [
+        "Мирабегрон"
+      ],
+      "hy": [
+        "Միրաբեգրոն"
+      ],
+      "az": [
+        "Mirabegron"
+      ],
+      "kk": [
+        "Мирабегрон"
+      ],
+      "ky": [
+        "Мирабегрон"
+      ],
+      "ro": [
+        "Mirabegron"
+      ],
+      "tg": [
+        "Мирабегрон"
+      ],
+      "tk": [
+        "Mirabegron"
+      ],
+      "uz": [
+        "Mirabegron"
+      ],
+      "uk": [
+        "Мирабегрон"
+      ],
+      "ka": [
+        "მირაბეგრონი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "oxybutynin": {
+    "localizations": {
+      "en": [
+        "Oxybutynin"
+      ],
+      "ru": [
+        "Оксибутинин"
+      ],
+      "be": [
+        "Оксибутинін"
+      ],
+      "hy": [
+        "Ոկսիբուտինին"
+      ],
+      "az": [
+        "Oxybutynin"
+      ],
+      "kk": [
+        "Оксибутинин"
+      ],
+      "ky": [
+        "Оксибутинин"
+      ],
+      "ro": [
+        "Oxybutynin"
+      ],
+      "tg": [
+        "Оксибутинин"
+      ],
+      "tk": [
+        "Oxybutynin"
+      ],
+      "uz": [
+        "Oxybutynin"
+      ],
+      "uk": [
+        "Оксибутинін"
+      ],
+      "ka": [
+        "ოკსიბუტინინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID",
+      "PATCH"
+    ],
+    "aliases": []
+  },
+  "sildenafil": {
+    "localizations": {
+      "en": [
+        "Sildenafil"
+      ],
+      "ru": [
+        "Силденафил"
+      ],
+      "be": [
+        "Силденафил"
+      ],
+      "hy": [
+        "Սիլդենաֆիլ"
+      ],
+      "az": [
+        "Sildenafil"
+      ],
+      "kk": [
+        "Силденафил"
+      ],
+      "ky": [
+        "Силденафил"
+      ],
+      "ro": [
+        "Sildenafil"
+      ],
+      "tg": [
+        "Силденафил"
+      ],
+      "tk": [
+        "Sildenafil"
+      ],
+      "uz": [
+        "Sildenafil"
+      ],
+      "uk": [
+        "Силденафил"
+      ],
+      "ka": [
+        "სილდენაფილი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "tadalafil": {
+    "localizations": {
+      "en": [
+        "Tadalafil"
+      ],
+      "ru": [
+        "Тадалафил"
+      ],
+      "be": [
+        "Тадалафил"
+      ],
+      "hy": [
+        "Տադալաֆիլ"
+      ],
+      "az": [
+        "Tadalafil"
+      ],
+      "kk": [
+        "Тадалафил"
+      ],
+      "ky": [
+        "Тадалафил"
+      ],
+      "ro": [
+        "Tadalafil"
+      ],
+      "tg": [
+        "Тадалафил"
+      ],
+      "tk": [
+        "Tadalafil"
+      ],
+      "uz": [
+        "Tadalafil"
+      ],
+      "uk": [
+        "Тадалафил"
+      ],
+      "ka": [
+        "ტადალაფილი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "latanoprost": {
+    "localizations": {
+      "en": [
+        "Latanoprost"
+      ],
+      "ru": [
+        "Латанопрост"
+      ],
+      "be": [
+        "Латанопрост"
+      ],
+      "hy": [
+        "Լատանոպրոստ"
+      ],
+      "az": [
+        "Latanoprost"
+      ],
+      "kk": [
+        "Латанопрост"
+      ],
+      "ky": [
+        "Латанопрост"
+      ],
+      "ro": [
+        "Latanoprost"
+      ],
+      "tg": [
+        "Латанопрост"
+      ],
+      "tk": [
+        "Latanoprost"
+      ],
+      "uz": [
+        "Latanoprost"
+      ],
+      "uk": [
+        "Латанопрост"
+      ],
+      "ka": [
+        "ლატანოპროსტი"
+      ]
+    },
+    "forms": [
+      "DROPS"
+    ],
+    "aliases": []
+  },
+  "timolol": {
+    "localizations": {
+      "en": [
+        "Timolol"
+      ],
+      "ru": [
+        "Тимолол"
+      ],
+      "be": [
+        "Тимолол"
+      ],
+      "hy": [
+        "Տիմոլոլ"
+      ],
+      "az": [
+        "Timolol"
+      ],
+      "kk": [
+        "Тимолол"
+      ],
+      "ky": [
+        "Тимолол"
+      ],
+      "ro": [
+        "Timolol"
+      ],
+      "tg": [
+        "Тимолол"
+      ],
+      "tk": [
+        "Timolol"
+      ],
+      "uz": [
+        "Timolol"
+      ],
+      "uk": [
+        "Тимолол"
+      ],
+      "ka": [
+        "ტიმოლოლი"
+      ]
+    },
+    "forms": [
+      "DROPS"
+    ],
+    "aliases": []
+  },
+  "dorzolamide": {
+    "localizations": {
+      "en": [
+        "Dorzolamide"
+      ],
+      "ru": [
+        "Дорзоламид"
+      ],
+      "be": [
+        "Дорзоламид"
+      ],
+      "hy": [
+        "Դորզոլամիդ"
+      ],
+      "az": [
+        "Dorzolamid"
+      ],
+      "kk": [
+        "Дорзоламид"
+      ],
+      "ky": [
+        "Дорзоламид"
+      ],
+      "ro": [
+        "Dorzolamidă"
+      ],
+      "tg": [
+        "Дорзоламид"
+      ],
+      "tk": [
+        "Dorzolamid"
+      ],
+      "uz": [
+        "Dorzolamid"
+      ],
+      "uk": [
+        "Дорзоламид"
+      ],
+      "ka": [
+        "დორზოლამიდი"
+      ]
+    },
+    "forms": [
+      "DROPS"
+    ],
+    "aliases": []
+  },
+  "brimonidine": {
+    "localizations": {
+      "en": [
+        "Brimonidine"
+      ],
+      "ru": [
+        "Бримонидин"
+      ],
+      "be": [
+        "Бримонидін"
+      ],
+      "hy": [
+        "Բրիմոնիդին"
+      ],
+      "az": [
+        "Brimonidin"
+      ],
+      "kk": [
+        "Бримонидин"
+      ],
+      "ky": [
+        "Бримонидин"
+      ],
+      "ro": [
+        "Brimonidină"
+      ],
+      "tg": [
+        "Бримонидин"
+      ],
+      "tk": [
+        "Brimonidin"
+      ],
+      "uz": [
+        "Brimonidin"
+      ],
+      "uk": [
+        "Бримонидін"
+      ],
+      "ka": [
+        "ბრიმონიდინი"
+      ]
+    },
+    "forms": [
+      "DROPS"
+    ],
+    "aliases": []
+  },
+  "bimatoprost": {
+    "localizations": {
+      "en": [
+        "Bimatoprost"
+      ],
+      "ru": [
+        "Биматопрост"
+      ],
+      "be": [
+        "Биматопрост"
+      ],
+      "hy": [
+        "Բիմատոպրոստ"
+      ],
+      "az": [
+        "Bimatoprost"
+      ],
+      "kk": [
+        "Биматопрост"
+      ],
+      "ky": [
+        "Биматопрост"
+      ],
+      "ro": [
+        "Bimatoprost"
+      ],
+      "tg": [
+        "Биматопрост"
+      ],
+      "tk": [
+        "Bimatoprost"
+      ],
+      "uz": [
+        "Bimatoprost"
+      ],
+      "uk": [
+        "Биматопрост"
+      ],
+      "ka": [
+        "ბიმატოპროსტი"
+      ]
+    },
+    "forms": [
+      "DROPS"
+    ],
+    "aliases": []
+  },
+  "cyclosporine": {
+    "localizations": {
+      "en": [
+        "Ciclosporin"
+      ],
+      "ru": [
+        "Циклоспорин"
+      ],
+      "be": [
+        "Циклоспорін"
+      ],
+      "hy": [
+        "Ցիկլոսպորին"
+      ],
+      "az": [
+        "Ciclosporin"
+      ],
+      "kk": [
+        "Циклоспорин"
+      ],
+      "ky": [
+        "Циклоспорин"
+      ],
+      "ro": [
+        "Ciclosporină"
+      ],
+      "tg": [
+        "Циклоспорин"
+      ],
+      "tk": [
+        "Ciclosporin"
+      ],
+      "uz": [
+        "Ciclosporin"
+      ],
+      "uk": [
+        "Циклоспорін"
+      ],
+      "ka": [
+        "ციკლოსპორინი"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "LIQUID",
+      "DROPS",
+      "INJECTION"
+    ],
+    "aliases": [
+      "cyclosporine"
+    ]
+  },
+  "clotrimazole": {
+    "localizations": {
+      "en": [
+        "Clotrimazole"
+      ],
+      "ru": [
+        "Клотримазол"
+      ],
+      "be": [
+        "Клотримазол"
+      ],
+      "hy": [
+        "Կլոտրիմազոլ"
+      ],
+      "az": [
+        "Clotrimazol"
+      ],
+      "kk": [
+        "Клотримазол"
+      ],
+      "ky": [
+        "Клотримазол"
+      ],
+      "ro": [
+        "Clotrimazol"
+      ],
+      "tg": [
+        "Клотримазол"
+      ],
+      "tk": [
+        "Clotrimazol"
+      ],
+      "uz": [
+        "Clotrimazol"
+      ],
+      "uk": [
+        "Клотримазол"
+      ],
+      "ka": [
+        "კლოტრიმაზოლი"
+      ]
+    },
+    "forms": [
+      "CREAM",
+      "OTHER"
+    ],
+    "aliases": [],
+    "customForm": "Vaginal tablet"
+  },
+  "ketoconazole": {
+    "localizations": {
+      "en": [
+        "Ketoconazole"
+      ],
+      "ru": [
+        "Кетоконазол"
+      ],
+      "be": [
+        "Кетоконазол"
+      ],
+      "hy": [
+        "Կետոկոնազոլ"
+      ],
+      "az": [
+        "Ketoconazol"
+      ],
+      "kk": [
+        "Кетоконазол"
+      ],
+      "ky": [
+        "Кетоконазол"
+      ],
+      "ro": [
+        "Ketoconazol"
+      ],
+      "tg": [
+        "Кетоконазол"
+      ],
+      "tk": [
+        "Ketoconazol"
+      ],
+      "uz": [
+        "Ketoconazol"
+      ],
+      "uk": [
+        "Кетоконазол"
+      ],
+      "ka": [
+        "კეტოკონაზოლი"
+      ]
+    },
+    "forms": [
+      "CREAM",
+      "OTHER"
+    ],
+    "aliases": [],
+    "customForm": "Shampoo"
+  },
+  "azelaic_acid": {
+    "localizations": {
+      "en": [
+        "Azelaic acid"
+      ],
+      "ru": [
+        "Азелаиновая кислота"
+      ],
+      "be": [
+        "Азелаінавая кіслата"
+      ],
+      "hy": [
+        "Ազելաինաթթու"
+      ],
+      "az": [
+        "Azelaik turşu"
+      ],
+      "kk": [
+        "Азелаин қышқылы"
+      ],
+      "ky": [
+        "Азелаин кислотасы"
+      ],
+      "ro": [
+        "Acid azelaic"
+      ],
+      "tg": [
+        "Кислотаи азелаин"
+      ],
+      "tk": [
+        "Azelaý turşusy"
+      ],
+      "uz": [
+        "Azelaik kislota"
+      ],
+      "uk": [
+        "Азелаїнова кислота"
+      ],
+      "ka": [
+        "აზელაინის მჟავა"
+      ]
+    },
+    "forms": [
+      "CREAM",
+      "GEL"
+    ],
+    "aliases": []
+  },
+  "adapalene": {
+    "localizations": {
+      "en": [
+        "Adapalene"
+      ],
+      "ru": [
+        "Адапален"
+      ],
+      "be": [
+        "Адапален"
+      ],
+      "hy": [
+        "Ադապալեն"
+      ],
+      "az": [
+        "Adapalene"
+      ],
+      "kk": [
+        "Адапален"
+      ],
+      "ky": [
+        "Адапален"
+      ],
+      "ro": [
+        "Adapalene"
+      ],
+      "tg": [
+        "Адапален"
+      ],
+      "tk": [
+        "Adapalene"
+      ],
+      "uz": [
+        "Adapalene"
+      ],
+      "uk": [
+        "Адапален"
+      ],
+      "ka": [
+        "ადაპალენი"
+      ]
+    },
+    "forms": [
+      "CREAM",
+      "GEL"
+    ],
+    "aliases": []
+  },
+  "tacrolimus": {
+    "localizations": {
+      "en": [
+        "Tacrolimus"
+      ],
+      "ru": [
+        "Такролимус"
+      ],
+      "be": [
+        "Такролимус"
+      ],
+      "hy": [
+        "Տակրոլիմուս"
+      ],
+      "az": [
+        "Tacrolimus"
+      ],
+      "kk": [
+        "Такролимус"
+      ],
+      "ky": [
+        "Такролимус"
+      ],
+      "ro": [
+        "Tacrolimus"
+      ],
+      "tg": [
+        "Такролимус"
+      ],
+      "tk": [
+        "Tacrolimus"
+      ],
+      "uz": [
+        "Tacrolimus"
+      ],
+      "uk": [
+        "Такролимус"
+      ],
+      "ka": [
+        "ტაკროლიმუსი"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "OINTMENT"
+    ],
+    "aliases": []
+  },
+  "minoxidil": {
+    "localizations": {
+      "en": [
+        "Minoxidil"
+      ],
+      "ru": [
+        "Миноксидил"
+      ],
+      "be": [
+        "Миноксидил"
+      ],
+      "hy": [
+        "Մինոկսիդիլ"
+      ],
+      "az": [
+        "Minoxidil"
+      ],
+      "kk": [
+        "Миноксидил"
+      ],
+      "ky": [
+        "Миноксидил"
+      ],
+      "ro": [
+        "Minoxidil"
+      ],
+      "tg": [
+        "Миноксидил"
+      ],
+      "tk": [
+        "Minoxidil"
+      ],
+      "uz": [
+        "Minoxidil"
+      ],
+      "uk": [
+        "Миноксидил"
+      ],
+      "ka": [
+        "მინოკსიდილი"
+      ]
+    },
+    "forms": [
+      "LIQUID",
+      "OTHER"
+    ],
+    "aliases": [],
+    "customForm": "Foam"
+  },
+  "acyclovir": {
+    "localizations": {
+      "en": [
+        "Aciclovir"
+      ],
+      "ru": [
+        "Ацикловир"
+      ],
+      "be": [
+        "Ацикловир"
+      ],
+      "hy": [
+        "Ացիկլովիր"
+      ],
+      "az": [
+        "Aciclovir"
+      ],
+      "kk": [
+        "Ацикловир"
+      ],
+      "ky": [
+        "Ацикловир"
+      ],
+      "ro": [
+        "Aciclovir"
+      ],
+      "tg": [
+        "Ацикловир"
+      ],
+      "tk": [
+        "Aciclovir"
+      ],
+      "uz": [
+        "Aciclovir"
+      ],
+      "uk": [
+        "Ацикловир"
+      ],
+      "ka": [
+        "აციკლოვირი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CREAM"
+    ],
+    "aliases": [
+      "acyclovir"
+    ]
+  },
+  "folic_acid": {
+    "localizations": {
+      "en": [
+        "Folic acid"
+      ],
+      "ru": [
+        "Фолиевая кислота"
+      ],
+      "be": [
+        "Фоліевая кіслата"
+      ],
+      "hy": [
+        "Ֆոլաթթու"
+      ],
+      "az": [
+        "Fol turşusu"
+      ],
+      "kk": [
+        "Фолий қышқылы"
+      ],
+      "ky": [
+        "Фолий кислотасы"
+      ],
+      "ro": [
+        "Acid folic"
+      ],
+      "tg": [
+        "Кислотаи фолий"
+      ],
+      "tk": [
+        "Foliý turşusy"
+      ],
+      "uz": [
+        "Foliy kislotasi"
+      ],
+      "uk": [
+        "Фолієва кислота"
+      ],
+      "ka": [
+        "ფოლიუმის მჟავა"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": [
+      "folate"
+    ]
+  },
+  "ferrous_sulfate": {
+    "localizations": {
+      "en": [
+        "Ferrous sulfate"
+      ],
+      "ru": [
+        "Сульфат железа"
+      ],
+      "be": [
+        "Сульфат жалеза"
+      ],
+      "hy": [
+        "Երկաթի սուլֆատ"
+      ],
+      "az": [
+        "Dəmir sulfatı"
+      ],
+      "kk": [
+        "Темір сульфаты"
+      ],
+      "ky": [
+        "Темир сульфаты"
+      ],
+      "ro": [
+        "Sulfat feros"
+      ],
+      "tg": [
+        "Сулфати оҳан"
+      ],
+      "tk": [
+        "Demir sulfaty"
+      ],
+      "uz": [
+        "Temir sulfat"
+      ],
+      "uk": [
+        "Сульфат заліза"
+      ],
+      "ka": [
+        "რკინის სულფატი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": [
+      "iron sulfate"
+    ]
+  },
+  "cyanocobalamin": {
+    "localizations": {
+      "en": [
+        "Cyanocobalamin"
+      ],
+      "ru": [
+        "Цианокобаламин"
+      ],
+      "be": [
+        "Цианокобаламін"
+      ],
+      "hy": [
+        "Ցիանոկոբալամին"
+      ],
+      "az": [
+        "Cyanocobalamin"
+      ],
+      "kk": [
+        "Цианокобаламин"
+      ],
+      "ky": [
+        "Цианокобаламин"
+      ],
+      "ro": [
+        "Cyanocobalamin"
+      ],
+      "tg": [
+        "Цианокобаламин"
+      ],
+      "tk": [
+        "Cyanocobalamin"
+      ],
+      "uz": [
+        "Cyanocobalamin"
+      ],
+      "uk": [
+        "Цианокобаламін"
+      ],
+      "ka": [
+        "ციანოკობალამინი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION",
+      "DROPS"
+    ],
+    "aliases": [
+      "vitamin B12"
+    ]
+  },
+  "magnesium": {
+    "localizations": {
+      "en": [
+        "Magnesium"
+      ],
+      "ru": [
+        "Магний"
+      ],
+      "be": [
+        "Магній"
+      ],
+      "hy": [
+        "Մագնեզիում"
+      ],
+      "az": [
+        "Maqnezium"
+      ],
+      "kk": [
+        "Магний"
+      ],
+      "ky": [
+        "Магний"
+      ],
+      "ro": [
+        "Magneziu"
+      ],
+      "tg": [
+        "Магний"
+      ],
+      "tk": [
+        "Magniý"
+      ],
+      "uz": [
+        "Magniy"
+      ],
+      "uk": [
+        "Магній"
+      ],
+      "ka": [
+        "მაგნიუმი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CAPSULE",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "potassium_chloride": {
+    "localizations": {
+      "en": [
+        "Potassium chloride"
+      ],
+      "ru": [
+        "Калия хлорид"
+      ],
+      "be": [
+        "Хларыд калію"
+      ],
+      "hy": [
+        "Կալիումի քլորիդ"
+      ],
+      "az": [
+        "Kalium xlorid"
+      ],
+      "kk": [
+        "Калий хлориді"
+      ],
+      "ky": [
+        "Калий хлориди"
+      ],
+      "ro": [
+        "Clorură de potasiu"
+      ],
+      "tg": [
+        "Хлориди калий"
+      ],
+      "tk": [
+        "Kaliý hloridi"
+      ],
+      "uz": [
+        "Kaliy xlorid"
+      ],
+      "uk": [
+        "Калію хлорид"
+      ],
+      "ka": [
+        "კალიუმის ქლორიდი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "LIQUID"
+    ],
+    "aliases": []
+  },
+  "potassium_iodide": {
+    "localizations": {
+      "en": [
+        "Potassium iodide"
+      ],
+      "ru": [
+        "Калия йодид"
+      ],
+      "be": [
+        "Ёдыд калію"
+      ],
+      "hy": [
+        "Կալիումի յոդիդ"
+      ],
+      "az": [
+        "Kalium yodid"
+      ],
+      "kk": [
+        "Калий йодиді"
+      ],
+      "ky": [
+        "Калий йодиди"
+      ],
+      "ro": [
+        "Iodură de potasiu"
+      ],
+      "tg": [
+        "Йодиди калий"
+      ],
+      "tk": [
+        "Kaliý ýodidi"
+      ],
+      "uz": [
+        "Kaliy yodid"
+      ],
+      "uk": [
+        "Калію йодид"
+      ],
+      "ka": [
+        "კალიუმის იოდიდი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "DROPS"
+    ],
+    "aliases": []
+  },
+  "vitamin_c": {
+    "localizations": {
+      "en": [
+        "Vitamin C"
+      ],
+      "ru": [
+        "Витамин C"
+      ],
+      "be": [
+        "Вітамін C"
+      ],
+      "hy": [
+        "Վիտամին C"
+      ],
+      "az": [
+        "C vitamini"
+      ],
+      "kk": [
+        "C дәрумені"
+      ],
+      "ky": [
+        "C витамини"
+      ],
+      "ro": [
+        "Vitamina C"
+      ],
+      "tg": [
+        "Витамини C"
+      ],
+      "tk": [
+        "C witamini"
+      ],
+      "uz": [
+        "C vitamini"
+      ],
+      "uk": [
+        "Вітамін C"
+      ],
+      "ka": [
+        "ვიტამინი C"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "CAPSULE",
+      "LIQUID",
+      "DROPS"
+    ],
+    "aliases": [
+      "ascorbic acid"
+    ]
+  },
+  "vitamin_b6": {
+    "localizations": {
+      "en": [
+        "Vitamin B6"
+      ],
+      "ru": [
+        "Витамин B6"
+      ],
+      "be": [
+        "Вітамін B6"
+      ],
+      "hy": [
+        "Վիտամին B6"
+      ],
+      "az": [
+        "B6 vitamini"
+      ],
+      "kk": [
+        "B6 дәрумені"
+      ],
+      "ky": [
+        "B6 витамини"
+      ],
+      "ro": [
+        "Vitamina B6"
+      ],
+      "tg": [
+        "Витамини B6"
+      ],
+      "tk": [
+        "B6 witamini"
+      ],
+      "uz": [
+        "B6 vitamini"
+      ],
+      "uk": [
+        "Вітамін B6"
+      ],
+      "ka": [
+        "ვიტამინი B6"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": [
+      "pyridoxine"
+    ]
+  },
+  "vitamin_b1": {
+    "localizations": {
+      "en": [
+        "Vitamin B1"
+      ],
+      "ru": [
+        "Витамин B1"
+      ],
+      "be": [
+        "Вітамін B1"
+      ],
+      "hy": [
+        "Վիտամին B1"
+      ],
+      "az": [
+        "B1 vitamini"
+      ],
+      "kk": [
+        "B1 дәрумені"
+      ],
+      "ky": [
+        "B1 витамини"
+      ],
+      "ro": [
+        "Vitamina B1"
+      ],
+      "tg": [
+        "Витамини B1"
+      ],
+      "tk": [
+        "B1 witamini"
+      ],
+      "uz": [
+        "B1 vitamini"
+      ],
+      "uk": [
+        "Вітамін B1"
+      ],
+      "ka": [
+        "ვიტამინი B1"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "INJECTION"
+    ],
+    "aliases": [
+      "thiamine"
+    ]
+  },
+  "estradiol": {
+    "localizations": {
+      "en": [
+        "Estradiol"
+      ],
+      "ru": [
+        "Эстрадиол"
+      ],
+      "be": [
+        "Эстрадиол"
+      ],
+      "hy": [
+        "Էստրադիոլ"
+      ],
+      "az": [
+        "Estradiol"
+      ],
+      "kk": [
+        "Эстрадиол"
+      ],
+      "ky": [
+        "Эстрадиол"
+      ],
+      "ro": [
+        "Estradiol"
+      ],
+      "tg": [
+        "Эстрадиол"
+      ],
+      "tk": [
+        "Estradiol"
+      ],
+      "uz": [
+        "Estradiol"
+      ],
+      "uk": [
+        "Эстрадиол"
+      ],
+      "ka": [
+        "ესტრადიოლი"
+      ]
+    },
+    "forms": [
+      "PILL",
+      "PATCH",
+      "GEL",
+      "SPRAY"
+    ],
+    "aliases": [
+      "oestradiol"
+    ]
+  },
+  "progesterone": {
+    "localizations": {
+      "en": [
+        "Progesterone"
+      ],
+      "ru": [
+        "Прогестерон"
+      ],
+      "be": [
+        "Прогестерон"
+      ],
+      "hy": [
+        "Պրոգեստերոն"
+      ],
+      "az": [
+        "Progesterone"
+      ],
+      "kk": [
+        "Прогестерон"
+      ],
+      "ky": [
+        "Прогестерон"
+      ],
+      "ro": [
+        "Progesteronă"
+      ],
+      "tg": [
+        "Прогестерон"
+      ],
+      "tk": [
+        "Progesterone"
+      ],
+      "uz": [
+        "Progesterone"
+      ],
+      "uk": [
+        "Прогестерон"
+      ],
+      "ka": [
+        "პროგესტერონი"
+      ]
+    },
+    "forms": [
+      "CAPSULE",
+      "INJECTION"
+    ],
+    "aliases": []
+  },
+  "drospirenone_ethinylestradiol": {
+    "localizations": {
+      "en": [
+        "Drospirenone / ethinylestradiol"
+      ],
+      "ru": [
+        "Дроспиренон / этинилэстрадиол"
+      ],
+      "be": [
+        "Дроспиренон / этинилэстрадиол"
+      ],
+      "hy": [
+        "Դրոսպիրենոն / էտինիլէստրադիոլ"
+      ],
+      "az": [
+        "Drospirenone / ethinylestradiol"
+      ],
+      "kk": [
+        "Дроспиренон / этинилэстрадиол"
+      ],
+      "ky": [
+        "Дроспиренон / этинилэстрадиол"
+      ],
+      "ro": [
+        "Drospirenonă / ethinylestradiol"
+      ],
+      "tg": [
+        "Дроспиренон / этинилэстрадиол"
+      ],
+      "tk": [
+        "Drospirenone / ethinylestradiol"
+      ],
+      "uz": [
+        "Drospirenone / ethinylestradiol"
+      ],
+      "uk": [
+        "Дроспиренон / этинилэстрадиол"
+      ],
+      "ka": [
+        "დროსპირენონ / ეტინილესტრადიოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
+  },
+  "levonorgestrel_ethinylestradiol": {
+    "localizations": {
+      "en": [
+        "Levonorgestrel / ethinylestradiol"
+      ],
+      "ru": [
+        "Левоноргестрел / этинилэстрадиол"
+      ],
+      "be": [
+        "Левоноргестрел / этинилэстрадиол"
+      ],
+      "hy": [
+        "Լեվոնորգեստրել / էտինիլէստրադիոլ"
+      ],
+      "az": [
+        "Levonorgestrel / ethinylestradiol"
+      ],
+      "kk": [
+        "Левоноргестрел / этинилэстрадиол"
+      ],
+      "ky": [
+        "Левоноргестрел / этинилэстрадиол"
+      ],
+      "ro": [
+        "Levonorgestrel / ethinylestradiol"
+      ],
+      "tg": [
+        "Левоноргестрел / этинилэстрадиол"
+      ],
+      "tk": [
+        "Levonorgestrel / ethinylestradiol"
+      ],
+      "uz": [
+        "Levonorgestrel / ethinylestradiol"
+      ],
+      "uk": [
+        "Левоноргестрел / этинилэстрадиол"
+      ],
+      "ka": [
+        "ლევონორგესტრელ / ეტინილესტრადიოლი"
+      ]
+    },
+    "forms": [
+      "PILL"
+    ],
+    "aliases": []
   }
 }
