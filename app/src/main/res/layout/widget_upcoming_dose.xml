@@ -8,7 +8,7 @@
         <TextView android:id="@+id/widget_time" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
             android:text="—" android:textColor="#FFFFFF" android:textSize="36sp" android:textStyle="bold" android:maxLines="1" />
         <ImageView android:id="@+id/widget_icon" android:layout_width="38dp" android:layout_height="38dp" android:padding="7dp"
-            android:background="@drawable/widget_icon_background" android:src="@drawable/ic_form_pill" android:contentDescription="@null" />
+            android:background="@drawable/widget_icon_background" android:src="@drawable/ic_form_pill" android:tint="#7969E7" android:contentDescription="@null" />
     </LinearLayout>
     <TextView android:id="@+id/widget_name" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:text="@string/app_name" android:textColor="#FFFFFF" android:textSize="15sp" android:textStyle="bold" android:maxLines="1" android:ellipsize="end" />

@@ -678,14 +678,15 @@ private fun Eyebrow(text: String) {
 internal fun PillAvatar(color: String, form: MedicationForm, label: String) {
     val (foreground, background) = palette(color)
     Box(
-        Modifier.size(49.dp).clip(RoundedCornerShape(16.dp)).background(background),
+        Modifier.size(49.dp).clip(RoundedCornerShape(16.dp)).background(background)
+            .border(1.dp, PanelBorder, RoundedCornerShape(16.dp)),
         contentAlignment = Alignment.Center,
     ) { Icon(androidx.compose.ui.res.painterResource(form.iconResource()), label, tint = foreground, modifier = Modifier.size(26.dp)) }
 }
 
 internal fun palette(color: String): Pair<Color, Color> {
-    val foreground = Color(android.graphics.Color.parseColor(MedicationColors.hex(color)))
-    return foreground to androidx.compose.ui.graphics.lerp(Color.White, foreground, 0.13f)
+    val (foreground, background) = MedicationIconColors.palette(color)
+    return Color(foreground) to Color(background)
 }
 
 @Composable

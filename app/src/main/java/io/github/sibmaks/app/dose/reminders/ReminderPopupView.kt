@@ -14,10 +14,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.core.graphics.ColorUtils
 import io.github.sibmaks.app.dose.data.Medication
 import io.github.sibmaks.app.dose.ui.iconResource
-import io.github.sibmaks.app.dose.data.MedicationColors
+import io.github.sibmaks.app.dose.data.MedicationIconColors
 
 /** Explicit shapes and colors keep the pop-up consistent across device button themes. */
 internal object ReminderPopupView {
@@ -71,7 +70,7 @@ internal object ReminderPopupView {
         content.addView(text(context.getString(R.string.time_for_your_medication), 20f, true))
         entries.forEach { entry ->
             val medication = entry.medication
-            val medicationColor = Color.parseColor(MedicationColors.hex(medication.color))
+            val (medicationColor, iconBackground) = MedicationIconColors.palette(medication.color)
             val card = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(dp(14), dp(14), dp(14), dp(14))
@@ -82,7 +81,7 @@ internal object ReminderPopupView {
                 setImageResource(medication.form.iconResource())
                 setColorFilter(medicationColor)
                 setPadding(dp(9), dp(9), dp(9), dp(9))
-                background = shape(ColorUtils.blendARGB(Color.WHITE, medicationColor, 0.12f), 14)
+                background = shape(iconBackground, 14, border)
                 contentDescription = medication.localizedForm(context)
             }, LinearLayout.LayoutParams(dp(44), dp(44)))
             val description = LinearLayout(context).apply {
