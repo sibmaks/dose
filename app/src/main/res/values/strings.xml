@@ -58,7 +58,6 @@
     <string name="name_suggestions">"Name suggestions"</string>
     <string name="previously_entered">" · Previously entered"</string>
     <string name="color">"Color"</string>
-    <string name="color_order_hint">"Your most used colors appear first."</string>
     <string name="pick_a_custom_color">"Pick a custom color"</string>
     <string name="give_this_form_a_name">"Give this form a name"</string>
     <string name="custom_form_hint">"Optional—for example, a patch, inhaler, or suppository. Leave it empty to use Other."</string>

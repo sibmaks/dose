@@ -57,7 +57,6 @@
     <string name="name_suggestions">"Пешниҳодҳои ном"</string>
     <string name="previously_entered">" · Пештар воридшуда"</string>
     <string name="color">"Ранг"</string>
-    <string name="color_order_hint">"Рангҳои серистифода аввал меоянд."</string>
     <string name="pick_a_custom_color">"Интихоби ранги худ"</string>
     <string name="give_this_form_a_name">"Номи шаклро ворид кунед"</string>
     <string name="custom_form_hint">"Ихтиёрӣ: масалан, часпак, ингалятор ё шамъча. Агар холӣ бошад, «Дигар» истифода мешавад."</string>

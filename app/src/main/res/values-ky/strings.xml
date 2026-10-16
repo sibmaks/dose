@@ -57,7 +57,6 @@
     <string name="name_suggestions">"Аталыш сунуштары"</string>
     <string name="previously_entered">" · Мурда жазылган"</string>
     <string name="color">"Түс"</string>
-    <string name="color_order_hint">"Көп колдонулган түстөр башында."</string>
     <string name="pick_a_custom_color">"Өз түсүңүздү тандоо"</string>
     <string name="give_this_form_a_name">"Түрүнүн атын жазыңыз"</string>
     <string name="custom_form_hint">"Милдеттүү эмес: мисалы, пластырь, ингалятор же шамча. Бош болсо «Башка» колдонулат."</string>

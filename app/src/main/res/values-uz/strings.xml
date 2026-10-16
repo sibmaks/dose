@@ -57,7 +57,6 @@
     <string name="name_suggestions">"Nom takliflari"</string>
     <string name="previously_entered">" · Avval kiritilgan"</string>
     <string name="color">"Rang"</string>
-    <string name="color_order_hint">"Koʻp ishlatilgan ranglar avval koʻrsatiladi."</string>
     <string name="pick_a_custom_color">"Oʻz rangingizni tanlash"</string>
     <string name="give_this_form_a_name">"Shakl nomini kiriting"</string>
     <string name="custom_form_hint">"Ixtiyoriy: plastir, ingalyator yoki shamcha. Boʻsh boʻlsa «Boshqa» ishlatiladi."</string>

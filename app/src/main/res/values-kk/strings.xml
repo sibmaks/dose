@@ -57,7 +57,6 @@
     <string name="name_suggestions">"Атау ұсыныстары"</string>
     <string name="previously_entered">" · Бұрын енгізілген"</string>
     <string name="color">"Түс"</string>
-    <string name="color_order_hint">"Жиі қолданылатын түстер алдымен көрсетіледі."</string>
     <string name="pick_a_custom_color">"Өз түсіңізді таңдау"</string>
     <string name="give_this_form_a_name">"Түрдің атауын енгізіңіз"</string>
     <string name="custom_form_hint">"Міндетті емес: мысалы, пластырь, ингалятор не суппозиторий. Бос болса «Басқа» қолданылады."</string>

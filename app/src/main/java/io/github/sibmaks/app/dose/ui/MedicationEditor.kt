@@ -195,7 +195,6 @@ internal fun MedicationEditor(
                             }
                             if (suggestedForm != null) Text(context.getString(R.string.suggested_form, suggestedForm.orEmpty()), fontSize = 13.sp, color = Violet)
                             Text(context.getString(R.string.color), fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                            Text(context.getString(R.string.color_order_hint), color = TextMuted, fontSize = 12.sp)
                             FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                                 MedicationColors.choices(colorUsage, medications, color).forEach { choice ->
                                     val foreground = Color(android.graphics.Color.parseColor(MedicationColors.hex(choice)))

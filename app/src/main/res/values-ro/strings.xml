@@ -57,7 +57,6 @@
     <string name="name_suggestions">"Sugestii de nume"</string>
     <string name="previously_entered">" · Introdus anterior"</string>
     <string name="color">"Culoare"</string>
-    <string name="color_order_hint">"Culorile folosite des apar primele."</string>
     <string name="pick_a_custom_color">"Alege o culoare proprie"</string>
     <string name="give_this_form_a_name">"Dă un nume formei"</string>
     <string name="custom_form_hint">"Opțional: plasture, inhalator sau supozitor. Lasă gol pentru „Altele”."</string>

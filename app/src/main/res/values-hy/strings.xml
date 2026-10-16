@@ -57,7 +57,6 @@
     <string name="name_suggestions">"Անվան առաջարկներ"</string>
     <string name="previously_entered">" · Նախկինում մուտքագրված"</string>
     <string name="color">"Գույն"</string>
-    <string name="color_order_hint">"Հաճախ օգտագործվող գույները՝ սկզբում։"</string>
     <string name="pick_a_custom_color">"Ընտրել այլ գույն"</string>
     <string name="give_this_form_a_name">"Անվանեք դեղի ձևը"</string>
     <string name="custom_form_hint">"Ըստ ցանկության՝ օրինակ սպեղանի, ինհալյատոր կամ մոմիկ։ Դատարկ թողնելիս՝ «Այլ»։"</string>

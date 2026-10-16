@@ -57,7 +57,6 @@
     <string name="name_suggestions">"Ad təklifləri"</string>
     <string name="previously_entered">" · Əvvəl daxil edilib"</string>
     <string name="color">"Rəng"</string>
-    <string name="color_order_hint">"Çox istifadə etdiyiniz rənglər əvvəl göstərilir."</string>
     <string name="pick_a_custom_color">"Öz rəngini seç"</string>
     <string name="give_this_form_a_name">"Formanın adını yazın"</string>
     <string name="custom_form_hint">"İstəyə bağlıdır: plastır, inhalyator və ya şam. Boş saxlasanız «Digər» göstərilir."</string>
