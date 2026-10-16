@@ -52,7 +52,6 @@ internal fun ColorPicker(initial: String, onDismiss: () -> Unit, onChoose: (Stri
     }
     AlertDialog(onDismissRequest = onDismiss, title = { Text(context.getString(R.string.pick_a_color)) }, text = {
         Column(Modifier.heightIn(max = 520.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(context.getString(R.string.color_wheel_hint), fontSize = 12.sp, color = TextMuted)
             ColorWheel(selection, ::choose)
             Box(Modifier.fillMaxWidth().height(40.dp).clip(RoundedCornerShape(12.dp))
                 .background(Color(android.graphics.Color.parseColor(selection.hex())))
