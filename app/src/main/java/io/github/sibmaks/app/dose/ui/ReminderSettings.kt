@@ -32,6 +32,8 @@ import kotlinx.coroutines.flow.first
 @Composable
 internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> Unit, onRefresh: () -> Unit) {
     val context = LocalContext.current
+    // Granting access updates preferences; keep the initial setup layout stable until closed.
+    val showPauseControls = rememberSaveable { ReminderAlerts.setupOffered(context) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var pendingStyle by rememberSaveable { mutableStateOf<ReminderStyle?>(null) }
     var requestedStep by rememberSaveable { mutableStateOf<ReminderEnableStep?>(null) }
@@ -132,8 +134,10 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
             Text(context.getString(R.string.popup_limits), fontSize = 12.sp, color = TextMuted)
             if (!state.feedChecked) Text(context.getString(R.string.popup_feed_disabled_hint), fontSize = 12.sp, color = TextMuted)
         }
-        HorizontalDivider(color = PanelBorder)
-        NotificationPauseSection(onRefresh)
+        if (showPauseControls) {
+            HorizontalDivider(color = PanelBorder)
+            NotificationPauseSection(onRefresh)
+        }
     }
 }
 
