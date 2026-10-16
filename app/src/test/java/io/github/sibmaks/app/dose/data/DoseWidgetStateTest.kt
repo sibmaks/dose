@@ -75,4 +75,17 @@ class DoseWidgetStateTest {
         assertTrue(DoseWidgetState.pending(items(logs = DoseGroups.logs(current, "taken", now.toInstant().toEpochMilli()))).isEmpty())
     }
 
+    @Test fun `all taken message requires every scheduled dose to be taken`() {
+        val current = items()
+        val logs = DoseGroups.logs(current, "taken", now.toInstant().toEpochMilli())
+        assertTrue(DoseWidgetState.allTaken(items(logs = logs)))
+        assertFalse(DoseWidgetState.allTaken(emptyList()))
+        assertFalse(DoseWidgetState.allTaken(current))
+        assertFalse(DoseWidgetState.allTaken(items(logs = logs.take(1))))
+        assertFalse(DoseWidgetState.allTaken(items(logs = logs.map { it.copy(status = "skipped") })))
+        assertFalse(DoseWidgetState.allTaken(items(logs = listOf(logs[0], logs[1].copy(status = "skipped")))))
+        // Undoing a taken record restores the pending state rather than keeping the celebration.
+        assertFalse(DoseWidgetState.allTaken(items(logs = logs.drop(1))))
+    }
+
 }

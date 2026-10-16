@@ -244,4 +244,5 @@
     <string name="powder">"ფხვნილი"</string>
     <string name="suppository">"სუპოზიტორია"</string>
     <string name="custom_form_hint">"არასავალდებულო. „სხვა“-სთვის დატოვეთ ცარიელი."</string>
+    <string name="all_medication_taken">"ყველა მიღებულია. ყოჩაღ!"</string>
 </resources>

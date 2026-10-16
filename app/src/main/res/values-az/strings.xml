@@ -244,4 +244,5 @@
     <string name="powder">"Toz"</string>
     <string name="suppository">"Şam"</string>
     <string name="custom_form_hint">"İstəyə bağlıdır. Digər üçün boş saxlayın."</string>
+    <string name="all_medication_taken">"Hamısı qəbul edildi. Afərin!"</string>
 </resources>

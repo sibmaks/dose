@@ -244,4 +244,5 @@
     <string name="powder">"Порошок"</string>
     <string name="suppository">"Свічка"</string>
     <string name="custom_form_hint">"Необов’язково. Залиште порожнім для «Інше»."</string>
+    <string name="all_medication_taken">"Усе прийнято. Чудово!"</string>
 </resources>

@@ -244,4 +244,5 @@
     <string name="powder">"Порошок"</string>
     <string name="suppository">"Свеча"</string>
     <string name="custom_form_hint">"Необязательно. Оставьте пустым, чтобы использовать «Другое»."</string>
+    <string name="all_medication_taken">"Всё принято. Отлично!"</string>
 </resources>

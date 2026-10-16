@@ -244,4 +244,5 @@
     <string name="powder">"Күкүм"</string>
     <string name="suppository">"Шамча"</string>
     <string name="custom_form_hint">"Милдеттүү эмес. «Башка» үчүн бош калтырыңыз."</string>
+    <string name="all_medication_taken">"Баары кабыл алынды. Азамат!"</string>
 </resources>

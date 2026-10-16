@@ -244,4 +244,5 @@
     <string name="powder">"Хока"</string>
     <string name="suppository">"Шамъча"</string>
     <string name="custom_form_hint">"Ихтиёрӣ. Барои «Дигар» холӣ гузоред."</string>
+    <string name="all_medication_taken">"Ҳама қабул шуд. Офарин!"</string>
 </resources>

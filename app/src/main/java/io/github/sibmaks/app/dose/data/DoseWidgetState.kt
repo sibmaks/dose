@@ -4,6 +4,7 @@ import java.time.ZonedDateTime
 
 /** A pending dose stays visible when due; tomorrow's medication never appears as today's. */
 object DoseWidgetState {
+    fun allTaken(items: List<DoseItem>): Boolean = items.isNotEmpty() && items.all { it.log?.status == "taken" }
     fun pending(items: List<DoseItem>): List<DoseItem> = items.filter { it.log == null }.sortedBy { it.dueMillis }
     fun next(items: List<DoseItem>): DoseItem? = items.filter { it.log == null }.minByOrNull { it.dueMillis }
     fun nextGroup(items: List<DoseItem>): List<DoseItem> = DoseGroups.together(items, next(items))

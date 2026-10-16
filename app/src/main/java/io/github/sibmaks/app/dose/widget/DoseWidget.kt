@@ -48,6 +48,11 @@ class DoseWidget : AppWidgetProvider() {
             val now = ZonedDateTime.now()
             val items = DoseLogic.todayItems(DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context),
                 now.toInstant().toEpochMilli(), now.toLocalDate(), DoseStore.timeOverrides(context))
+            val emptyMessage = context.getString(when {
+                items.isEmpty() -> R.string.no_doses_due_today
+                DoseWidgetState.allTaken(items) -> R.string.all_medication_taken
+                else -> R.string.all_done_for_today
+            })
             val pending = DoseWidgetState.pending(items)
             val group = DoseWidgetState.nextGroup(pending)
             val next = group.firstOrNull()
@@ -59,10 +64,13 @@ class DoseWidget : AppWidgetProvider() {
             val openToday = PendingIntent.getActivity(context, 0, open, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
             val icons = pending.map { it.medication }.distinctBy { it.id }.associate { it.id to WidgetMedicationIcons.render(context, listOf(it)) }
             val compact = RemoteViews(context.packageName, R.layout.widget_upcoming_dose).apply {
+                setViewVisibility(R.id.widget_time, if (next == null) View.GONE else View.VISIBLE)
+                setViewVisibility(R.id.widget_icon, if (next == null) View.GONE else View.VISIBLE)
+                setInt(R.id.widget_name, "setMaxLines", if (next == null) 2 else 1)
                 setTextViewText(R.id.widget_title, context.getString(if (next == null) R.string.today else if (next.dueMillis <= now.toInstant().toEpochMilli()) R.string.due_now else R.string.upcoming_dose))
                 setTextViewText(R.id.widget_time, next?.let { Instant.ofEpochMilli(it.dueMillis).atZone(now.zone).format(DateTimeFormatter.ofPattern("HH:mm")) } ?: "—")
                 setTextViewText(R.id.widget_name, if (group.size > 1) context.getString(R.string.several_medicines, group.size)
-                    else next?.medication?.name ?: context.getString(R.string.no_doses_due_today))
+                    else next?.medication?.name ?: emptyMessage)
                 setTextViewText(R.id.widget_dose, if (group.size > 1) group.joinToString(", ") { it.medication.name }
                     else next?.medication?.localizedDose(context) ?: context.getString(R.string.widget_open_today))
                 setImageViewBitmap(R.id.widget_icon, WidgetMedicationIcons.render(context, group.map { it.medication }))
@@ -77,7 +85,12 @@ class DoseWidget : AppWidgetProvider() {
                     setTextViewText(R.id.widget_title, context.getString(R.string.today_s_schedule))
                     setTextViewText(R.id.widget_time, next?.let { Instant.ofEpochMilli(it.dueMillis).atZone(now.zone).format(DateTimeFormatter.ofPattern("HH:mm")) } ?: "—")
                     setTextViewText(R.id.widget_dose, if (count < pending.size) context.getString(R.string.widget_more_doses, pending.size - count)
-                        else context.getString(if (pending.isEmpty()) R.string.no_doses_due_today else R.string.widget_open_today))
+                        else context.getString(R.string.widget_open_today))
+                    setTextViewText(R.id.widget_empty_message, emptyMessage)
+                    setViewVisibility(R.id.widget_empty_message, if (pending.isEmpty()) View.VISIBLE else View.GONE)
+                    setViewVisibility(R.id.widget_rows, if (pending.isEmpty()) View.GONE else View.VISIBLE)
+                    setViewVisibility(R.id.widget_time, if (next == null) View.GONE else View.VISIBLE)
+                    setOnClickPendingIntent(R.id.widget_empty_message, openToday)
                     setOnClickPendingIntent(R.id.widget_header, openToday)
                     setOnClickPendingIntent(R.id.widget_dose, openToday)
                     removeAllViews(R.id.widget_rows)

@@ -246,4 +246,5 @@
     <string name="powder">"Powder"</string>
     <string name="suppository">"Suppository"</string>
     <string name="custom_form_hint">"Optional. Leave it empty to use Other."</string>
+    <string name="all_medication_taken">"All taken. Well done!"</string>
 </resources>

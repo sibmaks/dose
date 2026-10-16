@@ -244,4 +244,5 @@
     <string name="powder">"Poroşok"</string>
     <string name="suppository">"Şem"</string>
     <string name="custom_form_hint">"Hökmany däl. Başga görnüşini ulanmak üçin boş goýuň."</string>
+    <string name="all_medication_taken">"Ählisi kabul edildi. Berekella!"</string>
 </resources>

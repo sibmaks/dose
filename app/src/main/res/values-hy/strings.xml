@@ -244,4 +244,5 @@
     <string name="powder">"Փոշի"</string>
     <string name="suppository">"Մոմիկ"</string>
     <string name="custom_form_hint">"Ընտրովի է։ Դատարկ թողեք՝ «Այլ» օգտագործելու համար։"</string>
+    <string name="all_medication_taken">"Բոլորն ընդունված են։ Ապրե՛ք։"</string>
 </resources>

@@ -244,4 +244,5 @@
     <string name="powder">"Kukun"</string>
     <string name="suppository">"Shamcha"</string>
     <string name="custom_form_hint">"Ixtiyoriy. Boshqa uchun bo‘sh qoldiring."</string>
+    <string name="all_medication_taken">"Hammasi qabul qilindi. Barakalla!"</string>
 </resources>

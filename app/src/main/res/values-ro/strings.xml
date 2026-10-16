@@ -244,4 +244,5 @@
     <string name="powder">"Pulbere"</string>
     <string name="suppository">"Supozitor"</string>
     <string name="custom_form_hint">"Opțional. Lasă gol pentru a folosi Altele."</string>
+    <string name="all_medication_taken">"Toate luate. Bravo!"</string>
 </resources>

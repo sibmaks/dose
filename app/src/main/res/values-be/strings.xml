@@ -244,4 +244,5 @@
     <string name="powder">"Парашок"</string>
     <string name="suppository">"Свечка"</string>
     <string name="custom_form_hint">"Неабавязкова. Пакіньце пустым, каб выкарыстоўваць «Іншае»."</string>
+    <string name="all_medication_taken">"Усё прынята. Выдатна!"</string>
 </resources>

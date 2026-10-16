@@ -7,6 +7,8 @@
         <TextView android:id="@+id/widget_time" android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_marginStart="8dp" android:textColor="#7163E5" android:textSize="20sp" android:textStyle="bold" />
     </LinearLayout>
+    <TextView android:id="@+id/widget_empty_message" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:gravity="center" android:padding="8dp" android:visibility="gone" android:textColor="#252B43" android:textSize="18sp" android:textStyle="bold" />
     <LinearLayout android:id="@+id/widget_rows" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" />
     <TextView android:id="@+id/widget_dose" android:layout_width="match_parent" android:layout_height="24dp" android:gravity="center_vertical"
         android:textColor="#7163E5" android:textSize="12sp" android:maxLines="1" android:ellipsize="end" />
