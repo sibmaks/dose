@@ -127,7 +127,6 @@
     <string name="access_needed">"Потрібен доступ"</string>
     <string name="time_to_take">"Час до прийому"</string>
     <string name="all_time">"Увесь час"</string>
-    <string name="report_empty_hint">"Позначте прийом, щоб побачити звичайну затримку відносно розкладу."</string>
     <string name="duration_0_min">"0 хв"</string>
     <string name="duration_1_min">"&lt;1 хв"</string>
     <string name="test_reminder">"Перевірка нагадування"</string>
@@ -226,8 +225,6 @@
     <string name="remove_time">"Видалити час %1$s"</string>
     <string name="upcoming_dose">"Майбутній прийом"</string>
     <string name="on_time">"Вчасно"</string>
-    <string name="report_time_basis">"Затримка рахується за записаним часом прийому. «Вчасно» записує початковий час за розкладом, навіть після відкладення."</string>
-    <string name="report_explanation">"Пропуски виключено; ранній прийом дає нульову затримку. Ранніх: %1$d."</string>
     <string name="close_screen">"Закрити екран"</string>
     <string name="reminder_permission_intro">"Для нагадувань у стрічці й поверх програм Dose потрібні два дозволи: сповіщення й показ поверх інших програм. Виберіть потрібні способи. Для точного часу Android також може запросити доступ до будильників і нагадувань."</string>
     <string name="save">"Зберегти"</string>

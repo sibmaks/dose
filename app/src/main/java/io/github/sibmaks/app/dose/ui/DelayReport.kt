@@ -31,9 +31,7 @@ internal fun DelayReportCard(logs: List<DoseLog>, today: LocalDate) {
             }
             Text(report.averageDelayMillis?.let { delayDuration(context, it) } ?: "—", color = Violet, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold)
             Text(context.getString(R.string.average_delay_count, report.count), fontSize = 13.sp, fontWeight = FontWeight.Bold)
-            if (report.count == 0) {
-                Text(context.getString(R.string.report_empty_hint), fontSize = 13.sp, color = TextMuted)
-            } else {
+            if (report.count > 0) {
                 report.medications.forEach { med ->
                     HorizontalDivider(color = PanelBorder)
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -45,8 +43,6 @@ internal fun DelayReportCard(logs: List<DoseLog>, today: LocalDate) {
                     }
                 }
             }
-            Text(context.getString(R.string.report_time_basis), fontSize = 12.sp, color = TextMuted)
-            Text(context.getString(R.string.report_explanation, report.earlyCount), fontSize = 12.sp, color = TextMuted)
             if (report.estimatedCount > 0) Text(context.getString(R.string.estimated_entries, report.estimatedCount), fontSize = 12.sp, color = TextMuted)
         }
     }

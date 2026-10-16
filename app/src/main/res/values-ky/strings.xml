@@ -127,7 +127,6 @@
     <string name="access_needed">"Уруксат керек"</string>
     <string name="time_to_take">"Кабыл алууга чейинки убакыт"</string>
     <string name="all_time">"Бардык убакыт"</string>
-    <string name="report_empty_hint">"Жадыбалдан кечигүүнү көрүү үчүн кабыл алууну белгилеңиз."</string>
     <string name="duration_0_min">"0 мүн"</string>
     <string name="duration_1_min">"&lt;1 мүн"</string>
     <string name="test_reminder">"Сыноо эскертмеси"</string>
@@ -226,8 +225,6 @@
     <string name="remove_time">"%1$s убактысын өчүрүү"</string>
     <string name="upcoming_dose">"Алдыдагы кабыл алуу"</string>
     <string name="on_time">"Өз убагында"</string>
-    <string name="report_time_basis">"Кечигүү жазылган кабыл алуу убактысы менен эсептелет. «Өз убагында» кийинкиге калтыргандан кийин да баштапкы план убактысын жазат."</string>
-    <string name="report_explanation">"Өткөрүлгөндөр эсептелбейт; эрте кабыл алуу — нөл кечигүү. Эрте: %1$d."</string>
     <string name="close_screen">"Экранды жабуу"</string>
     <string name="reminder_permission_intro">"Тизмеде жана колдонмолордун үстүндө эскертүү үчүн Dose эки уруксатты талап кылат: билдирмелер жана башка колдонмолордун үстүнөн көрсөтүү. Каалаган ыкмаларды тандаңыз. Так убакыт үчүн Android ойготкучтарга уруксат да сурашы мүмкүн."</string>
     <string name="save">"Сактоо"</string>

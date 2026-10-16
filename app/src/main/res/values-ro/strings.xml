@@ -127,7 +127,6 @@
     <string name="access_needed">"Necesită acces"</string>
     <string name="time_to_take">"Timp până la luare"</string>
     <string name="all_time">"Tot timpul"</string>
-    <string name="report_empty_hint">"Marchează o doză ca luată pentru a vedea întârzierea față de program."</string>
     <string name="duration_0_min">"0 min"</string>
     <string name="duration_1_min">"&lt;1 min"</string>
     <string name="test_reminder">"Memento de test"</string>
@@ -226,8 +225,6 @@
     <string name="remove_time">"Șterge ora %1$s"</string>
     <string name="upcoming_dose">"Doză viitoare"</string>
     <string name="on_time">"La timp"</string>
-    <string name="report_time_basis">"Întârzierea folosește ora înregistrată a luării. „La timp” înregistrează ora programată inițial, chiar și după amânare."</string>
-    <string name="report_explanation">"Dozele omise nu se includ; cele luate devreme au întârziere zero. Devreme: %1$d."</string>
     <string name="close_screen">"Închide ecranul"</string>
     <string name="reminder_permission_intro">"Pentru mementouri în notificări și peste alte aplicații, Dose are nevoie de două permisiuni: notificări și afișare peste alte aplicații. Alege modurile dorite. Android poate cere și acces la alarme și mementouri pentru ore exacte."</string>
     <string name="save">"Salvează"</string>
