@@ -155,7 +155,6 @@
     <string name="app_language">"Колдонмонун тили"</string>
     <string name="first_language_offer">"Dose тутумдун тилин колдонот. Аны калтырыңыз же башка тил тандаңыз."</string>
     <string name="system_language">"Тутумдун тили"</string>
-    <string name="android_language_settings">"Android колдонмо тилинин жөндөөлөрү"</string>
     <string name="apply_language">"Колдонуу"</string>
     <string name="unit_mg">"мг"</string>
     <string name="unit_ml">"мл"</string>

@@ -155,7 +155,6 @@
     <string name="app_language">"Tətbiqin dili"</string>
     <string name="first_language_offer">"Dose sistem dilindən istifadə edir. Onu saxlayın və ya başqa dil seçin."</string>
     <string name="system_language">"Sistem dili"</string>
-    <string name="android_language_settings">"Android tətbiq dili parametrləri"</string>
     <string name="apply_language">"Tətbiq et"</string>
     <string name="unit_mg">"mq"</string>
     <string name="unit_ml">"ml"</string>

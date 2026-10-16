@@ -155,7 +155,6 @@
     <string name="app_language">"Қолданба тілі"</string>
     <string name="first_language_offer">"Dose жүйе тілін қолданады. Оны қалдырыңыз немесе басқа тіл таңдаңыз."</string>
     <string name="system_language">"Жүйе тілі"</string>
-    <string name="android_language_settings">"Android қолданба тілі баптаулары"</string>
     <string name="apply_language">"Қолдану"</string>
     <string name="unit_mg">"мг"</string>
     <string name="unit_ml">"мл"</string>

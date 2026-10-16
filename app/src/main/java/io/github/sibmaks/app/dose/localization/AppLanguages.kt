@@ -2,12 +2,9 @@ package io.github.sibmaks.app.dose.localization
 
 import android.app.LocaleManager
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Build
 import android.os.LocaleList
-import android.provider.Settings
 import java.util.Locale
 
 /** Tags are stable storage keys; native names remain readable before choosing a language. */
@@ -55,8 +52,4 @@ object AppLanguages {
 
     fun locale(context: Context): Locale = context.resources.configuration.locales[0]
 
-    fun openSettings(context: Context) {
-        if (Build.VERSION.SDK_INT >= 33) context.startActivity(Intent(Settings.ACTION_APP_LOCALE_SETTINGS,
-            Uri.parse("package:${context.packageName}")))
-    }
 }

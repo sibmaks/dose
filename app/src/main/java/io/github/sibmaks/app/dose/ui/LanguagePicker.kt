@@ -11,10 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -51,9 +48,6 @@ internal fun LanguagePicker(firstStart: Boolean, onDismiss: () -> Unit) {
                     RadioButton(selected = selected == tag, onClick = null)
                 }
             }
-        }
-        if (Build.VERSION.SDK_INT >= 33) TextButton(onClick = { dismiss(); AppLanguages.openSettings(context) }) {
-            Text(stringResource(R.string.android_language_settings))
         }
     }
 }

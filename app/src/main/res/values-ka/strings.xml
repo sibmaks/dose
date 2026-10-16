@@ -155,7 +155,6 @@
     <string name="app_language">"აპის ენა"</string>
     <string name="first_language_offer">"Dose სისტემის ენას იყენებს. დატოვეთ ის ან აირჩიეთ სხვა ენა."</string>
     <string name="system_language">"სისტემის ენა"</string>
-    <string name="android_language_settings">"აპის ენა Android-ის პარამეტრებში"</string>
     <string name="apply_language">"გამოყენება"</string>
     <string name="unit_mg">"მგ"</string>
     <string name="unit_ml">"მლ"</string>

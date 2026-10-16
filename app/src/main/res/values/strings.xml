@@ -156,7 +156,6 @@
     <string name="app_language">"App language"</string>
     <string name="first_language_offer">"Dose uses your system language. You can keep it or choose another language."</string>
     <string name="system_language">"System language"</string>
-    <string name="android_language_settings">"Android app language settings"</string>
     <string name="apply_language">"Apply"</string>
     <string name="unit_mg">"mg"</string>
     <string name="unit_ml">"ml"</string>

@@ -155,7 +155,6 @@
     <string name="app_language">"Հավելվածի լեզուն"</string>
     <string name="first_language_offer">"Dose-ն օգտագործում է համակարգի լեզուն։ Կարող եք պահել այն կամ ընտրել այլ լեզու։"</string>
     <string name="system_language">"Համակարգի լեզուն"</string>
-    <string name="android_language_settings">"Հավելվածի լեզուն Android-ի կարգավորումներում"</string>
     <string name="apply_language">"Կիրառել"</string>
     <string name="unit_mg">"մգ"</string>
     <string name="unit_ml">"մլ"</string>

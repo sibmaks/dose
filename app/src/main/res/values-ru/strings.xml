@@ -155,7 +155,6 @@
     <string name="app_language">"Язык приложения"</string>
     <string name="first_language_offer">"Dose использует язык системы. Оставьте его или выберите другой."</string>
     <string name="system_language">"Язык системы"</string>
-    <string name="android_language_settings">"Язык приложения в настройках Android"</string>
     <string name="apply_language">"Применить"</string>
     <string name="unit_mg">"мг"</string>
     <string name="unit_ml">"мл"</string>
