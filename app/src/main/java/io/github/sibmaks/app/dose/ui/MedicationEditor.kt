@@ -242,18 +242,18 @@ internal fun MedicationEditor(
                     }
                 }
                 Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp)) {
+                    if (original != null && step == MedicationStep.NAME) OutlinedButton(
+                        onClick = { showDeleteConfirm = true },
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).heightIn(min = 51.dp),
+                        shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFC45151)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC45151)),
+                    ) { Text(context.getString(R.string.delete_medication), fontWeight = FontWeight.Bold) }
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                         if (step != MedicationStep.NAME) OutlinedButton(onClick = ::previous, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) { Text(context.getString(R.string.back), fontWeight = FontWeight.Bold) }
                         Button(onClick = ::advance, modifier = Modifier.weight(1f).heightIn(min = 51.dp), shape = RoundedCornerShape(14.dp)) {
                             Text(if (step == MedicationStep.DETAILS) context.getString(R.string.save) else context.getString(R.string.continue_action), fontWeight = FontWeight.Bold)
                         }
                     }
-                    if (original != null && step == MedicationStep.NAME) OutlinedButton(
-                        onClick = { showDeleteConfirm = true },
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp).heightIn(min = 51.dp),
-                        shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFC45151)),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC45151)),
-                    ) { Text(context.getString(R.string.delete_medication), fontWeight = FontWeight.Bold) }
                 }
             }
         }
