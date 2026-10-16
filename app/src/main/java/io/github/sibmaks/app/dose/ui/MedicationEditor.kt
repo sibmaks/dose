@@ -4,6 +4,7 @@ import io.github.sibmaks.app.dose.localization.*
 import io.github.sibmaks.app.dose.R
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -247,9 +248,12 @@ internal fun MedicationEditor(
                             Text(if (step == MedicationStep.DETAILS) context.getString(R.string.save) else context.getString(R.string.continue_action), fontWeight = FontWeight.Bold)
                         }
                     }
-                    if (original != null && step == MedicationStep.NAME) TextButton(
-                        onClick = { showDeleteConfirm = true }, modifier = Modifier.fillMaxWidth(),
-                    ) { Text(context.getString(R.string.delete_medication), color = Color(0xFFC45151)) }
+                    if (original != null && step == MedicationStep.NAME) OutlinedButton(
+                        onClick = { showDeleteConfirm = true },
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp).heightIn(min = 51.dp),
+                        shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFC45151)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFC45151)),
+                    ) { Text(context.getString(R.string.delete_medication), fontWeight = FontWeight.Bold) }
                 }
             }
         }
