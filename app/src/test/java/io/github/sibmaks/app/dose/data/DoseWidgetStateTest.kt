@@ -36,4 +36,17 @@ class DoseWidgetStateTest {
         val next = DoseWidgetState.next(DoseLogic.todayItems(listOf(med), emptyList(), emptyMap(), tomorrow.atStartOfDay(now.zone).toInstant().toEpochMilli(), tomorrow))!!
         assertEquals(tomorrow.toString(), next.date)
     }
+    @Test fun `widget shows all pending medicines at the next shared instant`() {
+        val second = med.copy(id = "second", name = "Second", color = "#FFFFFF")
+        val current = DoseLogic.todayItems(listOf(med, second), emptyList(), emptyMap(), now.toInstant().toEpochMilli(), now.toLocalDate())
+        val group = DoseWidgetState.nextGroup(current)
+        assertEquals(setOf("id", "second"), group.map { it.medication.id }.toSet())
+        assertEquals(setOf("08:00"), group.map { it.time }.toSet())
+        assertEquals(setOf("violet", "#FFFFFF"), group.map { it.medication.color }.toSet())
+        val logs = DoseGroups.logs(group, "skipped", now.toInstant().toEpochMilli())
+        val remaining = DoseLogic.todayItems(listOf(med, second), logs, emptyMap(), now.toInstant().toEpochMilli(), now.toLocalDate())
+        assertEquals(setOf("12:00"), DoseWidgetState.nextGroup(remaining).map { it.time }.toSet())
+        assertTrue(DoseWidgetState.nextGroup(emptyList()).isEmpty())
+    }
+
 }

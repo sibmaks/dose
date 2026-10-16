@@ -14,7 +14,6 @@ import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.*
 import io.github.sibmaks.app.dose.localization.*
 import io.github.sibmaks.app.dose.reminders.ReminderScheduler
-import io.github.sibmaks.app.dose.ui.iconResource
 import java.time.*
 import java.time.format.DateTimeFormatter
 
@@ -42,13 +41,18 @@ class DoseWidget : AppWidgetProvider() {
             val now = ZonedDateTime.now()
             val items = DoseLogic.todayItems(DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context),
                 now.toInstant().toEpochMilli(), now.toLocalDate(), DoseStore.timeOverrides(context))
-            val next = DoseWidgetState.next(items)
+            val group = DoseWidgetState.nextGroup(items)
+            val next = group.firstOrNull()
             val views = RemoteViews(context.packageName, R.layout.widget_upcoming_dose).apply {
                 setTextViewText(R.id.widget_title, context.getString(if (next == null) R.string.today else if (next.dueMillis <= now.toInstant().toEpochMilli()) R.string.due_now else R.string.upcoming_dose))
                 setTextViewText(R.id.widget_time, next?.let { Instant.ofEpochMilli(it.dueMillis).atZone(now.zone).format(DateTimeFormatter.ofPattern("HH:mm")) } ?: "—")
-                setTextViewText(R.id.widget_name, next?.medication?.name ?: context.getString(R.string.no_doses_due_today))
-                setTextViewText(R.id.widget_dose, next?.medication?.localizedDose(context) ?: context.getString(R.string.widget_open_today))
-                setImageViewResource(R.id.widget_icon, next?.medication?.form?.iconResource() ?: R.drawable.ic_notification)
+                setTextViewText(R.id.widget_name, if (group.size > 1) context.getString(R.string.several_medicines, group.size)
+                    else next?.medication?.name ?: context.getString(R.string.no_doses_due_today))
+                setTextViewText(R.id.widget_dose, if (group.size > 1) group.joinToString(", ") { it.medication.name }
+                    else next?.medication?.localizedDose(context) ?: context.getString(R.string.widget_open_today))
+                setImageViewBitmap(R.id.widget_icon, WidgetMedicationIcons.render(context, group.map { it.medication }))
+                setContentDescription(R.id.widget_icon, if (group.size > 1) context.getString(R.string.several_medicines, group.size)
+                    else next?.medication?.localizedForm(context))
                 val open = Intent(context, MainActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     data = Uri.parse("dose://widget/today")
