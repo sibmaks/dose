@@ -58,7 +58,7 @@ private tailrec fun Context.activity(): Activity? = when (this) {
     else -> null
 }
 
-private fun languageFlag(tag: String): Int? = when (tag) {
+internal fun languageFlag(tag: String): Int? = when (tag) {
     "en" -> R.drawable.flag_gb
     "ru" -> R.drawable.flag_ru
     "be" -> R.drawable.flag_by
