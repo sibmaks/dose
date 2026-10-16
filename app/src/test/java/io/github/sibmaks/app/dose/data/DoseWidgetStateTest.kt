@@ -59,4 +59,20 @@ class DoseWidgetStateTest {
         for (height in 220..1000) assertTrue(DoseWidgetState.visibleRows(height.toFloat(), 20) * DoseWidgetState.ROW_HEIGHT <= height - 96)
     }
 
+    @Test fun `widget list excludes taken and skipped while preserving pending snoozed and moved doses`() {
+        val current = items()
+        val morning = current.first()
+        val taken = DoseGroups.logs(listOf(morning), "taken", now.toInstant().toEpochMilli()).single()
+        val skipped = taken.copy(status = "skipped")
+        for (log in listOf(taken, skipped)) {
+            val pending = DoseWidgetState.pending(items(logs = listOf(log)))
+            assertEquals(listOf("12:00"), pending.map { it.time })
+            assertTrue(pending.all { it.log == null })
+        }
+        val deferred = DoseWidgetState.pending(items(snoozes = mapOf(morning.id to at("13:00"))))
+        assertEquals(listOf("12:00", "08:00"), deferred.map { it.time })
+        assertEquals("snoozed", deferred.last().status)
+        assertTrue(DoseWidgetState.pending(items(logs = DoseGroups.logs(current, "taken", now.toInstant().toEpochMilli()))).isEmpty())
+    }
+
 }

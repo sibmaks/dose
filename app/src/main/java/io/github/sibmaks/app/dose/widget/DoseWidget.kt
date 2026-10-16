@@ -48,7 +48,8 @@ class DoseWidget : AppWidgetProvider() {
             val now = ZonedDateTime.now()
             val items = DoseLogic.todayItems(DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context),
                 now.toInstant().toEpochMilli(), now.toLocalDate(), DoseStore.timeOverrides(context))
-            val group = DoseWidgetState.nextGroup(items)
+            val pending = DoseWidgetState.pending(items)
+            val group = DoseWidgetState.nextGroup(pending)
             val next = group.firstOrNull()
             val open = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -56,7 +57,7 @@ class DoseWidget : AppWidgetProvider() {
                 putExtra(OPEN_TODAY, true)
             }
             val openToday = PendingIntent.getActivity(context, 0, open, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-            val icons = items.map { it.medication }.distinctBy { it.id }.associate { it.id to WidgetMedicationIcons.render(context, listOf(it)) }
+            val icons = pending.map { it.medication }.distinctBy { it.id }.associate { it.id to WidgetMedicationIcons.render(context, listOf(it)) }
             val compact = RemoteViews(context.packageName, R.layout.widget_upcoming_dose).apply {
                 setTextViewText(R.id.widget_title, context.getString(if (next == null) R.string.today else if (next.dueMillis <= now.toInstant().toEpochMilli()) R.string.due_now else R.string.upcoming_dose))
                 setTextViewText(R.id.widget_time, next?.let { Instant.ofEpochMilli(it.dueMillis).atZone(now.zone).format(DateTimeFormatter.ofPattern("HH:mm")) } ?: "—")
@@ -71,16 +72,16 @@ class DoseWidget : AppWidgetProvider() {
             }
             fun render(height: Float): RemoteViews {
                 if (height < DoseWidgetState.EXPANDED_HEIGHT) return compact
-                val count = DoseWidgetState.visibleRows(height, items.size)
+                val count = DoseWidgetState.visibleRows(height, pending.size)
                 return RemoteViews(context.packageName, R.layout.widget_dose_list).apply {
                     setTextViewText(R.id.widget_title, context.getString(R.string.today_s_schedule))
                     setTextViewText(R.id.widget_time, next?.let { Instant.ofEpochMilli(it.dueMillis).atZone(now.zone).format(DateTimeFormatter.ofPattern("HH:mm")) } ?: "—")
-                    setTextViewText(R.id.widget_dose, if (count < items.size) context.getString(R.string.widget_more_doses, items.size - count)
-                        else context.getString(if (items.isEmpty()) R.string.no_doses_due_today else R.string.widget_open_today))
+                    setTextViewText(R.id.widget_dose, if (count < pending.size) context.getString(R.string.widget_more_doses, pending.size - count)
+                        else context.getString(if (pending.isEmpty()) R.string.no_doses_due_today else R.string.widget_open_today))
                     setOnClickPendingIntent(R.id.widget_header, openToday)
                     setOnClickPendingIntent(R.id.widget_dose, openToday)
                     removeAllViews(R.id.widget_rows)
-                    items.take(count).forEach { item ->
+                    pending.take(count).forEach { item ->
                         val row = RemoteViews(context.packageName, R.layout.widget_dose_row).apply {
                             setTextViewText(R.id.medication_name, item.medication.name)
                             setTextViewText(R.id.medication_detail, item.medication.localizedDose(context))
