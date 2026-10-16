@@ -170,7 +170,7 @@ internal fun MedicationEditor(
                                     val selected = MedicationColors.hex(color) == MedicationColors.hex(choice)
                                     Box(Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)).background(foreground)
                                         .border(if (selected) 3.dp else 1.dp, if (selected) TextPrimary else PanelBorder, RoundedCornerShape(12.dp))
-                                        .clickable { colorPickerInitial = choice }.semantics { contentDescription = context.getString(R.string.color_description, localizedColor(context, choice), if (selected) context.getString(R.string.selected_suffix) else "") }, contentAlignment = Alignment.Center) {
+                                        .clickable { color = choice }.semantics { contentDescription = context.getString(R.string.color_description, localizedColor(context, choice), if (selected) context.getString(R.string.selected_suffix) else "") }, contentAlignment = Alignment.Center) {
                                         if (selected) Icon(Icons.Rounded.Check, null, tint = if (foreground.luminance() > 0.45f) Color.Black else Color.White)
                                     }
                                 }
