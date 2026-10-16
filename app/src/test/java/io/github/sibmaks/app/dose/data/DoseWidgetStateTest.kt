@@ -49,4 +49,14 @@ class DoseWidgetStateTest {
         assertTrue(DoseWidgetState.nextGroup(emptyList()).isEmpty())
     }
 
+    @Test fun `resized widget reserves header and footer space and grows the visible list`() {
+        assertEquals(0, DoseWidgetState.visibleRows(219f, 8))
+        assertEquals(1, DoseWidgetState.visibleRows(220f, 8))
+        assertEquals(2, DoseWidgetState.visibleRows(332f, 8))
+        assertEquals(3, DoseWidgetState.visibleRows(444f, 8))
+        assertEquals(2, DoseWidgetState.visibleRows(900f, 2))
+        assertEquals(0, DoseWidgetState.visibleRows(900f, 0))
+        for (height in 220..1000) assertTrue(DoseWidgetState.visibleRows(height.toFloat(), 20) * DoseWidgetState.ROW_HEIGHT <= height - 96)
+    }
+
 }

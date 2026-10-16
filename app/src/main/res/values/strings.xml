@@ -237,4 +237,5 @@
     <string name="skip_all">"Skip all"</string>
     <string name="several_medicines">"Medicines to take: %1$d"</string>
     <string name="mark_all_as_taken">"Mark all as taken"</string>
+    <string name="widget_more_doses">"More doses: %1$d · Open Today"</string>
 </resources>

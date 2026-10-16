@@ -235,4 +235,5 @@
     <string name="skip_all">"Ählisini geçir"</string>
     <string name="several_medicines">"Kabul edilmeli dermanlar: %1$d"</string>
     <string name="mark_all_as_taken">"Ählisini kabul edildi diýip belle"</string>
+    <string name="widget_more_doses">"Beýleki dozalar: %1$d · Şu güni aç"</string>
 </resources>

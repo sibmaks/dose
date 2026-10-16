@@ -235,4 +235,5 @@
     <string name="skip_all">"Բաց թողնել բոլորը"</string>
     <string name="several_medicines">"Ընդունման դեղեր՝ %1$d"</string>
     <string name="mark_all_as_taken">"Նշել բոլորը որպես ընդունված"</string>
+    <string name="widget_more_doses">"Այլ դեղաչափեր՝ %1$d · Բացել «Այսօր»"</string>
 </resources>

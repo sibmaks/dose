@@ -235,4 +235,5 @@
     <string name="skip_all">"Пропустить все"</string>
     <string name="several_medicines">"Нужно принять лекарств: %1$d"</string>
     <string name="mark_all_as_taken">"Отметить все принятыми"</string>
+    <string name="widget_more_doses">"Ещё доз: %1$d · Открыть «Сегодня»"</string>
 </resources>

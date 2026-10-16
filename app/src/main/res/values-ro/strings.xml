@@ -235,4 +235,5 @@
     <string name="skip_all">"Omite toate"</string>
     <string name="several_medicines">"Medicamente de luat: %1$d"</string>
     <string name="mark_all_as_taken">"Marchează toate ca luate"</string>
+    <string name="widget_more_doses">"Alte doze: %1$d · Deschide Azi"</string>
 </resources>
