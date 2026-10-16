@@ -261,11 +261,6 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         ReminderScheduler.refreshSlot(context, item.medication.id, item.time)
                         refresh()
                     },
-                    onSnooze = { item ->
-                        ReminderScheduler.snooze(context, item.medication.id, item.time, item.date)
-                        cancelDoseNotification(context, item)
-                        refresh()
-                    },
                 )
                 Tab.Medications -> MedicationsPage(
                     modifier = Modifier.fillMaxSize(), medications = medications,
@@ -299,7 +294,6 @@ private fun TodayPage(
     onManage: () -> Unit,
     onRecord: (DoseItem, String) -> Unit,
     onUndo: (DoseItem) -> Unit,
-    onSnooze: (DoseItem) -> Unit,
     onOpen: (DoseItem) -> Unit,
 ) {
     val context = LocalContext.current
@@ -370,7 +364,7 @@ private fun TodayPage(
                 if (hasMedications) null else onAdd) }
         } else {
             items(items, key = { it.id }) { item ->
-                DoseCard(item, onRecord = onRecord, onUndo = onUndo, onSnooze = onSnooze, onOpen = onOpen)
+                DoseCard(item, onRecord = onRecord, onUndo = onUndo, onOpen = onOpen)
             }
         }
     }
@@ -453,7 +447,6 @@ private fun DoseCard(
     item: DoseItem,
     onRecord: (DoseItem, String) -> Unit,
     onUndo: (DoseItem) -> Unit,
-    onSnooze: (DoseItem) -> Unit,
     onOpen: (DoseItem) -> Unit,
 ) {
     val context = LocalContext.current
@@ -477,12 +470,6 @@ private fun DoseCard(
                 if (item.log == null) {
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         CompactAction(context.getString(R.string.taken), Icons.Rounded.Check, onClick = { onRecord(item, "taken") })
-                        if (item.status == "due") {
-                            CompactAction(context.getString(R.string.on_time), Icons.Rounded.Schedule, onClick = { onRecord(item, "on_time") })
-                        }
-                        if (item.status == "due" || item.status == "overdue") {
-                            CompactAction(context.getString(R.string.duration_10m), Icons.Rounded.Alarm, onClick = { onSnooze(item) }, secondary = true)
-                        }
                         CompactAction(context.getString(R.string.skip), null, onClick = { onRecord(item, "skipped") }, secondary = true)
                     }
                 } else {

@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Indiki dozalar saýlanan senelerde."</string>
     <string name="routine_add_hint">"Gündelik tertibe ilkinji dermany goşuň."</string>
     <string name="taken">"Içildi"</string>
-    <string name="duration_10m">"+10 min"</string>
     <string name="skip">"Geçirmek"</string>
     <string name="undo">"Yza gaýtarmak"</string>
     <string name="skipped">"Geçirildi"</string>

@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Următoarele doze sunt la datele alese."</string>
     <string name="routine_add_hint">"Adaugă primul medicament în rutina zilnică."</string>
     <string name="taken">"Luată"</string>
-    <string name="duration_10m">"+10 min"</string>
     <string name="skip">"Omite"</string>
     <string name="undo">"Anulează"</string>
     <string name="skipped">"Omisă"</string>

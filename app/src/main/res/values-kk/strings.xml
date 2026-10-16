@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Келесі қабылдаулар таңдалған күндерде."</string>
     <string name="routine_add_hint">"Күн тәртібіңізге алғашқы дәріні қосыңыз."</string>
     <string name="taken">"Қабылданды"</string>
-    <string name="duration_10m">"+10 мин"</string>
     <string name="skip">"Өткізіп жіберу"</string>
     <string name="undo">"Болдырмау"</string>
     <string name="skipped">"Өткізілді"</string>

@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Следующие приёмы — в выбранные даты."</string>
     <string name="routine_add_hint">"Добавьте первое лекарство в свой распорядок."</string>
     <string name="taken">"Принято"</string>
-    <string name="duration_10m">"+10 мин"</string>
     <string name="skip">"Пропустить"</string>
     <string name="undo">"Отменить"</string>
     <string name="skipped">"Пропущено"</string>

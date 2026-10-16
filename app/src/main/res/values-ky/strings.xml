@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Кийинки кабыл алуулар тандалган күндөрдө."</string>
     <string name="routine_add_hint">"Күн тартибиңизге биринчи дарыны кошуңуз."</string>
     <string name="taken">"Кабыл алынды"</string>
-    <string name="duration_10m">"+10 мүн"</string>
     <string name="skip">"Өткөрүп жиберүү"</string>
     <string name="undo">"Жокко чыгаруу"</string>
     <string name="skipped">"Өткөрүлдү"</string>

@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"შემდეგი მიღებები არჩეულ თარიღებზეა."</string>
     <string name="routine_add_hint">"დაამატეთ პირველი წამალი ყოველდღიურ რუტინას."</string>
     <string name="taken">"მიღებულია"</string>
-    <string name="duration_10m">"+10 წთ"</string>
     <string name="skip">"გამოტოვება"</string>
     <string name="undo">"გაუქმება"</string>
     <string name="skipped">"გამოტოვებულია"</string>

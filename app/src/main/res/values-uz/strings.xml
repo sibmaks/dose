@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Keyingi qabullar tanlangan sanalarda."</string>
     <string name="routine_add_hint">"Kun tartibingizga birinchi dorini qoʻshing."</string>
     <string name="taken">"Qabul qilindi"</string>
-    <string name="duration_10m">"+10 daq"</string>
     <string name="skip">"Oʻtkazib yuborish"</string>
     <string name="undo">"Bekor qilish"</string>
     <string name="skipped">"Oʻtkazildi"</string>

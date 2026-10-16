@@ -28,7 +28,7 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onEdit: () -
                              onSave: (Long?, String) -> Boolean) {
     val context = LocalContext.current
     val medication = item.medication
-    var acceptance by rememberSaveable(item.id) { mutableStateOf(item.log != null) }
+    var acceptance by rememberSaveable(item.id, item.log != null) { mutableStateOf(item.log != null) }
     var reminderTime by rememberSaveable(item.id, item.scheduledTime) { mutableStateOf(item.scheduledTime) }
     var acceptedTime by rememberSaveable(item.id, item.log?.recordedAt) {
         mutableStateOf(Instant.ofEpochMilli(item.log?.recordedAt ?: System.currentTimeMillis())

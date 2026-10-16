@@ -29,7 +29,6 @@
     <string name="routine_future_hint">"Your next doses follow your selected dates."</string>
     <string name="routine_add_hint">"Add your first medication to build your daily routine."</string>
     <string name="taken">"Taken"</string>
-    <string name="duration_10m">"+10m"</string>
     <string name="skip">"Skip"</string>
     <string name="undo">"Undo"</string>
     <string name="skipped">"Skipped"</string>

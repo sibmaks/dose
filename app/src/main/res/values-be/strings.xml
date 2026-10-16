@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Наступныя прыёмы — у выбраныя даты."</string>
     <string name="routine_add_hint">"Дадайце першыя лекі ў свой распарадак."</string>
     <string name="taken">"Прынята"</string>
-    <string name="duration_10m">"+10 хв"</string>
     <string name="skip">"Прапусціць"</string>
     <string name="undo">"Адмяніць"</string>
     <string name="skipped">"Прапушчана"</string>

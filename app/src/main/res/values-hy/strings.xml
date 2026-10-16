@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Հաջորդ ընդունումները՝ ընտրված ամսաթվերին։"</string>
     <string name="routine_add_hint">"Ավելացրեք առաջին դեղը ձեր առօրյային։"</string>
     <string name="taken">"Ընդունված է"</string>
-    <string name="duration_10m">"+10 ր"</string>
     <string name="skip">"Բաց թողնել"</string>
     <string name="undo">"Հետարկել"</string>
     <string name="skipped">"Բաց է թողնված"</string>

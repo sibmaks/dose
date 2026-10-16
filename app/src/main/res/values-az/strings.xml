@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Növbəti qəbullar seçdiyiniz tarixlərdədir."</string>
     <string name="routine_add_hint">"Gündəlik rejiminiz üçün ilk dərmanınızı əlavə edin."</string>
     <string name="taken">"Qəbul edildi"</string>
-    <string name="duration_10m">"+10 dəq"</string>
     <string name="skip">"Burax"</string>
     <string name="undo">"Geri al"</string>
     <string name="skipped">"Buraxıldı"</string>

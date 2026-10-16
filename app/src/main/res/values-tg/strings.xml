@@ -28,7 +28,6 @@
     <string name="routine_future_hint">"Қабулҳои навбатӣ дар санаҳои интихобшудаанд."</string>
     <string name="routine_add_hint">"Доруи аввалро ба реҷаи ҳаррӯза илова кунед."</string>
     <string name="taken">"Қабул шуд"</string>
-    <string name="duration_10m">"+10 дақ"</string>
     <string name="skip">"Гузарондан"</string>
     <string name="undo">"Бекор кардан"</string>
     <string name="skipped">"Гузаронда шуд"</string>
