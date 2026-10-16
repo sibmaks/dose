@@ -49,20 +49,26 @@ internal fun HistoryDoseEditor(log: DoseLog, onDismiss: () -> Unit, onSave: (Lon
         HorizontalDivider(color = PanelBorder)
         if (log.status == "taken") {
             Text(context.getString(R.string.taken_at), fontWeight = FontWeight.Bold)
-            OutlinedButton(onClick = {
-                DatePickerDialog(context, { _, year, month, day ->
-                    at = LocalDate.of(year, month + 1, day).atTime(selected.toLocalTime()).atZone(zone).toInstant().toEpochMilli()
-                    timeError = false; changedError = false
-                }, selected.year, selected.monthValue - 1, selected.dayOfMonth).apply {
-                    datePicker.maxDate = System.currentTimeMillis()
-                }.show()
-            }, modifier = Modifier.fillMaxWidth()) { Text(localizedDate(context, selected.toLocalDate().toString())) }
-            OutlinedButton(onClick = {
-                TimePickerDialog(context, { _, hour, minute ->
-                    at = selected.toLocalDate().atTime(hour, minute).atZone(zone).toInstant().toEpochMilli()
-                    timeError = false; changedError = false
-                }, selected.hour, selected.minute, true).show()
-            }, modifier = Modifier.fillMaxWidth()) { Text(selected.format(DateTimeFormatter.ofPattern("HH:mm"))) }
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(onClick = {
+                    DatePickerDialog(context, { _, year, month, day ->
+                        at = LocalDate.of(year, month + 1, day).atTime(selected.toLocalTime()).atZone(zone).toInstant().toEpochMilli()
+                        timeError = false; changedError = false
+                    }, selected.year, selected.monthValue - 1, selected.dayOfMonth).apply {
+                        datePicker.maxDate = System.currentTimeMillis()
+                    }.show()
+                }, modifier = Modifier.weight(1.5f).heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = 8.dp)) {
+                    Text(selected.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(AppLanguages.locale(context))), maxLines = 1, softWrap = false)
+                }
+                OutlinedButton(onClick = {
+                    TimePickerDialog(context, { _, hour, minute ->
+                        at = selected.toLocalDate().atTime(hour, minute).atZone(zone).toInstant().toEpochMilli()
+                        timeError = false; changedError = false
+                    }, selected.hour, selected.minute, true).show()
+                }, modifier = Modifier.weight(1f).heightIn(min = 48.dp), contentPadding = PaddingValues(horizontal = 8.dp)) {
+                    Text(selected.format(DateTimeFormatter.ofPattern("HH:mm")), maxLines = 1, softWrap = false)
+                }
+            }
             if (timeError) Text(context.getString(R.string.history_time_error), color = MaterialTheme.colorScheme.error)
         } else {
             Text(context.getString(R.string.skipped_at), color = TextMuted)
