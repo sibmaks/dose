@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Şu güni açmak üçin basyň"</string>
     <string name="reminder_permission_intro">"Dose ýatlatmalar üçin iki Android rugsadyny ulanýar: habarnamalar we beýleki programmalaryň üstündäki penjireler. Isleýän usullaryňyzy saýlaň."</string>
     <string name="pause_notifications">"Ähli habarnamalary wagtlaýyn duruz"</string>
-    <string name="pause_hours">"Sagat"</string>
-    <string name="pause_days">"Gün"</string>
     <string name="notifications_paused_until">"Habarnamalar %1$s çenli duruzyldy"</string>
     <string name="resume_notifications">"Habarnamalary häzir dowam et"</string>
-    <string name="pause_time_error">"Oňyn dowamlylygy giriziň ýa-da geljekki senäni we wagty saýlaň."</string>
     <string name="reminders_disabled_hint">"Ýatlatmalar öçürildi. Derman tertipleriňiz saklanýar."</string>
+    <string name="pause_time_error">"Geljekki senäni we wagty saýlaň."</string>
 </resources>

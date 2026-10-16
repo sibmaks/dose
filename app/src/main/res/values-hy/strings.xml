@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Սեղմեք՝ «Այսօր»-ը բացելու համար"</string>
     <string name="reminder_permission_intro">"Dose-ը հիշեցումների համար օգտագործում է Android-ի երկու թույլտվություն՝ ծանուցումներ և այլ հավելվածների վրայի պատուհաններ։ Ընտրեք հիշեցման եղանակները։"</string>
     <string name="pause_notifications">"Դադարեցնել բոլոր ծանուցումները"</string>
-    <string name="pause_hours">"Ժամեր"</string>
-    <string name="pause_days">"Օրեր"</string>
     <string name="notifications_paused_until">"Ծանուցումները դադարեցված են մինչև %1$s"</string>
     <string name="resume_notifications">"Վերսկսել ծանուցումները հիմա"</string>
-    <string name="pause_time_error">"Մուտքագրեք դրական տևողություն կամ ընտրեք ապագա ամսաթիվ և ժամ։"</string>
     <string name="reminders_disabled_hint">"Հիշեցումներն անջատված են։ Դեղերի ժամանակացույցերը պահպանված են։"</string>
+    <string name="pause_time_error">"Ընտրեք ապագա ամսաթիվ և ժամ։"</string>
 </resources>

@@ -220,10 +220,8 @@
     <string name="widget_open_today">"«Бүгүн» барагын ачуу үчүн басыңыз"</string>
     <string name="reminder_permission_intro">"Dose эскертүүлөр үчүн Android тутумунун эки уруксатын колдонот: билдирүүлөр жана башка колдонмолордун үстүндөгү терезелер. Керектүү ыкмаларды тандаңыз."</string>
     <string name="pause_notifications">"Бардык билдирүүлөрдү тындыруу"</string>
-    <string name="pause_hours">"Саат"</string>
-    <string name="pause_days">"Күн"</string>
     <string name="notifications_paused_until">"Билдирүүлөр %1$s чейин тындырылды"</string>
     <string name="resume_notifications">"Билдирүүлөрдү азыр улантуу"</string>
-    <string name="pause_time_error">"Оң узактыкты жазыңыз же келечектеги күндү жана убакытты тандаңыз."</string>
     <string name="reminders_disabled_hint">"Эскертүүлөр өчүрүлгөн. Дары ичүү жадыбалдарыңыз сакталган."</string>
+    <string name="pause_time_error">"Келечектеги күндү жана убакытты тандаңыз."</string>
 </resources>

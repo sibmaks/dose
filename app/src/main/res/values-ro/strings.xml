@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Atingeți pentru a deschide Astăzi"</string>
     <string name="reminder_permission_intro">"Dose folosește două permisiuni Android pentru mementouri: notificări și ferestre peste alte aplicații. Alegeți cum doriți să primiți mementourile."</string>
     <string name="pause_notifications">"Pauză pentru toate notificările"</string>
-    <string name="pause_hours">"Ore"</string>
-    <string name="pause_days">"Zile"</string>
     <string name="notifications_paused_until">"Notificările sunt întrerupte până la %1$s"</string>
     <string name="resume_notifications">"Reia notificările acum"</string>
-    <string name="pause_time_error">"Introduceți o durată pozitivă sau alegeți o dată și o oră viitoare."</string>
     <string name="reminders_disabled_hint">"Mementourile sunt dezactivate. Programele medicamentelor rămân salvate."</string>
+    <string name="pause_time_error">"Alegeți o dată și o oră viitoare."</string>
 </resources>

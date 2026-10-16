@@ -220,10 +220,8 @@
     <string name="widget_open_today">"შეეხეთ დღევანდელი განრიგის გასახსნელად"</string>
     <string name="reminder_permission_intro">"Dose შეხსენებებისთვის Android-ის ორ ნებართვას იყენებს: შეტყობინებებს და სხვა აპებზე გამოსაჩენ ფანჯრებს. აირჩიეთ შეხსენების გზები."</string>
     <string name="pause_notifications">"ყველა შეტყობინების შეჩერება"</string>
-    <string name="pause_hours">"საათი"</string>
-    <string name="pause_days">"დღე"</string>
     <string name="notifications_paused_until">"შეტყობინებები შეჩერებულია %1$s-მდე"</string>
     <string name="resume_notifications">"შეტყობინებების ახლა განახლება"</string>
-    <string name="pause_time_error">"შეიყვანეთ დადებითი ხანგრძლივობა ან აირჩიეთ მომავალი თარიღი და დრო."</string>
     <string name="reminders_disabled_hint">"შეხსენებები გამორთულია. წამლების განრიგები შენახულია."</string>
+    <string name="pause_time_error">"აირჩიეთ მომავალი თარიღი და დრო."</string>
 </resources>

@@ -222,10 +222,8 @@
     <string name="widget_open_today">"Tap to open Today"</string>
     <string name="reminder_permission_intro">"Dose uses two Android permissions for reminders: notifications in your feed and pop-ups over other apps. Choose how you want to be reminded."</string>
     <string name="pause_notifications">"Pause all notifications"</string>
-    <string name="pause_hours">"Hours"</string>
-    <string name="pause_days">"Days"</string>
     <string name="notifications_paused_until">"Notifications paused until %1$s"</string>
     <string name="resume_notifications">"Resume notifications now"</string>
-    <string name="pause_time_error">"Enter a positive duration or choose a future date and time."</string>
     <string name="reminders_disabled_hint">"Reminders are off. Your medication schedules stay saved."</string>
+    <string name="pause_time_error">"Choose a future date and time."</string>
 </resources>

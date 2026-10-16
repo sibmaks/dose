@@ -220,10 +220,8 @@
     <string name="widget_open_today">"«Бүгін» бетін ашу үшін түртіңіз"</string>
     <string name="reminder_permission_intro">"Dose еске салу үшін Android жүйесінің екі рұқсатын пайдаланады: хабарландырулар және басқа қолданбалардың үстіндегі терезелер. Қажетті тәсілдерді таңдаңыз."</string>
     <string name="pause_notifications">"Барлық хабарландыруларды тоқтата тұру"</string>
-    <string name="pause_hours">"Сағат"</string>
-    <string name="pause_days">"Күн"</string>
     <string name="notifications_paused_until">"Хабарландырулар %1$s дейін тоқтатылды"</string>
     <string name="resume_notifications">"Хабарландыруларды қазір жалғастыру"</string>
-    <string name="pause_time_error">"Оң ұзақтықты енгізіңіз немесе болашақ күн мен уақытты таңдаңыз."</string>
     <string name="reminders_disabled_hint">"Еске салулар өшірілген. Дәрі қабылдау кестелеріңіз сақталған."</string>
+    <string name="pause_time_error">"Болашақ күн мен уақытты таңдаңыз."</string>
 </resources>

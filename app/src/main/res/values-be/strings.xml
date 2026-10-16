@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Націсніце, каб адкрыць «Сёння»"</string>
     <string name="reminder_permission_intro">"Для напамінаў Dose выкарыстоўвае два дазволы Android: апавяшчэнні ў стужцы і вокны па-над іншымі праграмамі. Выберыце патрэбныя спосабы."</string>
     <string name="pause_notifications">"Прыпыніць усе апавяшчэнні"</string>
-    <string name="pause_hours">"Гадзіны"</string>
-    <string name="pause_days">"Дні"</string>
     <string name="notifications_paused_until">"Апавяшчэнні прыпынены да %1$s"</string>
     <string name="resume_notifications">"Аднавіць апавяшчэнні зараз"</string>
-    <string name="pause_time_error">"Увядзіце дадатную працягласць або выберыце будучую дату і час."</string>
     <string name="reminders_disabled_hint">"Напаміны выключаны. Вашы расклады прыёму лекаў захаваны."</string>
+    <string name="pause_time_error">"Выберыце будучую дату і час."</string>
 </resources>

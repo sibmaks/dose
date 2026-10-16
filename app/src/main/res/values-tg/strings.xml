@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Барои кушодани «Имрӯз» пахш кунед"</string>
     <string name="reminder_permission_intro">"Dose барои ёдрасӣ ду иҷозати Android-ро истифода мебарад: огоҳиҳо ва равзанаҳо болои барномаҳои дигар. Усулҳои дилхоҳро интихоб кунед."</string>
     <string name="pause_notifications">"Таваққуфи ҳамаи огоҳиҳо"</string>
-    <string name="pause_hours">"Соат"</string>
-    <string name="pause_days">"Рӯз"</string>
     <string name="notifications_paused_until">"Огоҳиҳо то %1$s таваққуф карда шудаанд"</string>
     <string name="resume_notifications">"Огоҳиҳоро ҳозир идома додан"</string>
-    <string name="pause_time_error">"Давомнокии мусбатро ворид кунед ё сана ва вақти ояндаро интихоб кунед."</string>
     <string name="reminders_disabled_hint">"Ёдрасиҳо хомӯшанд. Ҷадвалҳои доруҳои шумо нигоҳ дошта шудаанд."</string>
+    <string name="pause_time_error">"Сана ва вақти ояндаро интихоб кунед."</string>
 </resources>

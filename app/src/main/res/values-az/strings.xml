@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Bu günü açmaq üçün toxunun"</string>
     <string name="reminder_permission_intro">"Dose xatırlatmalar üçün iki Android icazəsindən istifadə edir: bildiriş lentində bildirişlər və digər tətbiqlərin üzərində pəncərələr. İstədiyiniz üsulları seçin."</string>
     <string name="pause_notifications">"Bütün bildirişləri dayandır"</string>
-    <string name="pause_hours">"Saat"</string>
-    <string name="pause_days">"Gün"</string>
     <string name="notifications_paused_until">"Bildirişlər %1$s tarixinədək dayandırılıb"</string>
     <string name="resume_notifications">"Bildirişləri indi bərpa et"</string>
-    <string name="pause_time_error">"Müsbət müddət daxil edin və ya gələcək tarix və vaxt seçin."</string>
     <string name="reminders_disabled_hint">"Xatırlatmalar söndürülüb. Dərman cədvəlləriniz saxlanılır."</string>
+    <string name="pause_time_error">"Gələcək tarix və vaxt seçin."</string>
 </resources>

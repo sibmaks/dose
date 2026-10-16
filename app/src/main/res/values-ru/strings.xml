@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Нажмите, чтобы открыть «Сегодня»"</string>
     <string name="reminder_permission_intro">"Для напоминаний Dose использует два разрешения Android: уведомления в ленте и всплывающие окна поверх других приложений. Выберите нужные способы."</string>
     <string name="pause_notifications">"Приостановить все уведомления"</string>
-    <string name="pause_hours">"Часы"</string>
-    <string name="pause_days">"Дни"</string>
     <string name="notifications_paused_until">"Уведомления приостановлены до %1$s"</string>
     <string name="resume_notifications">"Возобновить уведомления сейчас"</string>
-    <string name="pause_time_error">"Введите положительную длительность или выберите будущую дату и время."</string>
     <string name="reminders_disabled_hint">"Напоминания выключены. Ваши расписания приёма лекарств сохранены."</string>
+    <string name="pause_time_error">"Выберите будущую дату и время."</string>
 </resources>

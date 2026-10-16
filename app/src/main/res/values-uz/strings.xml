@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Bugunni ochish uchun bosing"</string>
     <string name="reminder_permission_intro">"Dose eslatmalar uchun ikkita Android ruxsatidan foydalanadi: bildirishnomalar va boshqa ilovalar ustidagi oynalar. Kerakli usullarni tanlang."</string>
     <string name="pause_notifications">"Barcha bildirishnomalarni toʻxtatib turish"</string>
-    <string name="pause_hours">"Soat"</string>
-    <string name="pause_days">"Kun"</string>
     <string name="notifications_paused_until">"Bildirishnomalar %1$s gacha toʻxtatildi"</string>
     <string name="resume_notifications">"Bildirishnomalarni hozir davom ettirish"</string>
-    <string name="pause_time_error">"Musbat davomiylikni kiriting yoki kelajak sana va vaqtni tanlang."</string>
     <string name="reminders_disabled_hint">"Eslatmalar oʻchirilgan. Dori jadvallaringiz saqlanadi."</string>
+    <string name="pause_time_error">"Kelajak sana va vaqtni tanlang."</string>
 </resources>

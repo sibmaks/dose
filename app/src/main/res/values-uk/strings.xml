@@ -220,10 +220,8 @@
     <string name="widget_open_today">"Натисніть, щоб відкрити «Сьогодні»"</string>
     <string name="reminder_permission_intro">"Для нагадувань Dose використовує два дозволи Android: сповіщення у стрічці та вікна поверх інших застосунків. Виберіть потрібні способи."</string>
     <string name="pause_notifications">"Призупинити всі сповіщення"</string>
-    <string name="pause_hours">"Години"</string>
-    <string name="pause_days">"Дні"</string>
     <string name="notifications_paused_until">"Сповіщення призупинено до %1$s"</string>
     <string name="resume_notifications">"Відновити сповіщення зараз"</string>
-    <string name="pause_time_error">"Введіть додатну тривалість або виберіть майбутню дату й час."</string>
     <string name="reminders_disabled_hint">"Нагадування вимкнено. Ваші розклади прийому ліків збережено."</string>
+    <string name="pause_time_error">"Виберіть майбутню дату й час."</string>
 </resources>
