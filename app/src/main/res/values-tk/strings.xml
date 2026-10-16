@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Yza süýşürildi"</string>
     <string name="skipped_at">"Geçirilen wagty"</string>
     <string name="recorded_dose">"Bellige alnan doza"</string>
+    <string name="color_wheel_hint">"Reňk saýlamak üçin tegelekde barmagyňyzy süýşüriň. Merkezi ak, gyrasy doly doýgun reňkdir."</string>
+    <string name="brightness">"Ýagtylyk"</string>
+    <string name="color_hex_error">"Reňki #RRGGBB görnüşinde giriziň."</string>
 </resources>

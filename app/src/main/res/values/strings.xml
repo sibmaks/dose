@@ -230,4 +230,7 @@
     <string name="snoozed_until">"Snoozed until"</string>
     <string name="skipped_at">"Skipped at"</string>
     <string name="recorded_dose">"Recorded dose"</string>
+    <string name="color_wheel_hint">"Drag on the circle to choose a color. The center is white; the edge is fully saturated."</string>
+    <string name="brightness">"Brightness"</string>
+    <string name="color_hex_error">"Enter a color as #RRGGBB."</string>
 </resources>

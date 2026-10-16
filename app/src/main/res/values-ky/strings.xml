@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Кийинкиге калтырылды"</string>
     <string name="skipped_at">"Өткөрүп жиберүү убактысы"</string>
     <string name="recorded_dose">"Жазылган доза"</string>
+    <string name="color_wheel_hint">"Түстү тандоо үчүн тегерек боюнча манжаңызды жылдырыңыз. Ортосу ак, четтери каныккан түстө."</string>
+    <string name="brightness">"Жарыктык"</string>
+    <string name="color_hex_error">"Түстү #RRGGBB форматында жазыңыз."</string>
 </resources>

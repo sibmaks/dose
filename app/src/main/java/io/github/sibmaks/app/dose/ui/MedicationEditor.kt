@@ -68,7 +68,7 @@ internal fun MedicationEditor(
     var addInstructions by rememberSaveable { mutableStateOf(original?.note?.isNotBlank() == true) }
     var showValidation by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
-    var showColorPicker by remember { mutableStateOf(false) }
+    var colorPickerInitial by rememberSaveable { mutableStateOf<String?>(null) }
     val colorUsage = remember { DoseStore.colorUsage(context) }
     val medications = remember { DoseStore.medications(context) }
     val dictionary = remember { MedicationDictionary.load(context) }
@@ -157,16 +157,16 @@ internal fun MedicationEditor(
                             Text(context.getString(R.string.color_order_hint), color = TextMuted, fontSize = 12.sp)
                             FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                                 MedicationColors.choices(colorUsage, medications, color).forEach { choice ->
-                                    val foreground = palette(choice).first
+                                    val foreground = Color(android.graphics.Color.parseColor(MedicationColors.hex(choice)))
                                     val selected = MedicationColors.hex(color) == MedicationColors.hex(choice)
                                     Box(Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)).background(foreground)
-                                        .then(if (selected) Modifier.border(3.dp, TextPrimary, RoundedCornerShape(12.dp)) else Modifier)
-                                        .clickable { color = choice }.semantics { contentDescription = context.getString(R.string.color_description, localizedColor(context, choice), if (selected) context.getString(R.string.selected_suffix) else "") }, contentAlignment = Alignment.Center) {
+                                        .border(if (selected) 3.dp else 1.dp, if (selected) TextPrimary else PanelBorder, RoundedCornerShape(12.dp))
+                                        .clickable { colorPickerInitial = choice }.semantics { contentDescription = context.getString(R.string.color_description, localizedColor(context, choice), if (selected) context.getString(R.string.selected_suffix) else "") }, contentAlignment = Alignment.Center) {
                                         if (selected) Icon(Icons.Rounded.Check, null, tint = if (foreground.luminance() > 0.45f) Color.Black else Color.White)
                                     }
                                 }
                             }
-                            TextButton(onClick = { showColorPicker = true }) { Icon(Icons.Rounded.Palette, null); Spacer(Modifier.width(6.dp)); Text(context.getString(R.string.pick_a_custom_color)) }
+                            TextButton(onClick = { colorPickerInitial = color }) { Icon(Icons.Rounded.Palette, null); Spacer(Modifier.width(6.dp)); Text(context.getString(R.string.pick_a_custom_color)) }
                         }
                         MedicationStep.FORM -> {
                             Text(context.getString(R.string.choose_form, name), fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -245,7 +245,7 @@ internal fun MedicationEditor(
             }
         }
     }
-    if (showColorPicker) ColorPicker(color, onDismiss = { showColorPicker = false }, onChoose = { color = it; showColorPicker = false })
+    colorPickerInitial?.let { initial -> ColorPicker(initial, onDismiss = { colorPickerInitial = null }, onChoose = { color = it; colorPickerInitial = null }) }
     if (showDeleteConfirm && original != null) AlertDialog(onDismissRequest = { showDeleteConfirm = false }, title = { Text(context.getString(R.string.delete_named, original.name)) },
         text = { Text(context.getString(R.string.delete_medication_hint)) },
         confirmButton = { TextButton(onClick = { onDelete(original) }) { Text(context.getString(R.string.delete), color = Color(0xFFC45151)) } },
@@ -365,35 +365,6 @@ private fun DateBound(label: String, value: String?, fallback: String, onPick: (
     }
         if (error != null) Text(error, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
     }
-}
-
-@Composable
-private fun ColorPicker(initial: String, onDismiss: () -> Unit, onChoose: (String) -> Unit) {
-    val context = LocalContext.current
-    var hex by remember { mutableStateOf(MedicationColors.hex(initial)) }
-    var rgb by remember { mutableStateOf(android.graphics.Color.parseColor(hex)) }
-    fun update(channel: Int, value: Float) {
-        val channels = intArrayOf(android.graphics.Color.red(rgb), android.graphics.Color.green(rgb), android.graphics.Color.blue(rgb))
-        channels[channel] = value.toInt()
-        rgb = android.graphics.Color.rgb(channels[0], channels[1], channels[2])
-        hex = "#%06X".format(Locale.US, rgb and 0xFFFFFF)
-    }
-    AlertDialog(onDismissRequest = onDismiss, title = { Text(context.getString(R.string.pick_a_color)) }, text = {
-        Column(Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Box(Modifier.fillMaxWidth().height(55.dp).clip(RoundedCornerShape(12.dp)).background(Color(rgb)))
-            OutlinedTextField(hex, { input ->
-                hex = input.take(7).uppercase()
-                if (Regex("#[0-9A-F]{6}").matches(hex)) rgb = android.graphics.Color.parseColor(hex)
-            }, label = { Text(context.getString(R.string.hex_color_rrggbb)) }, singleLine = true, isError = !Regex("#[0-9A-F]{6}").matches(hex))
-            listOf(context.getString(R.string.red), context.getString(R.string.green), context.getString(R.string.blue)).forEachIndexed { index, label ->
-                val channel = when (index) { 0 -> android.graphics.Color.red(rgb); 1 -> android.graphics.Color.green(rgb); else -> android.graphics.Color.blue(rgb) }
-                Text(context.getString(R.string.label_value, label, channel.toString()), fontSize = 12.sp)
-                Slider(value = channel.toFloat(), onValueChange = { update(index, it) }, valueRange = 0f..255f,
-                    modifier = Modifier.semantics { contentDescription = context.getString(R.string.color_channel, label) })
-            }
-        }
-    }, confirmButton = { TextButton(onClick = { onChoose(hex) }, enabled = Regex("#[0-9A-F]{6}").matches(hex)) { Text(context.getString(R.string.use_color)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(context.getString(R.string.cancel)) } })
 }
 
 internal fun scheduleSummary(context: android.content.Context, rule: DoseSchedule): String {

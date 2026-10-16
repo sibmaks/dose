@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Keyinga qoldirildi"</string>
     <string name="skipped_at">"Oʻtkazib yuborish vaqti"</string>
     <string name="recorded_dose">"Qayd etilgan doza"</string>
+    <string name="color_wheel_hint">"Rang tanlash uchun barmogʻingizni doira boʻylab suring. Markaz oq, cheti esa toʻliq toʻyingan."</string>
+    <string name="brightness">"Yorqinlik"</string>
+    <string name="color_hex_error">"Rangni #RRGGBB formatida kiriting."</string>
 </resources>

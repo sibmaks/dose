@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Адкладзена да"</string>
     <string name="skipped_at">"Час пропуску"</string>
     <string name="recorded_dose">"Запісаная доза"</string>
+    <string name="color_wheel_hint">"Правядзіце пальцам па крузе, каб выбраць колер. У цэнтры — белы, па краі — насычаныя колеры."</string>
+    <string name="brightness">"Яркасць"</string>
+    <string name="color_hex_error">"Увядзіце колер у фармаце #RRGGBB."</string>
 </resources>

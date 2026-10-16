@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Amânat până la"</string>
     <string name="skipped_at">"Ora omiterii"</string>
     <string name="recorded_dose">"Doza înregistrată"</string>
+    <string name="color_wheel_hint">"Glisați degetul pe cerc pentru a alege o culoare. Centrul este alb, marginea are saturație maximă."</string>
+    <string name="brightness">"Luminozitate"</string>
+    <string name="color_hex_error">"Introduceți culoarea în formatul #RRGGBB."</string>
 </resources>

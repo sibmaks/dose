@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Təxirə salınıb"</string>
     <string name="skipped_at">"Buraxılma vaxtı"</string>
     <string name="recorded_dose">"Qeyd edilmiş doza"</string>
+    <string name="color_wheel_hint">"Rəng seçmək üçün barmağınızı dairədə sürüşdürün. Mərkəz ağ, kənar isə tam doymuşdur."</string>
+    <string name="brightness">"Parlaqlıq"</string>
+    <string name="color_hex_error">"Rəngi #RRGGBB formatında daxil edin."</string>
 </resources>

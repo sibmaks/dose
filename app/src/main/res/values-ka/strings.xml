@@ -228,4 +228,7 @@
     <string name="snoozed_until">"გადადებულია"</string>
     <string name="skipped_at">"გამოტოვების დრო"</string>
     <string name="recorded_dose">"აღრიცხული დოზა"</string>
+    <string name="color_wheel_hint">"ფერის ასარჩევად გაასრიალეთ თითი წრეზე. ცენტრი თეთრია, კიდე სრულად გაჯერებულია."</string>
+    <string name="brightness">"სიკაშკაშე"</string>
+    <string name="color_hex_error">"შეიყვანეთ ფერი #RRGGBB ფორმატით."</string>
 </resources>

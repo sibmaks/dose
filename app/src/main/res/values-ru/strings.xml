@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Отложено до"</string>
     <string name="skipped_at">"Время пропуска"</string>
     <string name="recorded_dose">"Записанная доза"</string>
+    <string name="color_wheel_hint">"Проведите пальцем по кругу, чтобы выбрать цвет. В центре — белый, по краю — насыщенные цвета."</string>
+    <string name="brightness">"Яркость"</string>
+    <string name="color_hex_error">"Введите цвет в формате #RRGGBB."</string>
 </resources>

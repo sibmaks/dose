@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Мавқуф то"</string>
     <string name="skipped_at">"Вақти гузаронидан"</string>
     <string name="recorded_dose">"Вояи сабтшуда"</string>
+    <string name="color_wheel_hint">"Барои интихоби ранг ангуштро рӯи доира ҳаракат диҳед. Марказ сафед, канор серранг аст."</string>
+    <string name="brightness">"Равшанӣ"</string>
+    <string name="color_hex_error">"Рангро дар шакли #RRGGBB ворид кунед."</string>
 </resources>

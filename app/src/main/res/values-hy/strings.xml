@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Հետաձգված է մինչև"</string>
     <string name="skipped_at">"Բաց թողնելու ժամը"</string>
     <string name="recorded_dose">"Գրանցված դեղաչափ"</string>
+    <string name="color_wheel_hint">"Գույն ընտրելու համար շարժեք մատը շրջանի վրա։ Կենտրոնը սպիտակ է, եզրը՝ հագեցած։"</string>
+    <string name="brightness">"Պայծառություն"</string>
+    <string name="color_hex_error">"Մուտքագրեք գույնը #RRGGBB ձևաչափով։"</string>
 </resources>

@@ -228,4 +228,7 @@
     <string name="snoozed_until">"Кейінге қалдырылды"</string>
     <string name="skipped_at">"Өткізіп жіберу уақыты"</string>
     <string name="recorded_dose">"Тіркелген доза"</string>
+    <string name="color_wheel_hint">"Түсті таңдау үшін шеңбер бойымен саусағыңызды жылжытыңыз. Ортасы ақ, шеті қанық түсті."</string>
+    <string name="brightness">"Жарықтық"</string>
+    <string name="color_hex_error">"Түсті #RRGGBB пішімінде енгізіңіз."</string>
 </resources>
