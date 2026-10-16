@@ -234,4 +234,5 @@
     <string name="taken_all">"Luate toate"</string>
     <string name="skip_all">"Omite toate"</string>
     <string name="several_medicines">"Medicamente de luat: %1$d"</string>
+    <string name="mark_all_as_taken">"Marchează toate ca luate"</string>
 </resources>

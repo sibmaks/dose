@@ -234,4 +234,5 @@
     <string name="taken_all">"Барлығын қабылдау"</string>
     <string name="skip_all">"Барлығын өткізіп жіберу"</string>
     <string name="several_medicines">"Қабылдайтын дәрілер: %1$d"</string>
+    <string name="mark_all_as_taken">"Барлығын қабылданды деп белгілеу"</string>
 </resources>

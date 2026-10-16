@@ -234,4 +234,5 @@
     <string name="taken_all">"Баарын кабыл алуу"</string>
     <string name="skip_all">"Баарын өткөрүп жиберүү"</string>
     <string name="several_medicines">"Кабыл алынуучу дарылар: %1$d"</string>
+    <string name="mark_all_as_taken">"Баарын кабыл алынды деп белгилөө"</string>
 </resources>

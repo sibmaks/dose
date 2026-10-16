@@ -56,4 +56,25 @@ class DoseGroupsTest {
         val tomorrow = DoseLogic.todayItems(listOf(a, b), emptyList(), emptyMap(), now, date.plusDays(1))
         assertTrue(DoseGroups.eligible(tomorrow, DoseGroups.snapshot(group)).isEmpty())
     }
+    @Test fun `featured alert selects a due group before future reminders and advances when resolved`() {
+        val current = items()
+        val group = DoseGroups.featured(current)
+        assertEquals(listOf("08:00", "08:00"), group.map { it.time })
+        assertFalse(DoseGroups.isDistant(group, now))
+        val logs = DoseGroups.logs(group, "taken", now)
+        val next = DoseGroups.featured(items(logs = logs))
+        assertEquals(listOf("12:00", "12:00"), next.map { it.time })
+        assertTrue(DoseGroups.isDistant(next, now))
+        assertFalse(DoseGroups.isDistant(next, DoseLogic.scheduledMillis(date, "11:30")))
+        assertTrue(DoseGroups.featured(items(logs = logs + DoseGroups.logs(next, "skipped", now))).isEmpty())
+    }
+
+    @Test fun `a snoozed older deadline cannot expose early bulk acceptance for a distant dose`() {
+        val current = items(snoozes = mapOf("$date|a|08:00" to DoseLogic.scheduledMillis(date, "12:00")))
+        val future = current.first { it.medication.id == "a" && it.time == "12:00" }
+        val group = DoseGroups.together(current, future)
+        assertEquals(3, group.size)
+        assertTrue(DoseGroups.isDistant(group, now))
+    }
+
 }

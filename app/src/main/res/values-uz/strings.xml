@@ -234,4 +234,5 @@
     <string name="taken_all">"Hammasini qabul qilish"</string>
     <string name="skip_all">"Hammasini o‘tkazib yuborish"</string>
     <string name="several_medicines">"Qabul qilinadigan dorilar: %1$d"</string>
+    <string name="mark_all_as_taken">"Hammasini qabul qilingan deb belgilash"</string>
 </resources>

@@ -43,6 +43,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import io.github.sibmaks.app.dose.data.*
+import io.github.sibmaks.app.dose.reminders.GroupDoseActions
 import io.github.sibmaks.app.dose.reminders.ReminderAlerts
 import io.github.sibmaks.app.dose.reminders.ReminderReceiver
 import io.github.sibmaks.app.dose.reminders.ReminderScheduler
@@ -254,11 +255,17 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         DoseStore.record(context, DoseStore.newLog(item, status))
                         cancelDoseNotification(context, item)
                         ReminderScheduler.refreshSlot(context, item.medication.id, item.time)
+                        ReminderReceiver.refreshVisible(context)
+                        refresh()
+                    },
+                    onRecordGroup = { group, status ->
+                        GroupDoseActions.record(context, DoseGroups.snapshot(group), status)
                         refresh()
                     },
                     onUndo = { item ->
                         DoseStore.undo(context, item.date, item.medication.id, item.time)
                         ReminderScheduler.refreshSlot(context, item.medication.id, item.time)
+                        ReminderReceiver.refreshVisible(context)
                         refresh()
                     },
                 )
@@ -293,13 +300,12 @@ private fun TodayPage(
     onAdd: () -> Unit,
     onManage: () -> Unit,
     onRecord: (DoseItem, String) -> Unit,
+    onRecordGroup: (List<DoseItem>, String) -> Unit,
     onUndo: (DoseItem) -> Unit,
     onOpen: (DoseItem) -> Unit,
 ) {
     val context = LocalContext.current
-    val pending = items.filter { it.log == null }
-    val featured = pending.filter { it.status == "due" || it.status == "overdue" }
-        .minByOrNull { it.dueMillis } ?: pending.minByOrNull { it.dueMillis }
+    val featured = DoseGroups.featured(items)
     val taken = items.count { it.status == "taken" }
     val skipped = items.count { it.status == "skipped" }
     val percent = if (items.isEmpty()) 0 else (taken * 100f / items.size).toInt()
@@ -323,7 +329,7 @@ private fun TodayPage(
                 Text(context.getString(R.string.a_little_care_every_single_day), fontSize = 14.sp, color = TextMuted)
             }
         }
-        item { FeaturedCard(featured, items.isNotEmpty(), hasMedications, System.currentTimeMillis(), onAdd, onRecord) }
+        item { FeaturedCard(featured, items.isNotEmpty(), hasMedications, System.currentTimeMillis(), onAdd, onRecord, onRecordGroup) }
         item {
             Card(
                 shape = RoundedCornerShape(20.dp),
@@ -372,11 +378,13 @@ private fun TodayPage(
 
 @Composable
 private fun FeaturedCard(
-    item: DoseItem?, hasSchedule: Boolean, hasMedications: Boolean, nowMillis: Long, onAdd: () -> Unit,
+    group: List<DoseItem>, hasSchedule: Boolean, hasMedications: Boolean, nowMillis: Long, onAdd: () -> Unit,
     onRecord: (DoseItem, String) -> Unit,
+    onRecordGroup: (List<DoseItem>, String) -> Unit,
 ) {
     val context = LocalContext.current
-    val distant = item?.let { DoseLogic.isDistantDose(it, nowMillis) } == true
+    val item = group.firstOrNull()
+    val distant = DoseGroups.isDistant(group, nowMillis)
     Card(shape = RoundedCornerShape(27.dp), colors = CardDefaults.cardColors(containerColor = Violet)) {
         Column(Modifier.fillMaxWidth().padding(23.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -390,30 +398,47 @@ private fun FeaturedCard(
             if (item != null) {
                 Spacer(Modifier.height(20.dp))
                 Text(
-                    if (item.status == "snoozed" && item.snoozedUntil != null) {
-                        java.time.Instant.ofEpochMilli(item.snoozedUntil).atZone(java.time.ZoneId.systemDefault())
-                            .toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                    } else item.scheduledTime,
+                    java.time.Instant.ofEpochMilli(item.dueMillis).atZone(java.time.ZoneId.systemDefault())
+                        .toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
                     fontSize = 38.sp, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Icon(androidx.compose.ui.res.painterResource(item.medication.form.iconResource()), item.medication.localizedForm(context), tint = Color.White, modifier = Modifier.size(26.dp))
-                    Text(item.medication.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                if (group.size > 1) {
+                    Text(context.getString(R.string.several_medicines, group.size), fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold, color = Color.White)
+                    Spacer(Modifier.height(12.dp))
                 }
-                Spacer(Modifier.height(3.dp))
-                Text(
-                    item.medication.localizedDose(context) + (if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else ""),
-                    fontSize = 13.sp, color = Color(0xFFE9E5FF),
-                )
+                group.forEach { dose ->
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(bottom = if (group.size > 1) 10.dp else 0.dp)) {
+                        Icon(androidx.compose.ui.res.painterResource(dose.medication.form.iconResource()),
+                            dose.medication.localizedForm(context), tint = Color.White, modifier = Modifier.size(26.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(dose.medication.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            Text(dose.medication.localizedDose(context) + (if (dose.medication.note.isNotBlank()) " · ${dose.medication.note}" else ""),
+                                fontSize = 13.sp, color = Color(0xFFE9E5FF))
+                        }
+                    }
+                }
                 Spacer(Modifier.height(20.dp))
-                if (!distant) Button(
-                    onClick = { onRecord(item, "taken") },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Violet),
-                    shape = RoundedCornerShape(12.dp),
-                ) {
-                    Icon(Icons.Rounded.CheckCircle, null, modifier = Modifier.size(18.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text(context.getString(R.string.mark_as_taken), fontWeight = FontWeight.Bold)
+                if (!distant) {
+                    Button(
+                        onClick = { if (group.size > 1) onRecordGroup(group, "taken") else onRecord(item, "taken") },
+                        modifier = if (group.size > 1) Modifier.fillMaxWidth() else Modifier,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Violet),
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Icon(Icons.Rounded.CheckCircle, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(context.getString(if (group.size > 1) R.string.mark_all_as_taken else R.string.mark_as_taken), fontWeight = FontWeight.Bold)
+                    }
+                    if (group.size > 1) {
+                        Spacer(Modifier.height(8.dp))
+                        OutlinedButton(onClick = { onRecordGroup(group, "skipped") }, modifier = Modifier.fillMaxWidth(),
+                            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.6f)),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White), shape = RoundedCornerShape(12.dp)) {
+                            Text(context.getString(R.string.skip_all), fontWeight = FontWeight.Bold)
+                        }
+                    }
                 }
             } else {
                 Spacer(Modifier.height(23.dp))

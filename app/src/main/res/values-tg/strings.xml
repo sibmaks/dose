@@ -234,4 +234,5 @@
     <string name="taken_all">"Ҳамаро қабул кардан"</string>
     <string name="skip_all">"Ҳамаро гузаронидан"</string>
     <string name="several_medicines">"Доруҳо барои қабул: %1$d"</string>
+    <string name="mark_all_as_taken">"Ҳамаро қабулшуда қайд кардан"</string>
 </resources>

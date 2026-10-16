@@ -234,4 +234,5 @@
     <string name="taken_all">"Прыняць усе"</string>
     <string name="skip_all">"Прапусціць усе"</string>
     <string name="several_medicines">"Трэба прыняць лекаў: %1$d"</string>
+    <string name="mark_all_as_taken">"Пазначыць усе прынятымі"</string>
 </resources>

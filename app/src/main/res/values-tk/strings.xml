@@ -234,4 +234,5 @@
     <string name="taken_all">"Ählisini kabul et"</string>
     <string name="skip_all">"Ählisini geçir"</string>
     <string name="several_medicines">"Kabul edilmeli dermanlar: %1$d"</string>
+    <string name="mark_all_as_taken">"Ählisini kabul edildi diýip belle"</string>
 </resources>

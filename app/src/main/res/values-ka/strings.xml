@@ -234,4 +234,5 @@
     <string name="taken_all">"ყველას მიღება"</string>
     <string name="skip_all">"ყველას გამოტოვება"</string>
     <string name="several_medicines">"მისაღები წამლები: %1$d"</string>
+    <string name="mark_all_as_taken">"ყველას მიღებულად მონიშვნა"</string>
 </resources>

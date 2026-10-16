@@ -9,6 +9,16 @@ object DoseGroups {
             it.log == null && it.date == anchor.date && it.dueMillis == anchor.dueMillis
         }.distinctBy { it.id }
 
+    /** Today's alert prioritizes a due group, then the earliest future reminder. */
+    fun featured(items: List<DoseItem>): List<DoseItem> {
+        val pending = items.filter { it.log == null }
+        val anchor = pending.filter { it.status == "due" || it.status == "overdue" }.minByOrNull { it.dueMillis }
+            ?: pending.minByOrNull { it.dueMillis }
+        return together(items, anchor)
+    }
+
+    fun isDistant(items: List<DoseItem>, now: Long): Boolean = items.any { DoseLogic.isDistantDose(it, now) }
+
     fun snapshot(items: List<DoseItem>): List<Member> = items.distinctBy { it.id }.map {
         Member(it.id, it.scheduledAt, it.dueMillis)
     }
