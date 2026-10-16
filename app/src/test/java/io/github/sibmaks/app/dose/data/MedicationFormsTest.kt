@@ -21,15 +21,17 @@ class MedicationFormsTest {
         val english = MedicationForms.sorted(Locale.ENGLISH, labels("en")::getValue)
         assertEquals(listOf(MedicationForm.CAPSULE, MedicationForm.CREAM, MedicationForm.DROPS, MedicationForm.GEL,
             MedicationForm.INHALER, MedicationForm.INJECTION, MedicationForm.LIQUID, MedicationForm.OINTMENT,
-            MedicationForm.OTHER, MedicationForm.PATCH, MedicationForm.PILL, MedicationForm.POWDER,
-            MedicationForm.SPRAY, MedicationForm.SUPPOSITORY), english)
+            MedicationForm.PATCH, MedicationForm.PILL, MedicationForm.POWDER,
+            MedicationForm.SPRAY, MedicationForm.SUPPOSITORY, MedicationForm.OTHER), english)
         val russian = MedicationForms.sorted(Locale.forLanguageTag("ru"), labels("ru")::getValue)
         assertEquals(MedicationForm.GEL, russian.first())
         assertNotEquals(english, russian)
         for (language in listOf("en", "ru", "be", "hy", "az", "kk", "ky", "ro", "tg", "tk", "uz", "uk", "ka")) {
             val translated = labels(language)
             assertTrue(translated.values.all { it.isNotBlank() })
-            assertEquals(MedicationForm.entries.toSet(), MedicationForms.sorted(Locale.forLanguageTag(language), translated::getValue).toSet())
+            val ordered = MedicationForms.sorted(Locale.forLanguageTag(language), translated::getValue)
+            assertEquals(MedicationForm.entries.toSet(), ordered.toSet())
+            assertEquals(language, MedicationForm.OTHER, ordered.last())
         }
     }
 
