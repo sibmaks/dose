@@ -74,7 +74,6 @@
     <string name="review_finish">"Проверить и сохранить"</string>
     <string name="other">"Другое"</string>
     <string name="add_instructions">"Добавить инструкции"</string>
-    <string name="instructions_optional">"Инструкции (необязательно)"</string>
     <string name="e_g_take_after_a_meal">"Например, после еды"</string>
     <string name="delete_medication">"Удалить лекарство"</string>
     <string name="back">"Назад"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Закрыть экран"</string>
     <string name="reminder_permission_intro">"Для напоминаний в ленте и поверх приложений Dose нужны два разрешения: уведомления и показ поверх других приложений. Выберите нужные способы. Для точного времени Android также может запросить доступ к будильникам и напоминаниям."</string>
     <string name="save">"Сохранить"</string>
+    <string name="instructions">"Инструкции"</string>
+    <string name="instructions_required">"Введите инструкции или отключите «Добавить инструкции»."</string>
 </resources>

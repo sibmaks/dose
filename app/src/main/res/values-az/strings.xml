@@ -74,7 +74,6 @@
     <string name="review_finish">"Yoxla və tamamla"</string>
     <string name="other">"Digər"</string>
     <string name="add_instructions">"Təlimat əlavə et"</string>
-    <string name="instructions_optional">"Təlimat (istəyə bağlı)"</string>
     <string name="e_g_take_after_a_meal">"Məsələn, yeməkdən sonra"</string>
     <string name="delete_medication">"Dərmanı sil"</string>
     <string name="back">"Geri"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Ekranı bağla"</string>
     <string name="reminder_permission_intro">"Lentdə və digər tətbiqlərin üzərində xatırlatma üçün Dose iki icazə istəyir: bildirişlər və digər tətbiqlərin üzərində göstərmə. İstədiyiniz üsulları seçin. Dəqiq vaxt üçün Android siqnal və xatırlatma icazəsi də istəyə bilər."</string>
     <string name="save">"Saxla"</string>
+    <string name="instructions">"Təlimatlar"</string>
+    <string name="instructions_required">"Təlimatları daxil edin və ya onların əlavə edilməsini söndürün."</string>
 </resources>

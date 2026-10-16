@@ -74,7 +74,6 @@
     <string name="review_finish">"Ստուգել և ավարտել"</string>
     <string name="other">"Այլ"</string>
     <string name="add_instructions">"Ավելացնել ցուցումներ"</string>
-    <string name="instructions_optional">"Ցուցումներ (ըստ ցանկության)"</string>
     <string name="e_g_take_after_a_meal">"Օրինակ՝ ուտելուց հետո"</string>
     <string name="delete_medication">"Ջնջել դեղը"</string>
     <string name="back">"Հետ"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Փակել էկրանը"</string>
     <string name="reminder_permission_intro">"Ծանուցումների ցանկում և այլ հավելվածների վրայից հիշեցնելու համար Dose-ին անհրաժեշտ է երկու թույլտվություն՝ ծանուցումներ և այլ հավելվածների վրայից ցուցադրում։ Ընտրեք եղանակները։ Ճշգրիտ ժամի համար Android-ը կարող է նաև պահանջել զարթուցիչների և հիշեցումների հասանելիություն։"</string>
     <string name="save">"Պահպանել"</string>
+    <string name="instructions">"Հրահանգներ"</string>
+    <string name="instructions_required">"Մուտքագրեք հրահանգները կամ անջատեք դրանց ավելացումը։"</string>
 </resources>

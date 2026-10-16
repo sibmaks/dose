@@ -74,7 +74,6 @@
     <string name="review_finish">"Verifică și finalizează"</string>
     <string name="other">"Altele"</string>
     <string name="add_instructions">"Adaugă instrucțiuni"</string>
-    <string name="instructions_optional">"Instrucțiuni (opțional)"</string>
     <string name="e_g_take_after_a_meal">"De ex. după masă"</string>
     <string name="delete_medication">"Șterge medicamentul"</string>
     <string name="back">"Înapoi"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Închide ecranul"</string>
     <string name="reminder_permission_intro">"Pentru mementouri în notificări și peste alte aplicații, Dose are nevoie de două permisiuni: notificări și afișare peste alte aplicații. Alege modurile dorite. Android poate cere și acces la alarme și mementouri pentru ore exacte."</string>
     <string name="save">"Salvează"</string>
+    <string name="instructions">"Instrucțiuni"</string>
+    <string name="instructions_required">"Introduceți instrucțiuni sau dezactivați adăugarea lor."</string>
 </resources>

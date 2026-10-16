@@ -75,7 +75,6 @@
     <string name="review_finish">"Review &amp; finish"</string>
     <string name="other">"Other"</string>
     <string name="add_instructions">"Add instructions"</string>
-    <string name="instructions_optional">"Instructions (optional)"</string>
     <string name="e_g_take_after_a_meal">"e.g. Take after a meal"</string>
     <string name="delete_medication">"Delete medication"</string>
     <string name="back">"Back"</string>
@@ -230,4 +229,6 @@
     <string name="close_screen">"Close screen"</string>
     <string name="reminder_permission_intro">"For reminders in the notification feed and over other apps, Dose needs two permissions: notifications and display over other apps. Choose the reminder styles you want. Android may also require Alarms &amp; reminders access for precise timing."</string>
     <string name="save">"Save"</string>
+    <string name="instructions">"Instructions"</string>
+    <string name="instructions_required">"Enter instructions or turn off Add instructions."</string>
 </resources>

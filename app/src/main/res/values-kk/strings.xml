@@ -74,7 +74,6 @@
     <string name="review_finish">"Тексеру және аяқтау"</string>
     <string name="other">"Басқа"</string>
     <string name="add_instructions">"Нұсқаулар қосу"</string>
-    <string name="instructions_optional">"Нұсқаулар (міндетті емес)"</string>
     <string name="e_g_take_after_a_meal">"Мысалы, тамақтан кейін"</string>
     <string name="delete_medication">"Дәріні жою"</string>
     <string name="back">"Артқа"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Экранды жабу"</string>
     <string name="reminder_permission_intro">"Таспада және қолданбалардың үстінде еске салу үшін Dose екі рұқсатты қажет етеді: хабарландырулар және басқа қолданбалардың үстінен көрсету. Қажетті тәсілдерді таңдаңыз. Дәл уақыт үшін Android дабылдар мен еске салғыштарға рұқсат сұрауы мүмкін."</string>
     <string name="save">"Сақтау"</string>
+    <string name="instructions">"Нұсқаулар"</string>
+    <string name="instructions_required">"Нұсқауларды енгізіңіз немесе оларды қосуды өшіріңіз."</string>
 </resources>

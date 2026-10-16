@@ -74,7 +74,6 @@
     <string name="review_finish">"Праверыць і захаваць"</string>
     <string name="other">"Іншае"</string>
     <string name="add_instructions">"Дадаць інструкцыі"</string>
-    <string name="instructions_optional">"Інструкцыі (неабавязкова)"</string>
     <string name="e_g_take_after_a_meal">"Напрыклад, пасля ежы"</string>
     <string name="delete_medication">"Выдаліць лекі"</string>
     <string name="back">"Назад"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Закрыць экран"</string>
     <string name="reminder_permission_intro">"Для напамінаў у стужцы і па-над праграмамі Dose патрэбны два дазволы: апавяшчэнні і паказ па-над іншымі праграмамі. Выберыце патрэбныя спосабы. Для дакладнага часу Android таксама можа запытаць доступ да будзільнікаў і напамінаў."</string>
     <string name="save">"Захаваць"</string>
+    <string name="instructions">"Інструкцыі"</string>
+    <string name="instructions_required">"Увядзіце інструкцыі або выключыце «Дадаць інструкцыі»."</string>
 </resources>

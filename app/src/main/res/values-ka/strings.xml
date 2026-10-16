@@ -74,7 +74,6 @@
     <string name="review_finish">"გადახედვა და დასრულება"</string>
     <string name="other">"სხვა"</string>
     <string name="add_instructions">"მითითებების დამატება"</string>
-    <string name="instructions_optional">"მითითებები (არასავალდებულო)"</string>
     <string name="e_g_take_after_a_meal">"მაგალითად, ჭამის შემდეგ"</string>
     <string name="delete_medication">"წამლის წაშლა"</string>
     <string name="back">"უკან"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"ეკრანის დახურვა"</string>
     <string name="reminder_permission_intro">"შეტყობინებების სიაში და სხვა აპების ზემოთ შეხსენებისთვის Dose-ს ორი ნებართვა სჭირდება: შეტყობინებები და სხვა აპების ზემოთ ჩვენება. აირჩიეთ სასურველი გზები. ზუსტი დროისთვის Android-მა შეიძლება მაღვიძარებისა და შეხსენებების ნებართვაც მოითხოვოს."</string>
     <string name="save">"შენახვა"</string>
+    <string name="instructions">"ინსტრუქციები"</string>
+    <string name="instructions_required">"შეიყვანეთ ინსტრუქციები ან გამორთეთ მათი დამატება."</string>
 </resources>

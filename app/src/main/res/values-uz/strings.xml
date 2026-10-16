@@ -74,7 +74,6 @@
     <string name="review_finish">"Tekshirish va tugatish"</string>
     <string name="other">"Boshqa"</string>
     <string name="add_instructions">"Koʻrsatma qoʻshish"</string>
-    <string name="instructions_optional">"Koʻrsatma (ixtiyoriy)"</string>
     <string name="e_g_take_after_a_meal">"Masalan, ovqatdan keyin"</string>
     <string name="delete_medication">"Dorini oʻchirish"</string>
     <string name="back">"Orqaga"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Ekranni yopish"</string>
     <string name="reminder_permission_intro">"Roʻyxatda va ilovalar ustida eslatish uchun Dose ikki ruxsatga muhtoj: bildirishnomalar va boshqa ilovalar ustida koʻrsatish. Kerakli usullarni tanlang. Aniq vaqt uchun Android signal va eslatmalarga ruxsat ham soʻrashi mumkin."</string>
     <string name="save">"Saqlash"</string>
+    <string name="instructions">"Koʻrsatmalar"</string>
+    <string name="instructions_required">"Koʻrsatmalarni kiriting yoki ularni qoʻshishni oʻchiring."</string>
 </resources>

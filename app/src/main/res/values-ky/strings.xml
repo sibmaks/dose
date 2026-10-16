@@ -74,7 +74,6 @@
     <string name="review_finish">"Текшерүү жана бүтүрүү"</string>
     <string name="other">"Башка"</string>
     <string name="add_instructions">"Көрсөтмө кошуу"</string>
-    <string name="instructions_optional">"Көрсөтмө (милдеттүү эмес)"</string>
     <string name="e_g_take_after_a_meal">"Мисалы, тамактан кийин"</string>
     <string name="delete_medication">"Дарыны өчүрүү"</string>
     <string name="back">"Артка"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Экранды жабуу"</string>
     <string name="reminder_permission_intro">"Тизмеде жана колдонмолордун үстүндө эскертүү үчүн Dose эки уруксатты талап кылат: билдирмелер жана башка колдонмолордун үстүнөн көрсөтүү. Каалаган ыкмаларды тандаңыз. Так убакыт үчүн Android ойготкучтарга уруксат да сурашы мүмкүн."</string>
     <string name="save">"Сактоо"</string>
+    <string name="instructions">"Нускамалар"</string>
+    <string name="instructions_required">"Нускамаларды жазыңыз же аларды кошууну өчүрүңүз."</string>
 </resources>

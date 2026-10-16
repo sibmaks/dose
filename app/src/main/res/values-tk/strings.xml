@@ -74,7 +74,6 @@
     <string name="review_finish">"Barlamak we tamamlamak"</string>
     <string name="other">"Başga"</string>
     <string name="add_instructions">"Görkezme goşmak"</string>
-    <string name="instructions_optional">"Görkezme (islege görä)"</string>
     <string name="e_g_take_after_a_meal">"Meselem, nahardan soň"</string>
     <string name="delete_medication">"Dermany pozmak"</string>
     <string name="back">"Yza"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Ekrany ýapmak"</string>
     <string name="reminder_permission_intro">"Sanawda we programmalaryň üstünde ýatlatmak üçin Dose iki rugsat gerek: bildirişler we beýleki programmalaryň üstünde görkezmek. Islän usullaryňyzy saýlaň. Takyk wagt üçin Android duýduryşlara we ýatlatmalara giriş hem sorap biler."</string>
     <string name="save">"Ýatda sakla"</string>
+    <string name="instructions">"Görkezmeler"</string>
+    <string name="instructions_required">"Görkezmeleri giriziň ýa-da olary goşmagy öçüriň."</string>
 </resources>

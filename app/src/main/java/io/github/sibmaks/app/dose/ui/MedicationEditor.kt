@@ -94,6 +94,7 @@ internal fun MedicationEditor(
         MedicationStep.SCHEDULE -> if (schedules.isEmpty()) context.getString(R.string.schedule_required) else schedules.mapIndexedNotNull { index, rule ->
             rule.validationError()?.let { context.getString(R.string.schedule_error, index + 1, localizedValidationError(context, it)) }
         }.firstOrNull()
+        MedicationStep.DETAILS -> if (addInstructions && note.isBlank()) context.getString(R.string.instructions_required) else null
         else -> null
     }
     fun advance() {
@@ -222,8 +223,11 @@ internal fun MedicationEditor(
                                 Text(context.getString(R.string.add_instructions), modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                                 Switch(checked = addInstructions, onCheckedChange = { addInstructions = it })
                             }
-                            if (addInstructions) OutlinedTextField(note, { note = it.take(140) }, label = { Text(context.getString(R.string.instructions_optional)) },
-                                placeholder = { Text(context.getString(R.string.e_g_take_after_a_meal)) }, minLines = 2, modifier = Modifier.fillMaxWidth())
+                            if (addInstructions) OutlinedTextField(note, { note = it.take(140) }, label = { Text(context.getString(R.string.instructions)) },
+                                placeholder = { Text(context.getString(R.string.e_g_take_after_a_meal)) },
+                                isError = showValidation && note.isBlank(),
+                                supportingText = { if (showValidation && note.isBlank()) Text(context.getString(R.string.instructions_required)) },
+                                minLines = 2, modifier = Modifier.fillMaxWidth())
                             if (original != null) TextButton(onClick = { showDeleteConfirm = true }) { Text(context.getString(R.string.delete_medication), color = Color(0xFFC45151)) }
                         }
                     }

@@ -74,7 +74,6 @@
     <string name="review_finish">"Санҷиш ва анҷом"</string>
     <string name="other">"Дигар"</string>
     <string name="add_instructions">"Иловаи дастур"</string>
-    <string name="instructions_optional">"Дастур (ихтиёрӣ)"</string>
     <string name="e_g_take_after_a_meal">"Масалан, баъди хӯрок"</string>
     <string name="delete_medication">"Нест кардани дору"</string>
     <string name="back">"Бозгашт"</string>
@@ -228,4 +227,6 @@
     <string name="close_screen">"Бастани экран"</string>
     <string name="reminder_permission_intro">"Барои ёдраскуниҳо дар рӯйхат ва болои барномаҳо Dose ба ду иҷозат ниёз дорад: огоҳиҳо ва намоиш болои дигар барномаҳо. Усулҳои дилхоҳро интихоб кунед. Барои вақти дақиқ Android метавонад иҷозати зангҳо ва ёдраскуниҳоро низ талаб кунад."</string>
     <string name="save">"Захира кардан"</string>
+    <string name="instructions">"Дастурҳо"</string>
+    <string name="instructions_required">"Дастурҳоро ворид кунед ё илова кардани онҳоро хомӯш кунед."</string>
 </resources>
