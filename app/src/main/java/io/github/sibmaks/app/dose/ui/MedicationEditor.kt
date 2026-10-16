@@ -194,7 +194,7 @@ internal fun MedicationEditor(
                                 Surface(onClick = { chooseForm(choice) }, shape = RoundedCornerShape(14.dp),
                                     color = if (form == choice) Color(0xFFF0ECFF) else Color(0xFFF8F9FD), modifier = Modifier.fillMaxWidth()) {
                                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                        Icon(painterResource(choice.iconResource()), null, tint = Violet, modifier = Modifier.size(30.dp))
+                                        PillAvatar(color, choice, choice.localizedLabel(context))
                                         Text(choice.localizedLabel(context), fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                                         RadioButton(selected = form == choice, onClick = null)
                                     }
