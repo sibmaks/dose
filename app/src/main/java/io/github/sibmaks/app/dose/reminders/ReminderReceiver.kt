@@ -135,6 +135,7 @@ class ReminderReceiver : BroadcastReceiver() {
         fun refreshNotification(context: Context, slot: ReminderSlot) {
             val med = DoseStore.medications(context).find { it.id == slot.medicationId && it.active && slot.time in it.timesOn(LocalDate.parse(slot.date)) } ?: return
             if (DoseStore.logs(context).any { it.medicationId == slot.medicationId && it.date == slot.date && it.time == slot.time }) return
+            if (slot.scheduledAt != DoseLogic.effectiveScheduledMillis(med, LocalDate.parse(slot.date), slot.time, DoseStore.timeOverrides(context))) return
             ReminderReceiver().notify(context, med, slot.medicationId, slot.time, slot.date,
                 notificationId(slot.medicationId, slot.time, slot.date), slot.scheduledAt, silent = true)
         }

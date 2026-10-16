@@ -130,8 +130,9 @@ object DoseStore {
         val items = DoseLogic.todayItems(medications(context), logs(context), snoozes(context), overrides = overrides)
         val item = items.find { it.id == slotKey } ?: return false
         if (!DoseLogic.canMoveToday(item, newTime, items, now)) return false
-        // Old dates have no effect and can be discarded when making a new daily exception.
-        saveOverrides(context, overrides.filterKeys { it.startsWith("${item.date}|") } + (slotKey to newTime))
+        // Keep earlier dates for a still-visible reminder accepted after midnight.
+        // Date-scoped keys never affect subsequent recurrences.
+        saveOverrides(context, overrides + (slotKey to newTime))
         clearSnooze(context, slotKey)
         clearDeferred(context, slotKey)
         return true

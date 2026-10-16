@@ -21,14 +21,20 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        if (intent.getBooleanExtra(DoseWidget.OPEN_TODAY, false)) todayRequests++
+        if (intent.getBooleanExtra(DoseWidget.OPEN_TODAY, false)) {
+            todayRequests++
+            intent.removeExtra(DoseWidget.OPEN_TODAY)
+        }
     }
 
     override fun attachBaseContext(newBase: Context) { super.attachBaseContext(AppLanguages.wrap(newBase)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (intent.getBooleanExtra(DoseWidget.OPEN_TODAY, false)) todayRequests++
+        if (intent.getBooleanExtra(DoseWidget.OPEN_TODAY, false)) {
+            todayRequests++
+            intent.removeExtra(DoseWidget.OPEN_TODAY)
+        }
         enableEdgeToEdge()
         ReminderNotifications.createChannel(this)
         ReminderScheduler.scheduleAll(this)

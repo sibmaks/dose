@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 
 /** A one-day exception never edits the medication's recurrence rules. */
 @Composable
-internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onSave: (Boolean, String) -> Boolean) {
+internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onSave: (Long?, String) -> Boolean) {
     val context = LocalContext.current
     var acceptance by rememberSaveable(item.id) { mutableStateOf(item.log != null) }
     var reminderTime by rememberSaveable(item.id) { mutableStateOf(item.scheduledTime) }
@@ -26,8 +26,10 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onSave: (Boo
     }
     var error by rememberSaveable { mutableStateOf(false) }
     val time = if (acceptance) acceptedTime else reminderTime
+    val deadline = item.log?.scheduledAt ?: item.scheduledAt
+    val onTimeValue = Instant.ofEpochMilli(deadline).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("HH:mm"))
     SetupScreen(title = item.medication.name, onClose = onDismiss,
-        primaryLabel = context.getString(R.string.save), onPrimary = { error = !onSave(acceptance, time) },
+        primaryLabel = context.getString(R.string.save), onPrimary = { error = !onSave(if (acceptance) DoseLogic.scheduledMillis(LocalDate.parse(item.date), time) else null, time) },
         secondaryLabel = context.getString(R.string.back)) {
         Text(context.getString(R.string.today_only_hint))
         if (item.log == null) {
@@ -45,11 +47,11 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onSave: (Boo
             }, parsed.hour, parsed.minute, true).show()
         }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text(time, style = MaterialTheme.typography.headlineSmall) }
         if (error) Text(context.getString(if (acceptance) R.string.acceptance_time_error else R.string.today_time_error), color = MaterialTheme.colorScheme.error)
-        if (item.scheduledAt <= System.currentTimeMillis()) {
+        if (deadline <= System.currentTimeMillis()) {
             TextButton(onClick = {
                 acceptance = true
-                acceptedTime = item.scheduledTime
-                error = !onSave(true, item.scheduledTime)
+                acceptedTime = onTimeValue
+                error = !onSave(deadline, onTimeValue)
             }) { Text(context.getString(R.string.on_time)) }
         }
     }

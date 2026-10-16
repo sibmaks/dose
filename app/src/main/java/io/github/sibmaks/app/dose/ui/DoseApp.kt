@@ -150,9 +150,8 @@ fun DoseApp(openTodayRequest: Int = 0) {
 
     val selectedDose = items.find { it.id == todayDoseId }
     if (selectedDose != null) {
-        TodayDoseEditor(selectedDose, onDismiss = { todayDoseId = null }, onSave = { acceptance, time ->
-            val success = if (acceptance) DoseStore.acceptToday(context, selectedDose.id,
-                DoseLogic.scheduledMillis(LocalDate.parse(selectedDose.date), time))
+        TodayDoseEditor(selectedDose, onDismiss = { todayDoseId = null }, onSave = { acceptedAt, time ->
+            val success = if (acceptedAt != null) DoseStore.acceptToday(context, selectedDose.id, acceptedAt)
             else DoseStore.moveToday(context, selectedDose.id, time)
             if (success) {
                 ReminderScheduler.cancelSnooze(context, selectedDose.medication.id, selectedDose.time, selectedDose.date)
