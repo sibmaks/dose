@@ -228,7 +228,6 @@ internal fun MedicationEditor(
                                 isError = showValidation && note.isBlank(),
                                 supportingText = { if (showValidation && note.isBlank()) Text(context.getString(R.string.instructions_required)) },
                                 minLines = 2, modifier = Modifier.fillMaxWidth())
-                            if (original != null) TextButton(onClick = { showDeleteConfirm = true }) { Text(context.getString(R.string.delete_medication), color = Color(0xFFC45151)) }
                         }
                     }
                 }
@@ -239,6 +238,9 @@ internal fun MedicationEditor(
                             Text(if (step == MedicationStep.DETAILS) context.getString(R.string.save) else context.getString(R.string.continue_action), fontWeight = FontWeight.Bold)
                         }
                     }
+                    if (original != null && step == MedicationStep.NAME) TextButton(
+                        onClick = { showDeleteConfirm = true }, modifier = Modifier.fillMaxWidth(),
+                    ) { Text(context.getString(R.string.delete_medication), color = Color(0xFFC45151)) }
                 }
             }
         }
