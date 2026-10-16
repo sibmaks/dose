@@ -6,6 +6,9 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.util.Locale
+import java.util.TreeMap
+import java.io.InputStream
+import java.util.zip.GZIPInputStream
 
 /** A catalog suggestion carries its stable identity without rewriting saved medication names. */
 data class MedicationSuggestion(
@@ -28,13 +31,42 @@ data class MedicationDictionaryEntry(
     }
 }
 
-/** The bundled JSON is the only source of medication names, forms, and search aliases. */
+/** A generated gzip asset supplies catalog data; a word index serves prefix lookups offline. */
 class MedicationDictionary private constructor(val entries: List<MedicationDictionaryEntry>) {
     private data class IndexedEntry(val entry: MedicationDictionaryEntry, val names: List<String>, val candidates: List<List<String>>)
     private val index = entries.map { entry ->
         val names = entry.localizations.values.flatten()
-        IndexedEntry(entry, names, (names + entry.aliases + entry.code).distinct().map(::words))
+        IndexedEntry(entry, names, (names + entry.aliases + entry.code).distinct().map(::words).distinct())
     }
+    // Sorted word -> entry IDs. Prefix ranges avoid scanning every medicine on each keystroke.
+    private val wordIndex = TreeMap<String, IntArray>().apply {
+        val postings = mutableMapOf<String, MutableSet<Int>>()
+        index.forEachIndexed { id, item ->
+            item.candidates.flatten().toSet().forEach { word -> postings.getOrPut(word) { linkedSetOf() }.add(id) }
+        }
+        postings.forEach { (word, ids) -> put(word, ids.toIntArray()) }
+    }
+    private val entriesByCode = entries.associateBy { it.code }
+
+    fun findByCode(code: String): MedicationDictionaryEntry? = entriesByCode[code]
+
+    private fun matchingEntries(query: List<String>): List<IndexedEntry> {
+        var candidates: Set<Int>? = null
+        for (part in query.distinct()) {
+            val matches = mutableSetOf<Int>()
+            for ((word, ids) in wordIndex.tailMap(part, true)) {
+                if (!word.startsWith(part)) break
+                ids.forEach { matches.add(it) }
+            }
+            candidates = candidates?.intersect(matches) ?: matches
+            if (candidates.isEmpty()) return emptyList()
+        }
+        // Keep catalog order for equal-ranked suggestions. Multiword matches must belong
+        // to one name or alias, never to separate translations of the same medicine.
+        return candidates.orEmpty().sorted().map { index[it] }
+            .filter { item -> item.candidates.any { matches(it, query) } }
+    }
+
     // Ambiguous names must not merge two different catalog medications.
     private val codesByName = index.flatMap { item -> (item.names + item.entry.aliases).map { normalize(it) to item.entry.code } }
         .groupBy({ it.first }, { it.second }).mapValues { (_, codes) -> codes.distinct().singleOrNull() }
@@ -43,7 +75,7 @@ class MedicationDictionary private constructor(val entries: List<MedicationDicti
         val text = normalize(query)
         val queryWords = words(text)
         if (text.length < 2 || queryWords.isEmpty() || limit <= 0) return emptyList()
-        val matchingEntries = index.filter { item -> item.candidates.any { matches(it, queryWords) } }
+        val matchingEntries = matchingEntries(queryWords)
         val matchingCodes = matchingEntries.map { it.entry.code }.toSet()
         val own = saved.filter { matches(words(it.name), queryWords) || codesByName[normalize(it.name)] in matchingCodes }
             .sortedBy { if (normalize(it.name) == text) 0 else 1 }
@@ -67,13 +99,16 @@ class MedicationDictionary private constructor(val entries: List<MedicationDicti
     }
 
     companion object {
-        const val ASSET_FILE = "medication-dictionary.json"
+        const val ASSET_FILE = "medication-dictionary.json.gzip"
         @Volatile private var cached: MedicationDictionary? = null
 
         fun load(context: Context): MedicationDictionary = cached ?: synchronized(this) {
-            cached ?: context.applicationContext.assets.open(ASSET_FILE).bufferedReader(Charsets.UTF_8)
-                .use { fromJson(it.readText()) }.also { cached = it }
+            cached ?: fromGzip(context.applicationContext.assets.open(ASSET_FILE)).also { cached = it }
         }
+
+        /** Reads and closes the compressed asset without extracting a second copy to app storage. */
+        fun fromGzip(input: InputStream): MedicationDictionary =
+            input.use { source -> GZIPInputStream(source).bufferedReader(Charsets.UTF_8).use { fromJson(it.readText()) } }
 
         fun fromJson(json: String): MedicationDictionary = try {
             val reader = JSONTokener(json)
@@ -140,7 +175,8 @@ class MedicationDictionary private constructor(val entries: List<MedicationDicti
         }
 
         private fun normalize(value: String) = value.trim().lowercase(Locale.ROOT).replace('ё', 'е')
-        private fun words(value: String) = Regex("[\\p{L}\\p{N}]+").findAll(normalize(value)).map { it.value }.toList()
+        private val wordPattern = Regex("[\\p{L}\\p{N}]+")
+        private fun words(value: String) = wordPattern.findAll(normalize(value)).map { it.value }.toList()
         private fun matches(candidate: List<String>, query: List<String>) = query.all { part -> candidate.any { it.startsWith(part) } }
     }
 }

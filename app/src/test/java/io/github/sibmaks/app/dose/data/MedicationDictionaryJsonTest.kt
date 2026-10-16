@@ -5,7 +5,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
-import java.io.File
 
 class MedicationDictionaryJsonTest {
     private fun entry() = JSONObject("""{
@@ -23,12 +22,12 @@ class MedicationDictionaryJsonTest {
     }
     private fun rejected(value: JSONObject, code: String = "test_medicine") = rejected(JSONObject().put(code, value).toString())
 
-    @Test fun `bundled asset preserves all fourteen codes and their supported forms`() {
-        val source = listOf(File("src/main/assets/medication-dictionary.json"), File("app/src/main/assets/medication-dictionary.json")).first { it.isFile }
-        val catalog = MedicationDictionary.fromJson(source.readText())
-        assertEquals(setOf("paracetamol", "ibuprofen", "amoxicillin", "cetirizine", "omeprazole", "hydrocortisone", "vitamin_d3", "calcium", "alfacalcidol", "loratadine", "metformin", "levothyroxine", "insulin", "salbutamol"), catalog.entries.map { it.code }.toSet())
+    @Test fun `bundled asset preserves starter codes while accepting catalog extensions`() {
+        val catalog = MedicationDictionaryTestAsset.load()
+        assertTrue(catalog.entries.map { it.code }.toSet().containsAll(setOf("paracetamol", "ibuprofen", "amoxicillin", "cetirizine", "omeprazole", "hydrocortisone", "vitamin_d3", "calcium", "alfacalcidol", "loratadine", "metformin", "levothyroxine", "insulin", "salbutamol")))
         assertTrue(catalog.entries.all { it.localizations.keys.all { language -> AppLanguages.supported.any { it.tag == language } } })
-        assertEquals(listOf(MedicationForm.PILL, MedicationForm.CAPSULE, MedicationForm.LIQUID), catalog.entries.single { it.code == "paracetamol" }.forms)
+        assertEquals(MedicationForm.PILL, catalog.findByCode("paracetamol")!!.forms.first())
+        assertTrue(catalog.findByCode("paracetamol")!!.forms.containsAll(listOf(MedicationForm.PILL, MedicationForm.CAPSULE, MedicationForm.LIQUID)))
         assertEquals(listOf(MedicationForm.INHALER), catalog.entries.single { it.code == "salbutamol" }.forms)
         assertEquals("levothyroxine", catalog.suggestions("Левотероксин", language = "ru").single().code)
     }

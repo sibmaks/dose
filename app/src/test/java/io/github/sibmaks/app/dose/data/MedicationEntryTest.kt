@@ -1,15 +1,11 @@
 package io.github.sibmaks.app.dose.data
 
 import org.json.JSONObject
-import java.io.File
 import org.junit.Assert.*
 import org.junit.Test
 
 class MedicationEntryTest {
-    private val dictionary = MedicationDictionary.fromJson(listOf(
-        File("src/main/assets/medication-dictionary.json"),
-        File("app/src/main/assets/medication-dictionary.json"),
-    ).first { it.isFile }.readText())
+    private val dictionary = MedicationDictionaryTestAsset.load()
     private fun medication(name: String, form: MedicationForm = MedicationForm.PILL, custom: String = "") =
         Medication("id", name, "1", "unit", listOf(DoseSchedule(createdOn = "2026-10-15")), form = form, customForm = custom)
 

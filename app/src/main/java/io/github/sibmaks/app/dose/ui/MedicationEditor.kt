@@ -47,6 +47,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.TextStyle
 import java.util.Locale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 private val ScheduleListSaver = androidx.compose.runtime.saveable.Saver<List<DoseSchedule>, String>(
     save = { rules -> org.json.JSONArray().apply { rules.forEach { put(MedicationJson.encodeSchedule(it)) } }.toString() },
@@ -81,7 +83,10 @@ internal fun MedicationEditor(
     var colorPickerInitial by rememberSaveable { mutableStateOf<String?>(null) }
     val colorUsage = remember { DoseStore.colorUsage(context) }
     val medications = remember { DoseStore.medications(context) }
-    val dictionary = remember { MedicationDictionary.load(context) }
+    val appContext = context.applicationContext
+    val dictionary by produceState<MedicationDictionary?>(initialValue = null, key1 = appContext) {
+        value = withContext(Dispatchers.Default) { MedicationDictionary.load(appContext) }
+    }
     val language = AppLanguages.locale(context).language
     val localizedForms = remember(context, language) {
         MedicationForms.sorted(AppLanguages.locale(context)) { it.localizedLabel(context) }
@@ -199,7 +204,7 @@ internal fun MedicationEditor(
                                 isError = validationVisible && name.isBlank(),
                                 supportingText = { if (validationVisible && name.isBlank()) Text(context.getString(R.string.name_required)) },
                                 label = { Text(context.getString(R.string.medication_name)) }, placeholder = { Text(context.getString(R.string.start_typing_a_name)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                            val suggestions = if (showSuggestions) dictionary.suggestions(name, medications, language = language) else emptyList()
+                            val suggestions = if (showSuggestions) dictionary?.suggestions(name, medications, language = language).orEmpty() else emptyList()
                             if (suggestions.isNotEmpty()) {
                                 Text(context.getString(R.string.name_suggestions), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                 suggestions.forEach { suggestion ->
