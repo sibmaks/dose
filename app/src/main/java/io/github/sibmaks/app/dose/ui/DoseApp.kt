@@ -12,6 +12,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -85,6 +87,10 @@ fun DoseApp(openTodayRequest: Int = 0) {
     var revision by remember { mutableIntStateOf(0) }
     val pagerState = rememberPagerState { Tab.entries.size }
     val scope = rememberCoroutineScope()
+    // Keep positions alive while full-page details/settings replace the pager.
+    val todayScroll = rememberLazyListState()
+    val medicationsScroll = rememberLazyListState()
+    val historyScroll = rememberLazyListState()
     var todayDoseId by rememberSaveable { mutableStateOf<String?>(null) }
     var editingId by rememberSaveable { mutableStateOf<String?>(null) }
     var showEditor by rememberSaveable { mutableStateOf(false) }
@@ -244,6 +250,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                 Tab.Today -> TodayPage(
                     modifier = Modifier.fillMaxSize(),
                     items = items,
+                    listState = todayScroll,
                     hasMedications = medications.isNotEmpty(),
                     showSetupWarning = !reminderSetup.complete,
                     onReminderSetup = { showReminderSettings = true },
@@ -270,7 +277,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                     },
                 )
                 Tab.Medications -> MedicationsPage(
-                    modifier = Modifier.fillMaxSize(), medications = medications,
+                    modifier = Modifier.fillMaxSize(), medications = medications, listState = medicationsScroll,
                     onAdd = { editingId = null; showEditor = true },
                     onEdit = { med -> editingId = med.id; showEditor = true },
                     onToggle = { med ->
@@ -279,7 +286,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         refresh()
                     },
                 )
-                Tab.History -> HistoryPage(modifier = Modifier.fillMaxSize(), logs = logs)
+                Tab.History -> HistoryPage(modifier = Modifier.fillMaxSize(), logs = logs, listState = historyScroll)
             }
         }
     }
@@ -294,6 +301,7 @@ private fun cancelDoseNotification(context: Context, item: DoseItem) {
 private fun TodayPage(
     modifier: Modifier,
     items: List<DoseItem>,
+    listState: LazyListState,
     hasMedications: Boolean,
     showSetupWarning: Boolean,
     onReminderSetup: () -> Unit,
@@ -312,6 +320,7 @@ private fun TodayPage(
     val day = dateHeading(context, LocalDate.now())
 
     LazyColumn(
+        state = listState,
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 10.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp),
@@ -548,9 +557,11 @@ internal fun StatusBadge(status: String) {
 private fun MedicationsPage(
     modifier: Modifier, medications: List<Medication>, onAdd: () -> Unit,
     onEdit: (Medication) -> Unit, onToggle: (Medication) -> Unit,
+    listState: LazyListState,
 ) {
     val context = LocalContext.current
     LazyColumn(
+        state = listState,
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 22.dp, bottom = 28.dp),
         verticalArrangement = Arrangement.spacedBy(13.dp),
@@ -616,7 +627,7 @@ private fun MedicationsPage(
 }
 
 @Composable
-private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>) {
+private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: LazyListState) {
     val context = LocalContext.current
     val today = LocalDate.now()
     val dates = (0..6).map { today.minusDays(it.toLong()) }
@@ -625,6 +636,7 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>) {
         if (matching.isEmpty()) null else date to matching
     }
     LazyColumn(
+        state = listState,
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 22.dp, bottom = 28.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
