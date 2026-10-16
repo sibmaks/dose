@@ -13,4 +13,10 @@ fun MedicationForm.iconResource(): Int = when (this) {
     MedicationForm.INJECTION -> R.drawable.ic_form_injection
     MedicationForm.CREAM -> R.drawable.ic_form_cream
     MedicationForm.OTHER -> R.drawable.ic_form_other
+    MedicationForm.INHALER -> R.drawable.ic_form_inhaler
+    MedicationForm.GEL -> R.drawable.ic_form_gel
+    MedicationForm.OINTMENT -> R.drawable.ic_form_ointment
+    MedicationForm.PATCH -> R.drawable.ic_form_patch
+    MedicationForm.POWDER -> R.drawable.ic_form_powder
+    MedicationForm.SUPPOSITORY -> R.drawable.ic_form_suppository
 }

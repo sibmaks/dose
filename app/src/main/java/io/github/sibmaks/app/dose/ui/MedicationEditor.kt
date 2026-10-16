@@ -83,6 +83,9 @@ internal fun MedicationEditor(
     val medications = remember { DoseStore.medications(context) }
     val dictionary = remember { MedicationDictionary.load(context) }
     val language = AppLanguages.locale(context).language
+    val localizedForms = remember(context, language) {
+        MedicationForms.sorted(AppLanguages.locale(context)) { it.localizedLabel(context) }
+    }
     val steps = MedicationEditorFlow.steps(form)
     val position = steps.indexOf(step)
     val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
@@ -233,7 +236,7 @@ internal fun MedicationEditor(
                         MedicationStep.FORM -> {
                             Text(context.getString(R.string.choose_form, name), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                             if (suggestedForm != null) Text(context.getString(R.string.change_suggested_form, suggestedForm.orEmpty()), color = TextMuted, fontSize = 13.sp)
-                            MedicationForm.entries.forEach { choice ->
+                            localizedForms.forEach { choice ->
                                 Surface(onClick = { chooseForm(choice) }, shape = RoundedCornerShape(14.dp),
                                     color = if (form == choice) Color(0xFFF0ECFF) else Color(0xFFF8F9FD), modifier = Modifier.fillMaxWidth()) {
                                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {

@@ -63,9 +63,9 @@ class MedicationEntryTest {
     @Test fun prefixMatchesComeBeforeNamesContainingTheQuery() {
         assertEquals("Insulin", dictionary.suggestions("ins").first().name)
     }
-    @Test fun suggestedInhalerUsesEditableOtherForm() {
+    @Test fun suggestedInhalerUsesBuiltInForm() {
         val inhaler = dictionary.suggestions("salbutamol").single()
-        assertEquals(MedicationForm.OTHER, inhaler.form)
+        assertEquals(MedicationForm.INHALER, inhaler.form)
         assertEquals("Inhaler", inhaler.formLabel)
     }
     @Test fun normalFlowHasOnlyTheFiveRequestedSteps() {

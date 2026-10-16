@@ -59,7 +59,6 @@
     <string name="color">"Reňk"</string>
     <string name="pick_a_custom_color">"Öz reňkiňi saýlamak"</string>
     <string name="give_this_form_a_name">"Görnüşiň adyny ýazyň"</string>
-    <string name="custom_form_hint">"Islege görä: plastyr, ingalýator ýa-da şem. Boş bolsa «Başga» ulanylýar."</string>
     <string name="custom_form_optional">"Öz görnüşiňiz (islege görä)"</string>
     <string name="how_much_per_dose">"Her gezek näçe?"</string>
     <string name="amount">"Mukdar *"</string>
@@ -239,4 +238,10 @@
     <string name="delete_history_hint">"Bu doza ýazgysyny taryhdan pozmalymy?"</string>
     <string name="history_time_error">"Geçen senäni we wagty saýlaň."</string>
     <string name="history_changed_error">"Bu ýazgy üýtgedi. Täzeden açyň we synanyşyň."</string>
+    <string name="gel">"Gel"</string>
+    <string name="ointment">"Melhem"</string>
+    <string name="patch">"Plastyr"</string>
+    <string name="powder">"Poroşok"</string>
+    <string name="suppository">"Şem"</string>
+    <string name="custom_form_hint">"Hökmany däl. Başga görnüşini ulanmak üçin boş goýuň."</string>
 </resources>

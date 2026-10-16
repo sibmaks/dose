@@ -59,7 +59,6 @@
     <string name="color">"ფერი"</string>
     <string name="pick_a_custom_color">"საკუთარი ფერის არჩევა"</string>
     <string name="give_this_form_a_name">"ფორმის სახელის შეყვანა"</string>
-    <string name="custom_form_hint">"არასავალდებულო: პლასტირი, ინჰალატორი ან სანთელი. ცარიელი ველი ნიშნავს „სხვა“."</string>
     <string name="custom_form_optional">"საკუთარი ფორმა (არასავალდებულო)"</string>
     <string name="how_much_per_dose">"რამდენი ერთ მიღებაზე?"</string>
     <string name="amount">"რაოდენობა *"</string>
@@ -239,4 +238,10 @@
     <string name="delete_history_hint">"წაიშალოს ამ დოზის ჩანაწერი ისტორიიდან?"</string>
     <string name="history_time_error">"აირჩიეთ უკვე გასული თარიღი და დრო."</string>
     <string name="history_changed_error">"ჩანაწერი შეიცვალა. ხელახლა გახსენით და სცადეთ."</string>
+    <string name="gel">"გელი"</string>
+    <string name="ointment">"მალამო"</string>
+    <string name="patch">"პლასტირი"</string>
+    <string name="powder">"ფხვნილი"</string>
+    <string name="suppository">"სუპოზიტორია"</string>
+    <string name="custom_form_hint">"არასავალდებულო. „სხვა“-სთვის დატოვეთ ცარიელი."</string>
 </resources>

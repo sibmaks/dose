@@ -29,7 +29,7 @@ class MedicationDictionaryJsonTest {
         assertEquals(setOf("paracetamol", "ibuprofen", "amoxicillin", "cetirizine", "omeprazole", "hydrocortisone", "vitamin_d3", "calcium", "alfacalcidol", "loratadine", "metformin", "levothyroxine", "insulin", "salbutamol"), catalog.entries.map { it.code }.toSet())
         assertTrue(catalog.entries.all { it.localizations.keys.all { language -> AppLanguages.supported.any { it.tag == language } } })
         assertEquals(listOf(MedicationForm.PILL, MedicationForm.CAPSULE, MedicationForm.LIQUID), catalog.entries.single { it.code == "paracetamol" }.forms)
-        assertEquals("Inhaler", catalog.entries.single { it.code == "salbutamol" }.customForm)
+        assertEquals(listOf(MedicationForm.INHALER), catalog.entries.single { it.code == "salbutamol" }.forms)
         assertEquals("levothyroxine", catalog.suggestions("Левотероксин", language = "ru").single().code)
     }
     @Test fun `each localization can supply multiple searchable names with one stable result`() {

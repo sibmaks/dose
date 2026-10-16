@@ -9,6 +9,8 @@ class DoseUnitDefaultsTest {
             MedicationForm.PILL to "tablet", MedicationForm.CAPSULE to "capsule",
             MedicationForm.LIQUID to "ml", MedicationForm.SPRAY to "spray",
             MedicationForm.DROPS to "drop", MedicationForm.INJECTION to "ml", MedicationForm.CREAM to "g",
+            MedicationForm.INHALER to "puff", MedicationForm.GEL to "g", MedicationForm.OINTMENT to "g",
+            MedicationForm.PATCH to "patch", MedicationForm.POWDER to "g", MedicationForm.SUPPOSITORY to "suppository",
         )
         expected.forEach { (form, unit) ->
             assertEquals(unit, DoseUnits.defaultFor(form))

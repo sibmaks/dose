@@ -59,7 +59,6 @@
     <string name="color">"Ранг"</string>
     <string name="pick_a_custom_color">"Интихоби ранги худ"</string>
     <string name="give_this_form_a_name">"Номи шаклро ворид кунед"</string>
-    <string name="custom_form_hint">"Ихтиёрӣ: масалан, часпак, ингалятор ё шамъча. Агар холӣ бошад, «Дигар» истифода мешавад."</string>
     <string name="custom_form_optional">"Шакли худ (ихтиёрӣ)"</string>
     <string name="how_much_per_dose">"Барои як қабул чӣ қадар?"</string>
     <string name="amount">"Миқдор *"</string>
@@ -239,4 +238,10 @@
     <string name="delete_history_hint">"Ин сабти воя аз таърих нест карда шавад?"</string>
     <string name="history_time_error">"Сана ва вақти гузаштаро интихоб кунед."</string>
     <string name="history_changed_error">"Сабт тағйир ёфт. Онро боз кушоед ва такрор кунед."</string>
+    <string name="gel">"Гел"</string>
+    <string name="ointment">"Малҳам"</string>
+    <string name="patch">"Часпон"</string>
+    <string name="powder">"Хока"</string>
+    <string name="suppository">"Шамъча"</string>
+    <string name="custom_form_hint">"Ихтиёрӣ. Барои «Дигар» холӣ гузоред."</string>
 </resources>

@@ -59,7 +59,6 @@
     <string name="color">"Колер"</string>
     <string name="pick_a_custom_color">"Выбраць свой колер"</string>
     <string name="give_this_form_a_name">"Укажыце назву формы"</string>
-    <string name="custom_form_hint">"Неабавязкова: напрыклад, пластыр, інгалятар ці свечка. Пустое поле азначае «Іншае»."</string>
     <string name="custom_form_optional">"Свая форма (неабавязкова)"</string>
     <string name="how_much_per_dose">"Колькі на адзін прыём?"</string>
     <string name="amount">"Колькасць *"</string>
@@ -239,4 +238,10 @@
     <string name="delete_history_hint">"Выдаліць гэты запіс пра дозу з гісторыі?"</string>
     <string name="history_time_error">"Выберыце дату і час, якія ўжо мінулі."</string>
     <string name="history_changed_error">"Запіс змяніўся. Адкрыйце яго нанова і паўтарыце."</string>
+    <string name="gel">"Гель"</string>
+    <string name="ointment">"Мазь"</string>
+    <string name="patch">"Пластыр"</string>
+    <string name="powder">"Парашок"</string>
+    <string name="suppository">"Свечка"</string>
+    <string name="custom_form_hint">"Неабавязкова. Пакіньце пустым, каб выкарыстоўваць «Іншае»."</string>
 </resources>

@@ -59,7 +59,6 @@
     <string name="color">"Culoare"</string>
     <string name="pick_a_custom_color">"Alege o culoare proprie"</string>
     <string name="give_this_form_a_name">"Dă un nume formei"</string>
-    <string name="custom_form_hint">"Opțional: plasture, inhalator sau supozitor. Lasă gol pentru „Altele”."</string>
     <string name="custom_form_optional">"Formă proprie (opțional)"</string>
     <string name="how_much_per_dose">"Cât la fiecare doză?"</string>
     <string name="amount">"Cantitate *"</string>
@@ -239,4 +238,10 @@
     <string name="delete_history_hint">"Ștergi această înregistrare a dozei din istoric?"</string>
     <string name="history_time_error">"Alege o dată și o oră din trecut."</string>
     <string name="history_changed_error">"Înregistrarea s-a schimbat. Redeschide-o și încearcă din nou."</string>
+    <string name="gel">"Gel"</string>
+    <string name="ointment">"Unguent"</string>
+    <string name="patch">"Plasture"</string>
+    <string name="powder">"Pulbere"</string>
+    <string name="suppository">"Supozitor"</string>
+    <string name="custom_form_hint">"Opțional. Lasă gol pentru a folosi Altele."</string>
 </resources>

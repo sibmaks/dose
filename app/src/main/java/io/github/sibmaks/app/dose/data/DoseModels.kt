@@ -8,7 +8,9 @@ import java.time.ZonedDateTime
 
 enum class MedicationForm(val label: String) {
     PILL("Pill"), CAPSULE("Capsule"), LIQUID("Liquid"), SPRAY("Spray"),
-    DROPS("Drops"), INJECTION("Injection"), CREAM("Cream"), OTHER("Other");
+    DROPS("Drops"), INJECTION("Injection"), CREAM("Cream"), OTHER("Other"),
+    INHALER("Inhaler"), GEL("Gel"), OINTMENT("Ointment"), PATCH("Patch"),
+    POWDER("Powder"), SUPPOSITORY("Suppository");
 }
 
 enum class ScheduleKind(val label: String) {
@@ -120,14 +122,17 @@ data class Medication(
 }
 
 object DoseUnits {
-    val common = listOf("mg", "ml", "g", "mcg", "IU", "tablet", "capsule", "drop", "spray", "puff")
+    val common = listOf("mg", "ml", "g", "mcg", "IU", "tablet", "capsule", "drop", "spray", "puff", "patch", "suppository")
     fun defaultFor(form: MedicationForm): String = when (form) {
         MedicationForm.PILL -> "tablet"
         MedicationForm.CAPSULE -> "capsule"
         MedicationForm.LIQUID, MedicationForm.INJECTION -> "ml"
         MedicationForm.SPRAY -> "spray"
         MedicationForm.DROPS -> "drop"
-        MedicationForm.CREAM -> "g"
+        MedicationForm.CREAM, MedicationForm.GEL, MedicationForm.OINTMENT, MedicationForm.POWDER -> "g"
+        MedicationForm.INHALER -> "puff"
+        MedicationForm.PATCH -> "patch"
+        MedicationForm.SUPPOSITORY -> "suppository"
         MedicationForm.OTHER -> ""
     }
 

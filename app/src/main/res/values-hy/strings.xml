@@ -59,7 +59,6 @@
     <string name="color">"Գույն"</string>
     <string name="pick_a_custom_color">"Ընտրել այլ գույն"</string>
     <string name="give_this_form_a_name">"Անվանեք դեղի ձևը"</string>
-    <string name="custom_form_hint">"Ըստ ցանկության՝ օրինակ սպեղանի, ինհալյատոր կամ մոմիկ։ Դատարկ թողնելիս՝ «Այլ»։"</string>
     <string name="custom_form_optional">"Այլ ձև (ըստ ցանկության)"</string>
     <string name="how_much_per_dose">"Որքա՞ն՝ մեկ ընդունման համար։"</string>
     <string name="amount">"Քանակ *"</string>
@@ -239,4 +238,10 @@
     <string name="delete_history_hint">"Հեռացնե՞լ այս դեղաչափի գրառումը պատմությունից։"</string>
     <string name="history_time_error">"Ընտրեք արդեն անցած ամսաթիվ և ժամ։"</string>
     <string name="history_changed_error">"Գրառումը փոխվել է։ Վերաբացեք այն և կրկին փորձեք։"</string>
+    <string name="gel">"Գել"</string>
+    <string name="ointment">"Քսուք"</string>
+    <string name="patch">"Սպեղանի"</string>
+    <string name="powder">"Փոշի"</string>
+    <string name="suppository">"Մոմիկ"</string>
+    <string name="custom_form_hint">"Ընտրովի է։ Դատարկ թողեք՝ «Այլ» օգտագործելու համար։"</string>
 </resources>

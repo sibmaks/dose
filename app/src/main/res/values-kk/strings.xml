@@ -59,7 +59,6 @@
     <string name="color">"Түс"</string>
     <string name="pick_a_custom_color">"Өз түсіңізді таңдау"</string>
     <string name="give_this_form_a_name">"Түрдің атауын енгізіңіз"</string>
-    <string name="custom_form_hint">"Міндетті емес: мысалы, пластырь, ингалятор не суппозиторий. Бос болса «Басқа» қолданылады."</string>
     <string name="custom_form_optional">"Өз түріңіз (міндетті емес)"</string>
     <string name="how_much_per_dose">"Бір қабылдауға қанша?"</string>
     <string name="amount">"Мөлшер *"</string>
@@ -239,4 +238,10 @@
     <string name="delete_history_hint">"Бұл доза жазбасын тарихтан жою керек пе?"</string>
     <string name="history_time_error">"Өтіп кеткен күн мен уақытты таңдаңыз."</string>
     <string name="history_changed_error">"Жазба өзгерді. Қайта ашып, әрекетті қайталаңыз."</string>
+    <string name="gel">"Гель"</string>
+    <string name="ointment">"Жақпамай"</string>
+    <string name="patch">"Пластырь"</string>
+    <string name="powder">"Ұнтақ"</string>
+    <string name="suppository">"Суппозиторий"</string>
+    <string name="custom_form_hint">"Міндетті емес. «Басқа» үшін бос қалдырыңыз."</string>
 </resources>

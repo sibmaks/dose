@@ -13,6 +13,12 @@ fun MedicationForm.localizedLabel(context: Context): String = context.getString(
     MedicationForm.INJECTION -> R.string.injection
     MedicationForm.CREAM -> R.string.cream
     MedicationForm.OTHER -> R.string.other
+    MedicationForm.INHALER -> R.string.inhaler
+    MedicationForm.GEL -> R.string.gel
+    MedicationForm.OINTMENT -> R.string.ointment
+    MedicationForm.PATCH -> R.string.patch
+    MedicationForm.POWDER -> R.string.powder
+    MedicationForm.SUPPOSITORY -> R.string.suppository
 })
 
 fun ScheduleKind.localizedLabel(context: Context): String = context.getString(when (this) {
@@ -73,6 +79,8 @@ fun localizedUnit(context: Context, unit: String): String = when (unit) {
     "drop" -> context.getString(R.string.unit_drop)
     "spray" -> context.getString(R.string.unit_spray)
     "puff" -> context.getString(R.string.unit_puff)
+    "patch" -> context.getString(R.string.patch).lowercase(AppLanguages.locale(context))
+    "suppository" -> context.getString(R.string.suppository).lowercase(AppLanguages.locale(context))
     else -> unit
 }
 

@@ -59,7 +59,6 @@
     <string name="color">"Rang"</string>
     <string name="pick_a_custom_color">"Oʻz rangingizni tanlash"</string>
     <string name="give_this_form_a_name">"Shakl nomini kiriting"</string>
-    <string name="custom_form_hint">"Ixtiyoriy: plastir, ingalyator yoki shamcha. Boʻsh boʻlsa «Boshqa» ishlatiladi."</string>
     <string name="custom_form_optional">"Oʻz shaklingiz (ixtiyoriy)"</string>
     <string name="how_much_per_dose">"Bir qabulda qancha?"</string>
     <string name="amount">"Miqdor *"</string>
@@ -239,4 +238,10 @@
     <string name="delete_history_hint">"Bu doza yozuvi tarixdan o‘chirilsinmi?"</string>
     <string name="history_time_error">"O‘tib ketgan sana va vaqtni tanlang."</string>
     <string name="history_changed_error">"Yozuv o‘zgardi. Uni qayta ochib, yana urinib ko‘ring."</string>
+    <string name="gel">"Gel"</string>
+    <string name="ointment">"Surtma"</string>
+    <string name="patch">"Plastir"</string>
+    <string name="powder">"Kukun"</string>
+    <string name="suppository">"Shamcha"</string>
+    <string name="custom_form_hint">"Ixtiyoriy. Boshqa uchun bo‘sh qoldiring."</string>
 </resources>

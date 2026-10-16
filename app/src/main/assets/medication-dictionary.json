@@ -108,8 +108,7 @@
       "en": ["Salbutamol"],
       "ru": ["Сальбутамол"]
     },
-    "forms": ["OTHER"],
-    "aliases": ["albuterol"],
-    "customForm": "Inhaler"
+    "forms": ["INHALER"],
+    "aliases": ["albuterol"]
   }
 }

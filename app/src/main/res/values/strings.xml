@@ -60,7 +60,6 @@
     <string name="color">"Color"</string>
     <string name="pick_a_custom_color">"Pick a custom color"</string>
     <string name="give_this_form_a_name">"Give this form a name"</string>
-    <string name="custom_form_hint">"Optional—for example, a patch, inhaler, or suppository. Leave it empty to use Other."</string>
     <string name="custom_form_optional">"Custom form (optional)"</string>
     <string name="how_much_per_dose">"How much per dose?"</string>
     <string name="amount">"Amount *"</string>
@@ -241,4 +240,10 @@
     <string name="delete_history_hint">"Remove this dose entry from history?"</string>
     <string name="history_time_error">"Choose a date and time that has already passed."</string>
     <string name="history_changed_error">"This entry changed. Reopen it and try again."</string>
+    <string name="gel">"Gel"</string>
+    <string name="ointment">"Ointment"</string>
+    <string name="patch">"Patch"</string>
+    <string name="powder">"Powder"</string>
+    <string name="suppository">"Suppository"</string>
+    <string name="custom_form_hint">"Optional. Leave it empty to use Other."</string>
 </resources>
