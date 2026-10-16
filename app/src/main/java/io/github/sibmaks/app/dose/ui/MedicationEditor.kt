@@ -4,7 +4,12 @@ import io.github.sibmaks.app.dose.localization.*
 import io.github.sibmaks.app.dose.R
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -80,9 +85,7 @@ internal fun MedicationEditor(
     val language = AppLanguages.locale(context).language
     val steps = MedicationEditorFlow.steps(form)
     val position = steps.indexOf(step)
-    val scroll = rememberScrollState()
     val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
-    LaunchedEffect(step) { scroll.scrollTo(0) }
 
     fun chooseForm(chosen: MedicationForm) {
         quantity = DoseUnits.forFormChange(chosen, quantity, automaticUnit)
@@ -131,29 +134,26 @@ internal fun MedicationEditor(
         showValidation = false
     }
 
-    val onSwipeForward by rememberUpdatedState(newValue = {
-        if (step != MedicationStep.DETAILS) advance()
-        else { keyboard?.hide(); showValidation = true }
-    })
-    val onSwipeBack by rememberUpdatedState(newValue = { if (step != MedicationStep.NAME) previous() })
-    val swipeThreshold = with(LocalDensity.current) { 72.dp.toPx() }
+    // Only expose the next page after the same validation used by Continue succeeds.
+    val validStep = stepError(step) == null
+    val pager = rememberPagerState(initialPage = position) {
+        if (validStep) steps.size else position + 1
+    }
+    val activePosition by rememberUpdatedState(position)
+    LaunchedEffect(step) {
+        if (pager.settledPage != position) pager.animateScrollToPage(position)
+    }
+    LaunchedEffect(pager.settledPage) {
+        if (pager.settledPage > activePosition) advance()
+        else if (pager.settledPage < activePosition) previous()
+    }
+    val forwardBlocked by rememberUpdatedState(!validStep || step == MedicationStep.DETAILS)
+    val swipeThreshold = with(LocalDensity.current) { 48.dp.toPx() }
 
     Dialog(onDismissRequest = ::previous, properties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)) {
         Surface(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).fillMaxHeight(0.94f).imePadding(),
             shape = RoundedCornerShape(26.dp), color = Color.White) {
-            Column(Modifier.pointerInput(swipeThreshold) {
-                var distance = 0f
-                detectHorizontalDragGestures(
-                    onDragStart = { distance = 0f },
-                    onDragCancel = { distance = 0f },
-                    onDragEnd = {
-                        if (distance <= -swipeThreshold) onSwipeForward()
-                        else if (distance >= swipeThreshold) onSwipeBack()
-                        distance = 0f
-                    },
-                    onHorizontalDrag = { change, delta -> change.consume(); distance += delta },
-                )
-            }) {
+            Column {
                 Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 10.dp, top = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(if (original == null) context.getString(R.string.add_medication) else context.getString(R.string.edit_medication), fontSize = 21.sp,
                         fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
@@ -166,13 +166,35 @@ internal fun MedicationEditor(
                     Text(context.getString(R.string.editor_step, position + 1, steps.size, step.localizedTitle(context)), color = Violet, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                     LinearProgressIndicator(progress = { (position + 1f) / steps.size }, modifier = Modifier.fillMaxWidth(), color = Violet)
                 }
-                Column(Modifier.weight(1f).verticalScroll(scroll).padding(horizontal = 20.dp, vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                    when (step) {
+                HorizontalPager(state = pager, key = { steps[it] }, beyondViewportPageCount = 1,
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier.weight(1f).fillMaxWidth().pointerInput(step, swipeThreshold) {
+                        // Observe blocked forward attempts without consuming the pager's gesture.
+                        awaitEachGesture {
+                            val down = awaitFirstDown(requireUnconsumed = false)
+                            var distance = Offset.Zero
+                            do {
+                                val event = awaitPointerEvent(PointerEventPass.Final)
+                                val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                                distance += change.position - change.previousPosition
+                            } while (event.changes.any { it.pressed })
+                            if (forwardBlocked && distance.x < -swipeThreshold && -distance.x > kotlin.math.abs(distance.y)) {
+                                keyboard?.hide()
+                                showValidation = true
+                            }
+                        }
+                    }) { page ->
+                    val pageStep = steps[page]
+                    val scroll = rememberScrollState()
+                    val validationVisible = showValidation && pageStep == step
+                    LaunchedEffect(step) { if (pageStep == step) scroll.scrollTo(0) }
+                    Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(horizontal = 20.dp, vertical = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                    when (pageStep) {
                         MedicationStep.NAME -> {
                             OutlinedTextField(name, { name = it.take(70); showSuggestions = true; suggestedForm = null },
-                                isError = showValidation && name.isBlank(),
-                                supportingText = { if (showValidation && name.isBlank()) Text(context.getString(R.string.name_required)) },
+                                isError = validationVisible && name.isBlank(),
+                                supportingText = { if (validationVisible && name.isBlank()) Text(context.getString(R.string.name_required)) },
                                 label = { Text(context.getString(R.string.medication_name)) }, placeholder = { Text(context.getString(R.string.start_typing_a_name)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
                             val suggestions = if (showSuggestions) dictionary.suggestions(name, medications, language = language) else emptyList()
                             if (suggestions.isNotEmpty()) {
@@ -230,11 +252,11 @@ internal fun MedicationEditor(
                         MedicationStep.DOSAGE -> {
                             Text(context.getString(R.string.how_much_per_dose), fontSize = 19.sp, fontWeight = FontWeight.Bold)
                             OutlinedTextField(amount, { amount = it.take(70) }, label = { Text(context.getString(R.string.amount)) }, placeholder = { Text(context.getString(R.string.e_g_500)) },
-                                isError = showValidation && amount.isBlank(), supportingText = { if (showValidation && amount.isBlank()) Text(context.getString(R.string.amount_required)) },
+                                isError = validationVisible && amount.isBlank(), supportingText = { if (validationVisible && amount.isBlank()) Text(context.getString(R.string.amount_required)) },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true, modifier = Modifier.fillMaxWidth())
                             OutlinedTextField(localizedUnit(context, quantity), ::chooseUnit, label = { Text(context.getString(R.string.unit)) }, placeholder = { Text(context.getString(R.string.choose_below_or_type_your_own)) },
-                                isError = showValidation && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount),
-                                supportingText = { if (showValidation && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount)) Text(context.getString(R.string.unit_required)) },
+                                isError = validationVisible && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount),
+                                supportingText = { if (validationVisible && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount)) Text(context.getString(R.string.unit_required)) },
                                 singleLine = true, modifier = Modifier.fillMaxWidth())
                             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 DoseUnits.common.forEach { unit -> FilterChip(selected = quantity == unit, onClick = { chooseUnit(unit) }, label = { Text(localizedUnit(context, unit)) }) }
@@ -244,7 +266,7 @@ internal fun MedicationEditor(
                             Text(context.getString(R.string.when_should_dose_remind_you), fontSize = 19.sp, fontWeight = FontWeight.Bold)
                             Text(context.getString(R.string.schedule_overlap_hint), color = TextMuted, fontSize = 12.sp)
                             schedules.forEachIndexed { index, rule ->
-                                ScheduleEditor(rule, index + 1, showValidation, onChange = { updated ->
+                                ScheduleEditor(rule, index + 1, validationVisible, onChange = { updated ->
                                     schedules = schedules.toMutableList().apply { set(index, updated.copy(immediateAt = null)) }
                                 }, onRemove = if (schedules.size > 1) ({ schedules = schedules.filterIndexed { i, _ -> i != index } }) else null)
                             }
@@ -265,11 +287,12 @@ internal fun MedicationEditor(
                             }
                             if (addInstructions) OutlinedTextField(note, { note = it.take(140) }, label = { Text(context.getString(R.string.instructions)) },
                                 placeholder = { Text(context.getString(R.string.e_g_take_after_a_meal)) },
-                                isError = showValidation && note.isBlank(),
-                                supportingText = { if (showValidation && note.isBlank()) Text(context.getString(R.string.instructions_required)) },
+                                isError = validationVisible && note.isBlank(),
+                                supportingText = { if (validationVisible && note.isBlank()) Text(context.getString(R.string.instructions_required)) },
                                 minLines = 2, modifier = Modifier.fillMaxWidth())
                         }
                     }
+                }
                 }
                 Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp)) {
                     if (original != null && step == MedicationStep.NAME) OutlinedButton(
