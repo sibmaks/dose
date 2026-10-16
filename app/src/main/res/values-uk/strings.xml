@@ -99,30 +99,18 @@
     <string name="every_day">"Щодня"</string>
     <string name="notification_settings_fallback">"Налаштування Android → Програми → Dose → Сповіщення"</string>
     <string name="overlay_settings_fallback">"Налаштування Android → Спеціальний доступ → Поверх інших програм → Dose"</string>
-    <string name="finish_reminder_setup">"Завершіть налаштування"</string>
     <string name="notification_feed">"Стрічка сповіщень"</string>
     <string name="notification_feed_hint">"Нагадування в стрічці з кнопками прийому, відкладення й пропуску."</string>
     <string name="pop_up_over_other_apps">"Вікно поверх програм"</string>
     <string name="overlay_hint">"Показувати вікно прийому поверх відкритої програми."</string>
-    <string name="reminders_disabled_hint">"Обидва способи буде вимкнено. Розклади збережуться."</string>
-    <string name="reminder_ready_hint">"Дзвіночок стане фіолетовим, коли дозволи буде надано."</string>
-    <string name="display_over_other_apps">"Поверх інших програм"</string>
-    <string name="exact_alarms">"Точні нагадування"</string>
     <string name="notification_access_hint">"Дозвольте сповіщення Dose і канал нагадувань про ліки. Після відмови відкриються налаштування Android."</string>
     <string name="overlay_access_hint">"Увімкніть показ поверх програм для Dose в налаштуваннях Android і поверніться сюди."</string>
     <string name="exact_alarm_access_hint">"Дозвольте будильники й нагадування Dose, щоб отримувати їх вчасно, коли програму закрито."</string>
-    <string name="your_reminder_setup_is_ready">"Нагадування налаштовано."</string>
     <string name="sound_notification_settings">"Звук і сповіщення"</string>
     <string name="overlay_error">"Не вдалося відкрити вікно. Перевірте дозвіл показу поверх програм."</string>
     <string name="test_pop_up">"Перевірити вікно"</string>
     <string name="popup_feed_disabled_hint">"Коли стрічку вимкнено, після закриття вікна сповіщення про дозу не буде. Поки вікно відкрито, Android може показувати тимчасове сповіщення."</string>
-    <string name="turn_off_reminders">"Вимкнути нагадування"</string>
-    <string name="allow_notifications">"Дозволити сповіщення"</string>
-    <string name="allow_pop_ups">"Дозволити вікна"</string>
-    <string name="allow_exact_alarms">"Дозволити точні нагадування"</string>
     <string name="done">"Готово"</string>
-    <string name="ready">"Готово"</string>
-    <string name="access_needed">"Потрібен доступ"</string>
     <string name="time_to_take">"Час до прийому"</string>
     <string name="all_time">"Увесь час"</string>
     <string name="duration_0_min">"0 хв"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Сповіщення призупинено до %1$s"</string>
     <string name="resume_notifications">"Відновити сповіщення зараз"</string>
     <string name="pause_time_error">"Введіть додатну тривалість або виберіть майбутню дату й час."</string>
+    <string name="reminders_disabled_hint">"Нагадування вимкнено. Ваші розклади прийому ліків збережено."</string>
 </resources>

@@ -99,30 +99,18 @@
     <string name="every_day">"Har kuni"</string>
     <string name="notification_settings_fallback">"Android sozlamalari → Ilovalar → Dose → Bildirishnomalar"</string>
     <string name="overlay_settings_fallback">"Android sozlamalari → Maxsus ruxsat → Boshqa ilovalar ustida → Dose"</string>
-    <string name="finish_reminder_setup">"Sozlashni tugating"</string>
     <string name="notification_feed">"Bildirishnomalar roʻyxati"</string>
     <string name="notification_feed_hint">"Roʻyxatda qabul, kechiktirish va oʻtkazish tugmali eslatmalar."</string>
     <string name="pop_up_over_other_apps">"Ilovalar ustidagi oyna"</string>
     <string name="overlay_hint">"Ochiq ilova ustida dori oynasini koʻrsatish."</string>
-    <string name="reminders_disabled_hint">"Ikkala usul oʻchiriladi. Jadvallar saqlanadi."</string>
-    <string name="reminder_ready_hint">"Ruxsatlar berilganda qoʻngʻiroq binafsha boʻladi."</string>
-    <string name="display_over_other_apps">"Boshqa ilovalar ustida"</string>
-    <string name="exact_alarms">"Aniq signallar"</string>
     <string name="notification_access_hint">"Dose bildirishnomalari va dori eslatmalari kanaliga ruxsat bering. Avval rad etilgan boʻlsa Android sozlamalari ochiladi."</string>
     <string name="overlay_access_hint">"Android sozlamalarida Dose uchun boshqa ilovalar ustida koʻrsatishni yoqing va qayting."</string>
     <string name="exact_alarm_access_hint">"Ilova yopiq boʻlganda ham oʻz vaqtida eslatishi uchun Dose signallariga ruxsat bering."</string>
-    <string name="your_reminder_setup_is_ready">"Eslatmalar tayyor."</string>
     <string name="sound_notification_settings">"Ovoz va bildirishnomalar"</string>
     <string name="overlay_error">"Oyna ochilmadi. Ilovalar ustida koʻrsatish ruxsatini tekshiring."</string>
     <string name="test_pop_up">"Oynani tekshirish"</string>
     <string name="popup_feed_disabled_hint">"Roʻyxat oʻchiq boʻlsa oyna yopilgach doza bildirishnomasi qolmaydi. Oyna ochiqligida Android vaqtinchalik bildirishnoma koʻrsatishi mumkin."</string>
-    <string name="turn_off_reminders">"Eslatmalarni oʻchirish"</string>
-    <string name="allow_notifications">"Bildirishnomalarga ruxsat berish"</string>
-    <string name="allow_pop_ups">"Oynalarga ruxsat berish"</string>
-    <string name="allow_exact_alarms">"Aniq signallarga ruxsat berish"</string>
     <string name="done">"Tayyor"</string>
-    <string name="ready">"Tayyor"</string>
-    <string name="access_needed">"Ruxsat kerak"</string>
     <string name="time_to_take">"Qabulgacha vaqt"</string>
     <string name="all_time">"Barcha vaqt"</string>
     <string name="duration_0_min">"0 daq"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Bildirishnomalar %1$s gacha toʻxtatildi"</string>
     <string name="resume_notifications">"Bildirishnomalarni hozir davom ettirish"</string>
     <string name="pause_time_error">"Musbat davomiylikni kiriting yoki kelajak sana va vaqtni tanlang."</string>
+    <string name="reminders_disabled_hint">"Eslatmalar oʻchirilgan. Dori jadvallaringiz saqlanadi."</string>
 </resources>

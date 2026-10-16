@@ -2,11 +2,6 @@ package io.github.sibmaks.app.dose.ui
 
 import io.github.sibmaks.app.dose.localization.*
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import android.provider.Settings
-import android.widget.Toast
 import android.widget.ImageView
 import androidx.compose.ui.viewinterop.AndroidView
 import io.github.sibmaks.app.dose.R
@@ -144,7 +139,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
             ReminderAlerts.markSetupOffered(context)
             showReminderSettings = false
             refresh()
-        }, onRefresh = ::refresh, onExactAlarms = { openExactAlarmSettings(context) })
+        }, onRefresh = ::refresh)
         return
     }
 
@@ -286,18 +281,6 @@ fun DoseApp(openTodayRequest: Int = 0) {
 private fun cancelDoseNotification(context: Context, item: DoseItem) {
     val id = ReminderReceiver.notificationId(item.medication.id, item.time, item.date)
     androidx.core.app.NotificationManagerCompat.from(context).cancel(id)
-}
-
-private fun openExactAlarmSettings(context: Context) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
-    runCatching {
-        context.startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
-            data = Uri.parse("package:${context.packageName}")
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        })
-    }.onFailure {
-        Toast.makeText(context, context.getString(R.string.exact_alarm_settings_fallback), Toast.LENGTH_LONG).show()
-    }
 }
 
 @Composable

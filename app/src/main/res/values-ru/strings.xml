@@ -99,30 +99,18 @@
     <string name="every_day">"Каждый день"</string>
     <string name="notification_settings_fallback">"Настройки Android → Приложения → Dose → Уведомления"</string>
     <string name="overlay_settings_fallback">"Настройки Android → Специальный доступ → Поверх других приложений → Dose"</string>
-    <string name="finish_reminder_setup">"Завершите настройку"</string>
     <string name="notification_feed">"Лента уведомлений"</string>
     <string name="notification_feed_hint">"Напоминания в ленте с кнопками приёма, отсрочки и пропуска."</string>
     <string name="pop_up_over_other_apps">"Окно поверх приложений"</string>
     <string name="overlay_hint">"Показывать окно приёма поверх открытого приложения."</string>
-    <string name="reminders_disabled_hint">"Оба способа будут отключены. Расписания сохранятся."</string>
-    <string name="reminder_ready_hint">"Колокольчик станет фиолетовым, когда разрешения будут предоставлены."</string>
-    <string name="display_over_other_apps">"Поверх других приложений"</string>
-    <string name="exact_alarms">"Точные напоминания"</string>
     <string name="notification_access_hint">"Разрешите уведомления Dose и канал напоминаний о лекарствах. После отказа откроются настройки Android."</string>
     <string name="overlay_access_hint">"Включите показ поверх приложений для Dose в настройках Android и вернитесь сюда."</string>
     <string name="exact_alarm_access_hint">"Разрешите будильники и напоминания для Dose, чтобы получать их вовремя при закрытом приложении."</string>
-    <string name="your_reminder_setup_is_ready">"Напоминания настроены."</string>
     <string name="sound_notification_settings">"Звук и уведомления"</string>
     <string name="overlay_error">"Не удалось открыть окно. Проверьте разрешение показа поверх приложений."</string>
     <string name="test_pop_up">"Проверить окно"</string>
     <string name="popup_feed_disabled_hint">"При отключённой ленте после закрытия окна уведомления о дозе не будет. Пока окно открыто, Android может показывать временное уведомление."</string>
-    <string name="turn_off_reminders">"Отключить напоминания"</string>
-    <string name="allow_notifications">"Разрешить уведомления"</string>
-    <string name="allow_pop_ups">"Разрешить окна"</string>
-    <string name="allow_exact_alarms">"Разрешить точные напоминания"</string>
     <string name="done">"Готово"</string>
-    <string name="ready">"Готово"</string>
-    <string name="access_needed">"Нужен доступ"</string>
     <string name="time_to_take">"Время до приёма"</string>
     <string name="all_time">"Всё время"</string>
     <string name="duration_0_min">"0 мин"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Уведомления приостановлены до %1$s"</string>
     <string name="resume_notifications">"Возобновить уведомления сейчас"</string>
     <string name="pause_time_error">"Введите положительную длительность или выберите будущую дату и время."</string>
+    <string name="reminders_disabled_hint">"Напоминания выключены. Ваши расписания приёма лекарств сохранены."</string>
 </resources>

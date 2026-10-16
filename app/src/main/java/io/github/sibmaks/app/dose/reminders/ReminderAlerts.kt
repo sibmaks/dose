@@ -2,11 +2,12 @@ package io.github.sibmaks.app.dose.reminders
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.ReminderSetupState
+import io.github.sibmaks.app.dose.data.ReminderStyle
+import io.github.sibmaks.app.dose.data.ReminderEnableStep
 import java.time.LocalDate
 
 /** A dose keeps its original schedule even when its alert has been snoozed. */
@@ -31,15 +32,20 @@ data class ReminderSlot(val medicationId: String, val date: String, val time: St
 
 object ReminderAlerts {
     private fun prefs(context: Context) = context.getSharedPreferences("dose_alert_settings", Context.MODE_PRIVATE)
-    fun enabled(context: Context): Boolean = prefs(context).getBoolean("overlay_enabled", false)
-    fun feedEnabled(context: Context): Boolean = prefs(context).getBoolean("feed_enabled", true)
+    fun enabled(context: Context): Boolean = prefs(context).getBoolean("overlay_enabled", false) &&
+        permissionGranted(context) && ReminderScheduler.exactAlarmsAvailable(context)
+    fun feedEnabled(context: Context): Boolean = prefs(context).getBoolean("feed_enabled", false) &&
+        ReminderNotifications.allowed(context) && ReminderScheduler.exactAlarmsAvailable(context)
     fun permissionRequested(context: Context): Boolean = prefs(context).getBoolean("feed_permission_requested", false)
     fun markPermissionRequested(context: Context) { prefs(context).edit().putBoolean("feed_permission_requested", true).apply() }
     fun saveChoices(context: Context, feed: Boolean, popups: Boolean) {
-        prefs(context).edit().putBoolean("feed_enabled", feed).putBoolean("overlay_enabled", popups)
+        val access = setupState(context)
+        val enableFeed = feed && access.nextEnableStep(ReminderStyle.FEED) == ReminderEnableStep.ENABLE
+        val enablePopups = popups && access.nextEnableStep(ReminderStyle.POPUP) == ReminderEnableStep.ENABLE
+        prefs(context).edit().putBoolean("feed_enabled", enableFeed).putBoolean("overlay_enabled", enablePopups)
             .putBoolean("setup_reviewed", true).apply()
-        if (!popups) context.stopService(Intent(context, ReminderOverlayService::class.java))
-        if (!feed) {
+        if (!enablePopups) context.stopService(Intent(context, ReminderOverlayService::class.java))
+        if (!enableFeed) {
             val manager = context.getSystemService(android.app.NotificationManager::class.java)
             manager.activeNotifications.filter { it.notification.extras.containsKey(ReminderReceiver.EXTRA_MEDICATION_ID) }
                 .forEach { manager.cancel(it.id) }
@@ -49,14 +55,11 @@ object ReminderAlerts {
     fun markSetupOffered(context: Context) { prefs(context).edit().putBoolean("setup_offered", true).apply() }
     fun setupState(context: Context) = ReminderSetupState(
         reviewed = prefs(context).getBoolean("setup_reviewed", false),
-        feedEnabled = feedEnabled(context), popupsEnabled = enabled(context),
+        feedEnabled = prefs(context).getBoolean("feed_enabled", false), popupsEnabled = prefs(context).getBoolean("overlay_enabled", false),
         feedAllowed = ReminderNotifications.allowed(context), overlayAllowed = permissionGranted(context),
         exactAlarmsAllowed = ReminderScheduler.exactAlarmsAvailable(context),
     )
     fun permissionGranted(context: Context): Boolean = Settings.canDrawOverlays(context)
-    fun openPermission(context: Context) {
-        context.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}")))
-    }
     fun show(context: Context, slot: ReminderSlot) {
         if (NotificationPause.isPaused(context) || !enabled(context) || !permissionGranted(context)) return
         start(context, slot.putInto(Intent(context, ReminderOverlayService::class.java)))

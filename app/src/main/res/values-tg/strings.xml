@@ -99,30 +99,18 @@
     <string name="every_day">"Ҳар рӯз"</string>
     <string name="notification_settings_fallback">"Танзимоти Android → Барномаҳо → Dose → Огоҳиҳо"</string>
     <string name="overlay_settings_fallback">"Танзимоти Android → Дастрасии махсус → Болои дигар барномаҳо → Dose"</string>
-    <string name="finish_reminder_setup">"Танзимро анҷом диҳед"</string>
     <string name="notification_feed">"Рӯйхати огоҳиҳо"</string>
     <string name="notification_feed_hint">"Ёдраскуниҳо дар рӯйхат бо тугмаҳои қабул, таъхир ва гузарондан."</string>
     <string name="pop_up_over_other_apps">"Равзана болои барномаҳо"</string>
     <string name="overlay_hint">"Намоиши равзанаи дору болои барномаи кушода."</string>
-    <string name="reminders_disabled_hint">"Ҳар ду усул хомӯш мешаванд. Ҷадвалҳо нигоҳ дошта мешаванд."</string>
-    <string name="reminder_ready_hint">"Пас аз додани иҷозатҳо занг бунафш мешавад."</string>
-    <string name="display_over_other_apps">"Болои дигар барномаҳо"</string>
-    <string name="exact_alarms">"Зангҳои дақиқ"</string>
     <string name="notification_access_hint">"Огоҳиҳои Dose ва канали ёдраскунии доруро иҷозат диҳед. Агар рад карда бошед, танзимоти Android кушода мешавад."</string>
     <string name="overlay_access_hint">"Дар танзимоти Android намоиши Dose болои барномаҳоро фаъол карда, баргардед."</string>
     <string name="exact_alarm_access_hint">"Зангҳо ва ёдраскуниҳои Dose-ро иҷозат диҳед, то ҳангоми баста будани барнома сари вақт расанд."</string>
-    <string name="your_reminder_setup_is_ready">"Ёдраскуниҳо омодаанд."</string>
     <string name="sound_notification_settings">"Садо ва огоҳиҳо"</string>
     <string name="overlay_error">"Равзана кушода нашуд. Иҷозати намоиш болои барномаҳоро санҷед."</string>
     <string name="test_pop_up">"Санҷиши равзана"</string>
     <string name="popup_feed_disabled_hint">"Агар рӯйхат хомӯш бошад, пас аз бастани равзана огоҳии дору намемонад. Ҳангоми кушода будан Android метавонад огоҳии муваққатӣ нишон диҳад."</string>
-    <string name="turn_off_reminders">"Хомӯш кардани ёдраскуниҳо"</string>
-    <string name="allow_notifications">"Иҷозати огоҳиҳо"</string>
-    <string name="allow_pop_ups">"Иҷозати равзанаҳо"</string>
-    <string name="allow_exact_alarms">"Иҷозати зангҳои дақиқ"</string>
     <string name="done">"Тайёр"</string>
-    <string name="ready">"Омода"</string>
-    <string name="access_needed">"Иҷозат лозим"</string>
     <string name="time_to_take">"Вақт то қабул"</string>
     <string name="all_time">"Ҳама вақт"</string>
     <string name="duration_0_min">"0 дақ"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Огоҳиҳо то %1$s таваққуф карда шудаанд"</string>
     <string name="resume_notifications">"Огоҳиҳоро ҳозир идома додан"</string>
     <string name="pause_time_error">"Давомнокии мусбатро ворид кунед ё сана ва вақти ояндаро интихоб кунед."</string>
+    <string name="reminders_disabled_hint">"Ёдрасиҳо хомӯшанд. Ҷадвалҳои доруҳои шумо нигоҳ дошта шудаанд."</string>
 </resources>

@@ -99,30 +99,18 @@
     <string name="every_day">"În fiecare zi"</string>
     <string name="notification_settings_fallback">"Setări Android → Aplicații → Dose → Notificări"</string>
     <string name="overlay_settings_fallback">"Setări Android → Acces special → Afișare peste alte aplicații → Dose"</string>
-    <string name="finish_reminder_setup">"Finalizează configurarea"</string>
     <string name="notification_feed">"Lista de notificări"</string>
     <string name="notification_feed_hint">"Mementouri în notificări cu acțiuni de luare, amânare și omitere."</string>
     <string name="pop_up_over_other_apps">"Fereastră peste alte aplicații"</string>
     <string name="overlay_hint">"Arată o fereastră de medicament peste aplicația deschisă."</string>
-    <string name="reminders_disabled_hint">"Ambele moduri se dezactivează. Programele se păstrează."</string>
-    <string name="reminder_ready_hint">"Clopoțelul devine violet când permisiunile sunt acordate."</string>
-    <string name="display_over_other_apps">"Afișare peste alte aplicații"</string>
-    <string name="exact_alarms">"Alarme exacte"</string>
     <string name="notification_access_hint">"Permite notificările Dose și canalul de mementouri pentru medicamente. Dacă ai refuzat, se deschid setările Android."</string>
     <string name="overlay_access_hint">"Activează afișarea peste alte aplicații pentru Dose în setările Android, apoi revino."</string>
     <string name="exact_alarm_access_hint">"Permite alarmele și mementourile Dose pentru a le primi la timp cu aplicația închisă."</string>
-    <string name="your_reminder_setup_is_ready">"Mementourile sunt gata."</string>
     <string name="sound_notification_settings">"Sunet și notificări"</string>
     <string name="overlay_error">"Fereastra nu s-a deschis. Verifică permisiunea de afișare peste aplicații."</string>
     <string name="test_pop_up">"Testează fereastra"</string>
     <string name="popup_feed_disabled_hint">"Cu lista dezactivată nu rămâne o notificare de doză după închiderea ferestrei. Android poate arăta una temporară cât fereastra e deschisă."</string>
-    <string name="turn_off_reminders">"Oprește mementourile"</string>
-    <string name="allow_notifications">"Permite notificările"</string>
-    <string name="allow_pop_ups">"Permite ferestrele"</string>
-    <string name="allow_exact_alarms">"Permite alarmele exacte"</string>
     <string name="done">"Gata"</string>
-    <string name="ready">"Gata"</string>
-    <string name="access_needed">"Necesită acces"</string>
     <string name="time_to_take">"Timp până la luare"</string>
     <string name="all_time">"Tot timpul"</string>
     <string name="duration_0_min">"0 min"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Notificările sunt întrerupte până la %1$s"</string>
     <string name="resume_notifications">"Reia notificările acum"</string>
     <string name="pause_time_error">"Introduceți o durată pozitivă sau alegeți o dată și o oră viitoare."</string>
+    <string name="reminders_disabled_hint">"Mementourile sunt dezactivate. Programele medicamentelor rămân salvate."</string>
 </resources>

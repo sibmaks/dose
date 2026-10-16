@@ -99,30 +99,18 @@
     <string name="every_day">"Ամեն օր"</string>
     <string name="notification_settings_fallback">"Android-ի կարգավորումներ → Հավելվածներ → Dose → Ծանուցումներ"</string>
     <string name="overlay_settings_fallback">"Android-ի կարգավորումներ → Հատուկ հասանելիություն → Այլ հավելվածների վրայից → Dose"</string>
-    <string name="finish_reminder_setup">"Ավարտեք կարգավորումը"</string>
     <string name="notification_feed">"Ծանուցումների ցանկ"</string>
     <string name="notification_feed_hint">"Հիշեցումներ ցանկում՝ ընդունելու, հետաձգելու և բաց թողնելու կոճակներով։"</string>
     <string name="pop_up_over_other_apps">"Պատուհան այլ հավելվածների վրայից"</string>
     <string name="overlay_hint">"Ցուցադրել դեղի պատուհանը բաց հավելվածի վրայից։"</string>
-    <string name="reminders_disabled_hint">"Երկու եղանակն էլ կանջատվեն։ Ժամանակացույցերը կպահպանվեն։"</string>
-    <string name="reminder_ready_hint">"Զանգը կդառնա մանուշակագույն, երբ թույլտվությունները պատրաստ լինեն։"</string>
-    <string name="display_over_other_apps">"Այլ հավելվածների վրայից"</string>
-    <string name="exact_alarms">"Ճշգրիտ ազդանշաններ"</string>
     <string name="notification_access_hint">"Թույլատրեք Dose-ի ծանուցումները և դեղերի հիշեցումների ալիքը։ Մերժումից հետո կբացվեն Android-ի կարգավորումները։"</string>
     <string name="overlay_access_hint">"Android-ի կարգավորումներում թույլատրեք Dose-ին ցուցադրվել այլ հավելվածների վրայից և վերադարձեք։"</string>
     <string name="exact_alarm_access_hint">"Թույլատրեք Dose-ի զարթուցիչներն ու հիշեցումները՝ փակ հավելվածի դեպքում ժամանակին ստանալու համար։"</string>
-    <string name="your_reminder_setup_is_ready">"Հիշեցումները կարգավորված են։"</string>
     <string name="sound_notification_settings">"Ձայն և ծանուցումներ"</string>
     <string name="overlay_error">"Չհաջողվեց բացել պատուհանը։ Ստուգեք այլ հավելվածների վրայից ցուցադրման թույլտվությունը։"</string>
     <string name="test_pop_up">"Ստուգել պատուհանը"</string>
     <string name="popup_feed_disabled_hint">"Անջատված ցանկի դեպքում պատուհանը փակելուց հետո դեղի ծանուցում չի մնա։ Բաց պատուհանի ընթացքում Android-ը կարող է ցուցադրել ժամանակավոր ծանուցում։"</string>
-    <string name="turn_off_reminders">"Անջատել հիշեցումները"</string>
-    <string name="allow_notifications">"Թույլատրել ծանուցումները"</string>
-    <string name="allow_pop_ups">"Թույլատրել պատուհանները"</string>
-    <string name="allow_exact_alarms">"Թույլատրել ճշգրիտ ազդանշանները"</string>
     <string name="done">"Պատրաստ է"</string>
-    <string name="ready">"Պատրաստ է"</string>
-    <string name="access_needed">"Անհրաժեշտ է թույլտվություն"</string>
     <string name="time_to_take">"Ընդունման ուշացումը"</string>
     <string name="all_time">"Ամբողջ ժամանակը"</string>
     <string name="duration_0_min">"0 ր"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Ծանուցումները դադարեցված են մինչև %1$s"</string>
     <string name="resume_notifications">"Վերսկսել ծանուցումները հիմա"</string>
     <string name="pause_time_error">"Մուտքագրեք դրական տևողություն կամ ընտրեք ապագա ամսաթիվ և ժամ։"</string>
+    <string name="reminders_disabled_hint">"Հիշեցումներն անջատված են։ Դեղերի ժամանակացույցերը պահպանված են։"</string>
 </resources>

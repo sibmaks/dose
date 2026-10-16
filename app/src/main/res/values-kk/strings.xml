@@ -99,30 +99,18 @@
     <string name="every_day">"Күн сайын"</string>
     <string name="notification_settings_fallback">"Android баптаулары → Қолданбалар → Dose → Хабарландырулар"</string>
     <string name="overlay_settings_fallback">"Android баптаулары → Арнайы рұқсат → Басқа қолданбалардың үстінен → Dose"</string>
-    <string name="finish_reminder_setup">"Баптауды аяқтаңыз"</string>
     <string name="notification_feed">"Хабарландырулар таспасы"</string>
     <string name="notification_feed_hint">"Таспада қабылдау, кейінге қалдыру және өткізу түймелері бар еске салғыштар."</string>
     <string name="pop_up_over_other_apps">"Қолданбалардың үстіндегі терезе"</string>
     <string name="overlay_hint">"Ашық қолданбаның үстінде дәрі терезесін көрсету."</string>
-    <string name="reminders_disabled_hint">"Екі тәсіл де өшіріледі. Кестелер сақталады."</string>
-    <string name="reminder_ready_hint">"Рұқсаттар берілгенде қоңырау күлгін болады."</string>
-    <string name="display_over_other_apps">"Басқа қолданбалардың үстінен"</string>
-    <string name="exact_alarms">"Дәл дабылдар"</string>
     <string name="notification_access_hint">"Dose хабарландырулары мен дәрі еске салу арнасын қосыңыз. Бұрын бас тартылса Android баптаулары ашылады."</string>
     <string name="overlay_access_hint">"Android баптауларында Dose үшін басқа қолданбалардың үстінен көрсетуді қосып, қайтыңыз."</string>
     <string name="exact_alarm_access_hint">"Қолданба жабық кезде уақытында еске салу үшін Dose дабылдарына рұқсат беріңіз."</string>
-    <string name="your_reminder_setup_is_ready">"Еске салғыштар дайын."</string>
     <string name="sound_notification_settings">"Дыбыс пен хабарландырулар"</string>
     <string name="overlay_error">"Терезе ашылмады. Қолданбалардың үстінен көрсету рұқсатын тексеріңіз."</string>
     <string name="test_pop_up">"Терезені тексеру"</string>
     <string name="popup_feed_disabled_hint">"Таспа өшірілсе, терезе жабылғаннан кейін доза хабарландыруы қалмайды. Терезе ашық кезде Android уақытша хабарландыру көрсетуі мүмкін."</string>
-    <string name="turn_off_reminders">"Еске салғыштарды өшіру"</string>
-    <string name="allow_notifications">"Хабарландыруларға рұқсат беру"</string>
-    <string name="allow_pop_ups">"Терезелерге рұқсат беру"</string>
-    <string name="allow_exact_alarms">"Дәл дабылдарға рұқсат беру"</string>
     <string name="done">"Дайын"</string>
-    <string name="ready">"Дайын"</string>
-    <string name="access_needed">"Рұқсат қажет"</string>
     <string name="time_to_take">"Қабылдауға дейінгі уақыт"</string>
     <string name="all_time">"Барлық уақыт"</string>
     <string name="duration_0_min">"0 мин"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Хабарландырулар %1$s дейін тоқтатылды"</string>
     <string name="resume_notifications">"Хабарландыруларды қазір жалғастыру"</string>
     <string name="pause_time_error">"Оң ұзақтықты енгізіңіз немесе болашақ күн мен уақытты таңдаңыз."</string>
+    <string name="reminders_disabled_hint">"Еске салулар өшірілген. Дәрі қабылдау кестелеріңіз сақталған."</string>
 </resources>

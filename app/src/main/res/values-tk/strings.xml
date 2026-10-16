@@ -99,30 +99,18 @@
     <string name="every_day">"Her gün"</string>
     <string name="notification_settings_fallback">"Android sazlamalary → Programmalar → Dose → Bildirişler"</string>
     <string name="overlay_settings_fallback">"Android sazlamalary → Ýörite giriş → Beýleki programmalaryň üstünde → Dose"</string>
-    <string name="finish_reminder_setup">"Sazlamany tamamlaň"</string>
     <string name="notification_feed">"Bildiriş sanawy"</string>
     <string name="notification_feed_hint">"Sanawda içmek, yza süýşürmek we geçirmek düwmeli ýatlatmalar."</string>
     <string name="pop_up_over_other_apps">"Programmalaryň üstündäki penjire"</string>
     <string name="overlay_hint">"Açyk programmanyň üstünde derman penjiresini görkezmek."</string>
-    <string name="reminders_disabled_hint">"Iki usul hem öçüriler. Tertipler saklanar."</string>
-    <string name="reminder_ready_hint">"Rugsatlar berlende jaň melewşe bolar."</string>
-    <string name="display_over_other_apps">"Beýleki programmalaryň üstünde"</string>
-    <string name="exact_alarms">"Takyk duýduryşlar"</string>
     <string name="notification_access_hint">"Dose bildirişlerine we derman ýatlatma kanalyna rugsat beriň. Öň ret edilen bolsa Android sazlamalary açylar."</string>
     <string name="overlay_access_hint">"Android sazlamalarynda Dose üçin beýleki programmalaryň üstünde görkezmegi açyp, yzyna dolanyň."</string>
     <string name="exact_alarm_access_hint">"Programma ýapyk wagty ýatlatmalar wagtynda geler ýaly Dose duýduryşlaryna rugsat beriň."</string>
-    <string name="your_reminder_setup_is_ready">"Ýatlatmalar taýýar."</string>
     <string name="sound_notification_settings">"Ses we bildirişler"</string>
     <string name="overlay_error">"Penjire açylmady. Programmalaryň üstünde görkezmek rugsadyny barlaň."</string>
     <string name="test_pop_up">"Penjiräni barlamak"</string>
     <string name="popup_feed_disabled_hint">"Sanaw öçük bolsa penjire ýapylansoň doza bildirişi galmaz. Penjire açyk wagty Android wagtlaýyn bildiriş görkezip biler."</string>
-    <string name="turn_off_reminders">"Ýatlatmalary öçürmek"</string>
-    <string name="allow_notifications">"Bildirişlere rugsat bermek"</string>
-    <string name="allow_pop_ups">"Penjirelere rugsat bermek"</string>
-    <string name="allow_exact_alarms">"Takyk duýduryşlara rugsat bermek"</string>
     <string name="done">"Taýýar"</string>
-    <string name="ready">"Taýýar"</string>
-    <string name="access_needed">"Rugsat gerek"</string>
     <string name="time_to_take">"Içýänçä geçen wagt"</string>
     <string name="all_time">"Ähli wagt"</string>
     <string name="duration_0_min">"0 min"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Habarnamalar %1$s çenli duruzyldy"</string>
     <string name="resume_notifications">"Habarnamalary häzir dowam et"</string>
     <string name="pause_time_error">"Oňyn dowamlylygy giriziň ýa-da geljekki senäni we wagty saýlaň."</string>
+    <string name="reminders_disabled_hint">"Ýatlatmalar öçürildi. Derman tertipleriňiz saklanýar."</string>
 </resources>

@@ -99,30 +99,18 @@
     <string name="every_day">"ყოველდღე"</string>
     <string name="notification_settings_fallback">"Android-ის პარამეტრები → აპები → Dose → შეტყობინებები"</string>
     <string name="overlay_settings_fallback">"Android-ის პარამეტრები → სპეციალური წვდომა → სხვა აპების ზემოთ → Dose"</string>
-    <string name="finish_reminder_setup">"დაასრულეთ გამართვა"</string>
     <string name="notification_feed">"შეტყობინებების სია"</string>
     <string name="notification_feed_hint">"შეხსენებები სიაში მიღების, გადადებისა და გამოტოვების ღილაკებით."</string>
     <string name="pop_up_over_other_apps">"ფანჯარა სხვა აპების ზემოთ"</string>
     <string name="overlay_hint">"წამლის ფანჯრის ჩვენება გახსნილი აპის ზემოთ."</string>
-    <string name="reminders_disabled_hint">"ორივე გზა გამოირთვება. განრიგები შენარჩუნდება."</string>
-    <string name="reminder_ready_hint">"ნებართვების მინიჭების შემდეგ ზარი იისფერი გახდება."</string>
-    <string name="display_over_other_apps">"სხვა აპების ზემოთ ჩვენება"</string>
-    <string name="exact_alarms">"ზუსტი მაღვიძარები"</string>
     <string name="notification_access_hint">"დაუშვით Dose-ის შეტყობინებები და წამლის შეხსენებების არხი. უარის შემთხვევაში Android-ის პარამეტრები გაიხსნება."</string>
     <string name="overlay_access_hint">"Android-ის პარამეტრებში Dose-ს სხვა აპების ზემოთ ჩვენება დაუშვით და დაბრუნდით."</string>
     <string name="exact_alarm_access_hint">"დაუშვით Dose-ის მაღვიძარები და შეხსენებები, რომ დახურული აპის შემთხვევაშიც დროულად მიიღოთ."</string>
-    <string name="your_reminder_setup_is_ready">"შეხსენებები გამართულია."</string>
     <string name="sound_notification_settings">"ხმა და შეტყობინებები"</string>
     <string name="overlay_error">"ფანჯარა ვერ გაიხსნა. შეამოწმეთ სხვა აპების ზემოთ ჩვენების ნებართვა."</string>
     <string name="test_pop_up">"ფანჯრის შემოწმება"</string>
     <string name="popup_feed_disabled_hint">"გამორთული სიის შემთხვევაში ფანჯრის დახურვის შემდეგ დოზის შეტყობინება არ დარჩება. გახსნილი ფანჯრისას Android-მა შეიძლება დროებითი შეტყობინება აჩვენოს."</string>
-    <string name="turn_off_reminders">"შეხსენებების გამორთვა"</string>
-    <string name="allow_notifications">"შეტყობინებების დაშვება"</string>
-    <string name="allow_pop_ups">"ფანჯრების დაშვება"</string>
-    <string name="allow_exact_alarms">"ზუსტი მაღვიძარების დაშვება"</string>
     <string name="done">"მზადაა"</string>
-    <string name="ready">"მზადაა"</string>
-    <string name="access_needed">"საჭიროა ნებართვა"</string>
     <string name="time_to_take">"დრო მიღებამდე"</string>
     <string name="all_time">"მთელი პერიოდი"</string>
     <string name="duration_0_min">"0 წთ"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"შეტყობინებები შეჩერებულია %1$s-მდე"</string>
     <string name="resume_notifications">"შეტყობინებების ახლა განახლება"</string>
     <string name="pause_time_error">"შეიყვანეთ დადებითი ხანგრძლივობა ან აირჩიეთ მომავალი თარიღი და დრო."</string>
+    <string name="reminders_disabled_hint">"შეხსენებები გამორთულია. წამლების განრიგები შენახულია."</string>
 </resources>

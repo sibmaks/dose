@@ -99,30 +99,18 @@
     <string name="every_day">"Күн сайын"</string>
     <string name="notification_settings_fallback">"Android жөндөөлөрү → Колдонмолор → Dose → Билдирмелер"</string>
     <string name="overlay_settings_fallback">"Android жөндөөлөрү → Атайын уруксат → Башка колдонмолордун үстүнөн → Dose"</string>
-    <string name="finish_reminder_setup">"Жөндөөнү бүтүрүңүз"</string>
     <string name="notification_feed">"Билдирмелер тизмеси"</string>
     <string name="notification_feed_hint">"Тизмеде кабыл алуу, кийинкиге калтыруу жана өткөрүү баскычтуу эскертмелер."</string>
     <string name="pop_up_over_other_apps">"Колдонмолордун үстүндөгү терезе"</string>
     <string name="overlay_hint">"Ачык колдонмонун үстүндө дары терезесин көрсөтүү."</string>
-    <string name="reminders_disabled_hint">"Эки ыкма тең өчүрүлөт. Жадыбалдар сакталат."</string>
-    <string name="reminder_ready_hint">"Уруксаттар берилгенде коңгуроо кызгылт көк болот."</string>
-    <string name="display_over_other_apps">"Башка колдонмолордун үстүнөн"</string>
-    <string name="exact_alarms">"Так ойготкучтар"</string>
     <string name="notification_access_hint">"Dose билдирмелерине жана дары эскертүү каналына уруксат бериңиз. Мурда баш тартылса Android жөндөөлөрү ачылат."</string>
     <string name="overlay_access_hint">"Android жөндөөлөрүндө Dose үчүн башка колдонмолордун үстүнөн көрсөтүүнү күйгүзүп, кайтыңыз."</string>
     <string name="exact_alarm_access_hint">"Колдонмо жабык кезде өз убагында эскертүү үчүн Dose ойготкучтарына уруксат бериңиз."</string>
-    <string name="your_reminder_setup_is_ready">"Эскертмелер даяр."</string>
     <string name="sound_notification_settings">"Үн жана билдирмелер"</string>
     <string name="overlay_error">"Терезе ачылган жок. Колдонмолордун үстүнөн көрсөтүү уруксатын текшериңиз."</string>
     <string name="test_pop_up">"Терезени текшерүү"</string>
     <string name="popup_feed_disabled_hint">"Тизме өчүк болсо, терезе жабылгандан кийин доза билдирмеси калбайт. Терезе ачыкта Android убактылуу билдирме көрсөтүшү мүмкүн."</string>
-    <string name="turn_off_reminders">"Эскертмелерди өчүрүү"</string>
-    <string name="allow_notifications">"Билдирмелерге уруксат берүү"</string>
-    <string name="allow_pop_ups">"Терезелерге уруксат берүү"</string>
-    <string name="allow_exact_alarms">"Так ойготкучтарга уруксат берүү"</string>
     <string name="done">"Даяр"</string>
-    <string name="ready">"Даяр"</string>
-    <string name="access_needed">"Уруксат керек"</string>
     <string name="time_to_take">"Кабыл алууга чейинки убакыт"</string>
     <string name="all_time">"Бардык убакыт"</string>
     <string name="duration_0_min">"0 мүн"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Билдирүүлөр %1$s чейин тындырылды"</string>
     <string name="resume_notifications">"Билдирүүлөрдү азыр улантуу"</string>
     <string name="pause_time_error">"Оң узактыкты жазыңыз же келечектеги күндү жана убакытты тандаңыз."</string>
+    <string name="reminders_disabled_hint">"Эскертүүлөр өчүрүлгөн. Дары ичүү жадыбалдарыңыз сакталган."</string>
 </resources>

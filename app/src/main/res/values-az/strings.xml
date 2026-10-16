@@ -99,30 +99,18 @@
     <string name="every_day">"Hər gün"</string>
     <string name="notification_settings_fallback">"Android parametrləri → Tətbiqlər → Dose → Bildirişlər"</string>
     <string name="overlay_settings_fallback">"Android parametrləri → Xüsusi giriş → Digər tətbiqlərin üzərində → Dose"</string>
-    <string name="finish_reminder_setup">"Qurulmanı tamamlayın"</string>
     <string name="notification_feed">"Bildirişlər lenti"</string>
     <string name="notification_feed_hint">"Lentdə qəbul, təxirə salma və buraxma düyməli xatırlatmalar."</string>
     <string name="pop_up_over_other_apps">"Digər tətbiqlərin üzərində pəncərə"</string>
     <string name="overlay_hint">"Açıq tətbiqin üzərində dərman pəncərəsi göstər."</string>
-    <string name="reminders_disabled_hint">"Hər iki üsul söndürüləcək. Cədvəllər saxlanacaq."</string>
-    <string name="reminder_ready_hint">"İcazələr hazır olduqda zəng bənövşəyi olacaq."</string>
-    <string name="display_over_other_apps">"Digər tətbiqlərin üzərində göstər"</string>
-    <string name="exact_alarms">"Dəqiq siqnallar"</string>
     <string name="notification_access_hint">"Dose və dərman xatırlatma kanalına bildiriş icazəsi verin. İmtinadan sonra Android parametrləri açılacaq."</string>
     <string name="overlay_access_hint">"Android parametrlərində Dose üçün digər tətbiqlərin üzərində göstərməni aktiv edin və qayıdın."</string>
     <string name="exact_alarm_access_hint">"Tətbiq bağlı olduqda vaxtında xatırlatma üçün Dose siqnallarına və xatırlatmalarına icazə verin."</string>
-    <string name="your_reminder_setup_is_ready">"Xatırlatmalar hazırdır."</string>
     <string name="sound_notification_settings">"Səs və bildirişlər"</string>
     <string name="overlay_error">"Pəncərə açılmadı. Digər tətbiqlərin üzərində göstərmə icazəsini yoxlayın."</string>
     <string name="test_pop_up">"Pəncərəni sına"</string>
     <string name="popup_feed_disabled_hint">"Lent sönülü olduqda pəncərə bağlandıqdan sonra doza bildirişi qalmır. Pəncərə açıqkən Android müvəqqəti bildiriş göstərə bilər."</string>
-    <string name="turn_off_reminders">"Xatırlatmaları söndür"</string>
-    <string name="allow_notifications">"Bildirişlərə icazə ver"</string>
-    <string name="allow_pop_ups">"Pəncərələrə icazə ver"</string>
-    <string name="allow_exact_alarms">"Dəqiq siqnallara icazə ver"</string>
     <string name="done">"Hazırdır"</string>
-    <string name="ready">"Hazırdır"</string>
-    <string name="access_needed">"İcazə lazımdır"</string>
     <string name="time_to_take">"Qəbula qədər vaxt"</string>
     <string name="all_time">"Bütün dövr"</string>
     <string name="duration_0_min">"0 dəq"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Bildirişlər %1$s tarixinədək dayandırılıb"</string>
     <string name="resume_notifications">"Bildirişləri indi bərpa et"</string>
     <string name="pause_time_error">"Müsbət müddət daxil edin və ya gələcək tarix və vaxt seçin."</string>
+    <string name="reminders_disabled_hint">"Xatırlatmalar söndürülüb. Dərman cədvəlləriniz saxlanılır."</string>
 </resources>

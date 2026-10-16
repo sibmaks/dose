@@ -99,30 +99,18 @@
     <string name="every_day">"Every day"</string>
     <string name="notification_settings_fallback">"Open Android Settings → Apps → Dose → Notifications"</string>
     <string name="overlay_settings_fallback">"Open Android Settings → Special app access → Display over other apps → Dose"</string>
-    <string name="finish_reminder_setup">"Finish reminder setup"</string>
     <string name="notification_feed">"Notification feed"</string>
     <string name="notification_feed_hint">"Keep reminders in your notification feed, with Taken, Snooze, and Skip actions."</string>
     <string name="pop_up_over_other_apps">"Pop-up over other apps"</string>
     <string name="overlay_hint">"Show a medication window above the app you are using."</string>
-    <string name="reminders_disabled_hint">"Both reminder styles will be turned off. Your medication schedules stay saved."</string>
-    <string name="reminder_ready_hint">"The bell turns purple when access for your chosen reminder styles is ready."</string>
-    <string name="display_over_other_apps">"Display over other apps"</string>
-    <string name="exact_alarms">"Exact alarms"</string>
     <string name="notification_access_hint">"Allow notifications for Dose and its Medication reminders channel. If you previously denied access, Android settings will open."</string>
     <string name="overlay_access_hint">"Enable Display over other apps for Dose in Android settings, then return here."</string>
     <string name="exact_alarm_access_hint">"Allow Alarms &amp; reminders for Dose so reminders can arrive on time while the app is closed."</string>
-    <string name="your_reminder_setup_is_ready">"Your reminder setup is ready."</string>
     <string name="sound_notification_settings">"Sound &amp; notification settings"</string>
     <string name="overlay_error">"Android could not open the pop-up. Check display-over-apps access."</string>
     <string name="test_pop_up">"Test pop-up"</string>
     <string name="popup_feed_disabled_hint">"With feed notifications off, there is no dose notification to return to after the pop-up closes. Android may still show a temporary notification while the pop-up is open."</string>
-    <string name="turn_off_reminders">"Turn off reminders"</string>
-    <string name="allow_notifications">"Allow notifications"</string>
-    <string name="allow_pop_ups">"Allow pop-ups"</string>
-    <string name="allow_exact_alarms">"Allow exact alarms"</string>
     <string name="done">"Done"</string>
-    <string name="ready">"Ready"</string>
-    <string name="access_needed">"Access needed"</string>
     <string name="time_to_take">"Time to take"</string>
     <string name="all_time">"All time"</string>
     <string name="duration_0_min">"0 min"</string>
@@ -244,4 +232,5 @@
     <string name="notifications_paused_until">"Notifications paused until %1$s"</string>
     <string name="resume_notifications">"Resume notifications now"</string>
     <string name="pause_time_error">"Enter a positive duration or choose a future date and time."</string>
+    <string name="reminders_disabled_hint">"Reminders are off. Your medication schedules stay saved."</string>
 </resources>

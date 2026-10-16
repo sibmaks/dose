@@ -99,30 +99,18 @@
     <string name="every_day">"Кожны дзень"</string>
     <string name="notification_settings_fallback">"Налады Android → Праграмы → Dose → Апавяшчэнні"</string>
     <string name="overlay_settings_fallback">"Налады Android → Спецыяльны доступ → Па-над іншымі праграмамі → Dose"</string>
-    <string name="finish_reminder_setup">"Завяршыце наладку"</string>
     <string name="notification_feed">"Стужка апавяшчэнняў"</string>
     <string name="notification_feed_hint">"Напаміны ў стужцы з кнопкамі прыёму, адкладання і пропуску."</string>
     <string name="pop_up_over_other_apps">"Акно па-над праграмамі"</string>
     <string name="overlay_hint">"Паказваць акно прыёму па-над адкрытай праграмай."</string>
-    <string name="reminders_disabled_hint">"Абодва спосабы будуць выключаны. Расклады застануцца."</string>
-    <string name="reminder_ready_hint">"Званочак стане фіялетавым, калі дазволы будуць дадзены."</string>
-    <string name="display_over_other_apps">"Па-над іншымі праграмамі"</string>
-    <string name="exact_alarms">"Дакладныя напаміны"</string>
     <string name="notification_access_hint">"Дазвольце апавяшчэнні Dose і канал напамінаў пра лекі. Пасля адмовы адкрыюцца налады Android."</string>
     <string name="overlay_access_hint">"Уключыце паказ па-над праграмамі для Dose у наладах Android і вярніцеся сюды."</string>
     <string name="exact_alarm_access_hint">"Дазвольце будзільнікі і напаміны для Dose, каб атрымліваць іх своечасова пры закрытай праграме."</string>
-    <string name="your_reminder_setup_is_ready">"Напаміны наладжаны."</string>
     <string name="sound_notification_settings">"Гук і апавяшчэнні"</string>
     <string name="overlay_error">"Не ўдалося адкрыць акно. Праверце дазвол паказу па-над праграмамі."</string>
     <string name="test_pop_up">"Праверыць акно"</string>
     <string name="popup_feed_disabled_hint">"Пры выключанай стужцы пасля закрыцця акна апавяшчэння пра дозу не будзе. Пакуль акно адкрыта, Android можа паказваць часовае апавяшчэнне."</string>
-    <string name="turn_off_reminders">"Выключыць напаміны"</string>
-    <string name="allow_notifications">"Дазволіць апавяшчэнні"</string>
-    <string name="allow_pop_ups">"Дазволіць вокны"</string>
-    <string name="allow_exact_alarms">"Дазволіць дакладныя напаміны"</string>
     <string name="done">"Гатова"</string>
-    <string name="ready">"Гатова"</string>
-    <string name="access_needed">"Патрэбны доступ"</string>
     <string name="time_to_take">"Час да прыёму"</string>
     <string name="all_time">"Увесь час"</string>
     <string name="duration_0_min">"0 хв"</string>
@@ -242,4 +230,5 @@
     <string name="notifications_paused_until">"Апавяшчэнні прыпынены да %1$s"</string>
     <string name="resume_notifications">"Аднавіць апавяшчэнні зараз"</string>
     <string name="pause_time_error">"Увядзіце дадатную працягласць або выберыце будучую дату і час."</string>
+    <string name="reminders_disabled_hint">"Напаміны выключаны. Вашы расклады прыёму лекаў захаваны."</string>
 </resources>

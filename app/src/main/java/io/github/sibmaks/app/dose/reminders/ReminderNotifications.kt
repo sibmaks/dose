@@ -33,11 +33,11 @@ object ReminderNotifications {
         return runtimePermissionGranted(context) && appAllowed(context) && channel?.importance != NotificationManager.IMPORTANCE_NONE
     }
 
-    fun openSettings(context: Context) {
+    fun settingsIntent(context: Context): Intent {
         createChannel(context)
         val intent = if (runtimePermissionGranted(context) && appAllowed(context)) {
             Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_CHANNEL_ID, ReminderReceiver.CHANNEL_ID)
         } else Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-        context.startActivity(intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
+        return intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
     }
 }
