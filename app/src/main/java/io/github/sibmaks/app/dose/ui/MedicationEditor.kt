@@ -71,6 +71,8 @@ internal fun MedicationEditor(
     var showColorPicker by remember { mutableStateOf(false) }
     val colorUsage = remember { DoseStore.colorUsage(context) }
     val medications = remember { DoseStore.medications(context) }
+    val dictionary = remember { MedicationDictionary.load(context) }
+    val language = AppLanguages.locale(context).language
     val steps = MedicationEditorFlow.steps(form)
     val position = steps.indexOf(step)
     val scroll = rememberScrollState()
@@ -130,7 +132,7 @@ internal fun MedicationEditor(
                                 isError = showValidation && name.isBlank(),
                                 supportingText = { if (showValidation && name.isBlank()) Text(context.getString(R.string.name_required)) },
                                 label = { Text(context.getString(R.string.medication_name)) }, placeholder = { Text(context.getString(R.string.start_typing_a_name)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                            val suggestions = if (showSuggestions) MedicationDictionary.suggestions(name, medications) else emptyList()
+                            val suggestions = if (showSuggestions) dictionary.suggestions(name, medications, language = language) else emptyList()
                             if (suggestions.isNotEmpty()) {
                                 Text(context.getString(R.string.name_suggestions), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                 suggestions.forEach { suggestion ->

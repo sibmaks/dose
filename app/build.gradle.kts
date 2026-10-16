@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.Test
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -46,4 +48,11 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.vaadin.external.google:android-json:0.0.20131108.vaadin1")
+}
+
+// Catalog-only edits must rerun the tests that validate and search the shipping asset.
+tasks.withType<Test>().configureEach {
+    inputs.file(layout.projectDirectory.file("src/main/assets/medication-dictionary.json"))
+        .withPropertyName("medicationDictionary")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
 }

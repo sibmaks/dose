@@ -1,0 +1,115 @@
+{
+  "paracetamol": {
+    "localizations": {
+      "en": ["Paracetamol"],
+      "ru": ["Парацетамол"]
+    },
+    "forms": ["PILL", "CAPSULE", "LIQUID"],
+    "aliases": ["acetaminophen"]
+  },
+  "ibuprofen": {
+    "localizations": {
+      "en": ["Ibuprofen"],
+      "ru": ["Ибупрофен"]
+    },
+    "forms": ["PILL", "CAPSULE", "LIQUID"],
+    "aliases": []
+  },
+  "amoxicillin": {
+    "localizations": {
+      "en": ["Amoxicillin"],
+      "ru": ["Амоксициллин"]
+    },
+    "forms": ["CAPSULE", "LIQUID"],
+    "aliases": []
+  },
+  "cetirizine": {
+    "localizations": {
+      "en": ["Cetirizine"],
+      "ru": ["Цетиризин"]
+    },
+    "forms": ["PILL", "LIQUID"],
+    "aliases": []
+  },
+  "omeprazole": {
+    "localizations": {
+      "en": ["Omeprazole"],
+      "ru": ["Омепразол"]
+    },
+    "forms": ["CAPSULE", "PILL", "LIQUID"],
+    "aliases": []
+  },
+  "hydrocortisone": {
+    "localizations": {
+      "en": ["Hydrocortisone"],
+      "ru": ["Гидрокортизон"]
+    },
+    "forms": ["CREAM"],
+    "aliases": []
+  },
+  "vitamin_d3": {
+    "localizations": {
+      "en": ["Vitamin D3"],
+      "ru": ["Витамин D3", "Колекальциферол", "Холекальциферол"]
+    },
+    "forms": ["PILL", "CAPSULE", "DROPS", "LIQUID"],
+    "aliases": ["colecalciferol", "cholecalciferol"]
+  },
+  "calcium": {
+    "localizations": {
+      "en": ["Calcium"],
+      "ru": ["Кальций"]
+    },
+    "forms": ["PILL"],
+    "aliases": []
+  },
+  "alfacalcidol": {
+    "localizations": {
+      "en": ["Alfacalcidol"],
+      "ru": ["Альфакальцидол", "Альфокальцидол"]
+    },
+    "forms": ["CAPSULE", "DROPS"],
+    "aliases": []
+  },
+  "loratadine": {
+    "localizations": {
+      "en": ["Loratadine"],
+      "ru": ["Лоратадин"]
+    },
+    "forms": ["PILL", "LIQUID"],
+    "aliases": []
+  },
+  "metformin": {
+    "localizations": {
+      "en": ["Metformin"],
+      "ru": ["Метформин"]
+    },
+    "forms": ["PILL", "LIQUID"],
+    "aliases": []
+  },
+  "levothyroxine": {
+    "localizations": {
+      "en": ["Levothyroxine"],
+      "ru": ["Левотироксин", "Левотероксин", "Тироксин", "Л-тироксин", "Тероксин"]
+    },
+    "forms": ["PILL", "LIQUID"],
+    "aliases": ["thyroxine"]
+  },
+  "insulin": {
+    "localizations": {
+      "en": ["Insulin"],
+      "ru": ["Инсулин"]
+    },
+    "forms": ["INJECTION"],
+    "aliases": []
+  },
+  "salbutamol": {
+    "localizations": {
+      "en": ["Salbutamol"],
+      "ru": ["Сальбутамол"]
+    },
+    "forms": ["OTHER"],
+    "aliases": ["albuterol"],
+    "customForm": "Inhaler"
+  }
+}
