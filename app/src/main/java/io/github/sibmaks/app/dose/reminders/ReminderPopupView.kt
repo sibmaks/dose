@@ -29,7 +29,7 @@ internal object ReminderPopupView {
 
     data class Entry(val medication: Medication, val time: String, val allowOnTime: Boolean = false, val onAction: (String) -> Unit)
 
-    fun create(context: Context, preview: Boolean, entries: List<Entry>, keepNotification: Boolean, onLater: () -> Unit): ScrollView {
+    fun create(context: Context, entries: List<Entry>, keepNotification: Boolean, onLater: () -> Unit): ScrollView {
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
         fun shape(color: Int, radius: Int, stroke: Int? = null) = GradientDrawable().apply {
             setColor(color)
@@ -68,9 +68,7 @@ internal object ReminderPopupView {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(18), dp(20), dp(18), dp(16))
         }
-        content.addView(text(if (preview) context.getString(R.string.test_reminder) else context.getString(R.string.time_for_your_medication), 20f, true))
-        if (preview) content.addView(text(context.getString(R.string.popup_preview_hint), 13f, color = muted),
-            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(8) })
+        content.addView(text(context.getString(R.string.time_for_your_medication), 20f, true))
         entries.forEach { entry ->
             val medication = entry.medication
             val medicationColor = Color.parseColor(MedicationColors.hex(medication.color))
@@ -120,7 +118,7 @@ internal object ReminderPopupView {
             content.addView(card, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(14) })
         }
-        content.addView(pill(if (preview) context.getString(R.string.close_test) else if (keepNotification) context.getString(R.string.later_keep_notification) else context.getString(R.string.later), quiet = true, onClick = onLater),
+        content.addView(pill(if (keepNotification) context.getString(R.string.later_keep_notification) else context.getString(R.string.later), quiet = true, onClick = onLater),
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(16) })
         return ScrollView(context).apply {
             background = shape(Color.WHITE, 24)

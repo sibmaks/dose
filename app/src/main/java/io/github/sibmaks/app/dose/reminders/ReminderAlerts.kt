@@ -64,10 +64,6 @@ object ReminderAlerts {
         if (NotificationPause.isPaused(context) || !enabled(context) || !permissionGranted(context)) return
         start(context, slot.putInto(Intent(context, ReminderOverlayService::class.java)))
     }
-    fun preview(context: Context): Boolean {
-        if (NotificationPause.isPaused(context) || !permissionGranted(context)) return false
-        return start(context, Intent(context, ReminderOverlayService::class.java).putExtra(ReminderOverlayService.EXTRA_PREVIEW, true))
-    }
     private fun start(context: Context, intent: Intent): Boolean = try {
         context.startForegroundService(intent)
         true
