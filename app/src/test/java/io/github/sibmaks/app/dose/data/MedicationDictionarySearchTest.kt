@@ -5,7 +5,7 @@ import org.junit.Test
 import java.util.Locale
 import kotlin.random.Random
 
-/** Compare indexed retrieval with the original scan, preserving ranking and candidate boundaries. */
+/** Compare indexed retrieval with a linear scan while returning independently selectable names. */
 class MedicationDictionarySearchTest {
     private val catalog = MedicationDictionaryTestAsset.load()
     private fun normalize(value: String) = value.trim().lowercase(Locale.ROOT).replace('ё', 'е')
@@ -25,19 +25,20 @@ class MedicationDictionarySearchTest {
         val own = saved.filter { matches(it.name, parts) || codesByName[normalize(it.name)] in codes }
             .sortedBy { if (normalize(it.name) == normalized) 0 else 1 }
             .map { MedicationSuggestion(it.name, it.form, it.customForm, saved = true, code = codesByName[normalize(it.name)]) }
-        val candidates = matching.sortedBy { entry ->
-            when {
-                entry.names(language).any { normalize(it) == normalized } -> 0
-                entry.names(language).any { matches(it, parts) } -> 1
+        val candidates = matching.flatMap { entry -> entry.names(language).map { name ->
+            val rank = when {
+                normalize(name) == normalized -> 0
+                matches(name, parts) -> 1
                 names.getValue(entry).any { normalize(it) == normalized } -> 2
                 names.getValue(entry).any { matches(it, parts) } -> 3
                 else -> 4
             }
-        }.map { MedicationSuggestion(it.names(language).first(), it.forms.first(), it.customForm, code = it.code) }
-        return (own + candidates).distinctBy { it.code?.let { code -> "code:$code" } ?: "name:${normalize(it.name)}" }.take(limit)
+            rank to MedicationSuggestion(name, entry.forms.first(), entry.customForm, code = entry.code)
+        } }.sortedBy { it.first }.map { it.second }
+        return (own + candidates).distinctBy { it.code to normalize(it.name) }.take(limit)
     }
 
-    @Test fun `index matches original retrieval across scripts prefixes aliases and saved variants`() {
+    @Test fun `index matches a linear variant search across scripts prefixes aliases and saved variants`() {
         val saved = listOf(
             Medication("saved", "Paracetamol", "1", "ml", listOf(DoseSchedule()), form = MedicationForm.LIQUID),
             Medication("custom", "My custom medicine", "1", "mg", listOf(DoseSchedule())),
@@ -47,7 +48,7 @@ class MedicationDictionarySearchTest {
             .distinct().shuffled(Random(16)).take(60)
         val queries = samples + listOf("Кальций", "Тероксин", "витамин d", "ins gl", "acetaminophen", "my cust", "  ПАРА  ", "missing term", "a", "!!!")
         for (language in listOf("en", "ru", "be", "hy", "az", "kk", "ky", "ro", "tg", "tk", "uz", "uk", "ka", "ru_RU")) {
-            for (query in queries) for (limit in listOf(1, 5)) {
+            for (query in queries) for (limit in listOf(1, 5, Int.MAX_VALUE)) {
                 assertEquals("$language / $query / $limit", scan(query, saved, limit, language), catalog.suggestions(query, saved, limit, language))
             }
         }

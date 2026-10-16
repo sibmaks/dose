@@ -29,18 +29,15 @@ class MedicationDictionaryJsonTest {
         assertEquals(MedicationForm.PILL, catalog.findByCode("paracetamol")!!.forms.first())
         assertTrue(catalog.findByCode("paracetamol")!!.forms.containsAll(listOf(MedicationForm.PILL, MedicationForm.CAPSULE, MedicationForm.LIQUID)))
         assertEquals(listOf(MedicationForm.INHALER), catalog.entries.single { it.code == "salbutamol" }.forms)
-        assertEquals("levothyroxine", catalog.suggestions("Левотероксин", language = "ru").single().code)
+        assertEquals("levothyroxine", catalog.suggestions("Левотероксин", language = "ru").first().code)
     }
-    @Test fun `each localization can supply multiple searchable names with one stable result`() {
-        val dictionary = dictionary()
-        val preferred = dictionary.suggestions("Тест", language = "ru").single()
-        val alternate = dictionary.suggestions("Другой тест", language = "ru").single()
-        val alias = dictionary.suggestions("shortcut", language = "ru").single()
-        assertEquals("Тест", preferred.name)
-        assertEquals(preferred, alternate)
-        assertEquals(preferred, alias)
-        assertEquals("test_medicine", alias.code)
-        assertEquals(MedicationForm.CAPSULE, alias.form)
+    @Test fun `each localization exposes every name variant under the same stable code`() {
+        val catalog = dictionary()
+        assertEquals(listOf("Тест", "Другой тест"), catalog.suggestions("Тест", language = "ru").map { it.name })
+        assertEquals(listOf("Другой тест", "Тест"), catalog.suggestions("Другой тест", language = "ru").map { it.name })
+        val aliases = catalog.suggestions("shortcut", language = "ru")
+        assertEquals(listOf("Тест", "Другой тест"), aliases.map { it.name })
+        assertTrue(aliases.all { it.code == "test_medicine" && it.form == MedicationForm.CAPSULE })
     }
     @Test fun `every app language can select its primary JSON name`() {
         val value = entry()
@@ -49,17 +46,17 @@ class MedicationDictionaryJsonTest {
         }
         val catalog = dictionary(value)
         AppLanguages.supported.forEach { language ->
-            val result = catalog.suggestions("shortcut", language = language.tag).single()
-            assertEquals("Display-${language.tag}", result.name)
-            assertEquals("test_medicine", result.code)
+            val results = catalog.suggestions("shortcut", language = language.tag)
+            assertEquals(listOf("Display-${language.tag}", "Alternative-${language.tag}"), results.map { it.name })
+            assertTrue(results.all { it.code == "test_medicine" })
         }
     }
     @Test fun `display uses app language rather than query script and falls back to English`() {
         val catalog = dictionary()
-        assertEquals("Тест", catalog.suggestions("shortcut", language = "ru").single().name)
+        assertEquals(listOf("Тест", "Другой тест"), catalog.suggestions("shortcut", language = "ru").map { it.name })
         assertEquals("Test medicine", catalog.suggestions("Другой тест", language = "en").single().name)
         assertEquals("Test medicine", catalog.suggestions("shortcut", language = "hy").single().name)
-        assertEquals("Тест", catalog.suggestions("shortcut", language = "ru_RU").single().name)
+        assertEquals("Тест", catalog.suggestions("shortcut", language = "ru_RU").first().name)
     }
     @Test fun `a regional translation takes priority over the base language`() {
         val value = entry()
@@ -68,19 +65,41 @@ class MedicationDictionaryJsonTest {
         assertEquals("Regional medicine", catalog.suggestions("shortcut", language = "en-GB").single().name)
         assertEquals("Test medicine", catalog.suggestions("shortcut", language = "en-AU").single().name)
     }
-    @Test fun `saved names and forms win across translated queries without duplicates`() {
+    @Test fun `saved names and forms win without hiding other spellings across translated queries`() {
         val catalog = dictionary()
         val results = catalog.suggestions("Другой тест", listOf(medication("Test medicine")), language = "ru")
-        assertEquals(1, results.size)
-        assertTrue(results.single().saved)
-        assertEquals("Test medicine", results.single().name)
-        assertEquals(MedicationForm.LIQUID, results.single().form)
-        assertEquals("test_medicine", results.single().code)
+        assertEquals(listOf("Test medicine", "Другой тест", "Тест"), results.map { it.name })
+        assertTrue(results.first().saved)
+        assertEquals(MedicationForm.LIQUID, results.first().form)
+        assertTrue(results.all { it.code == "test_medicine" })
     }
-    @Test fun `an alias search also preserves the saved spelling`() {
-        val result = dictionary().suggestions("shortcut", listOf(medication("Другой тест")), language = "en").single()
-        assertEquals("Другой тест", result.name)
-        assertTrue(result.saved)
+    @Test fun `saved spelling replaces its catalog copy but leaves alternate names available`() {
+        val results = dictionary().suggestions("shortcut", listOf(medication("Другой тест")), language = "ru")
+        assertEquals(listOf("Другой тест", "Тест"), results.map { it.name })
+        assertTrue(results.first().saved)
+        assertFalse(results.last().saved)
+    }
+    @Test fun `default suggestions include every variant beyond the old five-result cap`() {
+        val value = entry()
+        val names = (1..12).map { "Test variant $it" }
+        value.getJSONObject("localizations").put("en", JSONArray(names))
+        val catalog = dictionary(value)
+        assertEquals(names, catalog.suggestions("Test").map { it.name })
+        assertEquals(names.take(3), catalog.suggestions("Test", limit = 3).map { it.name })
+        assertEquals("Test variant 12", catalog.suggestions("Test variant 12").first().name)
+    }
+    @Test fun `different saved variants stay available and replace only their own catalog spelling`() {
+        val saved = listOf(medication("Тест"), medication("Другой тест").copy(id = "second"))
+        val results = dictionary().suggestions("Тест", saved, language = "ru")
+        assertEquals(listOf("Тест", "Другой тест"), results.map { it.name })
+        assertTrue(results.all { it.saved })
+        assertEquals(listOf("test_medicine", "test_medicine"), results.map { it.code })
+    }
+    @Test fun `equal visible names for different catalog codes are not merged`() {
+        val json = JSONObject().put("first", entry()).put("second", entry())
+        val results = MedicationDictionary.fromJson(json.toString()).suggestions("Test", language = "en")
+        assertEquals(setOf("first", "second"), results.map { it.code }.toSet())
+        assertEquals(2, results.size)
     }
     @Test fun `duplicate top level codes cannot silently overwrite a medicine`() {
         rejected("""{"duplicate":${entry()},"duplicate":${entry()}}""")

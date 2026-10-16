@@ -71,7 +71,7 @@ class MedicationDictionary private constructor(val entries: List<MedicationDicti
     private val codesByName = index.flatMap { item -> (item.names + item.entry.aliases).map { normalize(it) to item.entry.code } }
         .groupBy({ it.first }, { it.second }).mapValues { (_, codes) -> codes.distinct().singleOrNull() }
 
-    fun suggestions(query: String, saved: List<Medication> = emptyList(), limit: Int = 5, language: String = "en"): List<MedicationSuggestion> {
+    fun suggestions(query: String, saved: List<Medication> = emptyList(), limit: Int = Int.MAX_VALUE, language: String = "en"): List<MedicationSuggestion> {
         val text = normalize(query)
         val queryWords = words(text)
         if (text.length < 2 || queryWords.isEmpty() || limit <= 0) return emptyList()
@@ -80,22 +80,22 @@ class MedicationDictionary private constructor(val entries: List<MedicationDicti
         val own = saved.filter { matches(words(it.name), queryWords) || codesByName[normalize(it.name)] in matchingCodes }
             .sortedBy { if (normalize(it.name) == text) 0 else 1 }
             .map { MedicationSuggestion(it.name, it.form, it.customForm, saved = true, code = codesByName[normalize(it.name)]) }
-        val catalog = matchingEntries
-            .sortedBy { item ->
-                val preferred = item.entry.names(language)
-                when {
-                    preferred.any { normalize(it) == text } -> 0
-                    preferred.any { matches(words(it), queryWords) } -> 1
+        val catalog = matchingEntries.flatMap { item ->
+            val entry = item.entry
+            entry.names(language).map { name ->
+                val rank = when {
+                    normalize(name) == text -> 0
+                    matches(words(name), queryWords) -> 1
                     item.names.any { normalize(it) == text } -> 2
                     item.names.any { matches(words(it), queryWords) } -> 3
                     else -> 4
                 }
-            }.map { item ->
-                val entry = item.entry
-                MedicationSuggestion(entry.names(language).first(), entry.forms.first(), entry.customForm, code = entry.code)
+                rank to MedicationSuggestion(name, entry.forms.first(), entry.customForm, code = entry.code)
             }
-        // One suggestion per code across localized names and aliases; saved variants keep priority.
-        return (own + catalog).distinctBy { it.code?.let { code -> "code:$code" } ?: "name:${normalize(it.name)}" }.take(limit)
+        }.sortedBy { it.first }.map { it.second }
+        // Variants share a catalog code but remain independently selectable. Saved copies
+        // replace only the same spelling, preserving other localized names of that medicine.
+        return (own + catalog).distinctBy { it.code to normalize(it.name) }.take(limit)
     }
 
     companion object {

@@ -20,11 +20,21 @@ class MedicationEntryTest {
         assertEquals(listOf("Кальций"), results.map { it.name })
         assertEquals(listOf("Кальций"), dictionary.suggestions("кальц", language = "ru").map { it.name })
     }
-    @Test fun thyroidAndAlfacalcidolSpellingVariantsShowExplicitCanonicalNames() {
-        assertEquals("Левотироксин", dictionary.suggestions("Тероксин", language = "ru").single().name)
-        assertEquals("Левотироксин", dictionary.suggestions("Тироксин", language = "ru").single().name)
-        assertEquals("Альфакальцидол", dictionary.suggestions("Альфокальцидол", language = "ru").single().name)
-        assertEquals(MedicationForm.CAPSULE, dictionary.suggestions("Альфакальцидол", language = "ru").single().form)
+    @Test fun thyroidAndAlfacalcidolVariantsRemainSelectableAndExactMatchesComeFirst() {
+        assertEquals("Тероксин", dictionary.suggestions("Тероксин", language = "ru").first().name)
+        assertEquals("Тироксин", dictionary.suggestions("Тироксин", language = "ru").first().name)
+        assertEquals(listOf("Альфакальцидол", "Альфокальцидол"), dictionary.suggestions("Альф", language = "ru").map { it.name })
+        assertEquals("Альфокальцидол", dictionary.suggestions("Альфокальцидол", language = "ru").first().name)
+        assertTrue(dictionary.suggestions("Альф", language = "ru").all { it.form == MedicationForm.CAPSULE && it.code == "alfacalcidol" })
+    }
+    @Test fun selectedAlternateNamePersistsWithItsOwnSpellingAndSuggestedForm() {
+        val selected = dictionary.suggestions("Альф", language = "ru").single { it.name == "Альфокальцидол" }
+        val med = DoseStore.newMedication(selected.name, "1", DoseUnits.defaultFor(selected.form),
+            listOf(DoseSchedule()), "", "violet", selected.form)
+        val restored = MedicationJson.decode(MedicationJson.encode(med))!!
+        assertEquals("Альфокальцидол", restored.name)
+        assertEquals(MedicationForm.CAPSULE, restored.form)
+        assertEquals("capsule", restored.quantity)
     }
     @Test fun savedVariantsShareOneNameSuggestionAndKeepTheirForm() {
         val results = dictionary.suggestions("para", listOf(medication("Paracetamol", MedicationForm.LIQUID), medication("Paracetamol")))
