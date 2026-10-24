@@ -94,6 +94,13 @@
     <string name="amount">"Миқдор *"</string>
     <string name="e_g_500">"Масалан, 500"</string>
     <string name="unit">"Воҳид *"</string>
+    <string name="unit_list_mode">"Аз рӯйхат"</string>
+    <string name="unit_custom_mode">"Воҳиди худ"</string>
+    <string name="unit_custom_name">"Номи воҳид *"</string>
+    <string name="unit_custom_placeholder">"Масалан, баста"</string>
+    <string name="unit_custom_hint">"Воҳиди ченкунии худ ё шакли доруро ворид кунед"</string>
+    <string name="unit_custom_required">"Номи воҳидро ворид кунед."</string>
+    <string name="amount_positive">"Миқдор бояд аз нул калон бошад."</string>
     <string name="choose_below_or_type_your_own">"Аз поён интихоб ё худ ворид кунед"</string>
     <string name="when_should_dose_remind_you">"Кай ёдрас кунем?"</string>
     <string name="add_another_schedule">"Иловаи ҷадвал"</string>

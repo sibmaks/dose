@@ -95,6 +95,13 @@
     <string name="amount">"Amount *"</string>
     <string name="e_g_500">"e.g. 500"</string>
     <string name="unit">"Unit *"</string>
+    <string name="unit_list_mode">"From list"</string>
+    <string name="unit_custom_mode">"Custom unit"</string>
+    <string name="unit_custom_name">"Unit name *"</string>
+    <string name="unit_custom_placeholder">"e.g. sachet"</string>
+    <string name="unit_custom_hint">"Enter your own unit of measurement or medication form"</string>
+    <string name="unit_custom_required">"Enter the unit name."</string>
+    <string name="amount_positive">"Quantity must be greater than zero."</string>
     <string name="choose_below_or_type_your_own">"Choose below or type your own"</string>
     <string name="when_should_dose_remind_you">"When should Dose remind you?"</string>
     <string name="add_another_schedule">"Add another schedule"</string>

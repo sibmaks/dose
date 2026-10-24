@@ -94,6 +94,13 @@
     <string name="amount">"Քանակ *"</string>
     <string name="e_g_500">"Օրինակ՝ 500"</string>
     <string name="unit">"Միավոր *"</string>
+    <string name="unit_list_mode">"Ցանկից"</string>
+    <string name="unit_custom_mode">"Սեփական միավոր"</string>
+    <string name="unit_custom_name">"Միավորի անվանում *"</string>
+    <string name="unit_custom_placeholder">"Օրինակ՝ փաթեթ"</string>
+    <string name="unit_custom_hint">"Մուտքագրեք ձեր չափման միավորը կամ դեղի ձևը"</string>
+    <string name="unit_custom_required">"Մուտքագրեք միավորի անվանումը:"</string>
+    <string name="amount_positive">"Քանակը պետք է լինի զրոյից մեծ:"</string>
     <string name="choose_below_or_type_your_own">"Ընտրեք ստորև կամ մուտքագրեք ձերը"</string>
     <string name="when_should_dose_remind_you">"Ե՞րբ հիշեցնել։"</string>
     <string name="add_another_schedule">"Ավելացնել ժամանակացույց"</string>

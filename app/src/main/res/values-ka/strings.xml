@@ -94,6 +94,13 @@
     <string name="amount">"რაოდენობა *"</string>
     <string name="e_g_500">"მაგალითად, 500"</string>
     <string name="unit">"ერთეული *"</string>
+    <string name="unit_list_mode">"სიიდან"</string>
+    <string name="unit_custom_mode">"საკუთარი ერთეული"</string>
+    <string name="unit_custom_name">"ერთეულის დასახელება *"</string>
+    <string name="unit_custom_placeholder">"მაგალითად, პაკეტი"</string>
+    <string name="unit_custom_hint">"შეიყვანეთ თქვენი გაზომვის ერთეული ან წამლის ფორმა"</string>
+    <string name="unit_custom_required">"შეიყვანეთ ერთეულის დასახელება."</string>
+    <string name="amount_positive">"რაოდენობა ნულზე მეტი უნდა იყოს."</string>
     <string name="choose_below_or_type_your_own">"აირჩიეთ ქვემოთ ან შეიყვანეთ საკუთარი"</string>
     <string name="when_should_dose_remind_you">"როდის შეგახსენოთ?"</string>
     <string name="add_another_schedule">"სხვა განრიგის დამატება"</string>

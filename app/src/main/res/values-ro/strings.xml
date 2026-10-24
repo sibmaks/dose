@@ -94,6 +94,13 @@
     <string name="amount">"Cantitate *"</string>
     <string name="e_g_500">"De ex. 500"</string>
     <string name="unit">"Unitate *"</string>
+    <string name="unit_list_mode">"Din listă"</string>
+    <string name="unit_custom_mode">"Unitate proprie"</string>
+    <string name="unit_custom_name">"Denumirea unității *"</string>
+    <string name="unit_custom_placeholder">"de exemplu, plic"</string>
+    <string name="unit_custom_hint">"Introduceți propria unitate de măsură sau forma medicamentului"</string>
+    <string name="unit_custom_required">"Introduceți denumirea unității."</string>
+    <string name="amount_positive">"Cantitatea trebuie să fie mai mare decât zero."</string>
     <string name="choose_below_or_type_your_own">"Alege mai jos sau scrie propria unitate"</string>
     <string name="when_should_dose_remind_you">"Când să te anunțe Dose?"</string>
     <string name="add_another_schedule">"Adaugă alt program"</string>

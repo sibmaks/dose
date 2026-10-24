@@ -94,6 +94,13 @@
     <string name="amount">"Колькасць *"</string>
     <string name="e_g_500">"Напрыклад, 500"</string>
     <string name="unit">"Адзінка *"</string>
+    <string name="unit_list_mode">"Со спісу"</string>
+    <string name="unit_custom_mode">"Своя адзінка"</string>
+    <string name="unit_custom_name">"Назва адзінкі *"</string>
+    <string name="unit_custom_placeholder">"Напрыклад, пакетік"</string>
+    <string name="unit_custom_hint">"Увядзіце сваю адзінку вымярэння або форму лекаў"</string>
+    <string name="unit_custom_required">"Увядзіце назву адзінкі."</string>
+    <string name="amount_positive">"Колькасць павінна быць больш за нуль."</string>
     <string name="choose_below_or_type_your_own">"Выберыце ніжэй ці ўвядзіце сваю"</string>
     <string name="when_should_dose_remind_you">"Калі нагадаць?"</string>
     <string name="add_another_schedule">"Дадаць расклад"</string>

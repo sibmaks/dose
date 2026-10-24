@@ -94,6 +94,13 @@
     <string name="amount">"Өлчөм *"</string>
     <string name="e_g_500">"Мисалы, 500"</string>
     <string name="unit">"Бирдик *"</string>
+    <string name="unit_list_mode">"Тизмеден"</string>
+    <string name="unit_custom_mode">"Өз бирдиги"</string>
+    <string name="unit_custom_name">"Бирдик аталышы *"</string>
+    <string name="unit_custom_placeholder">"Мисалы, пакет"</string>
+    <string name="unit_custom_hint">"Өз өлчөө бирдигиңизди же дары түрүн жазыңыз"</string>
+    <string name="unit_custom_required">"Бирдик аталышын жазыңыз."</string>
+    <string name="amount_positive">"Мөлшөр нөлдөн чоң болушу керек."</string>
     <string name="choose_below_or_type_your_own">"Төмөндөн тандаңыз же өзүңүз жазыңыз"</string>
     <string name="when_should_dose_remind_you">"Качан эскертүү керек?"</string>
     <string name="add_another_schedule">"Жадыбал кошуу"</string>

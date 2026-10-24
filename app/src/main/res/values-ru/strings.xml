@@ -94,6 +94,13 @@
     <string name="amount">"Количество *"</string>
     <string name="e_g_500">"Например, 500"</string>
     <string name="unit">"Единица *"</string>
+    <string name="unit_list_mode">"Из списка"</string>
+    <string name="unit_custom_mode">"Своя единица"</string>
+    <string name="unit_custom_name">"Название единицы *"</string>
+    <string name="unit_custom_placeholder">"Например, пакетик"</string>
+    <string name="unit_custom_hint">"Введите свою единицу измерения или форму лекарства"</string>
+    <string name="unit_custom_required">"Введите название единицы."</string>
+    <string name="amount_positive">"Количество должно быть больше нуля."</string>
     <string name="choose_below_or_type_your_own">"Выберите ниже или введите свою"</string>
     <string name="when_should_dose_remind_you">"Когда напомнить?"</string>
     <string name="add_another_schedule">"Добавить расписание"</string>

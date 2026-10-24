@@ -94,6 +94,13 @@
     <string name="amount">"Miqdar *"</string>
     <string name="e_g_500">"Məsələn, 500"</string>
     <string name="unit">"Vahid *"</string>
+    <string name="unit_list_mode">"Siyahıdan"</string>
+    <string name="unit_custom_mode">"Öz vahid"</string>
+    <string name="unit_custom_name">"Vahidin adı *"</string>
+    <string name="unit_custom_placeholder">"Məsələn, paket"</string>
+    <string name="unit_custom_hint">"Öz ölçü vahidinizi və ya dərman formasını yazın"</string>
+    <string name="unit_custom_required">"Vahidin adını yazın."</string>
+    <string name="amount_positive">"Miqdar sıfırdan böyük olmalıdır."</string>
     <string name="choose_below_or_type_your_own">"Aşağıdan seçin və ya özünüz yazın"</string>
     <string name="when_should_dose_remind_you">"Nə vaxt xatırladaq?"</string>
     <string name="add_another_schedule">"Başqa cədvəl əlavə et"</string>

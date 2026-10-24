@@ -80,6 +80,11 @@ internal fun MedicationEditor(
     var amount by rememberSaveable { mutableStateOf(original?.amount.orEmpty()) }
     var quantity by rememberSaveable { mutableStateOf(original?.quantity ?: DoseUnits.defaultFor(MedicationForm.PILL)) }
     var automaticUnit by rememberSaveable { mutableStateOf(original == null) }
+    var customUnitMode by rememberSaveable {
+        mutableStateOf(original?.quantity?.let { it.isNotBlank() && it !in DoseUnits.common } == true)
+    }
+    var listedUnit by rememberSaveable { mutableStateOf(if (quantity in DoseUnits.common) quantity else "") }
+    var customUnitText by rememberSaveable { mutableStateOf(if (customUnitMode) quantity else "") }
     var form by rememberSaveable { mutableStateOf(original?.form ?: MedicationForm.PILL) }
     var customForm by rememberSaveable { mutableStateOf(original?.customForm.orEmpty()) }
     var note by rememberSaveable { mutableStateOf(original?.note.orEmpty()) }
@@ -112,6 +117,8 @@ internal fun MedicationEditor(
     val steps = MedicationEditorFlow.steps(form)
     val position = steps.indexOf(step)
     val keyboard = LocalSoftwareKeyboardController.current
+    // A legacy medication may intentionally have no unit; it stays optional while the amount is untouched.
+    val unitOptional = original?.quantity == "" && amount == original.amount
 
     fun changeSchedules(updated: List<DoseSchedule>) {
         schedules = updated.map { it.copy(priority = 0) }
@@ -120,12 +127,31 @@ internal fun MedicationEditor(
 
     fun chooseForm(chosen: MedicationForm) {
         quantity = DoseUnits.forFormChange(chosen, quantity, automaticUnit)
+        // An untouched default is a list selection; it follows the form change.
+        if (automaticUnit) {
+            listedUnit = quantity
+            customUnitMode = false
+        }
         form = chosen
     }
 
     fun chooseUnit(chosen: String) {
         quantity = chosen.take(40)
         automaticUnit = false
+        listedUnit = quantity
+    }
+
+    /** Mode switches swap the effective unit for the other mode's remembered value; nothing is lost. */
+    fun useListedUnit() {
+        if (!customUnitMode) return
+        customUnitMode = false
+        quantity = listedUnit
+    }
+
+    fun useCustomUnit() {
+        if (customUnitMode) return
+        customUnitMode = true
+        quantity = customUnitText
     }
 
     fun previous() {
@@ -138,7 +164,9 @@ internal fun MedicationEditor(
         MedicationStep.NAME -> if (name.isBlank()) resources.getString(R.string.name_required) else null
         MedicationStep.DOSAGE -> when {
             amount.isBlank() -> resources.getString(R.string.amount_required)
-            quantity.isBlank() && !(original?.quantity == "" && amount == original.amount) -> resources.getString(R.string.unit_required)
+            quantity.isBlank() && !unitOptional -> resources.getString(R.string.unit_required)
+            (amount.trim().replace(',', '.').toDoubleOrNull() ?: 1.0) <= 0.0 ->
+                resources.getString(R.string.amount_positive)
             else -> null
         }
 
@@ -506,27 +534,67 @@ internal fun MedicationEditor(
                                     singleLine = true,
                                     modifier = Modifier.fillMaxWidth()
                                 )
-                                OutlinedTextField(
-                                    localizedUnit(context, quantity),
-                                    ::chooseUnit,
-                                    label = { Text(stringResource(R.string.unit)) },
-                                    placeholder = { Text(stringResource(R.string.choose_below_or_type_your_own)) },
-                                    isError = validationVisible && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount),
-                                    supportingText = {
-                                        if (validationVisible && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount)) Text(
-                                            stringResource(R.string.unit_required)
-                                        )
-                                    },
-                                    singleLine = true,
-                                    modifier = Modifier.fillMaxWidth()
+                                Text(
+                                    stringResource(R.string.unit),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp
                                 )
-                                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                    DoseUnits.common.forEach { unit ->
-                                        FilterChip(
-                                            selected = quantity == unit,
-                                            onClick = { chooseUnit(unit) },
-                                            label = { Text(localizedUnit(context, unit)) })
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(50.dp)
+                                        .clip(RoundedCornerShape(14.dp))
+                                        .border(1.dp, PanelBorder, RoundedCornerShape(14.dp)),
+                                ) {
+                                    UnitModeSegment(
+                                        stringResource(R.string.unit_list_mode),
+                                        active = !customUnitMode,
+                                        modifier = Modifier.weight(1f),
+                                        onClick = ::useListedUnit,
+                                    )
+                                    Box(Modifier.width(1.dp).fillMaxHeight().background(PanelBorder))
+                                    UnitModeSegment(
+                                        stringResource(R.string.unit_custom_mode),
+                                        active = customUnitMode,
+                                        modifier = Modifier.weight(1f),
+                                        onClick = ::useCustomUnit,
+                                    )
+                                }
+                                if (customUnitMode) {
+                                    OutlinedTextField(
+                                        customUnitText,
+                                        { customUnitText = it.take(40); quantity = customUnitText; automaticUnit = false },
+                                        label = { Text(stringResource(R.string.unit_custom_name)) },
+                                        placeholder = { Text(stringResource(R.string.unit_custom_placeholder)) },
+                                        isError = validationVisible && quantity.isBlank() && !unitOptional,
+                                        supportingText = {
+                                            if (validationVisible && quantity.isBlank() && !unitOptional) Text(
+                                                stringResource(R.string.unit_custom_required)
+                                            ) else Text(stringResource(R.string.unit_custom_hint))
+                                        },
+                                        singleLine = true,
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                } else {
+                                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        DoseUnits.common.chunked(3).forEach { rowUnits ->
+                                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                                rowUnits.forEach { unit ->
+                                                    UnitChip(
+                                                        localizedUnit(context, unit),
+                                                        selected = quantity == unit,
+                                                        modifier = Modifier.weight(1f),
+                                                    ) { chooseUnit(unit) }
+                                                }
+                                                repeat(3 - rowUnits.size) { Spacer(Modifier.weight(1f)) }
+                                            }
+                                        }
                                     }
+                                    if (validationVisible && quantity.isBlank() && !unitOptional) Text(
+                                        stringResource(R.string.unit_required),
+                                        color = MaterialTheme.colorScheme.error,
+                                        fontSize = 13.sp,
+                                    )
                                 }
                             }
 
@@ -1081,4 +1149,55 @@ private fun SchedulePriorityDialog(
         confirmButton = {},
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.back)) } },
     )
+}
+
+/** One half of the unit-mode segmented control; the active side carries the soft purple fill. */
+@Composable
+private fun UnitModeSegment(
+    label: String,
+    active: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier
+            .fillMaxHeight()
+            .background(if (active) AccentPanel else Color.Transparent)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            label,
+            fontSize = 14.sp,
+            fontWeight = if (active) FontWeight.Bold else FontWeight.SemiBold,
+            color = if (active) Violet else TextMuted,
+        )
+    }
+}
+
+/** A selectable unit cell of the fixed grid: equal size, single selection, purple when chosen. */
+@Composable
+private fun UnitChip(
+    label: String,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier
+            .height(46.dp)
+            .clip(RoundedCornerShape(11.dp))
+            .background(if (selected) AccentPanel else Color.Transparent)
+            .border(1.5.dp, if (selected) Violet else PanelBorder, RoundedCornerShape(11.dp))
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            label,
+            fontSize = 14.sp,
+            maxLines = 1,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
+            color = if (selected) Violet else TextPrimary,
+        )
+    }
 }

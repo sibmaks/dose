@@ -94,6 +94,13 @@
     <string name="amount">"Miqdor *"</string>
     <string name="e_g_500">"Masalan, 500"</string>
     <string name="unit">"Birlik *"</string>
+    <string name="unit_list_mode">"Roʻyxatdan"</string>
+    <string name="unit_custom_mode">"Oʻz birligi"</string>
+    <string name="unit_custom_name">"Birlik nomi *"</string>
+    <string name="unit_custom_placeholder">"Masalan, paket"</string>
+    <string name="unit_custom_hint">"Oʻz oʻlchov birligingizni yoki dori shaklini kiriting"</string>
+    <string name="unit_custom_required">"Birlik nomini kiriting."</string>
+    <string name="amount_positive">"Miqdar noldan katta boʻlishi kerak."</string>
     <string name="choose_below_or_type_your_own">"Quyidan tanlang yoki oʻzingiz yozing"</string>
     <string name="when_should_dose_remind_you">"Qachon eslatish kerak?"</string>
     <string name="add_another_schedule">"Yana jadval qoʻshish"</string>

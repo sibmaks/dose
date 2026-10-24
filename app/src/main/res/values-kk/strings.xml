@@ -94,6 +94,13 @@
     <string name="amount">"Мөлшер *"</string>
     <string name="e_g_500">"Мысалы, 500"</string>
     <string name="unit">"Бірлік *"</string>
+    <string name="unit_list_mode">"Тізімнен"</string>
+    <string name="unit_custom_mode">"Өз бірлігі"</string>
+    <string name="unit_custom_name">"Бірлік атауы *"</string>
+    <string name="unit_custom_placeholder">"Мысалы, пакет"</string>
+    <string name="unit_custom_hint">"Өз өлшеу бірлігіңізді немесе дәрі түрін енгізіңіз"</string>
+    <string name="unit_custom_required">"Бірлік атауын енгізіңіз."</string>
+    <string name="amount_positive">"Мөлшер нөлден үлкен болуы керек."</string>
     <string name="choose_below_or_type_your_own">"Төменнен таңдаңыз не өзіңіз жазыңыз"</string>
     <string name="when_should_dose_remind_you">"Қашан еске салу керек?"</string>
     <string name="add_another_schedule">"Кесте қосу"</string>

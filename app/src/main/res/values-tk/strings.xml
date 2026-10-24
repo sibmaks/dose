@@ -94,6 +94,13 @@
     <string name="amount">"Mukdar *"</string>
     <string name="e_g_500">"Meselem, 500"</string>
     <string name="unit">"Birlik *"</string>
+    <string name="unit_list_mode">"Sanawdan"</string>
+    <string name="unit_custom_mode">"Öz ölçeg birligi"</string>
+    <string name="unit_custom_name">"Ölçeg birliginiň ady *"</string>
+    <string name="unit_custom_placeholder">"Mysal üçin, paket"</string>
+    <string name="unit_custom_hint">"Öz ölçeg birligiňizi ýa-da derman görnüşini ýazyň"</string>
+    <string name="unit_custom_required">"Ölçeg birliginiň adyny ýazyň."</string>
+    <string name="amount_positive">"Mukdar noldan uly bolmaly."</string>
     <string name="choose_below_or_type_your_own">"Aşakdan saýlaň ýa-da özüňiz ýazyň"</string>
     <string name="when_should_dose_remind_you">"Haçan ýatlatmaly?"</string>
     <string name="add_another_schedule">"Başga tertip goşmak"</string>
