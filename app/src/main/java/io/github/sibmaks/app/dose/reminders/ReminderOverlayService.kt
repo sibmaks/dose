@@ -102,7 +102,7 @@ class ReminderOverlayService : Service() {
         val medications = DoseStore.medications(this).associateBy { it.id }
         val entries = slots.values.mapNotNull { slot ->
             medications[slot.medicationId]?.let { medication ->
-                ReminderPopupView.Entry(medication, java.time.Instant.ofEpochMilli(slot.scheduledAt).atZone(java.time.ZoneId.systemDefault()).toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")), DoseLogic.canRecordOnTime(DoseStore.wasDeferred(this, slot.key), slot.scheduledAt, System.currentTimeMillis())) { action ->
+                ReminderPopupView.Entry(medication, java.time.Instant.ofEpochMilli(slot.scheduledAt).atZone(java.time.ZoneId.systemDefault()).toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")), DoseLogic.canRecordOnTime(DoseStore.wasDeferred(this, slot.key), slot.scheduledAt, System.currentTimeMillis()), medication.amountAt(LocalDate.parse(slot.date), slot.time)) { action ->
                     ReminderScheduler.actionIntent(this, action, slot.medicationId, slot.time, slot.date, slot.scheduledAt).send()
                     slots.remove(slot.key)
                     if (slots.isEmpty()) finishAlert() else render()

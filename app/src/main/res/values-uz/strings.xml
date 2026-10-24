@@ -244,4 +244,9 @@
     <string name="theme_system">"Tizim (avtomatik)"</string>
     <string name="theme_light">"Yorugʻ"</string>
     <string name="theme_dark">"Qorongʻi"</string>
+    <string name="set_schedule_amount">"Boshqa dozani belgilang"</string>
+    <string name="default_schedule_amount">"Asosiy dozadan foydalaning (%1$s)"</string>
+    <string name="dose_overlap_title">"Doza ustuvorligi"</string>
+    <string name="dose_overlap_hint">"Turli dozalar ustma-ust tushmoqda. Avval eng yuqori ustuvorlikdagi dozani tanlang. U faqat jadvallar ustma-ust tushganda qo‘llanadi; boshqa qabullar saqlanadi."</string>
+    <string name="prioritize_dose">"Ustuvor: %1$s"</string>
 </resources>

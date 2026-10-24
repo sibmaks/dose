@@ -86,6 +86,7 @@ internal fun MedicationEditor(
     var suggestedForm by rememberSaveable { mutableStateOf<String?>(null) }
     var addInstructions by rememberSaveable { mutableStateOf(original?.note?.isNotBlank() == true) }
     var showValidation by rememberSaveable { mutableStateOf(false) }
+    var resolvingPriorities by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var colorPickerInitial by rememberSaveable { mutableStateOf<String?>(null) }
     val colorUsage = remember { DoseStore.colorUsage(context) }
@@ -101,6 +102,11 @@ internal fun MedicationEditor(
     val steps = MedicationEditorFlow.steps(form)
     val position = steps.indexOf(step)
     val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
+
+    fun changeSchedules(updated: List<DoseSchedule>) {
+        schedules = updated.map { it.copy(priority = 0) }
+        resolvingPriorities = false
+    }
 
     fun chooseForm(chosen: MedicationForm) {
         quantity = DoseUnits.forFormChange(chosen, quantity, automaticUnit)
@@ -147,9 +153,15 @@ internal fun MedicationEditor(
                 times = it.times.sorted(),
                 dates = it.dates.distinct().sorted(),
                 weekDays = it.weekDays.sorted(),
-                monthDays = it.monthDays.sorted()
+                monthDays = it.monthDays.sorted(),
+                amount = it.amount?.trim()
             )
         }
+        if (DoseScheduleConflicts.unresolved(rules, amount.trim()).isNotEmpty()) {
+            resolvingPriorities = true
+            return
+        }
+        resolvingPriorities = false
         onSave(
             (original ?: DoseStore.newMedication(name.trim(), amount.trim(), quantity.trim(), rules, "", color, form))
                 .copy(
@@ -462,7 +474,7 @@ internal fun MedicationEditor(
                                 )
                                 OutlinedTextField(
                                     amount,
-                                    { amount = it.take(70) },
+                                    { amount = it.take(70); changeSchedules(schedules) },
                                     label = { Text(context.getString(R.string.amount)) },
                                     placeholder = { Text(context.getString(R.string.e_g_500)) },
                                     isError = validationVisible && amount.isBlank(),
@@ -510,17 +522,19 @@ internal fun MedicationEditor(
                                         rule,
                                         index + 1,
                                         validationVisible,
+                                        amount,
+                                        quantity,
                                         onChange = { updated ->
-                                            schedules = schedules.toMutableList()
-                                                .apply { set(index, updated.copy(immediateAt = null)) }
+                                            changeSchedules(schedules.toMutableList()
+                                                .apply { set(index, updated.copy(immediateAt = null)) })
                                         },
                                         onRemove = if (schedules.size > 1) ({
-                                            schedules = schedules.filterIndexed { i, _ -> i != index }
+                                            changeSchedules(schedules.filterIndexed { i, _ -> i != index })
                                         }) else null
                                     )
                                 }
                                 OutlinedButton(
-                                    onClick = { schedules = schedules + DoseSchedule() },
+                                    onClick = { changeSchedules(schedules + DoseSchedule()) },
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Icon(
@@ -549,7 +563,7 @@ internal fun MedicationEditor(
                                         )) + " · $amount ${localizedUnit(context, quantity)}", fontSize = 14.sp)
                                         schedules.forEach {
                                             Text(
-                                                scheduleSummary(context, it),
+                                                scheduleSummary(context, it, amount, quantity),
                                                 color = TextMuted,
                                                 fontSize = 12.sp
                                             )
@@ -625,6 +639,12 @@ internal fun MedicationEditor(
             onDismiss = { colorPickerInitial = null },
             onChoose = { color = it; colorPickerInitial = null })
     }
+    if (resolvingPriorities) SchedulePriorityDialog(schedules, amount, quantity,
+        onDismiss = { resolvingPriorities = false },
+        onChoose = { index ->
+            schedules = DoseScheduleConflicts.prefer(schedules, index)
+            save()
+        })
     if (showDeleteConfirm && original != null) AlertDialog(
         onDismissRequest = { showDeleteConfirm = false },
         title = { Text(context.getString(R.string.delete_named, original.name)) },
@@ -650,6 +670,8 @@ private fun ScheduleEditor(
     rule: DoseSchedule,
     number: Int,
     showValidation: Boolean,
+    defaultAmount: String,
+    quantity: String,
     onChange: (DoseSchedule) -> Unit,
     onRemove: (() -> Unit)?
 ) {
@@ -849,6 +871,27 @@ private fun ScheduleEditor(
                     null
                 ); Spacer(Modifier.width(6.dp)); Text(context.getString(R.string.add_time))
             }
+            if (rule.amount == null) {
+                TextButton(onClick = { onChange(rule.copy(amount = defaultAmount)) }) {
+                    Icon(Icons.Rounded.Medication, null)
+                    Spacer(Modifier.width(6.dp))
+                    Text(context.getString(R.string.set_schedule_amount))
+                }
+            } else {
+                OutlinedTextField(
+                    value = rule.amount,
+                    onValueChange = { onChange(rule.copy(amount = it.take(70))) },
+                    label = { Text(context.getString(R.string.amount) + " · " + localizedUnit(context, quantity)) },
+                    isError = issue?.field == ScheduleField.AMOUNT,
+                    supportingText = { ScheduleError(issue, ScheduleField.AMOUNT) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                TextButton(onClick = { onChange(rule.copy(amount = null)) }) {
+                    Text(context.getString(R.string.default_schedule_amount, "$defaultAmount ${localizedUnit(context, quantity)}"))
+                }
+            }
         }
     }
 }
@@ -897,7 +940,7 @@ private fun DateBound(
     }
 }
 
-internal fun scheduleSummary(context: android.content.Context, rule: DoseSchedule): String {
+internal fun scheduleSummary(context: android.content.Context, rule: DoseSchedule, defaultAmount: String? = null, quantity: String = ""): String {
     val dates = when (rule.kind) {
         ScheduleKind.DAILY -> context.getString(R.string.every_day)
         ScheduleKind.SPECIFIC_DATES -> rule.dates.sorted().joinToString(", ") { localizedDate(context, it) }
@@ -910,5 +953,40 @@ internal fun scheduleSummary(context: android.content.Context, rule: DoseSchedul
         R.string.from_date,
         localizedDate(context, rule.from ?: rule.createdOn)
     ) + (rule.until?.let { context.getString(R.string.until_date, localizedDate(context, it)) } ?: "")
-    return "$dates · ${rule.times.joinToString(", ")}$bounds"
+    val dose = defaultAmount?.let { "${rule.amount ?: it} ${localizedUnit(context, quantity)} · " }.orEmpty()
+    return "$dose$dates · ${rule.times.joinToString(", ")}$bounds"
+}
+
+@Composable
+private fun SchedulePriorityDialog(schedules: List<DoseSchedule>, amount: String, quantity: String,
+                                   onDismiss: () -> Unit, onChoose: (Int) -> Unit) {
+    val context = LocalContext.current
+    val overlaps = remember(schedules, amount) { DoseScheduleConflicts.unresolved(schedules, amount) }
+    val choices = overlaps.flatMap { listOf(it.first, it.second) }.distinct().sorted()
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(context.getString(R.string.dose_overlap_title)) },
+        text = {
+            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(context.getString(R.string.dose_overlap_hint))
+                overlaps.forEach { overlap ->
+                    Text("${localizedDate(context, overlap.date.toString())} · ${overlap.times.joinToString(", ")} · " +
+                        "${schedules[overlap.first].amount ?: amount} / ${schedules[overlap.second].amount ?: amount} ${localizedUnit(context, quantity)}",
+                        fontSize = 12.sp, color = TextMuted)
+                }
+                choices.forEach { index ->
+                    val rule = schedules[index]
+                    OutlinedButton(onClick = { onChoose(index) }, modifier = Modifier.fillMaxWidth()) {
+                        Column(Modifier.fillMaxWidth()) {
+                            Text(context.getString(R.string.prioritize_dose, "${rule.amount ?: amount} ${localizedUnit(context, quantity)}"), fontWeight = FontWeight.Bold)
+                            Text(context.getString(R.string.schedule_number, index + 1), fontSize = 12.sp)
+                            Text(scheduleSummary(context, rule), fontSize = 12.sp)
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = { TextButton(onClick = onDismiss) { Text(context.getString(R.string.back)) } },
+    )
 }

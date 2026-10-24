@@ -40,6 +40,7 @@ object DoseStore {
     fun upsert(context: Context, medication: Medication) {
         require(medication.name.isNotBlank() && medication.amount.isNotBlank())
         require(medication.schedules.isNotEmpty() && medication.schedules.all { it.validationError() == null })
+        require(DoseScheduleConflicts.unresolved(medication.schedules, medication.amount).isEmpty())
         val list = medications(context).filterNot { it.id == medication.id } + medication
         val array = JSONArray()
         list.forEach { array.put(MedicationJson.encode(it)) }

@@ -244,4 +244,9 @@
     <string name="theme_system">"Системна (авто)"</string>
     <string name="theme_light">"Світла"</string>
     <string name="theme_dark">"Темна"</string>
+    <string name="set_schedule_amount">"Указати іншу дозу"</string>
+    <string name="default_schedule_amount">"Використовувати основну дозу (%1$s)"</string>
+    <string name="dose_overlap_title">"Пріоритет доз"</string>
+    <string name="dose_overlap_hint">"Різні дози перетинаються. Спочатку виберіть дозу з найвищим пріоритетом. Вона застосовується лише за перетину розкладів; інші прийоми зберігаються."</string>
+    <string name="prioritize_dose">"Пріоритет: %1$s"</string>
 </resources>

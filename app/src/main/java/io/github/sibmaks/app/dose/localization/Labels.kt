@@ -43,9 +43,13 @@ fun MedicationSuggestion.localizedForm(context: Context): String = when {
     form == MedicationForm.OTHER && customForm.isNotBlank() -> customForm
     else -> form.localizedLabel(context)
 }
-fun Medication.localizedDose(context: Context): String = listOf(amount, localizedUnit(context, quantity)).filter { it.isNotBlank() }.joinToString(" ") + if (form == MedicationForm.OTHER) " · ${localizedForm(context)}" else ""
+fun Medication.localizedDose(context: Context, doseAmount: String = amount): String = listOf(doseAmount, localizedUnit(context, quantity)).filter { it.isNotBlank() }.joinToString(" ") + if (form == MedicationForm.OTHER) " · ${localizedForm(context)}" else ""
+fun DoseItem.localizedDose(context: Context): String = medication.localizedDose(context, amount)
+fun Medication.localizedDoses(context: Context): String = schedules.map { it.amount ?: amount }.distinct()
+    .joinToString(" / ") { localizedDose(context, it) }
 
 fun localizedValidationError(context: Context, error: String): String = when (error) {
+    "Enter a dose amount." -> context.getString(R.string.amount_required)
     "Choose at least one valid time." -> context.getString(R.string.schedule_time_required)
     "Remove duplicate times in this schedule." -> context.getString(R.string.schedule_duplicate_times)
     "Choose at least one specific date." -> context.getString(R.string.schedule_date_required)

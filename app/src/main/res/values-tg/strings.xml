@@ -244,4 +244,9 @@
     <string name="theme_system">"Системавӣ (худкор)"</string>
     <string name="theme_light">"Равшан"</string>
     <string name="theme_dark">"Торик"</string>
+    <string name="set_schedule_amount">"Миқдори дигарро таъин кунед"</string>
+    <string name="default_schedule_amount">"Миқдори асосиро истифода баред (%1$s)"</string>
+    <string name="dose_overlap_title">"Афзалияти миқдор"</string>
+    <string name="dose_overlap_hint">"Миқдорҳои гуногун мувофиқ меоянд. Аввал миқдори дорои афзалияти баландтаринро интихоб кунед. Он танҳо ҳангоми мувофиқ омадани ҷадвалҳо амал мекунад; қабули дигар нигоҳ дошта мешавад."</string>
+    <string name="prioritize_dose">"Афзалият: %1$s"</string>
 </resources>

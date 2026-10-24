@@ -17,7 +17,7 @@ enum class ScheduleKind(val label: String) {
     SPECIFIC_DATES("Specific dates"), WEEKDAYS("Days of week"), MONTH_DAYS("Days of month"), DAILY("Every day");
 }
 
-enum class ScheduleField { TIMES, DATES, START, END, BOUNDS, WEEKDAYS, MONTH_DAYS }
+enum class ScheduleField { TIMES, DATES, START, END, BOUNDS, WEEKDAYS, MONTH_DAYS, AMOUNT }
 enum class ScheduleIssue(val field: ScheduleField, val message: String) {
     TIME_REQUIRED(ScheduleField.TIMES, "Choose at least one valid time."),
     DUPLICATE_TIMES(ScheduleField.TIMES, "Remove duplicate times in this schedule."),
@@ -28,6 +28,7 @@ enum class ScheduleIssue(val field: ScheduleField, val message: String) {
     END_BEFORE_START(ScheduleField.END, "The end date must be on or after the start date."),
     WEEKDAY_REQUIRED(ScheduleField.WEEKDAYS, "Select at least one weekday."),
     MONTHDAY_REQUIRED(ScheduleField.MONTH_DAYS, "Select at least one day of the month."),
+    AMOUNT_REQUIRED(ScheduleField.AMOUNT, "Enter a dose amount."),
 }
 
 /** Bounds are inclusive; an omitted start is anchored to the day the rule was created. */
@@ -41,10 +42,13 @@ data class DoseSchedule(
     val until: String? = null,
     val createdOn: String = LocalDate.now().toString(),
     val immediateAt: Long? = null,
+    val amount: String? = null, // null inherits the medication's default amount
+    val priority: Int = 0, // higher values win; zero has not been ranked
 ) {
     fun validationError(): String? = validationIssue()?.message
 
     fun validationIssue(): ScheduleIssue? = when {
+        amount != null && amount.isBlank() -> ScheduleIssue.AMOUNT_REQUIRED
         times.isEmpty() || times.any { !DoseLogic.isTime(it) } -> ScheduleIssue.TIME_REQUIRED
         times.distinct().size != times.size -> ScheduleIssue.DUPLICATE_TIMES
         kind == ScheduleKind.SPECIFIC_DATES && (dates.isEmpty() || dates.any { !DoseLogic.isDate(it) }) ->
@@ -116,6 +120,10 @@ data class Medication(
     val dose: String get() = listOf(amount, quantity).filter { it.isNotBlank() }.joinToString(" ")
     val times: List<String> get() = schedules.flatMap { it.times }.distinct().sorted()
     fun timesOn(date: LocalDate): List<String> = schedules.filter { it.includes(date) }.flatMap { it.times }.distinct().sorted()
+    fun amountAt(date: LocalDate, time: String): String = schedules
+        .filter { it.includes(date) && time in it.times }.maxByOrNull { it.priority }?.amount ?: amount
+    fun doseAt(date: LocalDate, time: String): String =
+        listOf(amountAt(date, time), quantity).filter { it.isNotBlank() }.joinToString(" ")
     fun scheduledMillis(date: LocalDate, time: String, zone: ZoneId = ZoneId.systemDefault()): Long =
         schedules.filter { it.includes(date) && time in it.times }.minOfOrNull { it.immediateAt ?: DoseLogic.scheduledMillis(date, time, zone) }
             ?: DoseLogic.scheduledMillis(date, time, zone)
@@ -184,6 +192,8 @@ data class DoseItem(
     val scheduledAt: Long = medication.scheduledMillis(LocalDate.parse(date), time),
 ) {
     val id: String get() = "${date}|${medication.id}|$time"
+    val amount: String get() = medication.amountAt(LocalDate.parse(date), time)
+    val dose: String get() = medication.doseAt(LocalDate.parse(date), time)
 }
 
 object DoseLogic {
@@ -199,7 +209,7 @@ object DoseLogic {
                     scheduledAt: Long, nowMillis: Long, onTime: Boolean = false): DoseLog {
         require(status == "taken" || status == "skipped")
         require(!onTime || status == "taken" && nowMillis >= scheduledAt)
-        return DoseLog(date, medication.id, medication.name, medication.dose, time, status,
+        return DoseLog(date, medication.id, medication.name, medication.doseAt(LocalDate.parse(date), time), time, status,
             if (onTime) scheduledAt else nowMillis, scheduledAt, onTime, nowMillis)
     }
 

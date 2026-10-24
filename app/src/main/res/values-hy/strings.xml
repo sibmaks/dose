@@ -244,4 +244,9 @@
     <string name="theme_system">"Համակարգային (ավտոմատ)"</string>
     <string name="theme_light">"Բաց"</string>
     <string name="theme_dark">"Մուգ"</string>
+    <string name="set_schedule_amount">"Նշել այլ չափաբաժին"</string>
+    <string name="default_schedule_amount">"Օգտագործել հիմնական չափաբաժինը (%1$s)"</string>
+    <string name="dose_overlap_title">"Չափաբաժնի առաջնահերթություն"</string>
+    <string name="dose_overlap_hint">"Տարբեր չափաբաժիններ համընկնում են։ Նախ ընտրեք ամենաբարձր առաջնահերթությամբ չափաբաժինը։ Այն կիրառվում է միայն ժամանակացույցերի համընկնման դեպքում, իսկ մյուս ընդունումները պահպանվում են։"</string>
+    <string name="prioritize_dose">"Առաջնահերթ՝ %1$s"</string>
 </resources>

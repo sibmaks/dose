@@ -244,4 +244,9 @@
     <string name="theme_system">"Sistem (avtomatik)"</string>
     <string name="theme_light">"Açıq"</string>
     <string name="theme_dark">"Tünd"</string>
+    <string name="set_schedule_amount">"Başqa doza təyin et"</string>
+    <string name="default_schedule_amount">"Əsas dozadan istifadə et (%1$s)"</string>
+    <string name="dose_overlap_title">"Doza prioriteti"</string>
+    <string name="dose_overlap_hint">"Fərqli dozalar üst-üstə düşür. Əvvəlcə ən yüksək prioritetli dozanı seçin. Bu, yalnız cədvəllər üst-üstə düşdükdə tətbiq olunur; digər qəbullar saxlanılır."</string>
+    <string name="prioritize_dose">"Prioritet: %1$s"</string>
 </resources>

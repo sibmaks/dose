@@ -72,7 +72,7 @@ class DoseWidget : AppWidgetProvider() {
                 setTextViewText(R.id.widget_name, if (group.size > 1) context.getString(R.string.several_medicines, group.size)
                     else next?.medication?.name ?: emptyMessage)
                 setTextViewText(R.id.widget_dose, if (group.size > 1) group.joinToString(", ") { it.medication.name }
-                    else next?.medication?.localizedDose(context) ?: context.getString(R.string.widget_open_today))
+                    else next?.localizedDose(context) ?: context.getString(R.string.widget_open_today))
                 setImageViewBitmap(R.id.widget_icon, WidgetMedicationIcons.render(context, group.map { it.medication }))
                 setContentDescription(R.id.widget_icon, if (group.size > 1) context.getString(R.string.several_medicines, group.size)
                     else next?.medication?.localizedForm(context))
@@ -97,7 +97,7 @@ class DoseWidget : AppWidgetProvider() {
                     pending.take(count).forEach { item ->
                         val row = RemoteViews(context.packageName, R.layout.widget_dose_row).apply {
                             setTextViewText(R.id.medication_name, item.medication.name)
-                            setTextViewText(R.id.medication_detail, item.medication.localizedDose(context))
+                            setTextViewText(R.id.medication_detail, item.localizedDose(context))
                             setTextViewText(R.id.widget_row_time, item.scheduledTime)
                             val status = when (item.status) {
                                 "taken" -> R.string.taken

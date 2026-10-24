@@ -244,4 +244,9 @@
     <string name="theme_system">"Системалык (авто)"</string>
     <string name="theme_light">"Жарык"</string>
     <string name="theme_dark">"Караңгы"</string>
+    <string name="set_schedule_amount">"Башка дозаны көрсөтүү"</string>
+    <string name="default_schedule_amount">"Негизги дозаны колдонуу (%1$s)"</string>
+    <string name="dose_overlap_title">"Дозанын артыкчылыгы"</string>
+    <string name="dose_overlap_hint">"Ар башка дозалар дал келет. Адегенде артыкчылыгы эң жогору дозаны тандаңыз. Ал графиктер дал келгенде гана колдонулат; башка кабыл алуулар сакталат."</string>
+    <string name="prioritize_dose">"Артыкчылык: %1$s"</string>
 </resources>

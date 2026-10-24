@@ -21,7 +21,8 @@ import io.github.sibmaks.app.dose.data.MedicationIconColors
 
 /** Explicit shapes and colors keep the pop-up consistent across device button themes. */
 internal object ReminderPopupView {
-    data class Entry(val medication: Medication, val time: String, val allowOnTime: Boolean = false, val onAction: (String) -> Unit)
+    data class Entry(val medication: Medication, val time: String, val allowOnTime: Boolean = false,
+                     val amount: String = medication.amount, val onAction: (String) -> Unit)
 
     fun create(context: Context, entries: List<Entry>, keepNotification: Boolean, onLater: () -> Unit, onAll: (String) -> Unit): ScrollView {
         val dark = AppAppearance.isDark(context)
@@ -99,7 +100,7 @@ internal object ReminderPopupView {
             val description = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 addView(text(medication.name, 17f, true))
-                addView(text(medication.localizedDose(context), 13f, color = muted), LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                addView(text(medication.localizedDose(context, entry.amount), 13f, color = muted), LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(3) })
             }
             heading.addView(description, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {

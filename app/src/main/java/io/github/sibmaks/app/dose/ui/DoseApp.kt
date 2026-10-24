@@ -144,6 +144,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                 DoseStore.upsert(context, med)
                 DoseStore.recordColorUse(context, med.color)
                 ReminderScheduler.scheduleAll(context)
+                ReminderReceiver.refreshVisible(context)
                 ReminderScheduler.deliverImmediate(context, med, previous)
                 refresh()
                 showEditor = false
@@ -442,7 +443,7 @@ private fun FeaturedCard(
                             dose.medication.localizedForm(context), tint = Color.White, modifier = Modifier.size(26.dp))
                         Column(Modifier.weight(1f)) {
                             Text(dose.medication.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                            Text(dose.medication.localizedDose(context) + (if (dose.medication.note.isNotBlank()) " · ${dose.medication.note}" else ""),
+                            Text(dose.localizedDose(context) + (if (dose.medication.note.isNotBlank()) " · ${dose.medication.note}" else ""),
                                 fontSize = 13.sp, color = Color(0xFFE9E5FF))
                         }
                     }
@@ -516,7 +517,7 @@ private fun DoseCard(
                 Spacer(Modifier.height(3.dp))
                 Text(item.medication.name, fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(
-                    item.medication.localizedDose(context) + if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else "",
+                    item.localizedDose(context) + if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else "",
                     fontSize = 12.sp, color = TextMuted, maxLines = 2, overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(Modifier.height(8.dp))
@@ -610,7 +611,7 @@ private fun MedicationsPage(
                             Column(Modifier.weight(1f)) {
                                 Text(med.name, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold)
                                 Text(
-                                    med.localizedDose(context) + if (med.note.isBlank()) "" else " · ${med.note}",
+                                    med.localizedDoses(context) + if (med.note.isBlank()) "" else " · ${med.note}",
                                     fontSize = 12.sp, color = TextMuted, maxLines = 2,
                                 )
                             }
@@ -622,7 +623,7 @@ private fun MedicationsPage(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                                 med.schedules.forEach { rule ->
-                                    Text(scheduleSummary(context, rule), fontSize = 12.sp, color = Violet)
+                                    Text(scheduleSummary(context, rule, med.amount, med.quantity), fontSize = 12.sp, color = Violet)
                                 }
                             }
                             Switch(checked = med.active, onCheckedChange = { onToggle(med) }, modifier = Modifier.height(29.dp))

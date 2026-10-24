@@ -246,4 +246,9 @@
     <string name="theme_system">"System (auto)"</string>
     <string name="theme_light">"Light"</string>
     <string name="theme_dark">"Dark"</string>
+    <string name="set_schedule_amount">"Set a different amount"</string>
+    <string name="default_schedule_amount">"Use default amount (%1$s)"</string>
+    <string name="dose_overlap_title">"Choose dose priority"</string>
+    <string name="dose_overlap_hint">"Different amounts overlap. Choose the highest-priority dose first. It applies only where schedules overlap; other doses stay unchanged."</string>
+    <string name="prioritize_dose">"Prioritize %1$s"</string>
 </resources>

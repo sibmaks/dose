@@ -27,7 +27,7 @@ object MedicationJson {
     }.getOrNull()
 
     fun encode(med: Medication): JSONObject = JSONObject().apply {
-        put("version", 2)
+        put("version", 3)
         put("id", med.id); put("name", med.name)
         put("amount", med.amount); put("quantity", med.quantity)
         put("note", med.note); put("color", med.color); put("active", med.active); put("form", med.form.name); put("customForm", med.customForm)
@@ -45,12 +45,15 @@ object MedicationJson {
         monthDays = ints(rule.optJSONArray("monthDays")), from = optional(rule, "from"), until = optional(rule, "until"),
         createdOn = rule.optString("createdOn", today.toString()),
         immediateAt = if (rule.has("immediateAt") && !rule.isNull("immediateAt")) rule.getLong("immediateAt") else null,
+        amount = if (rule.has("amount") && !rule.isNull("amount")) rule.getString("amount") else null,
+        priority = rule.optInt("priority", 0).coerceAtLeast(0),
     )
 
     fun encodeSchedule(rule: DoseSchedule): JSONObject = JSONObject().apply {
         put("kind", rule.kind.name); put("times", JSONArray(rule.times)); put("dates", JSONArray(rule.dates))
         put("weekDays", JSONArray(rule.weekDays)); put("monthDays", JSONArray(rule.monthDays))
         put("from", rule.from ?: JSONObject.NULL); put("until", rule.until ?: JSONObject.NULL); put("createdOn", rule.createdOn); put("immediateAt", rule.immediateAt ?: JSONObject.NULL)
+        put("amount", rule.amount ?: JSONObject.NULL); put("priority", rule.priority)
     }
 
     private fun optional(obj: JSONObject, key: String): String? = if (obj.isNull(key)) null else obj.optString(key).takeIf { it.isNotBlank() }

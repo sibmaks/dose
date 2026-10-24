@@ -244,4 +244,9 @@
     <string name="theme_system">"Жүйелік (автоматты)"</string>
     <string name="theme_light">"Ашық"</string>
     <string name="theme_dark">"Қараңғы"</string>
+    <string name="set_schedule_amount">"Басқа дозаны көрсету"</string>
+    <string name="default_schedule_amount">"Негізгі дозаны пайдалану (%1$s)"</string>
+    <string name="dose_overlap_title">"Доза басымдығы"</string>
+    <string name="dose_overlap_hint">"Әртүрлі дозалар қабаттасады. Алдымен басымдығы ең жоғары дозаны таңдаңыз. Ол тек кестелер қабаттасқанда қолданылады; басқа қабылдаулар сақталады."</string>
+    <string name="prioritize_dose">"Басымдық: %1$s"</string>
 </resources>

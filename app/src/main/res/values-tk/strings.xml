@@ -244,4 +244,9 @@
     <string name="theme_system">"Ulgam (awtomatik)"</string>
     <string name="theme_light">"Açyk"</string>
     <string name="theme_dark">"Garaňky"</string>
+    <string name="set_schedule_amount">"Başga mukdary belle"</string>
+    <string name="default_schedule_amount">"Esasy mukdary ulan (%1$s)"</string>
+    <string name="dose_overlap_title">"Mukdaryň ileri tutulmagy"</string>
+    <string name="dose_overlap_hint">"Dürli mukdarlar gabat gelýär. Ilki iň ýokary ileri tutulýan mukdary saýlaň. Ol diňe tertipler gabat gelende ulanylýar; beýleki kabul edişler saklanýar."</string>
+    <string name="prioritize_dose">"Ileri tut: %1$s"</string>
 </resources>

@@ -46,7 +46,7 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onEdit: () -
                     PillAvatar(medication.color, medication.form, medication.localizedForm(context))
                     Column(Modifier.weight(1f)) {
                         Text(context.getString(R.string.dose_label), fontSize = 12.sp, color = TextMuted)
-                        Text(listOf(medication.amount, localizedUnit(context, medication.quantity)).filter { it.isNotBlank() }.joinToString(" "),
+                        Text(listOf(item.amount, localizedUnit(context, medication.quantity)).filter { it.isNotBlank() }.joinToString(" "),
                             style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                     }
                 }
@@ -60,7 +60,7 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onEdit: () -
                     DoseDetail(context.getString(R.string.snoozed_until), formattedTime(it))
                 }
                 item.log?.let { log ->
-                    if (log.dose != medication.dose) DoseDetail(context.getString(R.string.recorded_dose), log.dose)
+                    if (log.dose != item.dose) DoseDetail(context.getString(R.string.recorded_dose), log.dose)
                 }
             }
         }
@@ -88,7 +88,7 @@ internal fun TodayDoseEditor(item: DoseItem, onDismiss: () -> Unit, onEdit: () -
         }
         HorizontalDivider(color = PanelBorder)
         Text(context.getString(R.string.due_dates_times), fontWeight = FontWeight.Bold)
-        medication.schedules.forEach { rule -> Text(scheduleSummary(context, rule), fontSize = 14.sp) }
+        medication.schedules.forEach { rule -> Text(scheduleSummary(context, rule, medication.amount, medication.quantity), fontSize = 14.sp) }
     }
 }
 

@@ -95,8 +95,8 @@ class ReminderReceiver : BroadcastReceiver() {
         val group = DoseGroups.together(items, items.find { it.medication.id == id && it.time == time && it.date == date })
         val multiple = group.size > 1
         val message = if (multiple) group.joinToString("\n") {
-            "${it.medication.name} · ${notificationDetail(context, it.medication, it.scheduledAt)}"
-        } else notificationDetail(context, medication, scheduledAt)
+            "${it.medication.name} · ${notificationDetail(context, it.medication, it.scheduledAt, it.amount)}"
+        } else notificationDetail(context, medication, scheduledAt, medication.amountAt(LocalDate.parse(date), time))
         val taken = if (multiple) GroupDoseActions.pending(context, GroupDoseActions.TAKEN, group)
             else ReminderScheduler.actionIntent(context, ACTION_TAKEN, id, time, date, scheduledAt)
         val skip = if (multiple) GroupDoseActions.pending(context, GroupDoseActions.SKIP, group)
@@ -130,9 +130,9 @@ class ReminderReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun notificationDetail(context: Context, medication: Medication, scheduledAt: Long): String {
+    private fun notificationDetail(context: Context, medication: Medication, scheduledAt: Long, amount: String): String {
         val time = Instant.ofEpochMilli(scheduledAt).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("HH:mm"))
-        return medication.localizedDose(context) + " · " + context.getString(R.string.scheduled_time, time) +
+        return medication.localizedDose(context, amount) + " · " + context.getString(R.string.scheduled_time, time) +
             if (medication.note.isBlank()) "" else " · ${medication.note}"
     }
 
