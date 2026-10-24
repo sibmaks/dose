@@ -866,15 +866,20 @@ private fun ScheduleEditor(
                 }
 
                 ScheduleKind.WEEKDAYS -> {
-                    Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                        (1..7).forEach { day ->
-                            UnitChip(
-                                DayOfWeek.of(day)
-                                    .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context)),
-                                selected = day in rule.weekDays,
-                                modifier = Modifier.weight(1f),
-                                borderColor = if (issue?.field == ScheduleField.WEEKDAYS) errorColor else Violet,
-                            ) { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) }
+                    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                        (1..7).chunked(4).forEach { rowDays ->
+                            Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                                rowDays.forEach { day ->
+                                    UnitChip(
+                                        DayOfWeek.of(day)
+                                            .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context)),
+                                        selected = day in rule.weekDays,
+                                        modifier = Modifier.weight(1f),
+                                        borderColor = if (issue?.field == ScheduleField.WEEKDAYS) errorColor else Violet,
+                                    ) { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) }
+                                }
+                                repeat(4 - rowDays.size) { Spacer(Modifier.weight(1f)) }
+                            }
                         }
                     }
                     ScheduleError(issue, ScheduleField.WEEKDAYS)
@@ -1044,18 +1049,32 @@ private fun DateBound(
 ) {
     val context = LocalContext.current
     Column(modifier) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        // The bound label sits above the button; the button shows only the date itself.
+        Text(
+            label,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Bold,
+            color = if (error != null) MaterialTheme.colorScheme.error else TextPrimary,
+        )
+        // A fixed-height row keeps paired bounds equally tall with or without the clear icon.
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             OutlinedButton(
                 border = BorderStroke(
                     1.dp,
                     if (error != null) MaterialTheme.colorScheme.error else PanelBorder
-                ), onClick = onPick, modifier = Modifier.weight(1f)
+                ), onClick = onPick, modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
             ) {
                 Text(
-                    stringResource(
-                        R.string.label_value,
-                        label,
-                        value?.let { localizedDate(context, it) } ?: fallback))
+                    value?.let { localizedDate(context, it) } ?: fallback,
+                    maxLines = 1,
+                )
             }
             if (value != null) IconButton(onClick = onClear) {
                 Icon(
