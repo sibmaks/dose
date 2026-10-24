@@ -866,21 +866,15 @@ private fun ScheduleEditor(
                 }
 
                 ScheduleKind.WEEKDAYS -> {
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                         (1..7).forEach { day ->
-                            FilterChip(
+                            UnitChip(
+                                DayOfWeek.of(day)
+                                    .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context)),
                                 selected = day in rule.weekDays,
-                                border = BorderStroke(
-                                    1.dp,
-                                    if (issue?.field == ScheduleField.WEEKDAYS) errorColor else PanelBorder
-                                ),
-                                onClick = { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) },
-                                label = {
-                                    Text(
-                                        DayOfWeek.of(day)
-                                            .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context))
-                                    )
-                                })
+                                modifier = Modifier.weight(1f),
+                                borderColor = if (issue?.field == ScheduleField.WEEKDAYS) errorColor else Violet,
+                            ) { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) }
                         }
                     }
                     ScheduleError(issue, ScheduleField.WEEKDAYS)
@@ -931,30 +925,34 @@ private fun ScheduleEditor(
                 ScheduleKind.DAILY -> Unit
             }
             if (rule.kind != ScheduleKind.SPECIFIC_DATES) {
-                DateBound(
-                    stringResource(R.string.from),
-                    rule.from,
-                    stringResource(R.string.default_date, localizedDate(context, rule.createdOn)),
-                    onPick = { pickDate(rule.from ?: rule.createdOn) { onChange(rule.copy(from = it)) } },
-                    onClear = {
-                        onChange(
-                            rule.copy(
-                                from = null,
-                                createdOn = LocalDate.now()
-                                    .toString()
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    DateBound(
+                        stringResource(R.string.from),
+                        rule.from,
+                        stringResource(R.string.default_date, localizedDate(context, rule.createdOn)),
+                        onPick = { pickDate(rule.from ?: rule.createdOn) { onChange(rule.copy(from = it)) } },
+                        onClear = {
+                            onChange(
+                                rule.copy(
+                                    from = null,
+                                    createdOn = LocalDate.now()
+                                        .toString()
+                                )
                             )
-                        )
-                    },
-                    error = issue?.takeIf { it.field in listOf(ScheduleField.START, ScheduleField.BOUNDS) }
-                        ?.let { localizedValidationError(context, it.message) })
-                DateBound(
-                    stringResource(R.string.until),
-                    rule.until,
-                    stringResource(R.string.no_end_date),
-                    onPick = { pickDate(rule.until ?: rule.from) { onChange(rule.copy(until = it)) } },
-                    onClear = { onChange(rule.copy(until = null)) },
-                    error = issue?.takeIf { it.field in listOf(ScheduleField.END, ScheduleField.BOUNDS) }
-                        ?.let { localizedValidationError(context, it.message) })
+                        },
+                        modifier = Modifier.weight(1f),
+                        error = issue?.takeIf { it.field in listOf(ScheduleField.START, ScheduleField.BOUNDS) }
+                            ?.let { localizedValidationError(context, it.message) })
+                    DateBound(
+                        stringResource(R.string.until),
+                        rule.until,
+                        stringResource(R.string.no_end_date),
+                        onPick = { pickDate(rule.until ?: rule.from) { onChange(rule.copy(until = it)) } },
+                        onClear = { onChange(rule.copy(until = null)) },
+                        modifier = Modifier.weight(1f),
+                        error = issue?.takeIf { it.field in listOf(ScheduleField.END, ScheduleField.BOUNDS) }
+                            ?.let { localizedValidationError(context, it.message) })
+                }
             }
             Text(
                 stringResource(R.string.times),
@@ -1041,10 +1039,11 @@ private fun DateBound(
     fallback: String,
     onPick: () -> Unit,
     onClear: () -> Unit,
+    modifier: Modifier = Modifier,
     error: String? = null
 ) {
     val context = LocalContext.current
-    Column {
+    Column(modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             OutlinedButton(
                 border = BorderStroke(
@@ -1186,6 +1185,7 @@ private fun UnitChip(
     label: String,
     selected: Boolean,
     modifier: Modifier = Modifier,
+    borderColor: Color = Violet,
     onClick: () -> Unit
 ) {
     Box(
@@ -1193,7 +1193,7 @@ private fun UnitChip(
             .height(46.dp)
             .clip(RoundedCornerShape(11.dp))
             .background(if (selected) AccentPanel else Color.Transparent)
-            .border(1.5.dp, if (selected) Violet else PanelBorder, RoundedCornerShape(11.dp))
+            .border(1.5.dp, if (selected) borderColor else PanelBorder, RoundedCornerShape(11.dp))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {

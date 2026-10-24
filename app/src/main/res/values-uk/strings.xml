@@ -249,7 +249,7 @@
     <string name="widget_name">"Dose · Сьогодні"</string>
     <string name="widget_description">"Найближча невідмічена доза на сьогодні та час її прийому."</string>
     <string name="widget_open_today">"Натисніть, щоб відкрити «Сьогодні»"</string>
-    <string name="pause_notifications">"Призупинити всі сповіщення"</string>
+    <string name="pause_notifications">"Пауза"</string>
     <string name="notifications_paused_until">"Сповіщення призупинено до %1$s"</string>
     <string name="resume_notifications">"Відновити сповіщення зараз"</string>
     <string name="reminders_disabled_hint">"Нагадування вимкнено. Ваші розклади прийому ліків збережено."</string>

@@ -249,7 +249,7 @@
     <string name="widget_name">"Dose · Şu gün"</string>
     <string name="widget_description">"Şu günki indiki bellige alynmadyk doza we onuň wagty."</string>
     <string name="widget_open_today">"Şu güni açmak üçin basyň"</string>
-    <string name="pause_notifications">"Ähli habarnamalary wagtlaýyn duruz"</string>
+    <string name="pause_notifications">"Pauza"</string>
     <string name="notifications_paused_until">"Habarnamalar %1$s çenli duruzyldy"</string>
     <string name="resume_notifications">"Habarnamalary häzir dowam et"</string>
     <string name="reminders_disabled_hint">"Ýatlatmalar öçürildi. Derman tertipleriňiz saklanýar."</string>

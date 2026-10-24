@@ -249,7 +249,7 @@
     <string name="widget_name">"Dose · Имрӯз"</string>
     <string name="widget_description">"Вояи навбатии сабтнашудаи имрӯз ва вақти он."</string>
     <string name="widget_open_today">"Барои кушодани «Имрӯз» пахш кунед"</string>
-    <string name="pause_notifications">"Таваққуфи ҳамаи огоҳиҳо"</string>
+    <string name="pause_notifications">"Таваққуф"</string>
     <string name="notifications_paused_until">"Огоҳиҳо то %1$s таваққуф карда шудаанд"</string>
     <string name="resume_notifications">"Огоҳиҳоро ҳозир идома додан"</string>
     <string name="reminders_disabled_hint">"Ёдрасиҳо хомӯшанд. Ҷадвалҳои доруҳои шумо нигоҳ дошта шудаанд."</string>

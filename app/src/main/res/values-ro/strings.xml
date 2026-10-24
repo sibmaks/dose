@@ -249,7 +249,7 @@
     <string name="widget_name">"Dose · Astăzi"</string>
     <string name="widget_description">"Următoarea doză neînregistrată de astăzi și ora ei."</string>
     <string name="widget_open_today">"Atingeți pentru a deschide Astăzi"</string>
-    <string name="pause_notifications">"Pauză pentru toate notificările"</string>
+    <string name="pause_notifications">"Pauză"</string>
     <string name="notifications_paused_until">"Notificările sunt întrerupte până la %1$s"</string>
     <string name="resume_notifications">"Reia notificările acum"</string>
     <string name="reminders_disabled_hint">"Mementourile sunt dezactivate. Programele medicamentelor rămân salvate."</string>
