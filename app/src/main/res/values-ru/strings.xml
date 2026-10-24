@@ -109,7 +109,7 @@
     <string name="duration_0_min">"0 мин"</string>
     <string name="duration_1_min">"&lt;1 мин"</string>
     <string name="time_for_your_medication">"Пора принять лекарство"</string>
-    <string name="snooze_10_min">"Отложить на 10 мин"</string>
+    <string name="snooze_10_min">"Отложить на 10 минут"</string>
     <string name="later_keep_notification">"Позже · оставить уведомление"</string>
     <string name="later">"Позже"</string>
     <string name="medication_reminders">"Напоминания о лекарствах"</string>

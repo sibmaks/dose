@@ -21,7 +21,6 @@ internal object ReminderPopupView {
     data class Entry(
         val medication: Medication,
         val time: String,
-        val allowOnTime: Boolean = false,
         val amount: String = medication.amount,
         val onAction: (String) -> Unit
     )
@@ -163,36 +162,28 @@ internal object ReminderPopupView {
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
                     .apply { topMargin = dp(10) })
-            val acceptance = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
-            acceptance.addView(
+            val actions = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
+            actions.addView(
                 pill(
                     context.getString(R.string.taken),
                     primary = true
                 ) { entry.onAction(ReminderReceiver.ACTION_TAKEN) },
-                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
             )
-            if (entry.allowOnTime) acceptance.addView(
-                pill(context.getString(R.string.on_time)) { entry.onAction(ReminderReceiver.ACTION_ON_TIME) },
-                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            actions.addView(
+                pill(context.getString(R.string.skip), quiet = true) { entry.onAction(ReminderReceiver.ACTION_SKIP) },
+                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
                     .apply { marginStart = dp(8) })
             card.addView(
-                acceptance,
+                actions,
                 LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
                     .apply { topMargin = dp(14) })
-            val secondary = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
-            secondary.addView(
-                pill(context.getString(R.string.snooze_10_min)) { entry.onAction(ReminderReceiver.ACTION_SNOOZE) },
-                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
-                    .apply { marginEnd = dp(8) })
-            secondary.addView(
-                pill(context.getString(R.string.skip), quiet = true) { entry.onAction(ReminderReceiver.ACTION_SKIP) },
-                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
-            )
             card.addView(
-                secondary, LinearLayout.LayoutParams(
+                pill(context.getString(R.string.snooze_10_min)) { entry.onAction(ReminderReceiver.ACTION_SNOOZE) },
+                LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )

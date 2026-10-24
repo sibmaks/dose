@@ -155,12 +155,7 @@ class ReminderOverlayService : Service() {
                         .atZone(ZoneId.systemDefault())
                         .toLocalTime()
                         .format(DateTimeFormatter.ofPattern("HH:mm")),
-                    DoseLogic.canRecordOnTime(
-                        DoseStore.wasDeferred(this, slot.key),
-                        slot.scheduledAt,
-                        System.currentTimeMillis()
-                    ),
-                    medication.amountAt(LocalDate.parse(slot.date), slot.time)
+                    amount = medication.amountAt(LocalDate.parse(slot.date), slot.time)
                 ) { action ->
                     ReminderScheduler.actionIntent(
                         this,
