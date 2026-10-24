@@ -121,7 +121,8 @@
     <string name="progress_counts">"მიღებულია: %1$d / %2$d · გამოტოვებულია: %3$d"</string>
     <string name="edit_named">"შეცვლა: %1$s"</string>
     <string name="scheduled_dose">"დაგეგმილი: %1$s · %2$s"</string>
-    <string name="taken_timing">"მიღება %1$s · %2$s: %3$s"</string>
+    <string name="taken_time">"მიღება %1$s"</string>
+    <string name="timing_difference">"%1$s: %2$s"</string>
     <string name="early">"ადრე"</string>
     <string name="delay">"დაყოვნება"</string>
     <string name="schedule_error">"განრიგი %1$d: %2$s"</string>

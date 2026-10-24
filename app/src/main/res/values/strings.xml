@@ -121,7 +121,8 @@
     <string name="progress_counts">"Taken: %1$d / %2$d · Skipped: %3$d"</string>
     <string name="edit_named">"Edit %1$s"</string>
     <string name="scheduled_dose">"Scheduled %1$s · %2$s"</string>
-    <string name="taken_timing">"Taken %1$s · %2$s: %3$s"</string>
+    <string name="taken_time">"Taken %1$s"</string>
+    <string name="timing_difference">"%1$s: %2$s"</string>
     <string name="early">"Early"</string>
     <string name="delay">"Delay"</string>
     <string name="schedule_error">"Schedule %1$d: %2$s"</string>

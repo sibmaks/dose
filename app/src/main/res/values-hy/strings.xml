@@ -121,7 +121,8 @@
     <string name="progress_counts">"Ընդունված՝ %1$d / %2$d · Բաց թողնված՝ %3$d"</string>
     <string name="edit_named">"Խմբագրել՝ %1$s"</string>
     <string name="scheduled_dose">"Պլանավորված՝ %1$s · %2$s"</string>
-    <string name="taken_timing">"Ընդունում՝ %1$s · %2$s՝ %3$s"</string>
+    <string name="taken_time">"Ընդունում՝ %1$s"</string>
+    <string name="timing_difference">"%1$s: %2$s"</string>
     <string name="early">"Վաղ"</string>
     <string name="delay">"Ուշացում"</string>
     <string name="schedule_error">"Ժամանակացույց %1$d՝ %2$s"</string>

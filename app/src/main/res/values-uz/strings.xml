@@ -121,7 +121,8 @@
     <string name="progress_counts">"Qabul: %1$d / %2$d · Oʻtkazildi: %3$d"</string>
     <string name="edit_named">"Tahrirlash: %1$s"</string>
     <string name="scheduled_dose">"Reja: %1$s · %2$s"</string>
-    <string name="taken_timing">"Qabul %1$s · %2$s: %3$s"</string>
+    <string name="taken_time">"Qabul %1$s"</string>
+    <string name="timing_difference">"%1$s: %2$s"</string>
     <string name="early">"Erta"</string>
     <string name="delay">"Kechikish"</string>
     <string name="schedule_error">"Jadval %1$d: %2$s"</string>

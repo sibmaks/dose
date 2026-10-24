@@ -121,7 +121,8 @@
     <string name="progress_counts">"Прийнято: %1$d / %2$d · Пропущено: %3$d"</string>
     <string name="edit_named">"Змінити %1$s"</string>
     <string name="scheduled_dose">"За планом %1$s · %2$s"</string>
-    <string name="taken_timing">"Прийом %1$s · %2$s: %3$s"</string>
+    <string name="taken_time">"Прийом %1$s"</string>
+    <string name="timing_difference">"%1$s: %2$s"</string>
     <string name="early">"Раніше"</string>
     <string name="delay">"Затримка"</string>
     <string name="schedule_error">"Розклад %1$d: %2$s"</string>

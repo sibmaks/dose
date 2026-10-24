@@ -121,7 +121,8 @@
     <string name="progress_counts">"Қабул: %1$d / %2$d · Гузаронда: %3$d"</string>
     <string name="edit_named">"Тағйир: %1$s"</string>
     <string name="scheduled_dose">"Нақша: %1$s · %2$s"</string>
-    <string name="taken_timing">"Қабул %1$s · %2$s: %3$s"</string>
+    <string name="taken_time">"Қабул %1$s"</string>
+    <string name="timing_difference">"%1$s: %2$s"</string>
     <string name="early">"Барвақт"</string>
     <string name="delay">"Таъхир"</string>
     <string name="schedule_error">"Ҷадвали %1$d: %2$s"</string>

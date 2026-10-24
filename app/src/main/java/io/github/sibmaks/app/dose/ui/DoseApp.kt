@@ -933,14 +933,14 @@ private fun HistoryPage(
                             if (log.onTime) Text(stringResource(R.string.on_time), color = Violet, fontSize = 12.sp)
                             DoseReports.timing(log)
                                 ?.let { timing ->
-                                    val actual = Instant.ofEpochMilli(log.recordedAt)
+                                    val taken = Instant.ofEpochMilli(log.recordedAt)
                                         .atZone(ZoneId.systemDefault())
-                                        .format(
-                                            DateTimeFormatter.ofPattern(
-                                                "MMM d, HH:mm",
-                                                AppLanguages.locale(context)
-                                            )
+                                    val actual = taken.format(
+                                        DateTimeFormatter.ofPattern(
+                                            if (taken.toLocalDate() == LocalDate.parse(log.date)) "HH:mm" else "MMM d, HH:mm",
+                                            AppLanguages.locale(context)
                                         )
+                                    )
                                     val difference =
                                         delayDuration(
                                             context,
@@ -948,9 +948,12 @@ private fun HistoryPage(
                                                 .toDouble()
                                         )
                                     Text(
+                                        stringResource(R.string.taken_time, actual),
+                                        color = TextMuted, fontSize = 12.sp
+                                    )
+                                    Text(
                                         stringResource(
-                                            R.string.taken_timing,
-                                            actual,
+                                            R.string.timing_difference,
                                             stringResource(if (timing.differenceMillis < 0) R.string.early else R.string.delay),
                                             difference
                                         ), color = TextMuted, fontSize = 12.sp

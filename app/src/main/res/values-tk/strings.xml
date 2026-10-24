@@ -121,7 +121,8 @@
     <string name="progress_counts">"Içildi: %1$d / %2$d · Geçirildi: %3$d"</string>
     <string name="edit_named">"Üýtgetmek: %1$s"</string>
     <string name="scheduled_dose">"Bellenen: %1$s · %2$s"</string>
-    <string name="taken_timing">"Içildi %1$s · %2$s: %3$s"</string>
+    <string name="taken_time">"Içildi %1$s"</string>
+    <string name="timing_difference">"%1$s: %2$s"</string>
     <string name="early">"Ir"</string>
     <string name="delay">"Gijikme"</string>
     <string name="schedule_error">"Tertip %1$d: %2$s"</string>

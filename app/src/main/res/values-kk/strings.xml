@@ -121,7 +121,8 @@
     <string name="progress_counts">"Қабылданды: %1$d / %2$d · Өткізілді: %3$d"</string>
     <string name="edit_named">"Өзгерту: %1$s"</string>
     <string name="scheduled_dose">"Жоспар: %1$s · %2$s"</string>
-    <string name="taken_timing">"Қабылдау %1$s · %2$s: %3$s"</string>
+    <string name="taken_time">"Қабылдау %1$s"</string>
+    <string name="timing_difference">"%1$s: %2$s"</string>
     <string name="early">"Ерте"</string>
     <string name="delay">"Кешігу"</string>
     <string name="schedule_error">"Кесте %1$d: %2$s"</string>
