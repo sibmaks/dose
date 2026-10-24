@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>История приёма — timeline-дизайн (Вариант 2)</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#E8EBF1}
+  body{
+    font-family:'Inter','SF Pro Text','Roboto',-apple-system,'Segoe UI',system-ui,sans-serif;
+    color:#1D2B4F;padding:34px 26px 52px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sprite{display:none}
+
+  /* ---------- design board chrome ---------- */
+  .board-head{max-width:1720px;margin:0 auto 8px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .board-title{font-size:21px;font-weight:800;letter-spacing:-.01em}
+  .board-sub{font-size:13.5px;color:#69748A;margin-top:6px}
+  .legend{display:flex;gap:9px;flex-wrap:wrap}
+  .lg{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #DDE2EA;border-radius:999px;padding:7px 13px;font-size:12.5px;font-weight:700}
+  .lg i{width:9px;height:9px;border-radius:50%}
+  .grid{max-width:1720px;margin:22px auto 0;display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .shot{display:flex;flex-direction:column;gap:12px}
+  .shot-label{font-size:13px;font-weight:800;color:#3A4661}
+  .shot-cap{font-size:12.5px;color:#69748A;line-height:1.55;max-width:384px}
+
+  /* ---------- device frame ---------- */
+  .phone{
+    width:392px;height:864px;background:#fff;border-radius:38px;border:10px solid #171C26;
+    box-shadow:0 30px 70px rgba(23,32,56,.22),0 4px 14px rgba(23,32,56,.10);
+    overflow:hidden;display:flex;flex-direction:column;position:relative;
+  }
+  .sbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px 2px;font-size:13px;font-weight:600;flex:none}
+  .sicons{display:flex;gap:5px;align-items:center}
+  .appbar{display:flex;align-items:center;padding:6px 12px 10px;flex:none}
+  .icon-btn{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:#26324E;flex:none}
+  .icon-btn .ic{width:22px;height:22px}
+  .appbar .title{flex:1;text-align:center;font-size:17.5px;font-weight:700;letter-spacing:-.01em}
+  .slot{width:40px;flex:none}
+
+  .content{flex:1;overflow-y:auto;padding:6px 16px 18px;scrollbar-width:none}
+  .content::-webkit-scrollbar{display:none}
+
+  /* ---------- cards ---------- */
+  .card{background:#F7F8FB;border:1px solid #ECEFF4;border-radius:18px;padding:14px 15px;margin-bottom:12px}
+  .med-row{display:flex;align-items:center;gap:12px}
+  .avatar{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;flex:none}
+  .avatar .ic{width:23px;height:23px}
+  .av-purple{background:#EFEAFE;color:#6C4DF6}
+  .av-red{background:#FDEEE9;color:#E0684A}
+  .med-name{font-size:16.5px;font-weight:700;letter-spacing:-.01em}
+  .med-sub{font-size:13px;color:#7C8698;margin-top:2px}
+  .kv{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;padding-top:11px;margin-top:12px;border-top:1px solid #E7EAF1}
+  .kv span{color:#7C8698}
+  .kv b{font-weight:600;font-variant-numeric:tabular-nums}
+
+  /* ---------- status hero ---------- */
+  .status{display:flex;align-items:center;gap:13px;border-radius:18px;padding:13px 15px;margin-bottom:2px}
+  .st-taken{background:#E4F5ED}
+  .st-missed{background:#FCECE7}
+  .st-pending{background:#F0EBFE}
+  .sicon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;flex:none;color:#fff}
+  .sicon .ic{width:21px;height:21px}
+  .st-taken .sicon{background:#27A468}
+  .st-missed .sicon{background:#DE5B45}
+  .st-pending .sicon{background:#6C4DF6}
+  .sname{font-size:16.5px;font-weight:800}
+  .st-taken .sname{color:#177A4C}
+  .st-missed .sname{color:#C2482F}
+  .st-pending .sname{color:#5A3EDB}
+  .smeta{font-size:13px;margin-top:2px;font-weight:500;line-height:1.45}
+  .st-taken .smeta{color:#2E7A56}
+  .st-missed .smeta{color:#B05541}
+  .st-pending .smeta{color:#6A55C9}
+
+  .section{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#98A1B2;margin:18px 2px 12px}
+
+  /* ---------- timeline ---------- */
+  .timeline{padding:0 2px}
+  .t{position:relative;display:flex;gap:12px;padding-bottom:16px}
+  .t::before{content:"";position:absolute;left:16px;top:36px;bottom:-4px;width:2px;border-radius:2px;background:#E3E7EF}
+  .t:last-child::before{display:none}
+  .t-day{position:relative;padding:0 0 12px 46px;font-size:12.5px;font-weight:700;color:#8A93A6}
+  .t-day::before{content:"";position:absolute;left:16px;top:8px;bottom:-4px;width:2px;background:#E3E7EF}
+  .t-day:last-child::before{display:none}
+  .ticon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;position:relative;z-index:1}
+  .ticon .ic{width:17px;height:17px}
+  .c-bell{background:#EFEAFE;color:#6C4DF6}
+  .c-snooze{background:#EEF1F6;color:#67718A}
+  .c-done{background:#E4F5ED;color:#1F9D66}
+  .c-fail{background:#FCECE7;color:#DE5B45}
+  .tbody{flex:1;min-width:0;padding-top:1px}
+  .ttop{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .ttitle{font-size:14.5px;font-weight:600;color:#22304F}
+  .ttime{font-size:13px;font-weight:700;color:#7C8698;flex:none;font-variant-numeric:tabular-nums}
+  .c-done-row .ttime{color:#1F9D66}
+  .c-fail-row .ttime{color:#DE5B45}
+  .tmeta{font-size:12.5px;color:#8A93A6;margin-top:3px;line-height:1.45}
+
+  /* ---------- bottom bar ---------- */
+  .bottom{background:#fff;border-top:1px solid #ECEFF4;padding:12px 16px 6px;display:flex;flex-direction:column;gap:5px;flex:none}
+  .btn{height:52px;border-radius:16px;display:grid;place-items:center;font-size:16px;font-weight:700;color:#fff;background:#6C4DF6;box-shadow:0 10px 22px rgba(108,77,246,.28)}
+  .btn.off{background:#C9BFF7;box-shadow:none}
+  .tbtn{height:40px;display:grid;place-items:center;font-size:14.5px;font-weight:700;color:#DE5B45;border-radius:12px}
+  .gesture{width:108px;height:4px;border-radius:4px;background:#202A3E;opacity:.9;margin:6px auto 2px}
+
+  /* ---------- overflow menu overlay ---------- */
+  .scrim{position:absolute;inset:0;background:rgba(23,30,45,.30);z-index:5}
+  .menu{position:absolute;top:104px;right:14px;z-index:6;background:#fff;border-radius:16px;box-shadow:0 18px 44px rgba(23,32,56,.28);padding:6px;width:212px}
+  .mi{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:11px;font-size:14.5px;font-weight:600;color:#22304F}
+  .mi .ic{width:19px;height:19px;color:#5A6478}
+  .mi.danger{color:#DE5B45}
+  .mi.danger .ic{color:#DE5B45}
+
+  /* ---------- edit: status options ---------- */
+  .opt{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #E2E6EE;border-radius:16px;padding:10px 14px 10px 11px;margin-bottom:10px}
+  .oicon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;flex:none}
+  .oicon .ic{width:18px;height:18px}
+  .ot{flex:1;min-width:0}
+  .ot .nm{display:flex;align-items:center;gap:8px}
+  .ot b{font-size:15px;font-weight:700;color:#22304F}
+  .ot span{display:block;font-size:12.5px;color:#7C8698;margin-top:1px}
+  .tag{font-size:10.5px;font-weight:800;color:#6C4DF6;background:#EFEAFE;border-radius:6px;padding:2.5px 7px;letter-spacing:.04em}
+  .radio{width:21px;height:21px;border-radius:50%;border:2px solid #C4CAD6;flex:none}
+  .opt.sel{border-color:#6C4DF6;background:#F5F2FE;box-shadow:0 0 0 3px rgba(108,77,246,.10)}
+  .opt.sel .radio{border:7px solid #6C4DF6;background:#fff}
+
+  /* ---------- edit: date/time fields ---------- */
+  .fields{display:flex;gap:12px}
+  .fld{flex:1;min-width:0}
+  .fin{position:relative;height:58px;border:1.5px solid #D8DEE8;border-radius:15px;display:flex;align-items:center;gap:9px;padding:0 13px;background:#fff}
+  .flabel{position:absolute;top:-8px;left:11px;background:#fff;padding:0 6px;font-size:11.5px;font-weight:700;color:#7C8698}
+  .fval{font-size:15px;font-weight:600;color:#22304F;flex:1;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
+  .fval.ph{color:#A5AEBF;font-weight:500}
+  .fin .ic{width:19px;height:19px;color:#8A93A6;flex:none}
+  .fields.err .fin{border-color:#DE5B45;background:#FFFBFA}
+  .err{display:flex;align-items:center;gap:7px;color:#D14A33;font-size:13px;font-weight:600;margin:11px 2px 0}
+  .err .ic{width:16px;height:16px}
+  .hint{font-size:12.5px;color:#7C8698;line-height:1.5;margin-top:11px;padding:0 2px}
+
+  /* ---------- icons ---------- */
+  .ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg class="sprite" aria-hidden="true"><defs>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.7" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-belloff" viewBox="0 0 24 24"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.9 17.9 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><path d="M18 8a6 6 0 0 0-9.33-5"/><path d="M3 3l18 18"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1v14z"/><path d="M4 22v-7"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24"><path d="M10.5 20.5a5 5 0 0 1-7.08-7.08l9.5-9.5a5 5 0 0 1 7.08 7.08z"/><path d="m8.5 8.5 7 7"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="19" r="1.3"/></symbol>
+  <symbol id="i-sig" viewBox="0 0 24 24"><path d="M3.5 18.5v-3M8.5 18.5v-6M13.5 18.5v-9M18.5 18.5V6" stroke-width="2.6"/></symbol>
+  <symbol id="i-batt" viewBox="0 0 24 24"><rect x="2" y="8" width="16" height="9" rx="2.5"/><path d="M21 11v3"/><rect x="4.5" y="10.5" width="9" height="4" rx="1.2" fill="currentColor" stroke="none"/></symbol>
+</defs></svg>
+
+<header class="board-head">
+  <div>
+    <div class="board-title">История приёма — timeline-дизайн (Вариант 2)</div>
+    <div class="board-sub">Трекер лекарств · Android · Material 3 · 24-часовой формат · 392 × 864 · белая база, тёмно-синий текст, фиолетовые действия, зелёный успех</div>
+  </div>
+  <div class="legend">
+    <span class="lg"><i style="background:#27A468"></i>Принято</span>
+    <span class="lg"><i style="background:#6C4DF6"></i>Ожидает</span>
+    <span class="lg"><i style="background:#DE5B45"></i>Пропущено</span>
+  </div>
+</header>
+
+<main class="grid">
+
+  <!-- ================= SCREEN 1 · DETAILS · TAKEN ================= -->
+  <div class="shot">
+    <div class="shot-label">1 · Детали приёма — «Принято»</div>
+    <div class="phone">
+      <div class="sbar">
+        <span>9:51</span>
+        <span class="sicons">
+          <svg class="ic" width="15" height="15"><use href="#i-sig"/></svg>
+          <svg class="ic" width="15" height="15"><use href="#i-wifi"/></svg>
+          <svg class="ic" width="18" height="15"><use href="#i-batt"/></svg>
+        </span>
+      </div>
+      <div class="appbar">
+        <span class="icon-btn"><svg class="ic"><use href="#i-back"/></svg></span>
+        <span class="title">История приёма</span>
+        <span class="icon-btn"><svg class="ic"><use href="#i-dots"/></svg></span>
+      </div>
+
+      <div class="content">
+        <div class="card">
+          <div class="med-row">
+            <span class="avatar av-purple"><svg class="ic"><use href="#i-pill"/></svg></span>
+            <div>
+              <div class="med-name">Магния цитрат</div>
+              <div class="med-sub">10 г · порошок</div>
+            </div>
+          </div>
+          <div class="kv"><span>Запланировано</span><b>25 октября 2026, 09:00</b></div>
+        </div>
+
+        <div class="status st-taken">
+          <span class="sicon"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="sname">Принято</div>
+            <div class="smeta">25 октября 2026, 09:50 · через 50 минут после напоминания</div>
+          </div>
+        </div>
+
+        <div class="section">История событий</div>
+
+        <div class="timeline">
+          <div class="t-day">25 октября 2026</div>
+
+          <div class="t">
+            <span class="ticon c-bell"><svg class="ic"><use href="#i-bell"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Напоминание отправлено</span><span class="ttime">09:00</span></div>
+              <div class="tmeta">Исходное напоминание</div>
+            </div>
+          </div>
+
+          <div class="t">
+            <span class="ticon c-snooze"><svg class="ic"><use href="#i-clock"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Приём отложен на 10 минут</span><span class="ttime">09:02</span></div>
+              <div class="tmeta">Следующее напоминание — 09:12</div>
+            </div>
+          </div>
+
+          <div class="t">
+            <span class="ticon c-bell"><svg class="ic"><use href="#i-bell"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Повторное напоминание</span><span class="ttime">09:12</span></div>
+            </div>
+          </div>
+
+          <div class="t">
+            <span class="ticon c-snooze"><svg class="ic"><use href="#i-clock"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Приём отложен на 30 минут</span><span class="ttime">09:15</span></div>
+              <div class="tmeta">Следующее напоминание — 09:45</div>
+            </div>
+          </div>
+
+          <div class="t">
+            <span class="ticon c-bell"><svg class="ic"><use href="#i-bell"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Повторное напоминание</span><span class="ttime">09:45</span></div>
+            </div>
+          </div>
+
+          <div class="t c-done-row">
+            <span class="ticon c-done"><svg class="ic"><use href="#i-check"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Лекарство принято</span><span class="ttime">09:50</span></div>
+              <div class="tmeta">Через 50 минут после запланированного времени</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div class="btn">Редактировать</div>
+        <div class="gesture"></div>
+      </div>
+    </div>
+    <p class="shot-cap">Финальный статус закреплён сверху с фактическим временем приёма. Хронология сохраняет каждое напоминание и каждый перенос — ничего не свёрнуто в одно событие.</p>
+  </div>
+
+  <!-- ================= SCREEN 2 · DETAILS · MISSED (+ overflow menu open) ================= -->
+  <div class="shot">
+    <div class="shot-label">2 · Детали приёма — «Пропущено» (меню «⋯»)</div>
+    <div class="phone">
+      <div class="sbar">
+        <span>9:52</span>
+        <span class="sicons">
+          <svg class="ic" width="15" height="15"><use href="#i-sig"/></svg>
+          <svg class="ic" width="15" height="15"><use href="#i-wifi"/></svg>
+          <svg class="ic" width="18" height="15"><use href="#i-batt"/></svg>
+        </span>
+      </div>
+      <div class="appbar">
+        <span class="icon-btn"><svg class="ic"><use href="#i-back"/></svg></span>
+        <span class="title">История приёма</span>
+        <span class="icon-btn"><svg class="ic"><use href="#i-dots"/></svg></span>
+      </div>
+
+      <div class="content">
+        <div class="card">
+          <div class="med-row">
+            <span class="avatar av-red"><svg class="ic"><use href="#i-pill"/></svg></span>
+            <div>
+              <div class="med-name">Ибупрофен</div>
+              <div class="med-sub">200 мг · таблетки</div>
+            </div>
+          </div>
+          <div class="kv"><span>Запланировано</span><b>25 октября 2026, 22:30</b></div>
+        </div>
+
+        <div class="status st-missed">
+          <span class="sicon"><svg class="ic"><use href="#i-belloff"/></svg></span>
+          <div>
+            <div class="sname">Пропущено</div>
+            <div class="smeta">Напоминания отправлены 3 раза — приём не зафиксирован</div>
+          </div>
+        </div>
+
+        <div class="section">История событий</div>
+
+        <div class="timeline">
+          <div class="t-day">25 октября 2026</div>
+
+          <div class="t">
+            <span class="ticon c-bell"><svg class="ic"><use href="#i-bell"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Напоминание отправлено</span><span class="ttime">22:30</span></div>
+              <div class="tmeta">Исходное напоминание</div>
+            </div>
+          </div>
+
+          <div class="t">
+            <span class="ticon c-snooze"><svg class="ic"><use href="#i-clock"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Приём отложен на 20 минут</span><span class="ttime">22:33</span></div>
+              <div class="tmeta">Следующее напоминание — 22:53</div>
+            </div>
+          </div>
+
+          <div class="t">
+            <span class="ticon c-bell"><svg class="ic"><use href="#i-bell"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Повторное напоминание</span><span class="ttime">22:53</span></div>
+            </div>
+          </div>
+
+          <div class="t">
+            <span class="ticon c-snooze"><svg class="ic"><use href="#i-clock"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Приём отложен на 45 минут</span><span class="ttime">23:00</span></div>
+              <div class="tmeta">Следующее напоминание — 23:45</div>
+            </div>
+          </div>
+
+          <div class="t">
+            <span class="ticon c-bell"><svg class="ic"><use href="#i-bell"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Повторное напоминание</span><span class="ttime">23:45</span></div>
+            </div>
+          </div>
+
+          <div class="t-day">26 октября 2026</div>
+
+          <div class="t c-fail-row">
+            <span class="ticon c-fail"><svg class="ic"><use href="#i-flag"/></svg></span>
+            <div class="tbody">
+              <div class="ttop"><span class="ttitle">Запись отмечена как «Пропущено»</span><span class="ttime">00:00</span></div>
+              <div class="tmeta">День завершился — подтверждений приёма нет</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div class="btn">Редактировать</div>
+        <div class="gesture"></div>
+      </div>
+
+      <!-- open overflow menu -->
+      <div class="scrim"></div>
+      <div class="menu">
+        <div class="mi"><svg class="ic"><use href="#i-edit"/></svg>Редактировать</div>
+        <div class="mi danger"><svg class="ic"><use href="#i-trash"/></svg>Удалить запись</div>
+      </div>
+    </div>
+    <p class="shot-cap">Реального времени приёма нет — под статусом только сводка. События переходят через полночь (25 → 26 октября). «Удалить запись» — в меню «⋯», с отдельным подтверждением.</p>
+  </div>
+
+  <!-- ================= SCREEN 3 · EDIT · MISSED/PENDING → TAKEN ================= -->
+  <div class="shot">
+    <div class="shot-label">3 · Редактирование — «Пропущено» → «Принято»</div>
+    <div class="phone">
+      <div class="sbar">
+        <span>9:53</span>
+        <span class="sicons">
+          <svg class="ic" width="15" height="15"><use href="#i-sig"/></svg>
+          <svg class="ic" width="15" height="15"><use href="#i-wifi"/></svg>
+          <svg class="ic" width="18" height="15"><use href="#i-batt"/></svg>
+        </span>
+      </div>
+      <div class="appbar">
+        <span class="icon-btn"><svg class="ic"><use href="#i-back"/></svg></span>
+        <span class="title">Редактирование приёма</span>
+        <span class="slot"></span>
+      </div>
+
+      <div class="content">
+        <div class="card">
+          <div class="med-row">
+            <span class="avatar av-red"><svg class="ic"><use href="#i-pill"/></svg></span>
+            <div>
+              <div class="med-name">Ибупрофен</div>
+              <div class="med-sub">200 мг · таблетки</div>
+            </div>
+          </div>
+          <div class="kv"><span>Запланировано</span><b>25 октября 2026, 22:30</b></div>
+        </div>
+
+        <div class="section">Статус приёма</div>
+
+        <div class="opt sel">
+          <span class="oicon c-done"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div class="ot"><span class="nm"><b>Принято</b></span><span>Приём зафиксирован</span></div>
+          <span class="radio"></span>
+        </div>
+        <div class="opt">
+          <span class="oicon c-snooze"><svg class="ic"><use href="#i-clock"/></svg></span>
+          <div class="ot"><span class="nm"><b>Ожидает</b></span><span>Ожидает подтверждения</span></div>
+          <span class="radio"></span>
+        </div>
+        <div class="opt">
+          <span class="oicon c-fail"><svg class="ic"><use href="#i-belloff"/></svg></span>
+          <div class="ot"><span class="nm"><b>Пропущено</b><i class="tag">Текущий</i></span><span>Приём не зафиксирован</span></div>
+          <span class="radio"></span>
+        </div>
+
+        <div class="section">Фактическое время приёма</div>
+
+        <div class="fields err">
+          <div class="fld">
+            <div class="fin">
+              <span class="flabel">Дата приёма</span>
+              <span class="fval ph">Выберите дату</span>
+              <svg class="ic"><use href="#i-cal"/></svg>
+            </div>
+          </div>
+          <div class="fld">
+            <div class="fin">
+              <span class="flabel">Время приёма</span>
+              <span class="fval ph">Выберите время</span>
+              <svg class="ic"><use href="#i-clock"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="err"><svg class="ic"><use href="#i-alert"/></svg>Укажите дату и время приёма</div>
+        <p class="hint">Время напоминания (22:30) не подставляется автоматически — укажите, когда приём произошёл фактически. История напоминаний и переносов сохранится без изменений.</p>
+      </div>
+
+      <div class="bottom">
+        <div class="btn off">Сохранить</div>
+        <div class="gesture"></div>
+      </div>
+    </div>
+    <p class="shot-cap">Для «Ожидает» и «Пропущено» выбор «Принято» раскрывает обязательные поля даты и времени. «Сохранить» неактивна, пока значения не выбраны явно (для «Ожидает» экран выглядит так же).</p>
+  </div>
+
+  <!-- ================= SCREEN 4 · EDIT · CORRECT TAKEN ================= -->
+  <div class="shot">
+    <div class="shot-label">4 · Редактирование — исправление «Принято»</div>
+    <div class="phone">
+      <div class="sbar">
+        <span>9:54</span>
+        <span class="sicons">
+          <svg class="ic" width="15" height="15"><use href="#i-sig"/></svg>
+          <svg class="ic" width="15" height="15"><use href="#i-wifi"/></svg>
+          <svg class="ic" width="18" height="15"><use href="#i-batt"/></svg>
+        </span>
+      </div>
+      <div class="appbar">
+        <span class="icon-btn"><svg class="ic"><use href="#i-back"/></svg></span>
+        <span class="title">Редактирование приёма</span>
+        <span class="slot"></span>
+      </div>
+
+      <div class="content">
+        <div class="card">
+          <div class="med-row">
+            <span class="avatar av-purple"><svg class="ic"><use href="#i-pill"/></svg></span>
+            <div>
+              <div class="med-name">Магния цитрат</div>
+              <div class="med-sub">10 г · порошок</div>
+            </div>
+          </div>
+          <div class="kv"><span>Запланировано</span><b>25 октября 2026, 09:00</b></div>
+        </div>
+
+        <div class="section">Статус приёма</div>
+
+        <div class="opt sel">
+          <span class="oicon c-done"><svg class="ic"><use href="#i-check"/></svg></span>
+          <div class="ot"><span class="nm"><b>Принято</b><i class="tag">Текущий</i></span><span>Приём зафиксирован</span></div>
+          <span class="radio"></span>
+        </div>
+        <div class="opt">
+          <span class="oicon c-snooze"><svg class="ic"><use href="#i-clock"/></svg></span>
+          <div class="ot"><span class="nm"><b>Ожидает</b></span><span>Ожидает подтверждения</span></div>
+          <span class="radio"></span>
+        </div>
+        <div class="opt">
+          <span class="oicon c-fail"><svg class="ic"><use href="#i-belloff"/></svg></span>
+          <div class="ot"><span class="nm"><b>Пропущено</b></span><span>Приём не зафиксирован</span></div>
+          <span class="radio"></span>
+        </div>
+
+        <div class="section">Фактическое время приёма</div>
+
+        <div class="fields">
+          <div class="fld">
+            <div class="fin">
+              <span class="flabel">Дата приёма</span>
+              <span class="fval">25 октября 2026</span>
+              <svg class="ic"><use href="#i-cal"/></svg>
+            </div>
+          </div>
+          <div class="fld">
+            <div class="fin">
+              <span class="flabel">Время приёма</span>
+              <span class="fval">09:50</span>
+              <svg class="ic"><use href="#i-clock"/></svg>
+            </div>
+          </div>
+        </div>
+        <p class="hint">Запланировано 09:00 · принято с задержкой 50 минут. Исправление времени обновит статистику приёма, история напоминаний и переносов останется без изменений.</p>
+      </div>
+
+      <div class="bottom">
+        <div class="btn">Сохранить</div>
+        <div class="gesture"></div>
+      </div>
+    </div>
+    <p class="shot-cap">Статус «Принято» сохраняется; поля предзаполнены записанным значением и остаются обязательными. «Сохранить» активна, пока форма валидна и есть изменения.</p>
+  </div>
+
+</main>
+</body>
+</html>

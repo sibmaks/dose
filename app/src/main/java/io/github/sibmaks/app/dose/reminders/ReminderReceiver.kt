@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.github.sibmaks.app.dose.MainActivity
 import io.github.sibmaks.app.dose.R
+import io.github.sibmaks.app.dose.data.DoseEvent
 import io.github.sibmaks.app.dose.data.DoseGroups
 import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseStore
@@ -104,7 +105,10 @@ class ReminderReceiver : BroadcastReceiver() {
                     // Retain the elapsed snooze instant for grouping and snapshot validation.
                     // Recording, rescheduling or a new snooze clears/replaces it.
                     if (NotificationPause.isPaused(context)) return
-                    notify(context, med, id, time, date, notificationId, slot.scheduledAt)
+                    notify(
+                        context, med, id, time, date, notificationId, slot.scheduledAt,
+                        repeat = intent.action == ACTION_SNOOZE_FIRED,
+                    )
                     ReminderAlerts.show(context, slot)
                 }
             }
@@ -123,6 +127,7 @@ class ReminderReceiver : BroadcastReceiver() {
         notificationId: Int,
         scheduledAt: Long,
         silent: Boolean = false,
+        repeat: Boolean = false,
     ) {
         val context = AppLanguages.wrap(sourceContext)
         if (NotificationPause.isPaused(context) || !ReminderAlerts.feedEnabled(context) || !ReminderNotifications.allowed(
@@ -178,8 +183,9 @@ class ReminderReceiver : BroadcastReceiver() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
         val notification = builder.build()
-        // The first delivery records the slot as awaiting acceptance; repeats and refreshes skip this.
-        DoseStore.recordPending(context, group)
+        // Every real delivery lands on the slot's timeline and starts it as awaiting acceptance;
+        // silent refreshes re-render an already delivered reminder, so they stay unrecorded.
+        DoseStore.recordDelivery(context, group, if (silent) null else repeat)
         try {
             NotificationManagerCompat.from(context)
                 .notify(notificationId, notification)

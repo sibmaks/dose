@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.net.toUri
+import io.github.sibmaks.app.dose.data.DoseEvent
 import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseStore
 import io.github.sibmaks.app.dose.data.Medication
@@ -177,6 +178,12 @@ object ReminderScheduler {
         val until = System.currentTimeMillis() + minutes * 60_000L
         val key = DoseLogic.slotKey(date, medicationId, time)
         DoseStore.putSnooze(context, key, until)
+        // The postponement and its follow-up reminder instant belong on the slot's timeline.
+        DoseStore.addEvents(
+            context, listOf(
+                DoseEvent(date, medicationId, time, "snooze", System.currentTimeMillis(), minutes.toLong(), until)
+            )
+        )
         scheduleSnooze(context, medicationId, time, date, until)
         io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(context)
     }

@@ -18,6 +18,30 @@ object DoseHistory {
         return log.copy(recordedAt = at, onTime = deadline == at)
     }
 
+    /** An awaiting, missed or cancelled entry is accepted with the chosen taken time, replacing the unresolved state. */
+    fun acceptLate(
+        log: DoseLog,
+        at: Long,
+        now: Long
+    ): DoseLog {
+        require(
+            (log.status == "pending" || log.status == "missed" || log.status == "skipped") &&
+                    at > 0 && at <= now
+        )
+        return log.copy(status = "taken", recordedAt = at, onTime = at == log.scheduledAt, clickedAt = now)
+    }
+
+    /** Pending and missed are both unresolved; switching between them records no intake time. */
+    fun defer(
+        log: DoseLog,
+        status: String
+    ): DoseLog {
+        require(log.status == "pending" || log.status == "missed")
+        require(status == "pending" || status == "missed")
+        if (status == log.status) return log
+        return log.copy(status = status, recordedAt = 0, onTime = false, clickedAt = null)
+    }
+
     /** Doses alerted but never accepted become missed once their day is over; null means nothing changed. */
     fun markMissed(
         logs: List<DoseLog>,

@@ -104,3 +104,13 @@ internal fun delayDuration(
     val minutes = (millis / 60_000).toLong()
     return context.getString(R.string.duration_hours, minutes / 60, minutes % 60)
 }
+
+/** Snooze lengths and delays are whole minutes; they reuse the existing duration strings. */
+internal fun durationMinutes(
+    context: Context,
+    minutes: Long
+): String = when {
+    minutes <= 0L -> context.getString(R.string.duration_0_min)
+    minutes < 60L -> context.getString(R.string.duration_minutes, minutes.toString())
+    else -> context.getString(R.string.duration_hours, minutes / 60, minutes % 60)
+}

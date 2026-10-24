@@ -2,15 +2,29 @@ package io.github.sibmaks.app.dose.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.data.DoseLog
@@ -20,139 +34,249 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
-/** History is editable even when the medication no longer exists or its schedule has changed. */
+/**
+ * Intake editing: unresolved statuses may become "taken" with an explicitly chosen date and time;
+ * a taken entry only corrects its real time. The reminder rail is never touched here.
+ */
 @Composable
 internal fun HistoryDoseEditor(
     log: DoseLog,
     onDismiss: () -> Unit,
-    onSave: (Long) -> Boolean,
-    onDelete: () -> Boolean
+    onSave: (String, Long) -> Boolean
 ) {
     val context = LocalContext.current
-    var at by rememberSaveable(log) { mutableLongStateOf(log.recordedAt) }
-    var timeError by rememberSaveable(log) { mutableStateOf(false) }
-    var changedError by rememberSaveable(log) { mutableStateOf(false) }
-    var confirmDelete by rememberSaveable(log) { mutableStateOf(false) }
     val zone = ZoneId.systemDefault()
-    val selected =
-        Instant.ofEpochMilli(at)
-            .atZone(zone)
-    val formatter =
-        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-            .withLocale(AppLanguages.locale(context))
-    val deadline =
-        log.scheduledAt ?: runCatching { DoseLogic.scheduledMillis(LocalDate.parse(log.date), log.time) }.getOrNull()
+    val locale = AppLanguages.locale(context)
+    val now = remember(log) { System.currentTimeMillis() }
+    val scheduled = log.scheduledAt
+        ?: runCatching { DoseLogic.scheduledMillis(LocalDate.parse(log.date), log.time) }.getOrNull()
 
-    SetupScreen(
-        title = log.medicationName, onClose = onDismiss,
-        primaryLabel = stringResource(if (log.status == "taken") R.string.save else R.string.done),
-        onPrimary = {
-            if (log.status != "taken") onDismiss()
-            else {
-                timeError = at <= 0 || at > System.currentTimeMillis()
-                if (!timeError) changedError = !onSave(at)
-            }
-        }, secondaryLabel = stringResource(R.string.back)
-    ) {
-        Text(
-            stringResource(R.string.dose_history),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
-        )
-        Text(log.dose, style = MaterialTheme.typography.titleMedium)
-        StatusBadge(log.status)
-        deadline?.let {
-            Text(stringResource(R.string.reminder_time), color = TextMuted)
-            Text(
-                Instant.ofEpochMilli(it)
-                    .atZone(zone)
-                    .format(formatter)
-            )
-        }
-        HorizontalDivider(color = PanelBorder)
-        if (log.status == "taken") {
-            Text(stringResource(R.string.taken_at), fontWeight = FontWeight.Bold)
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(
-                    onClick = {
-                        DatePickerDialog(context, AppAppearance.dialogTheme(context), { _, year, month, day ->
-                            at =
-                                LocalDate.of(year, month + 1, day)
-                                    .atTime(selected.toLocalTime())
-                                    .atZone(zone)
-                                    .toInstant()
-                                    .toEpochMilli()
-                            timeError = false; changedError = false
-                        }, selected.year, selected.monthValue - 1, selected.dayOfMonth).apply {
-                            datePicker.maxDate = System.currentTimeMillis()
-                        }
-                            .show()
-                    },
-                    modifier = Modifier
-                        .weight(1.5f)
-                        .heightIn(min = 48.dp),
-                    contentPadding = PaddingValues(horizontal = 8.dp)
-                ) {
-                    Text(
-                        selected.toLocalDate()
-                            .format(
-                                DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
-                                    .withLocale(AppLanguages.locale(context))
-                            ), maxLines = 1, softWrap = false
-                    )
-                }
-                OutlinedButton(
-                    onClick = {
-                        TimePickerDialog(context, AppAppearance.dialogTheme(context), { _, hour, minute ->
-                            at =
-                                selected.toLocalDate()
-                                    .atTime(hour, minute)
-                                    .atZone(zone)
-                                    .toInstant()
-                                    .toEpochMilli()
-                            timeError = false; changedError = false
-                        }, selected.hour, selected.minute, true).show()
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .heightIn(min = 48.dp),
-                    contentPadding = PaddingValues(horizontal = 8.dp)
-                ) {
-                    Text(selected.format(DateTimeFormatter.ofPattern("HH:mm")), maxLines = 1, softWrap = false)
-                }
-            }
-            if (timeError) Text(stringResource(R.string.history_time_error), color = MaterialTheme.colorScheme.error)
-        } else if (log.status == "skipped") {
-            Text(stringResource(R.string.skipped_at), color = TextMuted)
-            Text(selected.format(formatter))
-        }
-        if (changedError) Text(
-            stringResource(R.string.history_changed_error),
-            color = MaterialTheme.colorScheme.error
-        )
-        HorizontalDivider(color = PanelBorder)
-        OutlinedButton(
-            onClick = { confirmDelete = true }, modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
-        ) {
-            Text(stringResource(R.string.delete_history_entry))
-        }
+    var status by rememberSaveable(log) { mutableStateOf(log.status) }
+    var at by rememberSaveable(log) {
+        mutableLongStateOf(if (log.status == "taken") log.recordedAt else 0L)
     }
-    if (confirmDelete) AlertDialog(
-        onDismissRequest = { confirmDelete = false },
-        title = { Text(stringResource(R.string.delete_history_entry)) },
-        text = { Text(stringResource(R.string.delete_history_hint)) },
-        confirmButton = {
-            TextButton(onClick = { confirmDelete = false; changedError = !onDelete() }) {
-                Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
+    var staleError by rememberSaveable(log) { mutableStateOf(false) }
+
+    val chosen = at.takeIf { it > 0 }?.let { Instant.ofEpochMilli(it).atZone(zone) }
+    val chosenDate = chosen?.toLocalDate()
+    val chosenTime = chosen?.toLocalTime()
+    // A taken entry keeps and corrects its status; unresolved entries may switch to taken or between themselves.
+    val options = when (log.status) {
+        "taken" -> listOf("taken")
+        "skipped" -> listOf("taken", "skipped")
+        else -> listOf("taken", "pending", "missed")
+    }
+    val changed = status != log.status || (status == "taken" && at != log.recordedAt)
+    val valid = status != "taken" || (at in 1..now)
+    val enabled = changed && valid
+    // Pickers open at the recorded time, else near the reminder deadline — the value itself stays empty until chosen.
+    val pickerBase = Instant.ofEpochMilli((at.takeIf { it > 0 } ?: scheduled ?: now).coerceAtMost(now))
+        .atZone(zone)
+    val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy", locale)
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+    fun pickDate() {
+        DatePickerDialog(
+            context, AppAppearance.dialogTheme(context), { _, year, month, day ->
+                at = LocalDate.of(year, month + 1, day)
+                    .atTime(pickerBase.toLocalTime())
+                    .atZone(zone)
+                    .toInstant()
+                    .toEpochMilli()
+            }, pickerBase.year, pickerBase.monthValue - 1, pickerBase.dayOfMonth,
+        ).apply { datePicker.maxDate = now }.show()
+    }
+
+    fun pickTime() {
+        TimePickerDialog(
+            context, AppAppearance.dialogTheme(context), { _, hour, minute ->
+                at = pickerBase.toLocalDate()
+                    .atTime(hour, minute)
+                    .atZone(zone)
+                    .toInstant()
+                    .toEpochMilli()
+            }, pickerBase.hour, pickerBase.minute, true,
+        ).show()
+    }
+
+    IntakeScreen(
+        title = stringResource(R.string.history_edit_title),
+        onClose = onDismiss,
+        bottomBar = {
+            Button(
+                onClick = { if (!onSave(status, at)) staleError = true },
+                enabled = enabled,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 51.dp),
+                shape = RoundedCornerShape(14.dp),
+            ) {
+                Text(stringResource(R.string.save), fontWeight = FontWeight.Bold)
             }
         },
-        dismissButton = {
-            TextButton(onClick = {
-                confirmDelete =
-                    false
-            }) { Text(stringResource(R.string.cancel)) }
-        })
+    ) {
+        IntakeMedicationCard(log, scheduled, DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm", locale))
+
+        TimelineHeading(stringResource(R.string.status_section))
+        options.forEach { option ->
+            StatusOption(
+                style = intakeStatusStyle(option),
+                selected = status == option,
+                current = option == log.status,
+                onClick = { status = option },
+            )
+        }
+
+        if (status == "taken") {
+            TimelineHeading(stringResource(R.string.intake_time_section))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                PickerField(
+                    label = stringResource(R.string.intake_date_label),
+                    value = chosenDate?.format(dateFormatter) ?: "",
+                    placeholder = stringResource(R.string.pick_date_placeholder),
+                    icon = Icons.Rounded.CalendarMonth,
+                    invalid = !valid,
+                    modifier = Modifier.weight(1.4f),
+                    onClick = ::pickDate,
+                )
+                PickerField(
+                    label = stringResource(R.string.intake_time_label),
+                    value = chosenTime?.format(timeFormatter) ?: "",
+                    placeholder = stringResource(R.string.pick_time_placeholder),
+                    icon = Icons.Rounded.Schedule,
+                    invalid = !valid,
+                    modifier = Modifier.weight(1f),
+                    onClick = ::pickTime,
+                )
+            }
+            when {
+                at <= 0L -> FieldError(stringResource(R.string.intake_time_required_error))
+                at > now -> FieldError(stringResource(R.string.history_time_error))
+            }
+            Text(
+                stringResource(
+                    if (log.status == "taken") R.string.edit_intake_hint_taken else R.string.edit_intake_hint_late
+                ), fontSize = 12.sp, color = TextMuted, modifier = Modifier.padding(top = 2.dp),
+            )
+        }
+        if (staleError) Text(
+            stringResource(R.string.history_changed_error), fontSize = 13.sp,
+            color = MaterialTheme.colorScheme.error,
+        )
+    }
+}
+
+@Composable
+private fun StatusOption(
+    style: IntakeStatusStyle,
+    selected: Boolean,
+    current: Boolean,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(16.dp),
+        color = if (selected) AccentPanel else Panel,
+        border = BorderStroke(1.dp, if (selected) Violet else PanelBorder),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            Modifier.padding(horizontal = 13.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                Modifier
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(style.tile),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(style.icon, null, tint = Color.White, modifier = Modifier.size(18.dp))
+            }
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(style.label, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
+                    if (current) {
+                        Spacer(Modifier.width(7.dp))
+                        Box(
+                            Modifier
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(if (selected) Panel else AccentPanel)
+                                .padding(horizontal = 7.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                stringResource(R.string.current_status_tag), fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (selected) TextMuted else Violet,
+                            )
+                        }
+                    }
+                }
+                Text(style.hint, fontSize = 12.sp, color = TextMuted, modifier = Modifier.padding(top = 1.dp))
+            }
+            RadioButton(selected = selected, onClick = null)
+        }
+    }
+}
+
+@Composable
+private fun PickerField(
+    label: String,
+    value: String,
+    placeholder: String,
+    icon: ImageVector,
+    invalid: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    val background = if (invalid) themeColor(0xFFFFF6F4, 0xFF3A2A24) else Panel
+    Box(modifier) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 58.dp)
+                .clip(RoundedCornerShape(15.dp))
+                .background(background)
+                .border(
+                    BorderStroke(1.5.dp, if (invalid) MaterialTheme.colorScheme.error else PanelBorder),
+                    RoundedCornerShape(15.dp)
+                )
+                .clickable(onClick = onClick)
+                .padding(horizontal = 13.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                value.ifBlank { placeholder },
+                fontSize = 15.sp,
+                fontWeight = if (value.isBlank()) FontWeight.Normal else FontWeight.SemiBold,
+                color = if (value.isBlank()) TextMuted else TextPrimary,
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+            )
+            Icon(icon, null, tint = TextMuted, modifier = Modifier.size(19.dp))
+        }
+        Box(Modifier.offset(x = 10.dp, y = (-8).dp)) {
+            Text(
+                label, fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                color = if (invalid) MaterialTheme.colorScheme.error else TextMuted,
+                modifier = Modifier
+                    .background(background)
+                    .padding(horizontal = 6.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun FieldError(message: String) {
+    Row(Modifier.padding(top = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            Icons.Rounded.ErrorOutline, null,
+            tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(16.dp),
+        )
+        Spacer(Modifier.width(7.dp))
+        Text(message, color = MaterialTheme.colorScheme.error, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+    }
 }

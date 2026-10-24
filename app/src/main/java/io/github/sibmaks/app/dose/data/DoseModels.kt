@@ -271,6 +271,17 @@ data class DoseLog(
     val clickedAt: Long? = null,
 )
 
+/** Persisted reminder lifecycle of one slot; the intake outcome itself stays on the log. */
+data class DoseEvent(
+    val date: String,
+    val medicationId: String,
+    val time: String,
+    val type: String, // "reminder" | "repeat" | "snooze"
+    val at: Long,
+    val minutes: Long? = null, // snooze length
+    val nextAt: Long? = null, // reminder instant the snooze produced
+)
+
 data class DoseItem(
     val medication: Medication,
     val date: String,

@@ -11,6 +11,7 @@ object DoseStore {
     private const val PREFS = "dose_preferences_v1"
     private const val MEDICATIONS = "medications"
     private const val LOGS = "logs"
+    private const val EVENTS = "events"
     private const val SNOOZES = "snoozes"
     private const val OVERRIDES = "daily_time_overrides"
     private const val DEFERRED = "deferred_slots"
@@ -93,6 +94,11 @@ object DoseStore {
                 .putString(LOGS, array.toString())
                 .commit()
         }
+        // Reminder events survive only where their dose entry survives.
+        val surviving = keptLogs.map { DoseLogic.slotKey(it.date, it.medicationId, it.time) }.toSet()
+        val allEvents = events(context)
+        val keptEvents = allEvents.filter { DoseLogic.slotKey(it.date, it.medicationId, it.time) in surviving }
+        if (keptEvents.size != allEvents.size) saveEvents(context, keptEvents)
     }
 
     @Synchronized
@@ -103,6 +109,55 @@ object DoseStore {
             DoseLogJson.decode(obj)
         }
     }.getOrDefault(emptyList())
+
+    /** Reminder deliveries and postponements per slot; intake outcomes live on the logs themselves. */
+    @Synchronized
+    fun events(context: Context): List<DoseEvent> = runCatching {
+        val array = JSONArray(prefs(context).getString(EVENTS, "[]"))
+        (0 until array.length()).mapNotNull { i ->
+            val obj = array.optJSONObject(i) ?: return@mapNotNull null
+            DoseEventJson.decode(obj)
+        }
+    }.getOrDefault(emptyList())
+
+    @Synchronized
+    fun addEvents(
+        context: Context,
+        additions: List<DoseEvent>
+    ) {
+        val fresh = additions.filter { it.at > 0 }
+        if (fresh.isEmpty()) return
+        val existing = events(context)
+        val known = existing.mapTo(mutableSetOf(), ::eventKey)
+        val merged = existing + fresh.filter { eventKey(it) !in known }
+        if (merged.size == existing.size) return
+        saveEvents(context, merged)
+    }
+
+    private fun eventKey(event: DoseEvent) =
+        "${event.date}|${event.medicationId}|${event.time}|${event.type}|${event.at}"
+
+    private fun saveEvents(
+        context: Context,
+        list: List<DoseEvent>
+    ) {
+        val array = JSONArray()
+        list.forEach { array.put(DoseEventJson.encode(it)) }
+        prefs(context).edit()
+            .putString(EVENTS, array.toString())
+            .commit()
+    }
+
+    @Synchronized
+    private fun removeSlotEvents(
+        context: Context,
+        key: String
+    ) {
+        val all = events(context)
+        val kept = all.filterNot { DoseLogic.slotKey(it.date, it.medicationId, it.time) == key }
+        if (kept.size == all.size) return
+        saveEvents(context, kept)
+    }
 
     @Synchronized
     fun record(
@@ -123,21 +178,30 @@ object DoseStore {
         clearDeferred(context, DoseLogic.slotKey(log.date, log.medicationId, log.time))
     }
 
-    /** First reminder delivery starts the slot's history as awaiting acceptance; a decided slot is never overwritten. */
+    /** One commit starts a delivery's awaiting entries and writes its reminder events; silent refreshes pass null. */
     @Synchronized
-    fun recordPending(
+    fun recordDelivery(
         context: Context,
-        items: List<DoseItem>
+        items: List<DoseItem>,
+        repeat: Boolean?
     ) {
+        val now = System.currentTimeMillis()
         val existing = logs(context)
         val additions = items.filter { item ->
             existing.none { it.date == item.date && it.medicationId == item.medication.id && it.time == item.time }
         }.map { DoseLogic.pendingLog(it.medication, it.date, it.time, it.scheduledAt) }
-        if (additions.isEmpty()) return
-        val array = JSONArray()
-        (existing + additions).forEach { array.put(DoseLogJson.encode(it)) }
+        val allEvents = events(context)
+        val events = if (repeat == null) emptyList() else items.map {
+            DoseEvent(it.date, it.medication.id, it.time, if (repeat) "repeat" else "reminder", now)
+        }.filter { eventKey(it) !in allEvents.mapTo(mutableSetOf(), ::eventKey) }
+        if (additions.isEmpty() && events.isEmpty()) return
+        val logsArray = JSONArray()
+        (existing + additions).forEach { logsArray.put(DoseLogJson.encode(it)) }
+        val eventsArray = JSONArray()
+        (allEvents + events).forEach { eventsArray.put(DoseEventJson.encode(it)) }
         prefs(context).edit()
-            .putString(LOGS, array.toString())
+            .putString(LOGS, logsArray.toString())
+            .putString(EVENTS, eventsArray.toString())
             .commit()
     }
 
@@ -195,11 +259,39 @@ object DoseStore {
         return replaceHistory(context, expected, corrected)
     }
 
+    /** An awaiting, missed or cancelled entry is accepted with a chosen taken time; decided entries only correct their time. */
+    @Synchronized
+    fun acceptHistory(
+        context: Context,
+        expected: DoseLog,
+        at: Long
+    ): Boolean {
+        val accepted = runCatching { DoseHistory.acceptLate(expected, at, System.currentTimeMillis()) }.getOrNull()
+            ?: return false
+        return replaceHistory(context, expected, accepted)
+    }
+
+    /** Switching between unresolved statuses keeps the slot awaiting; no intake timestamp is implied. */
+    @Synchronized
+    fun resolveHistory(
+        context: Context,
+        expected: DoseLog,
+        status: String
+    ): Boolean {
+        val deferred = runCatching { DoseHistory.defer(expected, status) }.getOrNull() ?: return false
+        return replaceHistory(context, expected, deferred)
+    }
+
     @Synchronized
     fun deleteHistory(
         context: Context,
         expected: DoseLog
-    ): Boolean = replaceHistory(context, expected, null)
+    ): Boolean {
+        val deleted = replaceHistory(context, expected, null)
+        // The entry's rail dies with it; a deleted slot cannot reopen its reminder history.
+        if (deleted) removeSlotEvents(context, DoseHistory.key(expected))
+        return deleted
+    }
 
     private fun replaceHistory(
         context: Context,
@@ -305,6 +397,7 @@ object DoseStore {
         clearDeferred(context, slotKey)
         // The moved slot awaits its new reminder instant; its awaiting entry referred to the old one.
         removePending(context, slotKey)
+        removeSlotEvents(context, slotKey)
         return true
     }
 

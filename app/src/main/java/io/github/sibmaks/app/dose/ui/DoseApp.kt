@@ -80,6 +80,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
     val medicationsScroll = rememberLazyListState()
     val historyScroll = rememberLazyListState()
     var historyDoseId by rememberSaveable { mutableStateOf<String?>(null) }
+    var editingHistory by rememberSaveable { mutableStateOf(false) }
     var todayDoseId by rememberSaveable { mutableStateOf<String?>(null) }
     var editingId by rememberSaveable { mutableStateOf<String?>(null) }
     var showEditor by rememberSaveable { mutableStateOf(false) }
@@ -93,6 +94,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
             showEditor = false
             todayDoseId = null
             historyDoseId = null
+            editingHistory = false
             if (ReminderAlerts.setupOffered(context)) showReminderSettings = false
             if (AppLanguages.offered(context)) showLanguagePicker = false
         }
@@ -196,24 +198,45 @@ fun DoseApp(openTodayRequest: Int = 0) {
 
     val selectedHistory = logs.find { DoseHistory.key(it) == historyDoseId }
     LaunchedEffect(historyDoseId, selectedHistory) {
-        if (historyDoseId != null && selectedHistory == null) historyDoseId = null
+        if (historyDoseId != null && selectedHistory == null) {
+            historyDoseId = null
+            editingHistory = false
+        }
+    }
+    val historyEvents = remember(revision, historyDoseId) {
+        if (historyDoseId != null) DoseStore.events(context) else emptyList()
     }
     if (selectedHistory != null) {
-        HistoryDoseEditor(
-            selectedHistory, onDismiss = { historyDoseId = null },
-            onSave = { at ->
-                val saved = DoseStore.correctHistoryTime(context, selectedHistory, at)
-                if (saved) {
-                    ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh()
-                }
-                saved
-            }, onDelete = {
-                val deleted = DoseStore.deleteHistory(context, selectedHistory)
-                if (deleted) {
-                    ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh()
-                }
-                deleted
-            })
+        if (editingHistory) {
+            HistoryDoseEditor(
+                selectedHistory, onDismiss = { editingHistory = false },
+                onSave = { status, at ->
+                    val saved = when {
+                        status == "taken" && selectedHistory.status == "taken" ->
+                            DoseStore.correctHistoryTime(context, selectedHistory, at)
+                        status == "taken" -> DoseStore.acceptHistory(context, selectedHistory, at)
+                        else -> DoseStore.resolveHistory(context, selectedHistory, status)
+                    }
+                    if (saved) {
+                        ReminderScheduler.scheduleAll(context); editingHistory = false; refresh()
+                    }
+                    saved
+                },
+            )
+        } else {
+            IntakeDetailsScreen(
+                selectedHistory, events = historyEvents,
+                onDismiss = { historyDoseId = null },
+                onEdit = { editingHistory = true },
+                onDelete = {
+                    val deleted = DoseStore.deleteHistory(context, selectedHistory)
+                    if (deleted) {
+                        ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh()
+                    }
+                    deleted
+                },
+            )
+        }
         return
     }
 
@@ -332,7 +355,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                     modifier = Modifier.fillMaxSize(),
                     logs = logs,
                     listState = historyScroll,
-                    onOpen = { historyDoseId = DoseHistory.key(it) })
+                    onOpen = { historyDoseId = DoseHistory.key(it); editingHistory = false })
             }
         }
     }

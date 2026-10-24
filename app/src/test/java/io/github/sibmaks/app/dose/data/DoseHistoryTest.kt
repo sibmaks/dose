@@ -60,4 +60,35 @@ class DoseHistoryTest {
         assertEquals("taken", updated.first { it.status == "taken" }.status)
         assertNull(DoseHistory.markMissed(listOf(pending, log), date.toString()))
     }
+
+    @Test fun `a missed entry is accepted with the chosen time and becomes taken`() {
+        val missed = log.copy(status = "missed", recordedAt = 0, clickedAt = null)
+        val accepted = DoseHistory.acceptLate(missed, deadline + 600_000, deadline + 3_600_000)
+        assertEquals("taken", accepted.status)
+        assertEquals(deadline + 600_000, accepted.recordedAt)
+        assertEquals(deadline + 3_600_000, accepted.clickedAt)
+        assertFalse(accepted.onTime)
+        assertEquals(600_000, DoseReports.timing(accepted)!!.delayMillis)
+        assertTrue(DoseHistory.acceptLate(missed, deadline, deadline + 3_600_000).onTime)
+        assertTrue(DoseHistory.acceptLate(missed.copy(status = "pending"), deadline, deadline + 3_600_000).onTime)
+        assertTrue(DoseHistory.acceptLate(missed.copy(status = "skipped"), deadline, deadline + 3_600_000).onTime)
+        for (at in listOf(0L, -1L, deadline + 3_600_001)) {
+            assertTrue(runCatching { DoseHistory.acceptLate(missed, at, deadline + 3_600_000) }.isFailure)
+        }
+        assertTrue(runCatching { DoseHistory.acceptLate(log, deadline, deadline + 3_600_000) }.isFailure)
+    }
+
+    @Test fun `unresolved statuses switch between themselves without recording an intake`() {
+        val pending = log.copy(status = "pending", recordedAt = 0, clickedAt = null)
+        val deferred = DoseHistory.defer(pending, "missed")
+        assertEquals("missed", deferred.status)
+        assertEquals(0, deferred.recordedAt)
+        assertFalse(deferred.onTime)
+        assertNull(deferred.clickedAt)
+        assertEquals(pending.copy(status = "missed"), deferred)
+        assertEquals("pending", DoseHistory.defer(deferred, "pending").status)
+        assertEquals(pending, DoseHistory.defer(pending, "pending"))
+        assertTrue(runCatching { DoseHistory.defer(log, "missed") }.isFailure)
+        assertTrue(runCatching { DoseHistory.defer(pending, "skipped") }.isFailure)
+    }
 }
