@@ -731,6 +731,8 @@ internal fun StatusBadge(status: String) {
             themeColor(0xFF456F9B, 0xFFA3C9F3),
             themeColor(0xFFEAF2FC, 0xFF26384B)
         )
+        "pending" -> Triple(stringResource(R.string.pending), Violet, AccentPanel)
+        "missed" -> Triple(stringResource(R.string.missed), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
 
         else -> Triple(stringResource(R.string.upcoming), Violet, AccentPanel)
     }
@@ -910,16 +912,29 @@ private fun HistoryPage(
                                 .size(38.dp)
                                 .clip(RoundedCornerShape(11.dp))
                                 .background(
-                                    if (log.status == "taken") themeColor(
-                                        0xFFE3F8EF,
-                                        0xFF1B3C33
-                                    ) else SoftPanel
+                                    when (log.status) {
+                                        "taken" -> themeColor(
+                                            0xFFE3F8EF,
+                                            0xFF1B3C33
+                                        )
+                                        "pending" -> AccentPanel
+                                        else -> SoftPanel
+                                    }
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
-                                if (log.status == "taken") Icons.Rounded.Check else Icons.Rounded.Remove,
-                                null, tint = if (log.status == "taken") Mint else TextMuted,
+                                when (log.status) {
+                                    "taken" -> Icons.Rounded.Check
+                                    "pending" -> Icons.Rounded.Schedule
+                                    "missed" -> Icons.Rounded.Close
+                                    else -> Icons.Rounded.Remove
+                                },
+                                null, tint = when (log.status) {
+                                    "taken" -> Mint
+                                    "pending" -> Violet
+                                    else -> TextMuted
+                                },
                             )
                         }
                         Spacer(Modifier.width(12.dp))
@@ -961,8 +976,18 @@ private fun HistoryPage(
                                 }
                         }
                         Text(
-                            if (log.status == "taken") stringResource(R.string.taken) else stringResource(R.string.skipped),
-                            color = if (log.status == "taken") Mint else TextMuted,
+                            when (log.status) {
+                                "taken" -> stringResource(R.string.taken)
+                                "pending" -> stringResource(R.string.pending)
+                                "missed" -> stringResource(R.string.missed)
+                                else -> stringResource(R.string.skipped)
+                            },
+                            color = when (log.status) {
+                                "taken" -> Mint
+                                "pending" -> Violet
+                                "missed" -> Peach
+                                else -> TextMuted
+                            },
                             fontWeight = FontWeight.Bold, fontSize = 12.sp,
                         )
                     }

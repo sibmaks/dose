@@ -31,6 +31,8 @@
     <string name="skip">"Пропустить"</string>
     <string name="undo">"Отменить"</string>
     <string name="skipped">"Пропущено"</string>
+    <string name="pending">"Ожидает"</string>
+    <string name="missed">"Не принято"</string>
     <string name="due_now">"Пора принять"</string>
     <string name="overdue">"Просрочено"</string>
     <string name="snoozed">"Отложено"</string>

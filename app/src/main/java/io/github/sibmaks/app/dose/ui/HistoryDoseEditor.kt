@@ -124,7 +124,7 @@ internal fun HistoryDoseEditor(
                 }
             }
             if (timeError) Text(stringResource(R.string.history_time_error), color = MaterialTheme.colorScheme.error)
-        } else {
+        } else if (log.status == "skipped") {
             Text(stringResource(R.string.skipped_at), color = TextMuted)
             Text(selected.format(formatter))
         }

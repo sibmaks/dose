@@ -320,6 +320,17 @@ object DoseLogic {
         )
     }
 
+    /** The first delivery of a reminder starts the slot's history as awaiting acceptance. */
+    fun pendingLog(
+        medication: Medication,
+        date: String,
+        time: String,
+        scheduledAt: Long
+    ): DoseLog = DoseLog(
+        date, medication.id, medication.name, medication.doseAt(LocalDate.parse(date), time), time,
+        "pending", 0, scheduledAt
+    )
+
     fun dateKey(date: LocalDate = LocalDate.now()): String = date.toString()
     fun slotKey(
         date: String,
@@ -444,8 +455,9 @@ object DoseLogic {
         overrides: Map<String, String> = emptyMap(),
     ): List<DoseItem> {
         val today = dateKey(date)
+        // An awaiting entry is invisible to Today: until it is accepted, the dose stays due or overdue.
         val logIndex =
-            logs.filter { it.date == today }
+            logs.filter { it.date == today && it.status != "pending" }
                 .associateBy { slotKey(it.date, it.medicationId, it.time) }
         return medications.filter { it.active }
             .flatMap { medication ->

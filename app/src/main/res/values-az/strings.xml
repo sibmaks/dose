@@ -31,6 +31,8 @@
     <string name="skip">"Burax"</string>
     <string name="undo">"Geri al"</string>
     <string name="skipped">"Buraxıldı"</string>
+    <string name="pending">"Gözləyir"</string>
+    <string name="missed">"Qəbul olunmadı"</string>
     <string name="due_now">"Qəbul vaxtıdır"</string>
     <string name="overdue">"Gecikib"</string>
     <string name="snoozed">"Təxirə salındı"</string>

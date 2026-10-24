@@ -1,5 +1,7 @@
 package io.github.sibmaks.app.dose.data
 
+import java.time.LocalDate
+
 /** Corrections change acceptance time, retaining the dose's identity, deadline and click audit. */
 object DoseHistory {
     fun key(log: DoseLog): String = DoseLogic.slotKey(log.date, log.medicationId, log.time)
@@ -14,6 +16,16 @@ object DoseHistory {
             log.scheduledAt ?: DoseReports.timing(log)
                 ?.let { log.recordedAt - it.differenceMillis }
         return log.copy(recordedAt = at, onTime = deadline == at)
+    }
+
+    /** Doses alerted but never accepted become missed once their day is over; null means nothing changed. */
+    fun markMissed(
+        logs: List<DoseLog>,
+        today: String = LocalDate.now()
+            .toString()
+    ): List<DoseLog>? {
+        if (logs.none { it.status == "pending" && it.date < today }) return null
+        return logs.map { if (it.status == "pending" && it.date < today) it.copy(status = "missed") else it }
     }
 
     /** Compare the opened entry, so a stale editor cannot replace a later correction or undo. */

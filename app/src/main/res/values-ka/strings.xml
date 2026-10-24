@@ -31,6 +31,8 @@
     <string name="skip">"გამოტოვება"</string>
     <string name="undo">"გაუქმება"</string>
     <string name="skipped">"გამოტოვებულია"</string>
+    <string name="pending">"მოლოდინშია"</string>
+    <string name="missed">"მიუღებელი"</string>
     <string name="due_now">"მიღების დროა"</string>
     <string name="overdue">"დაგვიანებულია"</string>
     <string name="snoozed">"გადადებულია"</string>

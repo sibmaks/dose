@@ -31,6 +31,8 @@
     <string name="skip">"Гузарондан"</string>
     <string name="undo">"Бекор кардан"</string>
     <string name="skipped">"Гузаронда шуд"</string>
+    <string name="pending">"Дар интизор"</string>
+    <string name="missed">"Қабул нашуд"</string>
     <string name="due_now">"Вақти қабул"</string>
     <string name="overdue">"Дер шудааст"</string>
     <string name="snoozed">"Ба таъхир гузошта шуд"</string>

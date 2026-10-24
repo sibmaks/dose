@@ -31,6 +31,8 @@
     <string name="skip">"Omite"</string>
     <string name="undo">"Anulează"</string>
     <string name="skipped">"Omisă"</string>
+    <string name="pending">"În așteptare"</string>
+    <string name="missed">"Ratată"</string>
     <string name="due_now">"De luat acum"</string>
     <string name="overdue">"Întârziată"</string>
     <string name="snoozed">"Amânată"</string>

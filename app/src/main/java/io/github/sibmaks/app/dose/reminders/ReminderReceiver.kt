@@ -53,7 +53,7 @@ class ReminderReceiver : BroadcastReceiver() {
                 ACTION_TAKEN, ACTION_ON_TIME, ACTION_SKIP -> {
                     if (med != null && DoseStore.logs(context)
                             .none {
-                                it.date == date && it.medicationId == id && it.time == time
+                                it.date == date && it.medicationId == id && it.time == time && it.status != "pending"
                             }
                     ) {
                         val now = System.currentTimeMillis()
@@ -81,7 +81,7 @@ class ReminderReceiver : BroadcastReceiver() {
                 ACTION_SNOOZE -> {
                     if (med != null && DoseStore.logs(context)
                             .none {
-                                it.date == date && it.medicationId == id && it.time == time
+                                it.date == date && it.medicationId == id && it.time == time && it.status != "pending"
                             } && date == LocalDate.now()
                             .toString()
                     ) {
@@ -98,7 +98,7 @@ class ReminderReceiver : BroadcastReceiver() {
                     ) return
                     if (DoseStore.logs(context)
                             .any {
-                                it.date == date && it.medicationId == id && it.time == time
+                                it.date == date && it.medicationId == id && it.time == time && it.status != "pending"
                             }
                     ) return
                     // Retain the elapsed snooze instant for grouping and snapshot validation.
@@ -178,6 +178,8 @@ class ReminderReceiver : BroadcastReceiver() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
         val notification = builder.build()
+        // The first delivery records the slot as awaiting acceptance; repeats and refreshes skip this.
+        DoseStore.recordPending(context, group)
         try {
             NotificationManagerCompat.from(context)
                 .notify(notificationId, notification)
@@ -243,7 +245,10 @@ class ReminderReceiver : BroadcastReceiver() {
                 .find { it.id == slot.medicationId && it.active && slot.time in it.timesOn(LocalDate.parse(slot.date)) }
                 ?: return
             if (DoseStore.logs(context)
-                    .any { it.medicationId == slot.medicationId && it.date == slot.date && it.time == slot.time }
+                    .any {
+                        it.medicationId == slot.medicationId && it.date == slot.date && it.time == slot.time &&
+                                it.status != "pending"
+                    }
             ) return
             if (slot.scheduledAt != DoseLogic.effectiveScheduledMillis(
                     med,

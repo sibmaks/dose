@@ -31,6 +31,8 @@
     <string name="skip">"Geçirmek"</string>
     <string name="undo">"Yza gaýtarmak"</string>
     <string name="skipped">"Geçirildi"</string>
+    <string name="pending">"Garaşylýar"</string>
+    <string name="missed">"Ýitirildi"</string>
     <string name="due_now">"Içmeli wagt"</string>
     <string name="overdue">"Gijikdi"</string>
     <string name="snoozed">"Yza süýşürildi"</string>

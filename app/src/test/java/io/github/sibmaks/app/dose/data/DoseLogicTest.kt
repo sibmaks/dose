@@ -142,4 +142,22 @@ class DoseLogicTest {
         assertEquals("mint", choices.first())
         assertEquals(1, choices.count { MedicationColors.hex(it) == "#39A98E" })
     }
+    @Test fun awaitingEntryStaysInvisibleOnTodayUntilAccepted() {
+        val medication = med(rule())
+        val pending = DoseLog(today.toString(), medication.id, "Test", "500 mg", "08:00", "pending", 0, at())
+        val item = DoseLogic.todayItems(listOf(medication), listOf(pending), emptyMap(), at(time = "09:00"), today).single()
+        assertNull(item.log)
+        assertEquals("overdue", item.status)
+        // A delivered slot still counts as handled for the next alarm of its time.
+        assertEquals(at(today.plusDays(1)), next(medication, at = now("09:00"), logs = listOf(pending)))
+    }
+    @Test fun pendingLogKeepsTheDeadlineWithoutAcceptance() {
+        val pending = DoseLogic.pendingLog(med(rule()), today.toString(), "08:00", at())
+        assertEquals("pending", pending.status)
+        assertEquals(0, pending.recordedAt)
+        assertNull(pending.clickedAt)
+        assertFalse(pending.onTime)
+        assertEquals(at(), pending.scheduledAt)
+        assertEquals("500 mg", pending.dose)
+    }
 }

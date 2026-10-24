@@ -31,6 +31,8 @@
     <string name="skip">"Բաց թողնել"</string>
     <string name="undo">"Հետարկել"</string>
     <string name="skipped">"Բաց է թողնված"</string>
+    <string name="pending">"Սպասվում է"</string>
+    <string name="missed">"Ընդունված չէ"</string>
     <string name="due_now">"Ընդունելու ժամանակն է"</string>
     <string name="overdue">"Ուշացած է"</string>
     <string name="snoozed">"Հետաձգված է"</string>

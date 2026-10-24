@@ -32,6 +32,8 @@
     <string name="skip">"Skip"</string>
     <string name="undo">"Undo"</string>
     <string name="skipped">"Skipped"</string>
+    <string name="pending">"Awaiting"</string>
+    <string name="missed">"Missed"</string>
     <string name="due_now">"Due now"</string>
     <string name="overdue">"Overdue"</string>
     <string name="snoozed">"Snoozed"</string>

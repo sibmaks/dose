@@ -12,6 +12,7 @@ import io.github.sibmaks.app.dose.data.DoseStore
 import io.github.sibmaks.app.dose.data.Medication
 import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.ZonedDateTime
 
 /** Uses independent one-shot alarms and finds the next matching date after each delivery. */
@@ -39,6 +40,8 @@ object ReminderScheduler {
             if (parts.size == 2) manager.cancel(primaryIntent(app, parts[0], parts[1]))
         }
 
+        // Yesterday's awaiting entries become missed before anything else reads the logs.
+        DoseStore.markMissed(app)
         val logs = DoseStore.logs(app)
         val medications =
             DoseStore.medications(app)
@@ -59,7 +62,9 @@ object ReminderScheduler {
                             0L
                         ) == DoseLogic.effectiveScheduledMillis(it, scheduledDate, time, DoseStore.timeOverrides(app))
             } &&
-                    logs.none { it.date == date && it.medicationId == id && it.time == time }
+                    logs.none {
+                        it.date == date && it.medicationId == id && it.time == time && it.status != "pending"
+                    }
             if (!valid) notifications.cancel(posted.id)
         }
         val newSlots = mutableSetOf<String>()
@@ -81,8 +86,35 @@ object ReminderScheduler {
             .commit()
         NotificationPause.restore(app)
         rescheduleSnoozes(app, manager)
+        scheduleMidnightRollover(app, manager)
         ReminderReceiver.refreshVisible(app)
         io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(app)
+    }
+
+    /** Rolls awaiting entries over to missed even when Dose never opens; non-wakeup like the widget refresh. */
+    private fun scheduleMidnightRollover(
+        context: Context,
+        manager: AlarmManager
+    ) {
+        val at =
+            ZonedDateTime.now()
+                .toLocalDate()
+                .plusDays(1)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli()
+        val pending = PendingIntent.getBroadcast(
+            context, 0,
+            Intent(context, MidnightReceiver::class.java).setAction(MidnightReceiver.ACTION_MIDNIGHT),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+        if (exactAlarmsAvailable(context)) {
+            try {
+                manager.setExact(AlarmManager.RTC, at, pending)
+            } catch (_: SecurityException) {
+                manager.set(AlarmManager.RTC, at, pending)
+            }
+        } else manager.set(AlarmManager.RTC, at, pending)
     }
 
 
@@ -181,7 +213,9 @@ object ReminderScheduler {
             val valid =
                 date == currentDate && meds[id]?.timesOn(LocalDate.parse(date))
                     ?.contains(time) == true &&
-                        logs.none { it.date == date && it.medicationId == id && it.time == time }
+                        logs.none {
+                            it.date == date && it.medicationId == id && it.time == time && it.status != "pending"
+                        }
             if (valid && until > now) {
                 schedule(manager, until, snoozeIntent(context, id, time, date), context)
             } else {

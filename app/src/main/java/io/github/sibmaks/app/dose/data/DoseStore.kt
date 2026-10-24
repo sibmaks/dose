@@ -83,6 +83,16 @@ object DoseStore {
                     .toSet()
             )
             .commit()
+        // An awaiting entry is unresolved reminder state, not history; it never outlives its medication.
+        val existingLogs = logs(context)
+        val keptLogs = existingLogs.filterNot { it.medicationId == medicationId && it.status == "pending" }
+        if (keptLogs.size != existingLogs.size) {
+            val array = JSONArray()
+            keptLogs.forEach { array.put(DoseLogJson.encode(it)) }
+            prefs(context).edit()
+                .putString(LOGS, array.toString())
+                .commit()
+        }
     }
 
     @Synchronized
@@ -113,6 +123,35 @@ object DoseStore {
         clearDeferred(context, DoseLogic.slotKey(log.date, log.medicationId, log.time))
     }
 
+    /** First reminder delivery starts the slot's history as awaiting acceptance; a decided slot is never overwritten. */
+    @Synchronized
+    fun recordPending(
+        context: Context,
+        items: List<DoseItem>
+    ) {
+        val existing = logs(context)
+        val additions = items.filter { item ->
+            existing.none { it.date == item.date && it.medicationId == item.medication.id && it.time == item.time }
+        }.map { DoseLogic.pendingLog(it.medication, it.date, it.time, it.scheduledAt) }
+        if (additions.isEmpty()) return
+        val array = JSONArray()
+        (existing + additions).forEach { array.put(DoseLogJson.encode(it)) }
+        prefs(context).edit()
+            .putString(LOGS, array.toString())
+            .commit()
+    }
+
+    /** Day rollover: doses alerted but never accepted become missed. */
+    @Synchronized
+    fun markMissed(context: Context): Boolean {
+        val updated = DoseHistory.markMissed(logs(context)) ?: return false
+        val array = JSONArray()
+        updated.forEach { array.put(DoseLogJson.encode(it)) }
+        return prefs(context).edit()
+            .putString(LOGS, array.toString())
+            .commit()
+    }
+
     /** One commit records the whole group with one click time and clears its deferred state. */
     @Synchronized
     fun recordGroup(
@@ -134,7 +173,9 @@ object DoseStore {
             selected.map { it.id }
                 .toSet()
         val array = JSONArray()
-        (existing + DoseGroups.logs(selected, status, now)).forEach { array.put(DoseLogJson.encode(it)) }
+        // An awaiting entry yields to the group's decision instead of duplicating the slot.
+        (existing.filterNot { DoseLogic.slotKey(it.date, it.medicationId, it.time) in keys } +
+                DoseGroups.logs(selected, status, now)).forEach { array.put(DoseLogJson.encode(it)) }
         prefs(context).edit()
             .putString(LOGS, array.toString())
             .putString(SNOOZES, JSONObject(snoozes.filterKeys { it !in keys }).toString())
@@ -262,7 +303,28 @@ object DoseStore {
         saveOverrides(context, overrides + (slotKey to newTime))
         clearSnooze(context, slotKey)
         clearDeferred(context, slotKey)
+        // The moved slot awaits its new reminder instant; its awaiting entry referred to the old one.
+        removePending(context, slotKey)
         return true
+    }
+
+    private fun removePending(
+        context: Context,
+        key: String
+    ) {
+        val parts = key.split('|', limit = 3)
+        if (parts.size != 3) return
+        val (date, id, time) = parts
+        val existing = logs(context)
+        val kept = existing.filterNot {
+            it.date == date && it.medicationId == id && it.time == time && it.status == "pending"
+        }
+        if (kept.size == existing.size) return
+        val array = JSONArray()
+        kept.forEach { array.put(DoseLogJson.encode(it)) }
+        prefs(context).edit()
+            .putString(LOGS, array.toString())
+            .commit()
     }
 
     @Synchronized

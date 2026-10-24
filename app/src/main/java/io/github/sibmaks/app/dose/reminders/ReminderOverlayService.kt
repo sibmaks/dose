@@ -61,7 +61,10 @@ class ReminderOverlayService : Service() {
                         DoseStore.timeOverrides(this@ReminderOverlayService)
                     )
                 } ||
-                        logs.any { it.date == slot.date && it.medicationId == slot.medicationId && it.time == slot.time } ||
+                        logs.any {
+                            it.date == slot.date && it.medicationId == slot.medicationId && it.time == slot.time &&
+                                    it.status != "pending"
+                        } ||
                         (snoozes[slot.key] ?: 0L) > System.currentTimeMillis()
             }
             if (slots.isEmpty()) {

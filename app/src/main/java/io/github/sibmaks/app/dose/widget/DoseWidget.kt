@@ -174,6 +174,7 @@ class DoseWidget : AppWidgetProvider() {
                                     "overdue" -> R.string.overdue
                                     "due" -> R.string.due_now
                                     "snoozed" -> R.string.snoozed
+                                    "missed" -> R.string.missed
                                     else -> R.string.upcoming
                                 }
                                 setTextViewText(R.id.widget_row_status, context.getString(status))

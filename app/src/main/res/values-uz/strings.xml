@@ -31,6 +31,8 @@
     <string name="skip">"Oʻtkazib yuborish"</string>
     <string name="undo">"Bekor qilish"</string>
     <string name="skipped">"Oʻtkazildi"</string>
+    <string name="pending">"Kutilmoqda"</string>
+    <string name="missed">"Qoldirildi"</string>
     <string name="due_now">"Qabul vaqti"</string>
     <string name="overdue">"Kechikdi"</string>
     <string name="snoozed">"Keyinga qoldirildi"</string>

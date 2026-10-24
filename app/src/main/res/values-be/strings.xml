@@ -31,6 +31,8 @@
     <string name="skip">"Прапусціць"</string>
     <string name="undo">"Адмяніць"</string>
     <string name="skipped">"Прапушчана"</string>
+    <string name="pending">"Чакае"</string>
+    <string name="missed">"Не прынята"</string>
     <string name="due_now">"Час прыняць"</string>
     <string name="overdue">"Пратэрмінавана"</string>
     <string name="snoozed">"Адкладзена"</string>

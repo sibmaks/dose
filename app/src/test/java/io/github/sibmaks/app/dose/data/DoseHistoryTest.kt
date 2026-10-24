@@ -50,4 +50,14 @@ class DoseHistoryTest {
         assertNull(DoseHistory.replace(emptyList(), log, corrected))
         assertNull(DoseHistory.replace(listOf(corrected), log, log))
     }
+
+    @Test fun `only past awaiting entries roll over to missed`() {
+        val pending = log.copy(status = "pending", recordedAt = 0)
+        val past = pending.copy(date = date.minusDays(1).toString())
+        val updated = DoseHistory.markMissed(listOf(past, pending, log), date.toString())!!
+        assertEquals("missed", updated.first { it.date == date.minusDays(1).toString() }.status)
+        assertEquals("pending", updated.first { it.status == "pending" }.status)
+        assertEquals("taken", updated.first { it.status == "taken" }.status)
+        assertNull(DoseHistory.markMissed(listOf(pending, log), date.toString()))
+    }
 }
