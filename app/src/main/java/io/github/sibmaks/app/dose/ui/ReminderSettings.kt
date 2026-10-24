@@ -161,7 +161,6 @@ internal fun ReminderSettingsScreen(
         onPrimary = onDismiss,
         secondaryLabel = stringResource(R.string.later), showSecondary = !state.complete
     ) {
-        ReminderVibrationAlert(state.feedChecked, state.popupsChecked, ::launchSettings)
         ReminderChoice(
             stringResource(R.string.notification_feed), stringResource(R.string.notification_feed_hint),
             state.feedChecked, pendingStyle == null, accessHint(ReminderStyle.FEED)
@@ -170,19 +169,27 @@ internal fun ReminderSettingsScreen(
             stringResource(R.string.pop_up_over_other_apps), stringResource(R.string.overlay_hint),
             state.popupsChecked, pendingStyle == null, accessHint(ReminderStyle.POPUP)
         ) { choose(ReminderStyle.POPUP, it) }
-        if (!state.feedChecked && !state.popupsChecked) Text(
-            stringResource(R.string.reminders_disabled_hint),
-            fontSize = 13.sp,
-            color = TextMuted
-        )
-        if (state.feedChecked) TextButton(onClick = {
-            launchSettings(ReminderNotifications.settingsIntent(context), R.string.notification_settings_fallback)
-        }) { Text(stringResource(R.string.sound_notification_settings)) }
-        if (state.popupsChecked && !state.feedChecked) Text(
-            stringResource(R.string.popup_feed_disabled_hint),
-            fontSize = 12.sp,
-            color = TextMuted
-        )
+        if (!state.feedChecked && !state.popupsChecked) {
+            Text(
+                stringResource(R.string.reminders_disabled_hint),
+                fontSize = 13.sp,
+                color = TextMuted
+            )
+        } else {
+            ReminderVibrationAlert(state.feedChecked, state.popupsChecked, ::launchSettings)
+        }
+        if (state.feedChecked) {
+            TextButton(onClick = {
+                launchSettings(ReminderNotifications.settingsIntent(context), R.string.notification_settings_fallback)
+            }) { Text(stringResource(R.string.sound_notification_settings)) }
+        }
+        if (state.popupsChecked && !state.feedChecked) {
+            Text(
+                stringResource(R.string.popup_feed_disabled_hint),
+                fontSize = 12.sp,
+                color = TextMuted
+            )
+        }
         if (!firstLaunch) {
             HorizontalDivider(color = PanelBorder)
             NotificationPauseSection(onRefresh)
