@@ -791,12 +791,17 @@ private fun MedicationsPage(
                             PillAvatar(med.color, med.form, med.localizedForm(context))
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(med.name, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold)
+                                Text(med.name, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold,
+                                    maxLines = 2, overflow = TextOverflow.Ellipsis)
                                 Text(
                                     med.localizedDoses(context) + if (med.note.isBlank()) "" else " · ${med.note}",
                                     fontSize = 12.sp, color = TextMuted, maxLines = 2,
                                 )
                             }
+                            Switch(
+                                checked = med.active,
+                                onCheckedChange = { onToggle(med) },
+                            )
                             IconButton(onClick = { onEdit(med) }) {
                                 Icon(
                                     Icons.Rounded.Edit,
@@ -807,21 +812,14 @@ private fun MedicationsPage(
                             }
                         }
                         HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(top = 13.dp, bottom = 9.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                                med.schedules.forEach { rule ->
-                                    Text(
-                                        scheduleSummary(context, rule, med.amount, med.quantity),
-                                        fontSize = 12.sp,
-                                        color = Violet
-                                    )
-                                }
+                        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            med.schedules.forEach { rule ->
+                                Text(
+                                    scheduleSummary(context, rule, med.amount, med.quantity),
+                                    fontSize = 12.sp,
+                                    color = Violet
+                                )
                             }
-                            Switch(
-                                checked = med.active,
-                                onCheckedChange = { onToggle(med) },
-                                modifier = Modifier.height(29.dp)
-                            )
                         }
                     }
                 }
