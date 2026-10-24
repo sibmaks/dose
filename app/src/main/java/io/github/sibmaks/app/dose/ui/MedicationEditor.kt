@@ -822,12 +822,17 @@ private fun ScheduleEditor(
                     )
                 }
             }
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                ScheduleKind.entries.forEach { kind ->
-                    FilterChip(
-                        selected = rule.kind == kind,
-                        onClick = { onChange(rule.copy(kind = kind)) },
-                        label = { Text(kind.localizedLabel(context)) })
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                ScheduleKind.entries.chunked(2).forEach { rowKinds ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        rowKinds.forEach { kind ->
+                            UnitChip(
+                                kind.localizedLabel(context),
+                                selected = rule.kind == kind,
+                                modifier = Modifier.weight(1f),
+                            ) { onChange(rule.copy(kind = kind)) }
+                        }
+                    }
                 }
             }
             when (rule.kind) {

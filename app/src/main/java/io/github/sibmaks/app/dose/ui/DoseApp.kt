@@ -515,7 +515,7 @@ private fun TodayPage(
                 )
             }
         } else {
-            items(items, key = { it.id }) { item ->
+            items(items.filter { it.log?.status != "taken" }, key = { it.id }) { item ->
                 DoseCard(item, onRecord = onRecord, onUndo = onUndo, onOpen = onOpen)
             }
         }

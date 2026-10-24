@@ -69,7 +69,8 @@ internal fun HistoryDoseEditor(
         else -> listOf("taken", "pending", "missed")
     }
     val changed = status != log.status || (status == "taken" && at != log.recordedAt)
-    val valid = status != "taken" || (at in 1..now)
+    // "Now" is read freshly: a just-prefilled current moment must not look like a future time.
+    val valid = status != "taken" || (at in 1..System.currentTimeMillis())
     val enabled = changed && valid
     // Pickers open at the recorded time, else near the reminder deadline — the value itself stays empty until chosen.
     val pickerBase = Instant.ofEpochMilli((at.takeIf { it > 0 } ?: scheduled ?: now).coerceAtMost(now))
@@ -157,7 +158,7 @@ internal fun HistoryDoseEditor(
             }
             when {
                 at <= 0L -> FieldError(stringResource(R.string.intake_time_required_error))
-                at > now -> FieldError(stringResource(R.string.history_time_error))
+                at > System.currentTimeMillis() -> FieldError(stringResource(R.string.history_time_error))
             }
             if (log.status == "taken") Text(
                 stringResource(R.string.edit_intake_hint_taken),
