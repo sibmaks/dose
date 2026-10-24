@@ -930,6 +930,7 @@ private fun ScheduleEditor(
                 ScheduleKind.DAILY -> Unit
             }
             if (rule.kind != ScheduleKind.SPECIFIC_DATES) {
+                HorizontalDivider(color = PanelBorder)
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     DateBound(
                         stringResource(R.string.from),
@@ -959,6 +960,7 @@ private fun ScheduleEditor(
                             ?.let { localizedValidationError(context, it.message) })
                 }
             }
+            HorizontalDivider(color = PanelBorder)
             Text(
                 stringResource(R.string.times),
                 color = if (issue?.field == ScheduleField.TIMES) errorColor else TextPrimary,
