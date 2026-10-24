@@ -735,8 +735,9 @@ private fun Eyebrow(text: String) {
 internal fun PillAvatar(color: String, form: MedicationForm, label: String) {
     val (foreground, background) = palette(color)
     Box(
-        Modifier.size(49.dp).clip(RoundedCornerShape(16.dp)).background(background)
-            .border(1.dp, PanelBorder, RoundedCornerShape(16.dp)),
+        // Inset the fill so its antialiased edge cannot show outside the border.
+        Modifier.size(49.dp).background(PanelBorder, RoundedCornerShape(16.dp))
+            .padding(1.dp).background(background, RoundedCornerShape(15.dp)),
         contentAlignment = Alignment.Center,
     ) { Icon(androidx.compose.ui.res.painterResource(form.iconResource()), label, tint = foreground, modifier = Modifier.size(26.dp)) }
 }
