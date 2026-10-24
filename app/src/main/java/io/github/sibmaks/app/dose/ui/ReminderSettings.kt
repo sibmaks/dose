@@ -158,6 +158,7 @@ internal fun ReminderSettingsScreen(
         onPrimary = onDismiss,
         secondaryLabel = context.getString(R.string.later), showSecondary = !state.complete
     ) {
+        ReminderVibrationAlert(state.feedChecked, state.popupsChecked, ::launchSettings)
         ReminderChoice(
             context.getString(R.string.notification_feed), context.getString(R.string.notification_feed_hint),
             state.feedChecked, pendingStyle == null, accessHint(ReminderStyle.FEED)

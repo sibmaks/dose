@@ -95,7 +95,7 @@
     <string name="notification_settings_fallback">"Android-ის პარამეტრები → აპები → Dose → შეტყობინებები"</string>
     <string name="overlay_settings_fallback">"Android-ის პარამეტრები → სპეციალური წვდომა → სხვა აპების ზემოთ → Dose"</string>
     <string name="notification_feed">"შეტყობინებების სია"</string>
-    <string name="notification_feed_hint">"შეხსენებები სიაში მიღების, გადადებისა და გამოტოვების ღილაკებით."</string>
+    <string name="notification_feed_hint">"შეხსენებები სიაში მიღებისა და გამოტოვების ღილაკებით."</string>
     <string name="pop_up_over_other_apps">"ფანჯარა სხვა აპების ზემოთ"</string>
     <string name="overlay_hint">"წამლის ფანჯრის ჩვენება გახსნილი აპის ზემოთ."</string>
     <string name="notification_access_hint">"დაუშვით Dose-ის შეტყობინებები და წამლის შეხსენებების არხი. უარის შემთხვევაში Android-ის პარამეტრები გაიხსნება."</string>
@@ -250,4 +250,12 @@
     <string name="dose_overlap_hint">"განსხვავებული დოზები ემთხვევა. ჯერ აირჩიეთ ყველაზე მაღალი პრიორიტეტის დოზა. ის გამოიყენება მხოლოდ განრიგების დამთხვევისას; სხვა მიღებები უცვლელი რჩება."</string>
     <string name="prioritize_dose">"პრიორიტეტი: %1$s"</string>
     <string name="ready">"მზადაა"</string>
+    <string name="vibration_off">"ვიბრაცია გამორთულია"</string>
+    <string name="vibration_unavailable_title">"ვიბრაცია მიუწვდომელია"</string>
+    <string name="vibration_unavailable_hint">"ამ მოწყობილობას ვიბრაციის მხარდაჭერა არ აქვს."</string>
+    <string name="vibration_disabled_hint">"ჩართეთ ვიბრაცია Android-ის ხმისა და ვიბრაციის პარამეტრებში."</string>
+    <string name="feed_vibration_disabled_hint">"შეტყობინებები არ ივიბრირებს. შეამოწმეთ ჩუმი რეჟიმი, ვიბრაციის პარამეტრები და წამლის შეხსენებების შეტყობინების არხი."</string>
+    <string name="popup_vibration_disabled_hint">"ამომხტარი შეხსენებები არ ივიბრირებს. ჩართეთ მაღვიძარას ვიბრაცია Android-ის პარამეტრებში."</string>
+    <string name="sound_vibration_settings">"ხმა და ვიბრაცია"</string>
+    <string name="vibration_settings_fallback">"გახსენით ხმისა და ვიბრაციის განყოფილება Android-ის პარამეტრებში."</string>
 </resources>

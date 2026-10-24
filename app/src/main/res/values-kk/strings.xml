@@ -95,7 +95,7 @@
     <string name="notification_settings_fallback">"Android баптаулары → Қолданбалар → Dose → Хабарландырулар"</string>
     <string name="overlay_settings_fallback">"Android баптаулары → Арнайы рұқсат → Басқа қолданбалардың үстінен → Dose"</string>
     <string name="notification_feed">"Хабарландырулар таспасы"</string>
-    <string name="notification_feed_hint">"Таспада қабылдау, кейінге қалдыру және өткізу түймелері бар еске салғыштар."</string>
+    <string name="notification_feed_hint">"Таспада қабылдау және өткізу түймелері бар еске салғыштар."</string>
     <string name="pop_up_over_other_apps">"Қолданбалардың үстіндегі терезе"</string>
     <string name="overlay_hint">"Ашық қолданбаның үстінде дәрі терезесін көрсету."</string>
     <string name="notification_access_hint">"Dose хабарландырулары мен дәрі еске салу арнасын қосыңыз. Бұрын бас тартылса Android баптаулары ашылады."</string>
@@ -250,4 +250,12 @@
     <string name="dose_overlap_hint">"Әртүрлі дозалар қабаттасады. Алдымен басымдығы ең жоғары дозаны таңдаңыз. Ол тек кестелер қабаттасқанда қолданылады; басқа қабылдаулар сақталады."</string>
     <string name="prioritize_dose">"Басымдық: %1$s"</string>
     <string name="ready">"Дайын"</string>
+    <string name="vibration_off">"Діріл өшірулі"</string>
+    <string name="vibration_unavailable_title">"Діріл қолжетімсіз"</string>
+    <string name="vibration_unavailable_hint">"Бұл құрылғы дірілді қолдамайды."</string>
+    <string name="vibration_disabled_hint">"Android дыбыс және діріл параметрлерінде дірілді қосыңыз."</string>
+    <string name="feed_vibration_disabled_hint">"Хабарландырулар дірілдемейді. Дыбыссыз режимді, діріл параметрлерін және дәрі еске салғыштарының хабарландыру арнасын тексеріңіз."</string>
+    <string name="popup_vibration_disabled_hint">"Қалқымалы еске салғыштар дірілдемейді. Android параметрлерінде оятқыш дірілін қосыңыз."</string>
+    <string name="sound_vibration_settings">"Дыбыс және діріл"</string>
+    <string name="vibration_settings_fallback">"Android параметрлерінде дыбыс және діріл бөлімін ашыңыз."</string>
 </resources>

@@ -95,7 +95,7 @@
     <string name="notification_settings_fallback">"Open Android Settings → Apps → Dose → Notifications"</string>
     <string name="overlay_settings_fallback">"Open Android Settings → Special app access → Display over other apps → Dose"</string>
     <string name="notification_feed">"Notification feed"</string>
-    <string name="notification_feed_hint">"Keep reminders in your notification feed, with Taken, Snooze, and Skip actions."</string>
+    <string name="notification_feed_hint">"Keep reminders in your notification feed, with Taken and Skip actions."</string>
     <string name="pop_up_over_other_apps">"Pop-up over other apps"</string>
     <string name="overlay_hint">"Show a medication window above the app you are using."</string>
     <string name="notification_access_hint">"Allow notifications for Dose and its Medication reminders channel. If you previously denied access, Android settings will open."</string>
@@ -252,4 +252,12 @@
     <string name="dose_overlap_hint">"Different amounts overlap. Choose the highest-priority dose first. It applies only where schedules overlap; other doses stay unchanged."</string>
     <string name="prioritize_dose">"Prioritize %1$s"</string>
     <string name="ready">"Ready"</string>
+    <string name="vibration_off">"Vibration is off"</string>
+    <string name="vibration_unavailable_title">"Vibration unavailable"</string>
+    <string name="vibration_unavailable_hint">"This device does not support vibration."</string>
+    <string name="vibration_disabled_hint">"Enable vibration in Android’s Sound &amp; vibration settings so reminders can vibrate."</string>
+    <string name="feed_vibration_disabled_hint">"Notification-feed reminders will not vibrate. Check silent mode, vibration settings, and the Medication reminders notification channel."</string>
+    <string name="popup_vibration_disabled_hint">"Pop-up reminders will not vibrate. Enable alarm vibration in Android settings."</string>
+    <string name="sound_vibration_settings">"Sound &amp; vibration settings"</string>
+    <string name="vibration_settings_fallback">"Open Sound &amp; vibration in Android settings."</string>
 </resources>

@@ -95,7 +95,7 @@
     <string name="notification_settings_fallback">"Настройки Android → Приложения → Dose → Уведомления"</string>
     <string name="overlay_settings_fallback">"Настройки Android → Специальный доступ → Поверх других приложений → Dose"</string>
     <string name="notification_feed">"Лента уведомлений"</string>
-    <string name="notification_feed_hint">"Напоминания в ленте с кнопками приёма, отсрочки и пропуска."</string>
+    <string name="notification_feed_hint">"Напоминания в шторке с кнопками «Принято» и «Пропустить»."</string>
     <string name="pop_up_over_other_apps">"Окно поверх приложений"</string>
     <string name="overlay_hint">"Показывать окно приёма поверх открытого приложения."</string>
     <string name="notification_access_hint">"Разрешите уведомления Dose и канал напоминаний о лекарствах. После отказа откроются настройки Android."</string>
@@ -250,4 +250,12 @@
     <string name="dose_overlap_hint">"Разные дозы пересекаются. Сначала выберите дозу с наивысшим приоритетом. Она применяется только при пересечении расписаний; остальные приёмы сохраняются."</string>
     <string name="prioritize_dose">"Приоритет: %1$s"</string>
     <string name="ready">"Готово"</string>
+    <string name="vibration_off">"Вибрация отключена"</string>
+    <string name="vibration_unavailable_title">"Вибрация недоступна"</string>
+    <string name="vibration_unavailable_hint">"На этом устройстве нет вибромотора."</string>
+    <string name="vibration_disabled_hint">"Включите вибрацию в разделе «Звук и вибрация» настроек Android."</string>
+    <string name="feed_vibration_disabled_hint">"Напоминания в шторке не будут вибрировать. Проверьте беззвучный режим, настройки вибрации и канал «Напоминания о лекарствах»."</string>
+    <string name="popup_vibration_disabled_hint">"Всплывающие напоминания не будут вибрировать. Включите вибрацию будильника в настройках Android."</string>
+    <string name="sound_vibration_settings">"Звук и вибрация"</string>
+    <string name="vibration_settings_fallback">"Откройте раздел «Звук и вибрация» в настройках Android."</string>
 </resources>

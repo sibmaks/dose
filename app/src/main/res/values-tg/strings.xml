@@ -95,7 +95,7 @@
     <string name="notification_settings_fallback">"Танзимоти Android → Барномаҳо → Dose → Огоҳиҳо"</string>
     <string name="overlay_settings_fallback">"Танзимоти Android → Дастрасии махсус → Болои дигар барномаҳо → Dose"</string>
     <string name="notification_feed">"Рӯйхати огоҳиҳо"</string>
-    <string name="notification_feed_hint">"Ёдраскуниҳо дар рӯйхат бо тугмаҳои қабул, таъхир ва гузарондан."</string>
+    <string name="notification_feed_hint">"Ёдраскуниҳо дар рӯйхат бо тугмаҳои қабул ва гузарондан."</string>
     <string name="pop_up_over_other_apps">"Равзана болои барномаҳо"</string>
     <string name="overlay_hint">"Намоиши равзанаи дору болои барномаи кушода."</string>
     <string name="notification_access_hint">"Огоҳиҳои Dose ва канали ёдраскунии доруро иҷозат диҳед. Агар рад карда бошед, танзимоти Android кушода мешавад."</string>
@@ -250,4 +250,12 @@
     <string name="dose_overlap_hint">"Миқдорҳои гуногун мувофиқ меоянд. Аввал миқдори дорои афзалияти баландтаринро интихоб кунед. Он танҳо ҳангоми мувофиқ омадани ҷадвалҳо амал мекунад; қабули дигар нигоҳ дошта мешавад."</string>
     <string name="prioritize_dose">"Афзалият: %1$s"</string>
     <string name="ready">"Омода"</string>
+    <string name="vibration_off">"Ларзиш хомӯш аст"</string>
+    <string name="vibration_unavailable_title">"Ларзиш дастрас нест"</string>
+    <string name="vibration_unavailable_hint">"Ин дастгоҳ ларзишро дастгирӣ намекунад."</string>
+    <string name="vibration_disabled_hint">"Ларзишро дар танзимоти садо ва ларзиши Android фаъол кунед."</string>
+    <string name="feed_vibration_disabled_hint">"Огоҳиҳо ларзиш намекунанд. Реҷаи бесадо, танзимоти ларзиш ва канали огоҳиҳои ёдрасии доруҳоро санҷед."</string>
+    <string name="popup_vibration_disabled_hint">"Ёдрасиҳои шинокунанда ларзиш намекунанд. Ларзиши соати зангдорро дар танзимоти Android фаъол кунед."</string>
+    <string name="sound_vibration_settings">"Садо ва ларзиш"</string>
+    <string name="vibration_settings_fallback">"Бахши садо ва ларзишро дар танзимоти Android кушоед."</string>
 </resources>
