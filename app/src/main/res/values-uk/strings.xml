@@ -138,7 +138,7 @@
     <string name="remove_schedule">"Видалити розклад %1$d"</string>
     <string name="remove_date">"Видалити дату %1$s"</string>
     <string name="day_description">"День %1$d%2$s"</string>
-    <string name="default_date">"%1$s (типово)"</string>
+    <string name="default_date">"%1$s"</string>
     <string name="clear_bound">"Очистити дату: %1$s"</string>
     <string name="color_channel">"Канал кольору: %1$s"</string>
     <string name="monthly_days">"Щомісяця: %1$s"</string>

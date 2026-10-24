@@ -138,7 +138,7 @@
     <string name="remove_schedule">"%1$d кестені жою"</string>
     <string name="remove_date">"%1$s күнін жою"</string>
     <string name="day_description">"Күн %1$d%2$s"</string>
-    <string name="default_date">"%1$s (әдепкі)"</string>
+    <string name="default_date">"%1$s"</string>
     <string name="clear_bound">"Күнді тазалау: %1$s"</string>
     <string name="color_channel">"Түс арнасы: %1$s"</string>
     <string name="monthly_days">"Ай сайын: %1$s"</string>

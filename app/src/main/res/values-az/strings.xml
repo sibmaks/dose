@@ -138,7 +138,7 @@
     <string name="remove_schedule">"Cədvəl %1$d sil"</string>
     <string name="remove_date">"%1$s tarixini sil"</string>
     <string name="day_description">"Gün %1$d%2$s"</string>
-    <string name="default_date">"%1$s (standart)"</string>
+    <string name="default_date">"%1$s"</string>
     <string name="clear_bound">"Tarixi təmizlə: %1$s"</string>
     <string name="color_channel">"Rəng kanalı: %1$s"</string>
     <string name="monthly_days">"Hər ay: %1$s"</string>

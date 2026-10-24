@@ -138,7 +138,7 @@
     <string name="remove_schedule">"%1$d tertibi pozmak"</string>
     <string name="remove_date">"%1$s senesini pozmak"</string>
     <string name="day_description">"Gün %1$d%2$s"</string>
-    <string name="default_date">"%1$s (deslapky)"</string>
+    <string name="default_date">"%1$s"</string>
     <string name="clear_bound">"Senäni arassalamak: %1$s"</string>
     <string name="color_channel">"Reňk kanaly: %1$s"</string>
     <string name="monthly_days">"Her aý: %1$s"</string>

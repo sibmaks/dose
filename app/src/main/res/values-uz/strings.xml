@@ -138,7 +138,7 @@
     <string name="remove_schedule">"%1$d-jadvalni oʻchirish"</string>
     <string name="remove_date">"%1$s sanasini oʻchirish"</string>
     <string name="day_description">"Kun %1$d%2$s"</string>
-    <string name="default_date">"%1$s (standart)"</string>
+    <string name="default_date">"%1$s"</string>
     <string name="clear_bound">"Sanani tozalash: %1$s"</string>
     <string name="color_channel">"Rang kanali: %1$s"</string>
     <string name="monthly_days">"Har oy: %1$s"</string>

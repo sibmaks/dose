@@ -138,7 +138,7 @@
     <string name="remove_schedule">"Удалить расписание %1$d"</string>
     <string name="remove_date">"Удалить дату %1$s"</string>
     <string name="day_description">"День %1$d%2$s"</string>
-    <string name="default_date">"%1$s (по умолчанию)"</string>
+    <string name="default_date">"%1$s"</string>
     <string name="clear_bound">"Очистить дату: %1$s"</string>
     <string name="color_channel">"Канал цвета: %1$s"</string>
     <string name="monthly_days">"Ежемесячно: %1$s"</string>

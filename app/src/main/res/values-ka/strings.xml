@@ -138,7 +138,7 @@
     <string name="remove_schedule">"განრიგი %1$d-ის წაშლა"</string>
     <string name="remove_date">"თარიღი %1$s-ის წაშლა"</string>
     <string name="day_description">"დღე %1$d%2$s"</string>
-    <string name="default_date">"%1$s (ნაგულისხმევი)"</string>
+    <string name="default_date">"%1$s"</string>
     <string name="clear_bound">"თარიღის გასუფთავება: %1$s"</string>
     <string name="color_channel">"ფერის არხი: %1$s"</string>
     <string name="monthly_days">"ყოველთვიურად: %1$s"</string>
