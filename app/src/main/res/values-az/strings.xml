@@ -66,7 +66,6 @@
     <string name="unit">"Vahid *"</string>
     <string name="choose_below_or_type_your_own">"Aşağıdan seçin və ya özünüz yazın"</string>
     <string name="when_should_dose_remind_you">"Nə vaxt xatırladaq?"</string>
-    <string name="schedule_overlap_hint">"Bir cədvəldə bir neçə vaxt seçin. Eyni tarix və vaxt bir qəbul yaradır."</string>
     <string name="add_another_schedule">"Başqa cədvəl əlavə et"</string>
     <string name="review_finish">"Yoxla və tamamla"</string>
     <string name="other">"Digər"</string>

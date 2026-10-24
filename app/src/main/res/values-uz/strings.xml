@@ -66,7 +66,6 @@
     <string name="unit">"Birlik *"</string>
     <string name="choose_below_or_type_your_own">"Quyidan tanlang yoki oʻzingiz yozing"</string>
     <string name="when_should_dose_remind_you">"Qachon eslatish kerak?"</string>
-    <string name="schedule_overlap_hint">"Bir yoki bir nechta vaqt tanlang. Bir xil sana va vaqt bitta qabul yaratadi."</string>
     <string name="add_another_schedule">"Yana jadval qoʻshish"</string>
     <string name="review_finish">"Tekshirish va tugatish"</string>
     <string name="other">"Boshqa"</string>

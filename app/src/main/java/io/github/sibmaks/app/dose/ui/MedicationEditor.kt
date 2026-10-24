@@ -273,7 +273,6 @@ internal fun MedicationEditor(
                         }
                         MedicationStep.SCHEDULE -> {
                             Text(context.getString(R.string.when_should_dose_remind_you), fontSize = 19.sp, fontWeight = FontWeight.Bold)
-                            Text(context.getString(R.string.schedule_overlap_hint), color = TextMuted, fontSize = 12.sp)
                             schedules.forEachIndexed { index, rule ->
                                 ScheduleEditor(rule, index + 1, validationVisible, onChange = { updated ->
                                     schedules = schedules.toMutableList().apply { set(index, updated.copy(immediateAt = null)) }

@@ -66,7 +66,6 @@
     <string name="unit">"Միավոր *"</string>
     <string name="choose_below_or_type_your_own">"Ընտրեք ստորև կամ մուտքագրեք ձերը"</string>
     <string name="when_should_dose_remind_you">"Ե՞րբ հիշեցնել։"</string>
-    <string name="schedule_overlap_hint">"Կարող եք ընտրել մի քանի ժամ։ Համընկնող ամսաթիվն ու ժամը տալիս են մեկ ընդունում։"</string>
     <string name="add_another_schedule">"Ավելացնել ժամանակացույց"</string>
     <string name="review_finish">"Ստուգել և ավարտել"</string>
     <string name="other">"Այլ"</string>
