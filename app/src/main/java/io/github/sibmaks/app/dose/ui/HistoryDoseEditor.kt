@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.sibmaks.app.dose.R
@@ -46,24 +47,24 @@ internal fun HistoryDoseEditor(
 
     SetupScreen(
         title = log.medicationName, onClose = onDismiss,
-        primaryLabel = context.getString(if (log.status == "taken") R.string.save else R.string.done),
+        primaryLabel = stringResource(if (log.status == "taken") R.string.save else R.string.done),
         onPrimary = {
             if (log.status != "taken") onDismiss()
             else {
                 timeError = at <= 0 || at > System.currentTimeMillis()
                 if (!timeError) changedError = !onSave(at)
             }
-        }, secondaryLabel = context.getString(R.string.back)
+        }, secondaryLabel = stringResource(R.string.back)
     ) {
         Text(
-            context.getString(R.string.dose_history),
+            stringResource(R.string.dose_history),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
         Text(log.dose, style = MaterialTheme.typography.titleMedium)
         StatusBadge(log.status)
         deadline?.let {
-            Text(context.getString(R.string.reminder_time), color = TextMuted)
+            Text(stringResource(R.string.reminder_time), color = TextMuted)
             Text(
                 Instant.ofEpochMilli(it)
                     .atZone(zone)
@@ -72,7 +73,7 @@ internal fun HistoryDoseEditor(
         }
         HorizontalDivider(color = PanelBorder)
         if (log.status == "taken") {
-            Text(context.getString(R.string.taken_at), fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.taken_at), fontWeight = FontWeight.Bold)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedButton(
                     onClick = {
@@ -122,13 +123,13 @@ internal fun HistoryDoseEditor(
                     Text(selected.format(DateTimeFormatter.ofPattern("HH:mm")), maxLines = 1, softWrap = false)
                 }
             }
-            if (timeError) Text(context.getString(R.string.history_time_error), color = MaterialTheme.colorScheme.error)
+            if (timeError) Text(stringResource(R.string.history_time_error), color = MaterialTheme.colorScheme.error)
         } else {
-            Text(context.getString(R.string.skipped_at), color = TextMuted)
+            Text(stringResource(R.string.skipped_at), color = TextMuted)
             Text(selected.format(formatter))
         }
         if (changedError) Text(
-            context.getString(R.string.history_changed_error),
+            stringResource(R.string.history_changed_error),
             color = MaterialTheme.colorScheme.error
         )
         HorizontalDivider(color = PanelBorder)
@@ -136,22 +137,22 @@ internal fun HistoryDoseEditor(
             onClick = { confirmDelete = true }, modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
         ) {
-            Text(context.getString(R.string.delete_history_entry))
+            Text(stringResource(R.string.delete_history_entry))
         }
     }
     if (confirmDelete) AlertDialog(
         onDismissRequest = { confirmDelete = false },
-        title = { Text(context.getString(R.string.delete_history_entry)) },
-        text = { Text(context.getString(R.string.delete_history_hint)) },
+        title = { Text(stringResource(R.string.delete_history_entry)) },
+        text = { Text(stringResource(R.string.delete_history_hint)) },
         confirmButton = {
             TextButton(onClick = { confirmDelete = false; changedError = !onDelete() }) {
-                Text(context.getString(R.string.delete), color = MaterialTheme.colorScheme.error)
+                Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
             }
         },
         dismissButton = {
             TextButton(onClick = {
                 confirmDelete =
                     false
-            }) { Text(context.getString(R.string.cancel)) }
+            }) { Text(stringResource(R.string.cancel)) }
         })
 }

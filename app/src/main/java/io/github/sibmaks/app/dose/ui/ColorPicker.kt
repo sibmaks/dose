@@ -1,5 +1,6 @@
 package io.github.sibmaks.app.dose.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -37,7 +39,6 @@ internal fun ColorPicker(
     onDismiss: () -> Unit,
     onChoose: (String) -> Unit
 ) {
-    val context = LocalContext.current
     val initialSelection = remember(initial) { ColorWheelSelection.fromColor(initial) }
     var hue by rememberSaveable { mutableFloatStateOf(initialSelection.hue) }
     var saturation by rememberSaveable { mutableFloatStateOf(initialSelection.saturation) }
@@ -45,6 +46,7 @@ internal fun ColorPicker(
     var hex by rememberSaveable { mutableStateOf(MedicationColors.hex(initial)) }
     val selection = ColorWheelSelection(hue, saturation, brightness)
     val validHex = HexColor.matches(hex)
+    val brightnessString = stringResource(R.string.brightness)
 
     fun choose(value: ColorWheelSelection) {
         hue = value.hue
@@ -52,9 +54,10 @@ internal fun ColorPicker(
         brightness = value.brightness
         hex = value.hex()
     }
+
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(context.getString(R.string.pick_a_color)) },
+        title = { Text(stringResource(R.string.pick_a_color)) },
         text = {
             Column(
                 Modifier
@@ -76,10 +79,10 @@ internal fun ColorPicker(
                         )
                         .border(1.dp, PanelBorder, RoundedCornerShape(12.dp))
                 )
-                Text(context.getString(R.string.brightness), fontSize = 13.sp)
+                Text(brightnessString, fontSize = 13.sp)
                 Slider(
                     value = brightness, onValueChange = { choose(selection.copy(brightness = it)) },
-                    modifier = Modifier.semantics { contentDescription = context.getString(R.string.brightness) })
+                    modifier = Modifier.semantics { contentDescription = brightnessString })
                 OutlinedTextField(
                     hex,
                     { input ->
@@ -93,10 +96,10 @@ internal fun ColorPicker(
                             brightness = parsed.brightness
                         }
                     },
-                    label = { Text(context.getString(R.string.hex_color_rrggbb)) },
+                    label = { Text(stringResource(R.string.hex_color_rrggbb)) },
                     singleLine = true,
                     isError = !validHex,
-                    supportingText = { if (!validHex) Text(context.getString(R.string.color_hex_error)) },
+                    supportingText = { if (!validHex) Text(stringResource(R.string.color_hex_error)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -105,11 +108,12 @@ internal fun ColorPicker(
             TextButton(
                 onClick = { onChoose(hex) },
                 enabled = validHex
-            ) { Text(context.getString(R.string.use_color)) }
+            ) { Text(stringResource(R.string.use_color)) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(context.getString(R.string.cancel)) } })
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } })
 }
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 private fun ColorWheel(
     selection: ColorWheelSelection,

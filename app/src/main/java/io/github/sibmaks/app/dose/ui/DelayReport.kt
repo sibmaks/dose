@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -18,7 +19,6 @@ import io.github.sibmaks.app.dose.localization.AppLanguages
 import java.text.NumberFormat
 import java.time.LocalDate
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun DelayReportCard(
     logs: List<DoseLog>,
@@ -38,15 +38,15 @@ internal fun DelayReportCard(
                 .fillMaxWidth()
                 .padding(17.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(context.getString(R.string.time_to_take), fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+            Text(stringResource(R.string.time_to_take), fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                 listOf(7, 30, null).forEach { period ->
                     FilterChip(
                         selected = days == period,
                         onClick = { days = period },
                         label = {
-                            Text(period?.let { context.getString(R.string.period_days, it) }
-                                ?: context.getString(R.string.all_time))
+                            Text(period?.let { stringResource(R.string.period_days, it) }
+                                ?: stringResource(R.string.all_time))
                         })
                 }
             }
@@ -55,7 +55,7 @@ internal fun DelayReportCard(
                 fontSize = 30.sp,
                 fontWeight = FontWeight.ExtraBold)
             Text(
-                context.getString(R.string.average_delay_count, report.count),
+                stringResource(R.string.average_delay_count, report.count),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -66,7 +66,7 @@ internal fun DelayReportCard(
                         Column(Modifier.weight(1f)) {
                             Text(med.name, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             Text(
-                                context.getString(R.string.taken_count, med.count),
+                                stringResource(R.string.taken_count, med.count),
                                 fontSize = 12.sp,
                                 color = TextMuted
                             )
@@ -81,7 +81,7 @@ internal fun DelayReportCard(
                 }
             }
             if (report.estimatedCount > 0) Text(
-                context.getString(R.string.estimated_entries, report.estimatedCount),
+                stringResource(R.string.estimated_entries, report.estimatedCount),
                 fontSize = 12.sp,
                 color = TextMuted
             )

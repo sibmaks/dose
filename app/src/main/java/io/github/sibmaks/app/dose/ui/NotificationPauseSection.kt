@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.appearance.AppAppearance
@@ -57,13 +58,13 @@ internal fun NotificationPauseSection(onRefresh: () -> Unit) {
     }
 
     Text(
-        context.getString(R.string.pause_notifications),
+        stringResource(R.string.pause_notifications),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold
     )
     if (until > 0) {
         Text(
-            context.getString(
+            stringResource(
                 R.string.notifications_paused_until,
                 Instant.ofEpochMilli(until)
                     .atZone(ZoneId.systemDefault())
@@ -73,9 +74,9 @@ internal fun NotificationPauseSection(onRefresh: () -> Unit) {
         OutlinedButton(onClick = {
             NotificationPause.set(context, 0); until =
             0; onRefresh()
-        }) { Text(context.getString(R.string.resume_notifications)) }
+        }) { Text(stringResource(R.string.resume_notifications)) }
     }
-    Text(context.getString(R.string.until), style = MaterialTheme.typography.labelLarge)
+    Text(stringResource(R.string.until), style = MaterialTheme.typography.labelLarge)
     OutlinedButton(onClick = {
         val selected = LocalDate.parse(date)
         DatePickerDialog(
@@ -119,7 +120,7 @@ internal fun NotificationPauseSection(onRefresh: () -> Unit) {
             true
         ).show()
     }, modifier = Modifier.fillMaxWidth()) { Text(time) }
-    if (error) Text(context.getString(R.string.pause_time_error), color = MaterialTheme.colorScheme.error)
+    if (error) Text(stringResource(R.string.pause_time_error), color = MaterialTheme.colorScheme.error)
     Button(onClick = {
         val chosen = NotificationPauseWindow.selectedUntil(date, time, ZonedDateTime.now())
         if (chosen == null) error = true else {
@@ -128,5 +129,5 @@ internal fun NotificationPauseSection(onRefresh: () -> Unit) {
             error = false
             onRefresh()
         }
-    }, modifier = Modifier.fillMaxWidth()) { Text(context.getString(R.string.pause_notifications)) }
+    }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.pause_notifications)) }
 }

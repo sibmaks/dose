@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -148,12 +149,11 @@ fun DoseApp(openTodayRequest: Int = 0) {
             original = editing,
             onDismiss = { showEditor = false },
             onSave = { med ->
-                val previous = editing
                 DoseStore.upsert(context, med)
                 DoseStore.recordColorUse(context, med.color)
                 ReminderScheduler.scheduleAll(context)
                 ReminderReceiver.refreshVisible(context)
-                ReminderScheduler.deliverImmediate(context, med, previous)
+                ReminderScheduler.deliverImmediate(context, med, editing)
                 refresh()
                 showEditor = false
                 if (todayDoseId == null) scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) }
@@ -241,7 +241,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                 IconButton(onClick = { firstReminderSetup = false; showReminderSettings = true }) {
                     Icon(
                         if (reminderSetup.complete) Icons.Rounded.NotificationsActive else Icons.Outlined.Notifications,
-                        contentDescription = if (reminderSetup.complete) context.getString(R.string.setup_complete_accessibility) else context.getString(
+                        contentDescription = if (reminderSetup.complete) stringResource(R.string.setup_complete_accessibility) else stringResource(
                             R.string.setup_incomplete_accessibility
                         ),
                         tint = if (reminderSetup.complete) Violet else TextMuted,
@@ -250,7 +250,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                 IconButton(onClick = { editingId = null; showEditor = true }) {
                     Icon(
                         Icons.Rounded.Add,
-                        contentDescription = context.getString(R.string.add_medication),
+                        contentDescription = stringResource(R.string.add_medication),
                         tint = TextPrimary
                     )
                 }
@@ -265,7 +265,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         icon = { Icon(target.icon, contentDescription = null) },
                         label = {
                             Text(
-                                context.getString(target.title),
+                                stringResource(target.title),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -346,8 +346,8 @@ private fun LanguageButton(onClick: () -> Unit) {
             .substringBefore('-')
     val selected = AppLanguages.supported.firstOrNull { it.tag == tag }
     val flag = languageFlag(tag)
-    val description = context.getString(R.string.app_language) + ": " +
-            (selected?.nativeName ?: context.getString(R.string.system_language))
+    val description = stringResource(R.string.app_language) + ": " +
+            (selected?.nativeName ?: stringResource(R.string.system_language))
     IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = description }) {
         if (flag == null) {
             Icon(Icons.Rounded.Language, null, tint = TextMuted)
@@ -403,8 +403,8 @@ private fun TodayPage(
         if (showSetupWarning) {
             item {
                 InfoBanner(
-                    context.getString(R.string.reminder_setup_banner),
-                    context.getString(R.string.set_up_reminders),
+                    stringResource(R.string.reminder_setup_banner),
+                    stringResource(R.string.set_up_reminders),
                     onReminderSetup
                 )
             }
@@ -414,12 +414,12 @@ private fun TodayPage(
                 Eyebrow(day.uppercase(AppLanguages.locale(context)))
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    context.getString(R.string.every_dose_counts),
+                    stringResource(R.string.every_dose_counts),
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 31.sp,
                     color = TextPrimary
                 )
-                Text(context.getString(R.string.a_little_care_every_single_day), fontSize = 14.sp, color = TextMuted)
+                Text(stringResource(R.string.a_little_care_every_single_day), fontSize = 14.sp, color = TextMuted)
             }
         }
         item {
@@ -455,12 +455,12 @@ private fun TodayPage(
                     Spacer(Modifier.width(15.dp))
                     Column(Modifier.weight(1f)) {
                         Text(
-                            context.getString(R.string.today_s_progress),
+                            stringResource(R.string.today_s_progress),
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp
                         )
                         Text(
-                            context.getString(R.string.progress_counts, taken, items.size, skipped),
+                            stringResource(R.string.progress_counts, taken, items.size, skipped),
                             color = TextMuted, fontSize = 12.sp,
                         )
                     }
@@ -470,14 +470,14 @@ private fun TodayPage(
         item {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 10.dp)) {
                 Text(
-                    context.getString(R.string.today_s_schedule),
+                    stringResource(R.string.today_s_schedule),
                     fontSize = 19.sp,
                     fontWeight = FontWeight.ExtraBold,
                     modifier = Modifier.weight(1f)
                 )
                 TextButton(onClick = onManage) {
                     Text(
-                        context.getString(R.string.manage),
+                        stringResource(R.string.manage),
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -486,8 +486,8 @@ private fun TodayPage(
         if (items.isEmpty()) {
             item {
                 EmptyCard(
-                    if (hasMedications) context.getString(R.string.no_doses_scheduled_today) else context.getString(R.string.nothing_scheduled_yet),
-                    if (hasMedications) context.getString(R.string.schedule_empty_today_hint) else context.getString(R.string.schedule_empty_hint),
+                    if (hasMedications) stringResource(R.string.no_doses_scheduled_today) else stringResource(R.string.nothing_scheduled_yet),
+                    if (hasMedications) stringResource(R.string.schedule_empty_today_hint) else stringResource(R.string.schedule_empty_hint),
                     if (hasMedications) null else onAdd
                 )
             }
@@ -522,9 +522,9 @@ private fun FeaturedCard(
                 Icon(Icons.Rounded.Alarm, null, tint = Color(0xFFE5E0FF), modifier = Modifier.size(17.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    if (distant) context.getString(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") context.getString(
+                    if (distant) stringResource(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") stringResource(
                         R.string.dose_needs_attention
-                    ) else context.getString(R.string.your_next_reminder),
+                    ) else stringResource(R.string.your_next_reminder),
                     fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFFE5E0FF),
                 )
             }
@@ -539,7 +539,7 @@ private fun FeaturedCard(
                 )
                 if (group.size > 1) {
                     Text(
-                        context.getString(R.string.several_medicines, group.size), fontSize = 18.sp,
+                        stringResource(R.string.several_medicines, group.size), fontSize = 18.sp,
                         fontWeight = FontWeight.Bold, color = Color.White
                     )
                     Spacer(Modifier.height(12.dp))
@@ -579,7 +579,7 @@ private fun FeaturedCard(
                         Icon(Icons.Rounded.CheckCircle, null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
                         Text(
-                            context.getString(if (group.size > 1) R.string.mark_all_as_taken else R.string.mark_as_taken),
+                            stringResource(if (group.size > 1) R.string.mark_all_as_taken else R.string.mark_as_taken),
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -592,23 +592,23 @@ private fun FeaturedCard(
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
                             shape = RoundedCornerShape(12.dp)
                         ) {
-                            Text(context.getString(R.string.skip_all), fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.skip_all), fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             } else {
                 Spacer(Modifier.height(23.dp))
                 Text(
-                    if (hasSchedule) context.getString(R.string.all_done_for_today) else if (hasMedications) context.getString(
+                    if (hasSchedule) stringResource(R.string.all_done_for_today) else if (hasMedications) stringResource(
                         R.string.no_doses_due_today
-                    ) else context.getString(R.string.your_routine_starts_here),
+                    ) else stringResource(R.string.your_routine_starts_here),
                     fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    if (hasSchedule) context.getString(R.string.routine_complete_hint)
-                    else if (hasMedications) context.getString(R.string.routine_future_hint)
-                    else context.getString(R.string.routine_add_hint),
+                    if (hasSchedule) stringResource(R.string.routine_complete_hint)
+                    else if (hasMedications) stringResource(R.string.routine_future_hint)
+                    else stringResource(R.string.routine_add_hint),
                     color = Color(0xFFE9E5FF), fontSize = 14.sp,
                 )
                 if (!hasMedications) {
@@ -619,7 +619,7 @@ private fun FeaturedCard(
                     ) {
                         Icon(Icons.Rounded.Add, null)
                         Spacer(Modifier.width(5.dp))
-                        Text(context.getString(R.string.add_medication))
+                        Text(stringResource(R.string.add_medication))
                     }
                 }
             }
@@ -627,7 +627,6 @@ private fun FeaturedCard(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun DoseCard(
     item: DoseItem,
@@ -669,11 +668,11 @@ private fun DoseCard(
                         verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
                         CompactAction(
-                            context.getString(R.string.taken),
+                            stringResource(R.string.taken),
                             Icons.Rounded.Check,
                             onClick = { onRecord(item, "taken") })
                         CompactAction(
-                            context.getString(R.string.skip),
+                            stringResource(R.string.skip),
                             null,
                             onClick = { onRecord(item, "skipped") },
                             secondary = true
@@ -681,7 +680,7 @@ private fun DoseCard(
                     }
                 } else {
                     CompactAction(
-                        context.getString(R.string.undo),
+                        stringResource(R.string.undo),
                         Icons.AutoMirrored.Rounded.Undo,
                         onClick = { onUndo(item) },
                         secondary = true
@@ -722,19 +721,18 @@ private fun CompactAction(
 
 @Composable
 internal fun StatusBadge(status: String) {
-    val context = LocalContext.current
     val (label, color, background) = when (status) {
-        "taken" -> Triple(context.getString(R.string.taken), Mint, themeColor(0xFFE3F8EF, 0xFF1B3C33))
-        "skipped" -> Triple(context.getString(R.string.skipped), TextMuted, SoftPanel)
-        "due" -> Triple(context.getString(R.string.due_now), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
-        "overdue" -> Triple(context.getString(R.string.overdue), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
+        "taken" -> Triple(stringResource(R.string.taken), Mint, themeColor(0xFFE3F8EF, 0xFF1B3C33))
+        "skipped" -> Triple(stringResource(R.string.skipped), TextMuted, SoftPanel)
+        "due" -> Triple(stringResource(R.string.due_now), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
+        "overdue" -> Triple(stringResource(R.string.overdue), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
         "snoozed" -> Triple(
-            context.getString(R.string.snoozed),
+            stringResource(R.string.snoozed),
             themeColor(0xFF456F9B, 0xFFA3C9F3),
             themeColor(0xFFEAF2FC, 0xFF26384B)
         )
 
-        else -> Triple(context.getString(R.string.upcoming), Violet, AccentPanel)
+        else -> Triple(stringResource(R.string.upcoming), Violet, AccentPanel)
     }
     Box(
         Modifier
@@ -764,17 +762,17 @@ private fun MedicationsPage(
     ) {
         item {
             Column(Modifier.padding(bottom = 12.dp)) {
-                Eyebrow(context.getString(R.string.your_daily_routine))
+                Eyebrow(stringResource(R.string.your_daily_routine))
                 Spacer(Modifier.height(8.dp))
-                Text(context.getString(R.string.my_medications), fontSize = 31.sp, fontWeight = FontWeight.ExtraBold)
-                Text(context.getString(R.string.medication_list_hint), fontSize = 14.sp, color = TextMuted)
+                Text(stringResource(R.string.my_medications), fontSize = 31.sp, fontWeight = FontWeight.ExtraBold)
+                Text(stringResource(R.string.medication_list_hint), fontSize = 14.sp, color = TextMuted)
             }
         }
         if (medications.isEmpty()) {
             item {
                 EmptyCard(
-                    context.getString(R.string.no_medications_yet),
-                    context.getString(R.string.medication_list_empty_hint),
+                    stringResource(R.string.no_medications_yet),
+                    stringResource(R.string.medication_list_empty_hint),
                     onAdd
                 )
             }
@@ -791,8 +789,10 @@ private fun MedicationsPage(
                             PillAvatar(med.color, med.form, med.localizedForm(context))
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(med.name, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold,
-                                    maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                Text(
+                                    med.name, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold,
+                                    maxLines = 2, overflow = TextOverflow.Ellipsis
+                                )
                                 Text(
                                     med.localizedDoses(context) + if (med.note.isBlank()) "" else " · ${med.note}",
                                     fontSize = 12.sp, color = TextMuted, maxLines = 2,
@@ -805,7 +805,7 @@ private fun MedicationsPage(
                             IconButton(onClick = { onEdit(med) }) {
                                 Icon(
                                     Icons.Rounded.Edit,
-                                    context.getString(R.string.edit_named, med.name),
+                                    stringResource(R.string.edit_named, med.name),
                                     tint = TextMuted,
                                     modifier = Modifier.size(21.dp)
                                 )
@@ -835,7 +835,7 @@ private fun MedicationsPage(
             ) {
                 Icon(Icons.Rounded.Add, null)
                 Spacer(Modifier.width(7.dp))
-                Text(context.getString(R.string.add_medication), fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.add_medication), fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -865,18 +865,18 @@ private fun HistoryPage(
     ) {
         item {
             Column(Modifier.padding(bottom = 12.dp)) {
-                Eyebrow(context.getString(R.string.keep_your_streak_going))
+                Eyebrow(stringResource(R.string.keep_your_streak_going))
                 Spacer(Modifier.height(8.dp))
-                Text(context.getString(R.string.dose_history), fontSize = 31.sp, fontWeight = FontWeight.ExtraBold)
-                Text(context.getString(R.string.history_hint), fontSize = 14.sp, color = TextMuted)
+                Text(stringResource(R.string.dose_history), fontSize = 31.sp, fontWeight = FontWeight.ExtraBold)
+                Text(stringResource(R.string.history_hint), fontSize = 14.sp, color = TextMuted)
             }
         }
         item { DelayReportCard(logs, today) }
         if (groups.isEmpty()) {
             item {
                 EmptyCard(
-                    context.getString(R.string.no_history_yet),
-                    context.getString(R.string.history_empty_hint),
+                    stringResource(R.string.no_history_yet),
+                    stringResource(R.string.history_empty_hint),
                     null
                 )
             }
@@ -885,8 +885,8 @@ private fun HistoryPage(
             item(key = "day-$date") {
                 Text(
                     when (date) {
-                        today -> context.getString(R.string.today)
-                        today.minusDays(1) -> context.getString(R.string.yesterday)
+                        today -> stringResource(R.string.today)
+                        today.minusDays(1) -> stringResource(R.string.yesterday)
                         else -> dateHeading(context, date)
                     },
                     color = TextMuted, fontWeight = FontWeight.Bold, fontSize = 13.sp,
@@ -926,11 +926,11 @@ private fun HistoryPage(
                         Column(Modifier.weight(1f)) {
                             Text(log.medicationName, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             Text(
-                                context.getString(R.string.scheduled_dose, log.time, log.dose),
+                                stringResource(R.string.scheduled_dose, log.time, log.dose),
                                 color = TextMuted,
                                 fontSize = 12.sp
                             )
-                            if (log.onTime) Text(context.getString(R.string.on_time), color = Violet, fontSize = 12.sp)
+                            if (log.onTime) Text(stringResource(R.string.on_time), color = Violet, fontSize = 12.sp)
                             DoseReports.timing(log)
                                 ?.let { timing ->
                                     val actual = Instant.ofEpochMilli(log.recordedAt)
@@ -948,17 +948,17 @@ private fun HistoryPage(
                                                 .toDouble()
                                         )
                                     Text(
-                                        context.getString(
+                                        stringResource(
                                             R.string.taken_timing,
                                             actual,
-                                            context.getString(if (timing.differenceMillis < 0) R.string.early else R.string.delay),
+                                            stringResource(if (timing.differenceMillis < 0) R.string.early else R.string.delay),
                                             difference
                                         ), color = TextMuted, fontSize = 12.sp
                                     )
                                 }
                         }
                         Text(
-                            if (log.status == "taken") context.getString(R.string.taken) else context.getString(R.string.skipped),
+                            if (log.status == "taken") stringResource(R.string.taken) else stringResource(R.string.skipped),
                             color = if (log.status == "taken") Mint else TextMuted,
                             fontWeight = FontWeight.Bold, fontSize = 12.sp,
                         )
@@ -1041,7 +1041,6 @@ private fun EmptyCard(
     explanation: String,
     onAdd: (() -> Unit)?
 ) {
-    val context = LocalContext.current
     Card(
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Panel),
@@ -1060,7 +1059,7 @@ private fun EmptyCard(
             Text(explanation, color = TextMuted, fontSize = 13.sp, textAlign = TextAlign.Center)
             if (onAdd != null) {
                 Spacer(Modifier.height(10.dp))
-                TextButton(onClick = onAdd) { Text(context.getString(R.string.add_medication)) }
+                TextButton(onClick = onAdd) { Text(stringResource(R.string.add_medication)) }
             }
         }
     }

@@ -1,6 +1,7 @@
 package io.github.sibmaks.app.dose.appearance
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.core.content.edit
 import io.github.sibmaks.app.dose.R
@@ -9,7 +10,7 @@ import io.github.sibmaks.app.dose.data.ThemeMode
 object AppAppearance {
     const val MODE = "theme_mode"
 
-    fun preferences(context: Context) =
+    fun preferences(context: Context): SharedPreferences =
         context.applicationContext.getSharedPreferences("dose_appearance", Context.MODE_PRIVATE)
 
     fun mode(context: Context) = ThemeMode.fromPreference(preferences(context).getString(MODE, null))

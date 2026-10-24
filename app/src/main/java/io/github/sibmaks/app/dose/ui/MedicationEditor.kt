@@ -3,7 +3,6 @@ package io.github.sibmaks.app.dose.ui
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.graphics.Color.parseColor
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -28,8 +27,10 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.graphics.toColorInt
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.data.*
@@ -65,7 +67,6 @@ private val ScheduleListSaver = Saver<List<DoseSchedule>, String>(
     },
 )
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun MedicationEditor(
     original: Medication?,
@@ -74,6 +75,7 @@ internal fun MedicationEditor(
     onDelete: (Medication) -> Unit,
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     var name by rememberSaveable { mutableStateOf(original?.name.orEmpty()) }
     var amount by rememberSaveable { mutableStateOf(original?.amount.orEmpty()) }
     var quantity by rememberSaveable { mutableStateOf(original?.quantity ?: DoseUnits.defaultFor(MedicationForm.PILL)) }
@@ -133,20 +135,20 @@ internal fun MedicationEditor(
     }
 
     fun stepError(candidate: MedicationStep): String? = when (candidate) {
-        MedicationStep.NAME -> if (name.isBlank()) context.getString(R.string.name_required) else null
+        MedicationStep.NAME -> if (name.isBlank()) resources.getString(R.string.name_required) else null
         MedicationStep.DOSAGE -> when {
-            amount.isBlank() -> context.getString(R.string.amount_required)
-            quantity.isBlank() && !(original?.quantity == "" && amount == original.amount) -> context.getString(R.string.unit_required)
+            amount.isBlank() -> resources.getString(R.string.amount_required)
+            quantity.isBlank() && !(original?.quantity == "" && amount == original.amount) -> resources.getString(R.string.unit_required)
             else -> null
         }
 
-        MedicationStep.SCHEDULE -> if (schedules.isEmpty()) context.getString(R.string.schedule_required) else schedules.mapIndexedNotNull { index, rule ->
+        MedicationStep.SCHEDULE -> if (schedules.isEmpty()) resources.getString(R.string.schedule_required) else schedules.mapIndexedNotNull { index, rule ->
             rule.validationError()
-                ?.let { context.getString(R.string.schedule_error, index + 1, localizedValidationError(context, it)) }
+                ?.let { resources.getString(R.string.schedule_error, index + 1, localizedValidationError(context, it)) }
         }
             .firstOrNull()
 
-        MedicationStep.DETAILS -> if (addInstructions && note.isBlank()) context.getString(R.string.instructions_required) else null
+        MedicationStep.DETAILS -> if (addInstructions && note.isBlank()) resources.getString(R.string.instructions_required) else null
         else -> null
     }
 
@@ -232,7 +234,7 @@ internal fun MedicationEditor(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        if (original == null) context.getString(R.string.add_medication) else context.getString(R.string.edit_medication),
+                        if (original == null) stringResource(R.string.add_medication) else stringResource(R.string.edit_medication),
                         fontSize = 21.sp,
                         fontWeight = FontWeight.ExtraBold,
                         maxLines = 1,
@@ -240,12 +242,12 @@ internal fun MedicationEditor(
                         modifier = Modifier.weight(1f)
                     )
                     if (original != null && step != MedicationStep.DETAILS) TextButton(onClick = ::save) {
-                        Text(context.getString(R.string.save), fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.save), fontWeight = FontWeight.Bold)
                     }
                     IconButton(onClick = onDismiss) {
                         Icon(
                             Icons.Rounded.Close,
-                            context.getString(R.string.close_medication_editor)
+                            stringResource(R.string.close_medication_editor)
                         )
                     }
                 }
@@ -256,7 +258,7 @@ internal fun MedicationEditor(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        context.getString(
+                        stringResource(
                             R.string.editor_step,
                             position + 1,
                             steps.size,
@@ -311,9 +313,9 @@ internal fun MedicationEditor(
                                     name,
                                     { name = it.take(70); showSuggestions = true; suggestedForm = null },
                                     isError = validationVisible && name.isBlank(),
-                                    supportingText = { if (validationVisible && name.isBlank()) Text(context.getString(R.string.name_required)) },
-                                    label = { Text(context.getString(R.string.medication_name)) },
-                                    placeholder = { Text(context.getString(R.string.start_typing_a_name)) },
+                                    supportingText = { if (validationVisible && name.isBlank()) Text(stringResource(R.string.name_required)) },
+                                    label = { Text(stringResource(R.string.medication_name)) },
+                                    placeholder = { Text(stringResource(R.string.start_typing_a_name)) },
                                     singleLine = true,
                                     modifier = Modifier.fillMaxWidth()
                                 )
@@ -322,7 +324,7 @@ internal fun MedicationEditor(
                                         .orEmpty() else emptyList()
                                 if (suggestions.isNotEmpty()) {
                                     Text(
-                                        context.getString(R.string.name_suggestions),
+                                        stringResource(R.string.name_suggestions),
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 13.sp
                                     )
@@ -358,14 +360,14 @@ internal fun MedicationEditor(
                                                         fontSize = 14.sp
                                                     )
                                                     Text(
-                                                        suggestion.localizedForm(context) + if (suggestion.saved) context.getString(
+                                                        suggestion.localizedForm(context) + if (suggestion.saved) stringResource(
                                                             R.string.previously_entered
                                                         ) else "", color = TextMuted, fontSize = 12.sp
                                                     )
                                                 }
                                                 Icon(
                                                     Icons.Rounded.Add,
-                                                    context.getString(
+                                                    stringResource(
                                                         R.string.choose_suggestion,
                                                         suggestion.name,
                                                         suggestion.localizedForm(context)
@@ -377,12 +379,12 @@ internal fun MedicationEditor(
                                     }
                                 }
                                 if (suggestedForm != null) Text(
-                                    context.getString(
+                                    stringResource(
                                         R.string.suggested_form,
                                         suggestedForm.orEmpty()
                                     ), fontSize = 13.sp, color = Violet
                                 )
-                                Text(context.getString(R.string.color), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                Text(stringResource(R.string.color), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                                 FlowRow(
                                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                                     verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -390,8 +392,16 @@ internal fun MedicationEditor(
                                     MedicationColors.choices(colorUsage, medications, color)
                                         .forEach { choice ->
                                             val foreground =
-                                                Color(parseColor(MedicationColors.hex(choice)))
+                                                Color(
+                                                    MedicationColors.hex(choice)
+                                                        .toColorInt()
+                                                )
                                             val selected = MedicationColors.hex(color) == MedicationColors.hex(choice)
+                                            val colorDescriptionLocalization = stringResource(
+                                                R.string.color_description,
+                                                localizedColor(context, choice),
+                                                if (selected) stringResource(R.string.selected_suffix) else ""
+                                            )
                                             Box(
                                                 Modifier
                                                     .size(44.dp)
@@ -404,11 +414,7 @@ internal fun MedicationEditor(
                                                     )
                                                     .clickable { color = choice }
                                                     .semantics {
-                                                        contentDescription = context.getString(
-                                                            R.string.color_description,
-                                                            localizedColor(context, choice),
-                                                            if (selected) context.getString(R.string.selected_suffix) else ""
-                                                        )
+                                                        contentDescription = colorDescriptionLocalization
                                                     }, contentAlignment = Alignment.Center
                                             ) {
                                                 if (selected) Icon(
@@ -423,18 +429,18 @@ internal fun MedicationEditor(
                                     Icon(
                                         Icons.Rounded.Palette,
                                         null
-                                    ); Spacer(Modifier.width(6.dp)); Text(context.getString(R.string.pick_a_custom_color))
+                                    ); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.pick_a_custom_color))
                                 }
                             }
 
                             MedicationStep.FORM -> {
                                 Text(
-                                    context.getString(R.string.choose_form, name),
+                                    stringResource(R.string.choose_form, name),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                                 if (suggestedForm != null) Text(
-                                    context.getString(
+                                    stringResource(
                                         R.string.change_suggested_form,
                                         suggestedForm.orEmpty()
                                     ), color = TextMuted, fontSize = 13.sp
@@ -465,15 +471,15 @@ internal fun MedicationEditor(
 
                             MedicationStep.OTHER_FORM -> {
                                 Text(
-                                    context.getString(R.string.give_this_form_a_name),
+                                    stringResource(R.string.give_this_form_a_name),
                                     fontSize = 19.sp,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Text(context.getString(R.string.custom_form_hint), fontSize = 13.sp, color = TextMuted)
+                                Text(stringResource(R.string.custom_form_hint), fontSize = 13.sp, color = TextMuted)
                                 OutlinedTextField(
                                     customForm,
                                     { customForm = it.take(40) },
-                                    label = { Text(context.getString(R.string.custom_form_optional)) },
+                                    label = { Text(stringResource(R.string.custom_form_optional)) },
                                     singleLine = true,
                                     modifier = Modifier.fillMaxWidth()
                                 )
@@ -481,19 +487,19 @@ internal fun MedicationEditor(
 
                             MedicationStep.DOSAGE -> {
                                 Text(
-                                    context.getString(R.string.how_much_per_dose),
+                                    stringResource(R.string.how_much_per_dose),
                                     fontSize = 19.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                                 OutlinedTextField(
                                     amount,
                                     { amount = it.take(70); changeSchedules(schedules) },
-                                    label = { Text(context.getString(R.string.amount)) },
-                                    placeholder = { Text(context.getString(R.string.e_g_500)) },
+                                    label = { Text(stringResource(R.string.amount)) },
+                                    placeholder = { Text(stringResource(R.string.e_g_500)) },
                                     isError = validationVisible && amount.isBlank(),
                                     supportingText = {
                                         if (validationVisible && amount.isBlank()) Text(
-                                            context.getString(R.string.amount_required)
+                                            stringResource(R.string.amount_required)
                                         )
                                     },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -503,12 +509,12 @@ internal fun MedicationEditor(
                                 OutlinedTextField(
                                     localizedUnit(context, quantity),
                                     ::chooseUnit,
-                                    label = { Text(context.getString(R.string.unit)) },
-                                    placeholder = { Text(context.getString(R.string.choose_below_or_type_your_own)) },
+                                    label = { Text(stringResource(R.string.unit)) },
+                                    placeholder = { Text(stringResource(R.string.choose_below_or_type_your_own)) },
                                     isError = validationVisible && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount),
                                     supportingText = {
                                         if (validationVisible && quantity.isBlank() && !(original?.quantity == "" && amount == original.amount)) Text(
-                                            context.getString(R.string.unit_required)
+                                            stringResource(R.string.unit_required)
                                         )
                                     },
                                     singleLine = true,
@@ -526,7 +532,7 @@ internal fun MedicationEditor(
 
                             MedicationStep.SCHEDULE -> {
                                 Text(
-                                    context.getString(R.string.when_should_dose_remind_you),
+                                    stringResource(R.string.when_should_dose_remind_you),
                                     fontSize = 19.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -554,13 +560,13 @@ internal fun MedicationEditor(
                                     Icon(
                                         Icons.Rounded.Add,
                                         null
-                                    ); Text(context.getString(R.string.add_another_schedule))
+                                    ); Text(stringResource(R.string.add_another_schedule))
                                 }
                             }
 
                             MedicationStep.DETAILS -> {
                                 Text(
-                                    context.getString(R.string.review_finish),
+                                    stringResource(R.string.review_finish),
                                     fontSize = 19.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -572,7 +578,7 @@ internal fun MedicationEditor(
                                         verticalArrangement = Arrangement.spacedBy(6.dp)
                                     ) {
                                         Text(name, fontWeight = FontWeight.Bold)
-                                        Text((if (form == MedicationForm.OTHER) customForm.ifBlank { context.getString(R.string.other) } else form.localizedLabel(
+                                        Text((if (form == MedicationForm.OTHER) customForm.ifBlank { stringResource(R.string.other) } else form.localizedLabel(
                                             context
                                         )) + " · $amount ${localizedUnit(context, quantity)}", fontSize = 14.sp)
                                         schedules.forEach {
@@ -586,7 +592,7 @@ internal fun MedicationEditor(
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
-                                        context.getString(R.string.add_instructions),
+                                        stringResource(R.string.add_instructions),
                                         modifier = Modifier.weight(1f),
                                         fontWeight = FontWeight.Bold
                                     )
@@ -595,10 +601,10 @@ internal fun MedicationEditor(
                                 if (addInstructions) OutlinedTextField(
                                     note,
                                     { note = it.take(140) },
-                                    label = { Text(context.getString(R.string.instructions)) },
-                                    placeholder = { Text(context.getString(R.string.e_g_take_after_a_meal)) },
+                                    label = { Text(stringResource(R.string.instructions)) },
+                                    placeholder = { Text(stringResource(R.string.e_g_take_after_a_meal)) },
                                     isError = validationVisible && note.isBlank(),
-                                    supportingText = { if (validationVisible && note.isBlank()) Text(context.getString(R.string.instructions_required)) },
+                                    supportingText = { if (validationVisible && note.isBlank()) Text(stringResource(R.string.instructions_required)) },
                                     minLines = 2,
                                     modifier = Modifier.fillMaxWidth()
                                 )
@@ -619,7 +625,7 @@ internal fun MedicationEditor(
                             .heightIn(min = 51.dp),
                         shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
-                    ) { Text(context.getString(R.string.delete_medication), fontWeight = FontWeight.Bold) }
+                    ) { Text(stringResource(R.string.delete_medication), fontWeight = FontWeight.Bold) }
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -630,7 +636,7 @@ internal fun MedicationEditor(
                                 .weight(1f)
                                 .heightIn(min = 51.dp),
                             shape = RoundedCornerShape(14.dp)
-                        ) { Text(context.getString(R.string.back), fontWeight = FontWeight.Bold) }
+                        ) { Text(stringResource(R.string.back), fontWeight = FontWeight.Bold) }
                         Button(
                             onClick = ::advance,
                             modifier = Modifier
@@ -639,7 +645,7 @@ internal fun MedicationEditor(
                             shape = RoundedCornerShape(14.dp)
                         ) {
                             Text(
-                                if (step == MedicationStep.DETAILS) context.getString(R.string.save) else context.getString(
+                                if (step == MedicationStep.DETAILS) stringResource(R.string.save) else stringResource(
                                     R.string.continue_action
                                 ), fontWeight = FontWeight.Bold
                             )
@@ -664,12 +670,12 @@ internal fun MedicationEditor(
         })
     if (showDeleteConfirm && original != null) AlertDialog(
         onDismissRequest = { showDeleteConfirm = false },
-        title = { Text(context.getString(R.string.delete_named, original.name)) },
-        text = { Text(context.getString(R.string.delete_medication_hint)) },
+        title = { Text(stringResource(R.string.delete_named, original.name)) },
+        text = { Text(stringResource(R.string.delete_medication_hint)) },
         confirmButton = {
             TextButton(onClick = { onDelete(original) }) {
                 Text(
-                    context.getString(R.string.delete),
+                    stringResource(R.string.delete),
                     color = MaterialTheme.colorScheme.error
                 )
             }
@@ -677,11 +683,10 @@ internal fun MedicationEditor(
         dismissButton = {
             TextButton(onClick = {
                 showDeleteConfirm = false
-            }) { Text(context.getString(R.string.cancel)) }
+            }) { Text(stringResource(R.string.cancel)) }
         })
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ScheduleEditor(
     rule: DoseSchedule,
@@ -737,14 +742,14 @@ private fun ScheduleEditor(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    context.getString(R.string.schedule_number, number),
+                    stringResource(R.string.schedule_number, number),
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
                 if (onRemove != null) IconButton(onClick = onRemove) {
                     Icon(
                         Icons.Rounded.Delete,
-                        context.getString(R.string.remove_schedule, number),
+                        stringResource(R.string.remove_schedule, number),
                         tint = Peach
                     )
                 }
@@ -769,7 +774,7 @@ private fun ScheduleEditor(
                                     trailingIcon = {
                                         Icon(
                                             Icons.Rounded.Close,
-                                            context.getString(R.string.remove_date, date),
+                                            stringResource(R.string.remove_date, date),
                                             Modifier
                                                 .size(20.dp)
                                                 .clickable { onChange(rule.copy(dates = rule.dates - date)) })
@@ -782,7 +787,7 @@ private fun ScheduleEditor(
                         Icon(
                             Icons.Rounded.CalendarMonth,
                             null
-                        ); Spacer(Modifier.width(6.dp)); Text(context.getString(R.string.add_date))
+                        ); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.add_date))
                     }
                     ScheduleError(issue, ScheduleField.DATES)
                 }
@@ -815,17 +820,18 @@ private fun ScheduleEditor(
                             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                                 row.forEach { day ->
                                     val selected = day in rule.monthDays
+                                    val dayDescriptionLocalization = stringResource(
+                                        R.string.day_description,
+                                        day,
+                                        if (selected) stringResource(R.string.selected_suffix) else ""
+                                    )
                                     Surface(
                                         onClick = { onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day)) },
                                         modifier = Modifier
                                             .weight(1f)
                                             .height(40.dp)
                                             .semantics {
-                                                contentDescription = context.getString(
-                                                    R.string.day_description,
-                                                    day,
-                                                    if (selected) context.getString(R.string.selected_suffix) else ""
-                                                )
+                                                contentDescription = dayDescriptionLocalization
                                             },
                                         shape = RoundedCornerShape(8.dp), color = if (selected) Violet else Panel,
                                         border = BorderStroke(
@@ -846,16 +852,16 @@ private fun ScheduleEditor(
                             }
                         }
                     ScheduleError(issue, ScheduleField.MONTH_DAYS)
-                    Text(context.getString(R.string.missing_month_days_hint), fontSize = 12.sp, color = TextMuted)
+                    Text(stringResource(R.string.missing_month_days_hint), fontSize = 12.sp, color = TextMuted)
                 }
 
                 ScheduleKind.DAILY -> Unit
             }
             if (rule.kind != ScheduleKind.SPECIFIC_DATES) {
                 DateBound(
-                    context.getString(R.string.from),
+                    stringResource(R.string.from),
                     rule.from,
-                    context.getString(R.string.default_date, localizedDate(context, rule.createdOn)),
+                    stringResource(R.string.default_date, localizedDate(context, rule.createdOn)),
                     onPick = { pickDate(rule.from ?: rule.createdOn) { onChange(rule.copy(from = it)) } },
                     onClear = {
                         onChange(
@@ -869,16 +875,16 @@ private fun ScheduleEditor(
                     error = issue?.takeIf { it.field in listOf(ScheduleField.START, ScheduleField.BOUNDS) }
                         ?.let { localizedValidationError(context, it.message) })
                 DateBound(
-                    context.getString(R.string.until),
+                    stringResource(R.string.until),
                     rule.until,
-                    context.getString(R.string.no_end_date),
+                    stringResource(R.string.no_end_date),
                     onPick = { pickDate(rule.until ?: rule.from) { onChange(rule.copy(until = it)) } },
                     onClear = { onChange(rule.copy(until = null)) },
                     error = issue?.takeIf { it.field in listOf(ScheduleField.END, ScheduleField.BOUNDS) }
                         ?.let { localizedValidationError(context, it.message) })
             }
             Text(
-                context.getString(R.string.times),
+                stringResource(R.string.times),
                 color = if (issue?.field == ScheduleField.TIMES) errorColor else TextPrimary,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold
@@ -897,7 +903,7 @@ private fun ScheduleEditor(
                         trailingIcon = {
                             if (rule.times.size > 1) Icon(
                                 Icons.Rounded.Close,
-                                context.getString(R.string.remove_time, time),
+                                stringResource(R.string.remove_time, time),
                                 Modifier
                                     .size(20.dp)
                                     .clickable {
@@ -911,19 +917,19 @@ private fun ScheduleEditor(
                 Icon(
                     Icons.Rounded.Add,
                     null
-                ); Spacer(Modifier.width(6.dp)); Text(context.getString(R.string.add_time))
+                ); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.add_time))
             }
             if (rule.amount == null) {
                 TextButton(onClick = { onChange(rule.copy(amount = defaultAmount)) }) {
                     Icon(Icons.Rounded.Medication, null)
                     Spacer(Modifier.width(6.dp))
-                    Text(context.getString(R.string.set_schedule_amount))
+                    Text(stringResource(R.string.set_schedule_amount))
                 }
             } else {
                 OutlinedTextField(
                     value = rule.amount,
                     onValueChange = { onChange(rule.copy(amount = it.take(70))) },
-                    label = { Text(context.getString(R.string.amount) + " · " + localizedUnit(context, quantity)) },
+                    label = { Text(stringResource(R.string.amount) + " · " + localizedUnit(context, quantity)) },
                     isError = issue?.field == ScheduleField.AMOUNT,
                     supportingText = { ScheduleError(issue, ScheduleField.AMOUNT) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -932,7 +938,7 @@ private fun ScheduleEditor(
                 )
                 TextButton(onClick = { onChange(rule.copy(amount = null)) }) {
                     Text(
-                        context.getString(
+                        stringResource(
                             R.string.default_schedule_amount,
                             "$defaultAmount ${localizedUnit(context, quantity)}"
                         )
@@ -974,7 +980,7 @@ private fun DateBound(
                 ), onClick = onPick, modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    context.getString(
+                    stringResource(
                         R.string.label_value,
                         label,
                         value?.let { localizedDate(context, it) } ?: fallback))
@@ -982,7 +988,7 @@ private fun DateBound(
             if (value != null) IconButton(onClick = onClear) {
                 Icon(
                     Icons.Rounded.Close,
-                    context.getString(R.string.clear_bound, label)
+                    stringResource(R.string.clear_bound, label)
                 )
             }
         }
@@ -1039,10 +1045,10 @@ private fun SchedulePriorityDialog(
             .sorted()
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(context.getString(R.string.dose_overlap_title)) },
+        title = { Text(stringResource(R.string.dose_overlap_title)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(context.getString(R.string.dose_overlap_hint))
+                Text(stringResource(R.string.dose_overlap_hint))
                 overlaps.forEach { overlap ->
                     Text(
                         "${localizedDate(context, overlap.date.toString())} · ${overlap.times.joinToString(", ")} · " +
@@ -1060,12 +1066,12 @@ private fun SchedulePriorityDialog(
                     OutlinedButton(onClick = { onChoose(index) }, modifier = Modifier.fillMaxWidth()) {
                         Column(Modifier.fillMaxWidth()) {
                             Text(
-                                context.getString(
+                                stringResource(
                                     R.string.prioritize_dose,
                                     "${rule.amount ?: amount} ${localizedUnit(context, quantity)}"
                                 ), fontWeight = FontWeight.Bold
                             )
-                            Text(context.getString(R.string.schedule_number, index + 1), fontSize = 12.sp)
+                            Text(stringResource(R.string.schedule_number, index + 1), fontSize = 12.sp)
                             Text(scheduleSummary(context, rule), fontSize = 12.sp)
                         }
                     }
@@ -1073,6 +1079,6 @@ private fun SchedulePriorityDialog(
             }
         },
         confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text(context.getString(R.string.back)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.back)) } },
     )
 }

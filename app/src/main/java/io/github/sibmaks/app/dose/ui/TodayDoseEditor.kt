@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,9 +52,9 @@ internal fun TodayDoseEditor(
 
     SetupScreen(
         title = medication.name, onClose = onDismiss,
-        primaryLabel = context.getString(if (item.log == null) R.string.save else R.string.done),
+        primaryLabel = stringResource(if (item.log == null) R.string.save else R.string.done),
         onPrimary = { if (item.log == null) error = !onSave(reminderTime) else onDismiss() },
-        secondaryLabel = context.getString(R.string.back)
+        secondaryLabel = stringResource(R.string.back)
     ) {
         Card(
             shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = SoftPanel),
@@ -70,7 +71,7 @@ internal fun TodayDoseEditor(
                 ) {
                     PillAvatar(medication.color, medication.form, medication.localizedForm(context))
                     Column(Modifier.weight(1f)) {
-                        Text(context.getString(R.string.dose_label), fontSize = 12.sp, color = TextMuted)
+                        Text(stringResource(R.string.dose_label), fontSize = 12.sp, color = TextMuted)
                         Text(
                             listOf(item.amount, localizedUnit(context, medication.quantity)).filter { it.isNotBlank() }
                                 .joinToString(" "),
@@ -83,19 +84,19 @@ internal fun TodayDoseEditor(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(context.getString(R.string.dose_status), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.dose_status), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                     StatusBadge(item.status)
                 }
-                DoseDetail(context.getString(R.string.medication_form), medication.localizedForm(context))
+                DoseDetail(stringResource(R.string.medication_form), medication.localizedForm(context))
                 if (item.log == null) DoseDetail(
-                    context.getString(R.string.reminder_time),
+                    stringResource(R.string.reminder_time),
                     formattedTime(item.scheduledAt)
                 )
                 if (item.log == null) item.snoozedUntil?.let {
-                    DoseDetail(context.getString(R.string.snoozed_until), formattedTime(it))
+                    DoseDetail(stringResource(R.string.snoozed_until), formattedTime(it))
                 }
                 item.log?.let { log ->
-                    if (log.dose != item.dose) DoseDetail(context.getString(R.string.recorded_dose), log.dose)
+                    if (log.dose != item.dose) DoseDetail(stringResource(R.string.recorded_dose), log.dose)
                 }
             }
         }
@@ -108,12 +109,12 @@ internal fun TodayDoseEditor(
         ) {
             Icon(Icons.Rounded.Edit, null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
-            Text(context.getString(R.string.edit_medication), fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.edit_medication), fontWeight = FontWeight.Bold)
         }
         if (item.log == null) {
             HorizontalDivider(color = PanelBorder)
-            Text(context.getString(R.string.today_only_hint), fontSize = 13.sp, color = TextMuted)
-            Text(context.getString(R.string.reminder_time), fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.today_only_hint), fontSize = 13.sp, color = TextMuted)
+            Text(stringResource(R.string.reminder_time), fontWeight = FontWeight.Bold)
             OutlinedButton(
                 onClick = {
                     val parsed = LocalTime.parse(reminderTime)
@@ -132,14 +133,14 @@ internal fun TodayDoseEditor(
                     style = MaterialTheme.typography.headlineSmall
                 )
             }
-            if (error) Text(context.getString(R.string.today_time_error), color = MaterialTheme.colorScheme.error)
+            if (error) Text(stringResource(R.string.today_time_error), color = MaterialTheme.colorScheme.error)
         }
         if (medication.note.isNotBlank()) {
             HorizontalDivider(color = PanelBorder)
-            DoseDetail(context.getString(R.string.instructions), medication.note)
+            DoseDetail(stringResource(R.string.instructions), medication.note)
         }
         HorizontalDivider(color = PanelBorder)
-        Text(context.getString(R.string.due_dates_times), fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.due_dates_times), fontWeight = FontWeight.Bold)
         medication.schedules.forEach { rule ->
             Text(
                 scheduleSummary(

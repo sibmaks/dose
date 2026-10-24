@@ -17,6 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -29,23 +30,48 @@ import io.github.sibmaks.app.dose.reminders.ReminderHaptics
 import io.github.sibmaks.app.dose.reminders.ReminderNotifications
 
 @Composable
-internal fun ReminderVibrationAlert(feed: Boolean, popups: Boolean, onSettings: (Intent, Int) -> Unit) {
+internal fun ReminderVibrationAlert(
+    feed: Boolean,
+    popups: Boolean,
+    onSettings: (Intent, Int) -> Unit
+) {
     val context = LocalContext.current
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var vibration by remember(context) { mutableStateOf(ReminderHaptics.vibrationState(context)) }
     DisposableEffect(context, lifecycle) {
-        fun refresh() { vibration = ReminderHaptics.vibrationState(context) }
+        fun refresh() {
+            vibration = ReminderHaptics.vibrationState(context)
+        }
+
         val observer = object : ContentObserver(Handler(Looper.getMainLooper())) {
-            override fun onChange(selfChange: Boolean) { refresh() }
+            override fun onChange(selfChange: Boolean) {
+                refresh()
+            }
         }
         // Vendor settings can be absent/protected. Returning from Settings always rechecks too.
         ReminderHaptics.observedSettings.forEach { key ->
-            runCatching { context.contentResolver.registerContentObserver(Settings.System.getUriFor(key), false, observer) }
+            runCatching {
+                context.contentResolver.registerContentObserver(
+                    Settings.System.getUriFor(key),
+                    false,
+                    observer
+                )
+            }
         }
         val receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) { refresh() }
+            override fun onReceive(
+                context: Context,
+                intent: Intent
+            ) {
+                refresh()
+            }
         }
-        ContextCompat.registerReceiver(context, receiver, IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION), ContextCompat.RECEIVER_EXPORTED)
+        ContextCompat.registerReceiver(
+            context,
+            receiver,
+            IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION),
+            ContextCompat.RECEIVER_EXPORTED
+        )
         val lifecycleObserver = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) refresh()
         }
@@ -67,17 +93,25 @@ internal fun ReminderVibrationAlert(feed: Boolean, popups: Boolean, onSettings: 
         else -> R.string.vibration_disabled_hint
     }
     Surface(color = MaterialTheme.colorScheme.errorContainer, shape = RoundedCornerShape(14.dp)) {
-        Row(Modifier.fillMaxWidth().padding(12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             Icon(Icons.Rounded.Vibration, null, tint = MaterialTheme.colorScheme.onErrorContainer)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(context.getString(if (unavailable) R.string.vibration_unavailable_title else R.string.vibration_off),
-                    color = MaterialTheme.colorScheme.onErrorContainer, fontWeight = FontWeight.Bold)
-                Text(context.getString(message), color = MaterialTheme.colorScheme.onErrorContainer)
+                Text(
+                    stringResource(if (unavailable) R.string.vibration_unavailable_title else R.string.vibration_off),
+                    color = MaterialTheme.colorScheme.onErrorContainer, fontWeight = FontWeight.Bold
+                )
+                Text(stringResource(message), color = MaterialTheme.colorScheme.onErrorContainer)
                 if (!unavailable) TextButton(onClick = {
-                    onSettings(if (channelSettings) ReminderNotifications.settingsIntent(context) else Intent(Settings.ACTION_SOUND_SETTINGS),
-                        if (channelSettings) R.string.notification_settings_fallback else R.string.vibration_settings_fallback)
+                    onSettings(
+                        if (channelSettings) ReminderNotifications.settingsIntent(context) else Intent(Settings.ACTION_SOUND_SETTINGS),
+                        if (channelSettings) R.string.notification_settings_fallback else R.string.vibration_settings_fallback
+                    )
                 }) {
-                    Text(context.getString(if (channelSettings) R.string.sound_notification_settings else R.string.sound_vibration_settings))
+                    Text(stringResource(if (channelSettings) R.string.sound_notification_settings else R.string.sound_vibration_settings))
                 }
             }
         }
