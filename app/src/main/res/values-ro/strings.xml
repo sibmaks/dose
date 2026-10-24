@@ -50,7 +50,7 @@
     <string name="amount_required">"Introdu cantitatea."</string>
     <string name="unit_required">"Alege o unitate sau introdu una proprie."</string>
     <string name="schedule_required">"Adaugă cel puțin un program."</string>
-    <string name="edit_medication">"Editează medicamentul"</string>
+    <string name="edit_medication">"Editare"</string>
     <string name="close_medication_editor">"Închide editorul"</string>
     <string name="medication_name">"Numele medicamentului *"</string>
     <string name="start_typing_a_name">"Începe să scrii numele"</string>

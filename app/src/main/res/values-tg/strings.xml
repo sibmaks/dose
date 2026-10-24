@@ -50,7 +50,7 @@
     <string name="amount_required">"Миқдорро ворид кунед."</string>
     <string name="unit_required">"Воҳидро интихоб ё худ ворид кунед."</string>
     <string name="schedule_required">"Ақаллан як ҷадвал илова кунед."</string>
-    <string name="edit_medication">"Тағйири дору"</string>
+    <string name="edit_medication">"Таҳрир"</string>
     <string name="close_medication_editor">"Бастани муҳаррири дору"</string>
     <string name="medication_name">"Номи дору *"</string>
     <string name="start_typing_a_name">"Ба навиштани ном оғоз кунед"</string>

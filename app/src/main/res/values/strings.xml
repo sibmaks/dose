@@ -51,7 +51,7 @@
     <string name="amount_required">"Enter an amount."</string>
     <string name="unit_required">"Choose a unit or enter your own."</string>
     <string name="schedule_required">"Add at least one schedule."</string>
-    <string name="edit_medication">"Edit medication"</string>
+    <string name="edit_medication">"Edit"</string>
     <string name="close_medication_editor">"Close medication editor"</string>
     <string name="medication_name">"Medication name *"</string>
     <string name="start_typing_a_name">"Start typing a name"</string>

@@ -50,7 +50,7 @@
     <string name="amount_required">"შეიყვანეთ რაოდენობა."</string>
     <string name="unit_required">"აირჩიეთ ერთეული ან შეიყვანეთ საკუთარი."</string>
     <string name="schedule_required">"დაამატეთ სულ მცირე ერთი განრიგი."</string>
-    <string name="edit_medication">"წამლის შეცვლა"</string>
+    <string name="edit_medication">"რედაქტირება"</string>
     <string name="close_medication_editor">"წამლის რედაქტორის დახურვა"</string>
     <string name="medication_name">"წამლის სახელი *"</string>
     <string name="start_typing_a_name">"დაიწყეთ სახელის შეყვანა"</string>

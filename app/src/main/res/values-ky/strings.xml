@@ -50,7 +50,7 @@
     <string name="amount_required">"Өлчөмдү жазыңыз."</string>
     <string name="unit_required">"Бирдикти тандаңыз же өзүңүз жазыңыз."</string>
     <string name="schedule_required">"Кеминде бир жадыбал кошуңуз."</string>
-    <string name="edit_medication">"Дарыны өзгөртүү"</string>
+    <string name="edit_medication">"Өзгөртүү"</string>
     <string name="close_medication_editor">"Дары түзөткүчүн жабуу"</string>
     <string name="medication_name">"Дарынын аты *"</string>
     <string name="start_typing_a_name">"Атын жаза баштаңыз"</string>

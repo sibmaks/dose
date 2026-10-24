@@ -50,7 +50,7 @@
     <string name="amount_required">"Մուտքագրեք քանակը։"</string>
     <string name="unit_required">"Ընտրեք միավորը կամ մուտքագրեք ձերը։"</string>
     <string name="schedule_required">"Ավելացրեք առնվազն մեկ ժամանակացույց։"</string>
-    <string name="edit_medication">"Խմբագրել դեղը"</string>
+    <string name="edit_medication">"Խմբագրել"</string>
     <string name="close_medication_editor">"Փակել դեղի խմբագրիչը"</string>
     <string name="medication_name">"Դեղի անունը *"</string>
     <string name="start_typing_a_name">"Սկսեք մուտքագրել անունը"</string>

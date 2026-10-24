@@ -50,7 +50,7 @@
     <string name="amount_required">"Miqdarı daxil edin."</string>
     <string name="unit_required">"Vahidi seçin və ya özünüz daxil edin."</string>
     <string name="schedule_required">"Ən azı bir cədvəl əlavə edin."</string>
-    <string name="edit_medication">"Dərmanı dəyişdir"</string>
+    <string name="edit_medication">"Dəyişdir"</string>
     <string name="close_medication_editor">"Dərman redaktorunu bağla"</string>
     <string name="medication_name">"Dərmanın adı *"</string>
     <string name="start_typing_a_name">"Adı yazmağa başlayın"</string>

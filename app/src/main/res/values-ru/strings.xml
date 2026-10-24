@@ -50,7 +50,7 @@
     <string name="amount_required">"Введите количество."</string>
     <string name="unit_required">"Выберите единицу или введите свою."</string>
     <string name="schedule_required">"Добавьте хотя бы одно расписание."</string>
-    <string name="edit_medication">"Изменить лекарство"</string>
+    <string name="edit_medication">"Редактирование"</string>
     <string name="close_medication_editor">"Закрыть редактор лекарства"</string>
     <string name="medication_name">"Название лекарства *"</string>
     <string name="start_typing_a_name">"Начните вводить название"</string>

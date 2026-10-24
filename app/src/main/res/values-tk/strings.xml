@@ -50,7 +50,7 @@
     <string name="amount_required">"Mukdary giriziň."</string>
     <string name="unit_required">"Birligi saýlaň ýa-da özüňiz giriziň."</string>
     <string name="schedule_required">"Iň bolmanda bir tertip goşuň."</string>
-    <string name="edit_medication">"Dermany üýtgetmek"</string>
+    <string name="edit_medication">"Üýtgetmek"</string>
     <string name="close_medication_editor">"Derman redaktoryny ýapmak"</string>
     <string name="medication_name">"Dermanyň ady *"</string>
     <string name="start_typing_a_name">"Adyny ýazyp başlaň"</string>

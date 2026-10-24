@@ -50,7 +50,7 @@
     <string name="amount_required">"Miqdorni kiriting."</string>
     <string name="unit_required">"Birlikni tanlang yoki oʻzingiz kiriting."</string>
     <string name="schedule_required">"Kamida bitta jadval qoʻshing."</string>
-    <string name="edit_medication">"Dorini tahrirlash"</string>
+    <string name="edit_medication">"Tahrirlash"</string>
     <string name="close_medication_editor">"Dori tahririni yopish"</string>
     <string name="medication_name">"Dori nomi *"</string>
     <string name="start_typing_a_name">"Nomini yozishni boshlang"</string>
