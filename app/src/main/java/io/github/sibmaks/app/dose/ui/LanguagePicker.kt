@@ -5,42 +5,71 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.os.Build
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.res.painterResource
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Language
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.localization.AppLanguages
 
 @Composable
-internal fun LanguagePicker(firstStart: Boolean, onDismiss: () -> Unit) {
+internal fun LanguagePicker(
+    firstStart: Boolean,
+    onDismiss: () -> Unit
+) {
     val context = LocalContext.current
-    var selected by rememberSaveable { mutableStateOf(AppLanguages.supported.firstOrNull { it.tag == AppLanguages.selectedTag(context).substringBefore('-') }?.tag.orEmpty()) }
-    fun dismiss() { AppLanguages.markOffered(context); onDismiss() }
-    SetupScreen(title = stringResource(R.string.app_language), onClose = ::dismiss,
+    var selected by rememberSaveable {
+        mutableStateOf(AppLanguages.supported.firstOrNull {
+            it.tag == AppLanguages.selectedTag(
+                context
+            )
+                .substringBefore('-')
+        }?.tag.orEmpty())
+    }
+
+    fun dismiss() {
+        AppLanguages.markOffered(context); onDismiss()
+    }
+    SetupScreen(
+        title = stringResource(R.string.app_language), onClose = ::dismiss,
         primaryLabel = stringResource(R.string.apply_language), onPrimary = {
             val changed = selected != AppLanguages.selectedTag(context)
             AppLanguages.select(context, selected)
             onDismiss()
-            if (changed && Build.VERSION.SDK_INT < 33) context.activity()?.recreate()
-        }, secondaryLabel = stringResource(R.string.cancel)) {
+            if (changed && Build.VERSION.SDK_INT < 33) context.activity()
+                ?.recreate()
+        }, secondaryLabel = stringResource(R.string.cancel)
+    ) {
         if (firstStart) Text(stringResource(R.string.first_language_offer), fontSize = 14.sp, color = TextMuted)
-        val options = listOf("" to stringResource(R.string.system_language)) + AppLanguages.supported.map { it.tag to it.nativeName }
+        val options =
+            listOf("" to stringResource(R.string.system_language)) + AppLanguages.supported.map { it.tag to it.nativeName }
         options.forEach { (tag, name) ->
-            Surface(onClick = { selected = tag }, shape = RoundedCornerShape(14.dp),
-                color = if (selected == tag) AccentPanel else SoftPanel, modifier = Modifier.fillMaxWidth()) {
-                Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Surface(
+                onClick = { selected = tag }, shape = RoundedCornerShape(14.dp),
+                color = if (selected == tag) AccentPanel else SoftPanel, modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     val flag = languageFlag(tag)
                     if (flag == null) Icon(Icons.Rounded.Language, null, tint = Violet, modifier = Modifier.size(36.dp))
                     else Image(painterResource(flag), null, modifier = Modifier.size(width = 36.dp, height = 24.dp))

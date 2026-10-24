@@ -6,9 +6,11 @@ object DoseLogJson {
     fun decode(obj: JSONObject): DoseLog? = DoseLog(
         obj.optString("date"), obj.optString("medicationId"), obj.optString("medicationName"),
         obj.optString("dose"), obj.optString("time"), obj.optString("status"), obj.optLong("recordedAt"),
-        scheduledAt = if (obj.has("scheduledAt") && !obj.isNull("scheduledAt")) obj.optLong("scheduledAt").takeIf { it > 0 } else null,
+        scheduledAt = if (obj.has("scheduledAt") && !obj.isNull("scheduledAt")) obj.optLong("scheduledAt")
+            .takeIf { it > 0 } else null,
         onTime = obj.optBoolean("onTime", false),
-        clickedAt = if (obj.has("clickedAt") && !obj.isNull("clickedAt")) obj.optLong("clickedAt").takeIf { it > 0 } else null,
+        clickedAt = if (obj.has("clickedAt") && !obj.isNull("clickedAt")) obj.optLong("clickedAt")
+            .takeIf { it > 0 } else null,
     ).takeIf { it.date.isNotBlank() && it.medicationId.isNotBlank() && DoseLogic.isTime(it.time) }
 
     fun encode(log: DoseLog): JSONObject = JSONObject().apply {

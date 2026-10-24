@@ -3,12 +3,16 @@ package io.github.sibmaks.app.dose.localization
 import android.app.LocaleManager
 import android.content.Context
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Build
 import android.os.LocaleList
-import java.util.Locale
+import java.util.*
 
 /** Tags are stable storage keys; native names remain readable before choosing a language. */
-data class AppLanguage(val tag: String, val nativeName: String)
+data class AppLanguage(
+    val tag: String,
+    val nativeName: String
+)
 
 object AppLanguages {
     val supported = listOf(
@@ -20,22 +24,36 @@ object AppLanguages {
         AppLanguage("uz", "Oʻzbekcha"), AppLanguage("uk", "Українська"),
         AppLanguage("ka", "ქართული"),
     )
+
     private fun preferences(context: Context) = context.getSharedPreferences("app_language", Context.MODE_PRIVATE)
+
     fun offered(context: Context) = preferences(context).getBoolean("offered", false)
-    fun markOffered(context: Context) { preferences(context).edit().putBoolean("offered", true).apply() }
+
+    fun markOffered(context: Context) {
+        preferences(context).edit()
+            .putBoolean("offered", true)
+            .apply()
+    }
 
     fun selectedTag(context: Context): String = if (Build.VERSION.SDK_INT >= 33) {
-        context.getSystemService(LocaleManager::class.java).applicationLocales.toLanguageTags().substringBefore(',')
-    } else preferences(context).getString("language", "").orEmpty()
+        context.getSystemService(LocaleManager::class.java).applicationLocales.toLanguageTags()
+            .substringBefore(',')
+    } else preferences(context).getString("language", "")
+        .orEmpty()
 
     /** Empty tag follows Android's system language; Android 13+ is the single source of truth. */
-    fun select(context: Context, tag: String) {
+    fun select(
+        context: Context,
+        tag: String
+    ) {
         require(tag.isEmpty() || supported.any { it.tag == tag })
         markOffered(context)
         if (Build.VERSION.SDK_INT >= 33) {
             context.getSystemService(LocaleManager::class.java).applicationLocales = LocaleList.forLanguageTags(tag)
         } else {
-            preferences(context).edit().putString("language", tag).commit()
+            preferences(context).edit()
+                .putString("language", tag)
+                .commit()
         }
         io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(context)
     }
@@ -43,12 +61,16 @@ object AppLanguages {
     fun wrap(context: Context): Context {
         val tag = selectedTag(context)
         val locales = if (tag.isNotEmpty()) LocaleList.forLanguageTags(tag) else systemLocales(context)
-        return context.createConfigurationContext(Configuration(context.resources.configuration).apply { setLocales(locales) })
+        return context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+            setLocales(
+                locales
+            )
+        })
     }
 
     fun systemLocales(context: Context): LocaleList = if (Build.VERSION.SDK_INT >= 33) {
         context.getSystemService(LocaleManager::class.java).systemLocales
-    } else android.content.res.Resources.getSystem().configuration.locales
+    } else Resources.getSystem().configuration.locales
 
     fun locale(context: Context): Locale = context.resources.configuration.locales[0]
 

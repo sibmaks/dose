@@ -3,7 +3,8 @@ package io.github.sibmaks.app.dose.data
 import android.content.Context
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.UUID
+import java.time.ZonedDateTime
+import java.util.*
 
 /** Small on-device persistence layer. Never seeds real reminders with demo medications. */
 object DoseStore {
@@ -23,40 +24,65 @@ object DoseStore {
             val obj = array.optJSONObject(i) ?: return@mapNotNull null
             MedicationJson.decode(obj)
         }
-        if ((0 until array.length()).any { array.optJSONObject(it)?.has("schedules") == false }) {
+        if ((0 until array.length()).any {
+                array.optJSONObject(it)
+                    ?.has("schedules") == false
+            }) {
             // Keep unreadable entries intact instead of deleting them during a format upgrade.
             (0 until array.length()).forEach { index ->
                 val obj = array.optJSONObject(index)
                 if (obj != null && !obj.has("schedules")) {
-                    MedicationJson.decode(obj)?.let { array.put(index, MedicationJson.encode(it)) }
+                    MedicationJson.decode(obj)
+                        ?.let { array.put(index, MedicationJson.encode(it)) }
                 }
             }
-            prefs(context).edit().putString(MEDICATIONS, array.toString()).commit()
+            prefs(context).edit()
+                .putString(MEDICATIONS, array.toString())
+                .commit()
         }
         medications
     }.getOrDefault(emptyList())
 
     @Synchronized
-    fun upsert(context: Context, medication: Medication) {
+    fun upsert(
+        context: Context,
+        medication: Medication
+    ) {
         require(medication.name.isNotBlank() && medication.amount.isNotBlank())
         require(medication.schedules.isNotEmpty() && medication.schedules.all { it.validationError() == null })
-        require(DoseScheduleConflicts.unresolved(medication.schedules, medication.amount).isEmpty())
+        require(
+            DoseScheduleConflicts.unresolved(medication.schedules, medication.amount)
+                .isEmpty()
+        )
         val list = medications(context).filterNot { it.id == medication.id } + medication
         val array = JSONArray()
         list.forEach { array.put(MedicationJson.encode(it)) }
-        prefs(context).edit().putString(MEDICATIONS, array.toString()).commit()
+        prefs(context).edit()
+            .putString(MEDICATIONS, array.toString())
+            .commit()
     }
 
     @Synchronized
-    fun delete(context: Context, medicationId: String) {
+    fun delete(
+        context: Context,
+        medicationId: String
+    ) {
         val remaining = medications(context).filterNot { it.id == medicationId }
         val array = JSONArray()
         remaining.forEach { array.put(MedicationJson.encode(it)) }
-        prefs(context).edit().putString(MEDICATIONS, array.toString()).commit()
+        prefs(context).edit()
+            .putString(MEDICATIONS, array.toString())
+            .commit()
         saveOverrides(context, timeOverrides(context).filterKeys { !it.contains("|$medicationId|") })
         val remainingSnoozes = snoozes(context).filterKeys { !it.contains("|$medicationId|") }
         saveSnoozes(context, remainingSnoozes)
-        prefs(context).edit().putStringSet(DEFERRED, deferred(context).filterNot { it.contains("|$medicationId|") }.toSet()).commit()
+        prefs(context).edit()
+            .putStringSet(
+                DEFERRED,
+                deferred(context).filterNot { it.contains("|$medicationId|") }
+                    .toSet()
+            )
+            .commit()
     }
 
     @Synchronized
@@ -69,7 +95,10 @@ object DoseStore {
     }.getOrDefault(emptyList())
 
     @Synchronized
-    fun record(context: Context, log: DoseLog) {
+    fun record(
+        context: Context,
+        log: DoseLog
+    ) {
         require(log.status == "taken" || log.status == "skipped")
         val array = JSONArray()
         (logs(context).filterNot {
@@ -77,92 +106,153 @@ object DoseStore {
         } + log).forEach { item ->
             array.put(DoseLogJson.encode(item))
         }
-        prefs(context).edit().putString(LOGS, array.toString()).commit()
+        prefs(context).edit()
+            .putString(LOGS, array.toString())
+            .commit()
         clearSnooze(context, DoseLogic.slotKey(log.date, log.medicationId, log.time))
         clearDeferred(context, DoseLogic.slotKey(log.date, log.medicationId, log.time))
     }
 
     /** One commit records the whole group with one click time and clears its deferred state. */
     @Synchronized
-    fun recordGroup(context: Context, members: List<DoseGroups.Member>, status: String): List<DoseItem> {
+    fun recordGroup(
+        context: Context,
+        members: List<DoseGroups.Member>,
+        status: String
+    ): List<DoseItem> {
         require(status == "taken" || status == "skipped")
         val now = System.currentTimeMillis()
         val existing = logs(context)
         val snoozes = snoozes(context)
-        val current = DoseLogic.todayItems(medications(context), existing, snoozes, now,
-            overrides = timeOverrides(context))
+        val current = DoseLogic.todayItems(
+            medications(context), existing, snoozes, now,
+            overrides = timeOverrides(context)
+        )
         val selected = DoseGroups.eligible(current, members)
         if (selected.isEmpty()) return emptyList()
-        val keys = selected.map { it.id }.toSet()
+        val keys =
+            selected.map { it.id }
+                .toSet()
         val array = JSONArray()
         (existing + DoseGroups.logs(selected, status, now)).forEach { array.put(DoseLogJson.encode(it)) }
-        prefs(context).edit().putString(LOGS, array.toString())
+        prefs(context).edit()
+            .putString(LOGS, array.toString())
             .putString(SNOOZES, JSONObject(snoozes.filterKeys { it !in keys }).toString())
-            .putStringSet(DEFERRED, deferred(context) - keys).commit()
+            .putStringSet(DEFERRED, deferred(context) - keys)
+            .commit()
         return selected
     }
 
     @Synchronized
-    fun correctHistoryTime(context: Context, expected: DoseLog, at: Long): Boolean {
-        val corrected = runCatching { DoseHistory.correctTakenAt(expected, at, System.currentTimeMillis()) }.getOrNull() ?: return false
+    fun correctHistoryTime(
+        context: Context,
+        expected: DoseLog,
+        at: Long
+    ): Boolean {
+        val corrected = runCatching { DoseHistory.correctTakenAt(expected, at, System.currentTimeMillis()) }.getOrNull()
+            ?: return false
         return replaceHistory(context, expected, corrected)
     }
 
     @Synchronized
-    fun deleteHistory(context: Context, expected: DoseLog): Boolean = replaceHistory(context, expected, null)
+    fun deleteHistory(
+        context: Context,
+        expected: DoseLog
+    ): Boolean = replaceHistory(context, expected, null)
 
-    private fun replaceHistory(context: Context, expected: DoseLog, replacement: DoseLog?): Boolean {
+    private fun replaceHistory(
+        context: Context,
+        expected: DoseLog,
+        replacement: DoseLog?
+    ): Boolean {
         val updated = DoseHistory.replace(logs(context), expected, replacement) ?: return false
         val array = JSONArray()
         updated.forEach { array.put(DoseLogJson.encode(it)) }
-        return prefs(context).edit().putString(LOGS, array.toString()).commit()
+        return prefs(context).edit()
+            .putString(LOGS, array.toString())
+            .commit()
     }
 
     @Synchronized
-    fun undo(context: Context, date: String, medicationId: String, time: String) {
+    fun undo(
+        context: Context,
+        date: String,
+        medicationId: String,
+        time: String
+    ) {
         val array = JSONArray()
         logs(context).filterNot {
             it.date == date && it.medicationId == medicationId && it.time == time
-        }.forEach { item ->
-            array.put(DoseLogJson.encode(item))
         }
-        prefs(context).edit().putString(LOGS, array.toString()).commit()
+            .forEach { item ->
+                array.put(DoseLogJson.encode(item))
+            }
+        prefs(context).edit()
+            .putString(LOGS, array.toString())
+            .commit()
     }
 
     @Synchronized
     fun snoozes(context: Context): Map<String, Long> = runCatching {
         val obj = JSONObject(prefs(context).getString(SNOOZES, "{}") ?: "{}")
-        obj.keys().asSequence().associateWith { key -> obj.optLong(key) }.filterValues { it > 0L }
+        obj.keys()
+            .asSequence()
+            .associateWith { key -> obj.optLong(key) }
+            .filterValues { it > 0L }
     }.getOrDefault(emptyMap())
 
     @Synchronized
-    fun putSnooze(context: Context, key: String, until: Long) =
+    fun putSnooze(
+        context: Context,
+        key: String,
+        until: Long
+    ) =
         saveSnoozes(context, snoozes(context) + (key to until))
 
     @Synchronized
-    fun clearSnooze(context: Context, key: String) =
+    fun clearSnooze(
+        context: Context,
+        key: String
+    ) =
         saveSnoozes(context, snoozes(context) - key)
 
-    private fun saveSnoozes(context: Context, map: Map<String, Long>) {
+    private fun saveSnoozes(
+        context: Context,
+        map: Map<String, Long>
+    ) {
         val obj = JSONObject()
         map.forEach { (key, value) -> obj.put(key, value) }
-        prefs(context).edit().putString(SNOOZES, obj.toString()).commit()
+        prefs(context).edit()
+            .putString(SNOOZES, obj.toString())
+            .commit()
     }
 
     @Synchronized
     fun timeOverrides(context: Context): Map<String, String> = runCatching {
         val obj = JSONObject(prefs(context).getString(OVERRIDES, "{}") ?: "{}")
-        obj.keys().asSequence().associateWith { obj.optString(it) }.filterValues(DoseLogic::isTime)
+        obj.keys()
+            .asSequence()
+            .associateWith { obj.optString(it) }
+            .filterValues(DoseLogic::isTime)
     }.getOrDefault(emptyMap())
 
-    private fun saveOverrides(context: Context, values: Map<String, String>) {
-        prefs(context).edit().putString(OVERRIDES, JSONObject(values).toString()).commit()
+    private fun saveOverrides(
+        context: Context,
+        values: Map<String, String>
+    ) {
+        prefs(context).edit()
+            .putString(OVERRIDES, JSONObject(values).toString())
+            .commit()
     }
 
     /** The original slot key stays stable for alarms, snoozes, logs, and undo. */
     @Synchronized
-    fun moveToday(context: Context, slotKey: String, newTime: String): Boolean {
-        val now = java.time.ZonedDateTime.now()
+    fun moveToday(
+        context: Context,
+        slotKey: String,
+        newTime: String
+    ): Boolean {
+        val now = ZonedDateTime.now()
         val overrides = timeOverrides(context)
         val items = DoseLogic.todayItems(medications(context), logs(context), snoozes(context), overrides = overrides)
         val item = items.find { it.id == slotKey } ?: return false
@@ -176,44 +266,90 @@ object DoseStore {
     }
 
     @Synchronized
-    fun acceptToday(context: Context, slotKey: String, at: Long): Boolean {
-        val item = DoseLogic.todayItems(medications(context), logs(context), snoozes(context),
-            overrides = timeOverrides(context)).find { it.id == slotKey } ?: return false
+    fun acceptToday(
+        context: Context,
+        slotKey: String,
+        at: Long
+    ): Boolean {
+        val item = DoseLogic.todayItems(
+            medications(context), logs(context), snoozes(context),
+            overrides = timeOverrides(context)
+        )
+            .find { it.id == slotKey } ?: return false
         val log = runCatching { DoseLogic.acceptedAt(item, at, System.currentTimeMillis()) }.getOrNull() ?: return false
         record(context, log)
         return true
     }
 
-    fun newMedication(name: String, amount: String, quantity: String, schedules: List<DoseSchedule>, note: String, color: String, form: MedicationForm) =
-        Medication(UUID.randomUUID().toString(), name, amount, quantity, schedules, note, color, form = form)
+    fun newMedication(
+        name: String,
+        amount: String,
+        quantity: String,
+        schedules: List<DoseSchedule>,
+        note: String,
+        color: String,
+        form: MedicationForm
+    ) =
+        Medication(
+            UUID.randomUUID()
+                .toString(), name, amount, quantity, schedules, note, color, form = form
+        )
 
     fun colorUsage(context: Context): Map<String, Int> = runCatching {
         val obj = JSONObject(prefs(context).getString("color_usage", "{}") ?: "{}")
-        obj.keys().asSequence().associateWith { obj.optInt(it) }
+        obj.keys()
+            .asSequence()
+            .associateWith { obj.optInt(it) }
     }.getOrDefault(emptyMap())
 
     @Synchronized
-    fun recordColorUse(context: Context, color: String) {
+    fun recordColorUse(
+        context: Context,
+        color: String
+    ) {
         val usage = colorUsage(context).toMutableMap()
         usage[color] = (usage[color] ?: 0) + 1
         val obj = JSONObject()
         usage.forEach { (key, count) -> obj.put(key, count) }
-        prefs(context).edit().putString("color_usage", obj.toString()).commit()
+        prefs(context).edit()
+            .putString("color_usage", obj.toString())
+            .commit()
     }
 
-    private fun deferred(context: Context): Set<String> = prefs(context).getStringSet(DEFERRED, emptySet()).orEmpty().toSet()
-    fun wasDeferred(context: Context, key: String): Boolean = key in deferred(context)
+    private fun deferred(context: Context): Set<String> =
+        prefs(context).getStringSet(DEFERRED, emptySet())
+            .orEmpty()
+            .toSet()
+
+    fun wasDeferred(
+        context: Context,
+        key: String
+    ): Boolean = key in deferred(context)
 
     @Synchronized
-    fun markDeferred(context: Context, key: String) {
-        prefs(context).edit().putStringSet(DEFERRED, deferred(context) + key).commit()
-    }
-    @Synchronized
-    private fun clearDeferred(context: Context, key: String) {
-        prefs(context).edit().putStringSet(DEFERRED, deferred(context) - key).commit()
+    fun markDeferred(
+        context: Context,
+        key: String
+    ) {
+        prefs(context).edit()
+            .putStringSet(DEFERRED, deferred(context) + key)
+            .commit()
     }
 
-    fun newLog(item: DoseItem, status: String): DoseLog = DoseLogic.recordedLog(
+    @Synchronized
+    private fun clearDeferred(
+        context: Context,
+        key: String
+    ) {
+        prefs(context).edit()
+            .putStringSet(DEFERRED, deferred(context) - key)
+            .commit()
+    }
+
+    fun newLog(
+        item: DoseItem,
+        status: String
+    ): DoseLog = DoseLogic.recordedLog(
         item.medication, item.date, item.time, if (status == "on_time") "taken" else status,
         item.scheduledAt,
         System.currentTimeMillis(), onTime = status == "on_time",

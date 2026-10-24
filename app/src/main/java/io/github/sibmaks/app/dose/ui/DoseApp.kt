@@ -1,26 +1,20 @@
 package io.github.sibmaks.app.dose.ui
 
-import io.github.sibmaks.app.dose.localization.*
 import android.content.Context
 import android.widget.ImageView
-import androidx.compose.ui.viewinterop.AndroidView
-import io.github.sibmaks.app.dose.R
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.outlined.Notifications
@@ -34,30 +28,40 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.*
+import io.github.sibmaks.app.dose.localization.*
 import io.github.sibmaks.app.dose.reminders.GroupDoseActions
 import io.github.sibmaks.app.dose.reminders.ReminderAlerts
 import io.github.sibmaks.app.dose.reminders.ReminderReceiver
 import io.github.sibmaks.app.dose.reminders.ReminderScheduler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import kotlin.time.Duration.Companion.seconds
 
-private enum class Tab(val title: Int, val icon: ImageVector) {
+private enum class Tab(
+    val title: Int,
+    val icon: ImageVector
+) {
     Today(R.string.today, Icons.Rounded.Home),
     Medications(R.string.medications, Icons.Rounded.Medication),
     History(R.string.history, Icons.Rounded.History),
@@ -102,11 +106,13 @@ fun DoseApp(openTodayRequest: Int = 0) {
     }
     val reminderSetup = remember(revision) { ReminderAlerts.setupState(context) }
 
-    fun refresh() { revision++ }
+    fun refresh() {
+        revision++
+    }
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(30_000)
+            delay(30.seconds)
             refresh()
         }
     }
@@ -165,18 +171,24 @@ fun DoseApp(openTodayRequest: Int = 0) {
         if (todayDoseId != null && selectedDose == null && !showEditor) todayDoseId = null
     }
     if (selectedDose != null) {
-        TodayDoseEditor(selectedDose, onDismiss = { todayDoseId = null },
+        TodayDoseEditor(
+            selectedDose, onDismiss = { todayDoseId = null },
             onEdit = { editingId = selectedDose.medication.id; showEditor = true }, onSave = { time ->
-            val success = DoseStore.moveToday(context, selectedDose.id, time)
-            if (success) {
-                ReminderScheduler.cancelSnooze(context, selectedDose.medication.id, selectedDose.time, selectedDose.date)
-                cancelDoseNotification(context, selectedDose)
-                ReminderScheduler.scheduleAll(context)
-                todayDoseId = null
-                refresh()
-            }
-            success
-        })
+                val success = DoseStore.moveToday(context, selectedDose.id, time)
+                if (success) {
+                    ReminderScheduler.cancelSnooze(
+                        context,
+                        selectedDose.medication.id,
+                        selectedDose.time,
+                        selectedDose.date
+                    )
+                    cancelDoseNotification(context, selectedDose)
+                    ReminderScheduler.scheduleAll(context)
+                    todayDoseId = null
+                    refresh()
+                }
+                success
+            })
         return
     }
 
@@ -185,14 +197,19 @@ fun DoseApp(openTodayRequest: Int = 0) {
         if (historyDoseId != null && selectedHistory == null) historyDoseId = null
     }
     if (selectedHistory != null) {
-        HistoryDoseEditor(selectedHistory, onDismiss = { historyDoseId = null },
+        HistoryDoseEditor(
+            selectedHistory, onDismiss = { historyDoseId = null },
             onSave = { at ->
                 val saved = DoseStore.correctHistoryTime(context, selectedHistory, at)
-                if (saved) { ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh() }
+                if (saved) {
+                    ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh()
+                }
                 saved
             }, onDelete = {
                 val deleted = DoseStore.deleteHistory(context, selectedHistory)
-                if (deleted) { ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh() }
+                if (deleted) {
+                    ReminderScheduler.scheduleAll(context); historyDoseId = null; refresh()
+                }
                 deleted
             })
         return
@@ -202,7 +219,10 @@ fun DoseApp(openTodayRequest: Int = 0) {
         containerColor = Page,
         topBar = {
             Row(
-                modifier = Modifier.fillMaxWidth().background(Page).statusBarsPadding()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Page)
+                    .statusBarsPadding()
                     .padding(horizontal = 10.dp, vertical = 14.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -219,12 +239,18 @@ fun DoseApp(openTodayRequest: Int = 0) {
                 IconButton(onClick = { showReminderSettings = true }) {
                     Icon(
                         if (reminderSetup.complete) Icons.Rounded.NotificationsActive else Icons.Outlined.Notifications,
-                        contentDescription = if (reminderSetup.complete) context.getString(R.string.setup_complete_accessibility) else context.getString(R.string.setup_incomplete_accessibility),
+                        contentDescription = if (reminderSetup.complete) context.getString(R.string.setup_complete_accessibility) else context.getString(
+                            R.string.setup_incomplete_accessibility
+                        ),
                         tint = if (reminderSetup.complete) Violet else TextMuted,
                     )
                 }
                 IconButton(onClick = { editingId = null; showEditor = true }) {
-                    Icon(Icons.Rounded.Add, contentDescription = context.getString(R.string.add_medication), tint = TextPrimary)
+                    Icon(
+                        Icons.Rounded.Add,
+                        contentDescription = context.getString(R.string.add_medication),
+                        tint = TextPrimary
+                    )
                 }
             }
         },
@@ -235,7 +261,13 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         selected = pagerState.currentPage == target.ordinal,
                         onClick = { scope.launch { pagerState.animateScrollToPage(target.ordinal) } },
                         icon = { Icon(target.icon, contentDescription = null) },
-                        label = { Text(context.getString(target.title), fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                        label = {
+                            Text(
+                                context.getString(target.title),
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Violet, selectedTextColor = Violet,
                             indicatorColor = AccentPanel, unselectedIconColor = TextMuted,
@@ -246,8 +278,12 @@ fun DoseApp(openTodayRequest: Int = 0) {
             }
         },
     ) { padding ->
-        HorizontalPager(state = pagerState, modifier = Modifier.padding(padding).fillMaxSize(),
-            verticalAlignment = Alignment.Top, beyondViewportPageCount = 1) { page ->
+        HorizontalPager(
+            state = pagerState, modifier = Modifier
+                .padding(padding)
+                .fillMaxSize(),
+            verticalAlignment = Alignment.Top, beyondViewportPageCount = 1
+        ) { page ->
             when (Tab.entries[page]) {
                 Tab.Today -> TodayPage(
                     modifier = Modifier.fillMaxSize(),
@@ -278,6 +314,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         refresh()
                     },
                 )
+
                 Tab.Medications -> MedicationsPage(
                     modifier = Modifier.fillMaxSize(), medications = medications, listState = medicationsScroll,
                     onAdd = { editingId = null; showEditor = true },
@@ -288,7 +325,12 @@ fun DoseApp(openTodayRequest: Int = 0) {
                         refresh()
                     },
                 )
-                Tab.History -> HistoryPage(modifier = Modifier.fillMaxSize(), logs = logs, listState = historyScroll, onOpen = { historyDoseId = DoseHistory.key(it) })
+
+                Tab.History -> HistoryPage(
+                    modifier = Modifier.fillMaxSize(),
+                    logs = logs,
+                    listState = historyScroll,
+                    onOpen = { historyDoseId = DoseHistory.key(it) })
             }
         }
     }
@@ -297,24 +339,35 @@ fun DoseApp(openTodayRequest: Int = 0) {
 @Composable
 private fun LanguageButton(onClick: () -> Unit) {
     val context = LocalContext.current
-    val tag = AppLanguages.selectedTag(context).substringBefore('-')
+    val tag =
+        AppLanguages.selectedTag(context)
+            .substringBefore('-')
     val selected = AppLanguages.supported.firstOrNull { it.tag == tag }
     val flag = languageFlag(tag)
     val description = context.getString(R.string.app_language) + ": " +
-        (selected?.nativeName ?: context.getString(R.string.system_language))
+            (selected?.nativeName ?: context.getString(R.string.system_language))
     IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = description }) {
         if (flag == null) {
             Icon(Icons.Rounded.Language, null, tint = TextMuted)
         } else {
-            Image(painterResource(flag), contentDescription = null, contentScale = ContentScale.Crop,
-                modifier = Modifier.size(28.dp).clip(CircleShape).border(1.dp, PanelBorder, CircleShape))
+            Image(
+                painterResource(flag), contentDescription = null, contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, PanelBorder, CircleShape)
+            )
         }
     }
 }
 
-private fun cancelDoseNotification(context: Context, item: DoseItem) {
+private fun cancelDoseNotification(
+    context: Context,
+    item: DoseItem
+) {
     val id = ReminderReceiver.notificationId(item.medication.id, item.time, item.date)
-    androidx.core.app.NotificationManagerCompat.from(context).cancel(id)
+    NotificationManagerCompat.from(context)
+        .cancel(id)
 }
 
 @Composable
@@ -347,18 +400,37 @@ private fun TodayPage(
     ) {
         if (showSetupWarning) {
             item {
-                InfoBanner(context.getString(R.string.reminder_setup_banner), context.getString(R.string.set_up_reminders), onReminderSetup)
+                InfoBanner(
+                    context.getString(R.string.reminder_setup_banner),
+                    context.getString(R.string.set_up_reminders),
+                    onReminderSetup
+                )
             }
         }
         item {
             Column(Modifier.padding(top = 10.dp, bottom = 3.dp)) {
                 Eyebrow(day.uppercase(AppLanguages.locale(context)))
                 Spacer(Modifier.height(8.dp))
-                Text(context.getString(R.string.every_dose_counts), fontWeight = FontWeight.ExtraBold, fontSize = 31.sp, color = TextPrimary)
+                Text(
+                    context.getString(R.string.every_dose_counts),
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 31.sp,
+                    color = TextPrimary
+                )
                 Text(context.getString(R.string.a_little_care_every_single_day), fontSize = 14.sp, color = TextMuted)
             }
         }
-        item { FeaturedCard(featured, items.isNotEmpty(), hasMedications, System.currentTimeMillis(), onAdd, onRecord, onRecordGroup) }
+        item {
+            FeaturedCard(
+                featured,
+                items.isNotEmpty(),
+                hasMedications,
+                System.currentTimeMillis(),
+                onAdd,
+                onRecord,
+                onRecordGroup
+            )
+        }
         item {
             Card(
                 shape = RoundedCornerShape(20.dp),
@@ -366,7 +438,9 @@ private fun TodayPage(
                 border = BorderStroke(1.dp, PanelBorder),
             ) {
                 Row(
-                    Modifier.fillMaxWidth().padding(17.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(17.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Box(Modifier.size(70.dp), contentAlignment = Alignment.Center) {
@@ -378,7 +452,11 @@ private fun TodayPage(
                     }
                     Spacer(Modifier.width(15.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(context.getString(R.string.today_s_progress), fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        Text(
+                            context.getString(R.string.today_s_progress),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
                         Text(
                             context.getString(R.string.progress_counts, taken, items.size, skipped),
                             color = TextMuted, fontSize = 12.sp,
@@ -389,14 +467,28 @@ private fun TodayPage(
         }
         item {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 10.dp)) {
-                Text(context.getString(R.string.today_s_schedule), fontSize = 19.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
-                TextButton(onClick = onManage) { Text(context.getString(R.string.manage), fontWeight = FontWeight.Bold) }
+                Text(
+                    context.getString(R.string.today_s_schedule),
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.weight(1f)
+                )
+                TextButton(onClick = onManage) {
+                    Text(
+                        context.getString(R.string.manage),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
         if (items.isEmpty()) {
-            item { EmptyCard(if (hasMedications) context.getString(R.string.no_doses_scheduled_today) else context.getString(R.string.nothing_scheduled_yet),
-                if (hasMedications) context.getString(R.string.schedule_empty_today_hint) else context.getString(R.string.schedule_empty_hint),
-                if (hasMedications) null else onAdd) }
+            item {
+                EmptyCard(
+                    if (hasMedications) context.getString(R.string.no_doses_scheduled_today) else context.getString(R.string.nothing_scheduled_yet),
+                    if (hasMedications) context.getString(R.string.schedule_empty_today_hint) else context.getString(R.string.schedule_empty_hint),
+                    if (hasMedications) null else onAdd
+                )
+            }
         } else {
             items(items, key = { it.id }) { item ->
                 DoseCard(item, onRecord = onRecord, onUndo = onUndo, onOpen = onOpen)
@@ -407,7 +499,11 @@ private fun TodayPage(
 
 @Composable
 private fun FeaturedCard(
-    group: List<DoseItem>, hasSchedule: Boolean, hasMedications: Boolean, nowMillis: Long, onAdd: () -> Unit,
+    group: List<DoseItem>,
+    hasSchedule: Boolean,
+    hasMedications: Boolean,
+    nowMillis: Long,
+    onAdd: () -> Unit,
     onRecord: (DoseItem, String) -> Unit,
     onRecordGroup: (List<DoseItem>, String) -> Unit,
 ) {
@@ -415,36 +511,58 @@ private fun FeaturedCard(
     val item = group.firstOrNull()
     val distant = DoseGroups.isDistant(group, nowMillis)
     Card(shape = RoundedCornerShape(27.dp), colors = CardDefaults.cardColors(containerColor = BrandViolet)) {
-        Column(Modifier.fillMaxWidth().padding(23.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(23.dp)
+        ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Rounded.Alarm, null, tint = Color(0xFFE5E0FF), modifier = Modifier.size(17.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    if (distant) context.getString(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") context.getString(R.string.dose_needs_attention) else context.getString(R.string.your_next_reminder),
+                    if (distant) context.getString(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") context.getString(
+                        R.string.dose_needs_attention
+                    ) else context.getString(R.string.your_next_reminder),
                     fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFFE5E0FF),
                 )
             }
             if (item != null) {
                 Spacer(Modifier.height(20.dp))
                 Text(
-                    java.time.Instant.ofEpochMilli(item.dueMillis).atZone(java.time.ZoneId.systemDefault())
-                        .toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                    Instant.ofEpochMilli(item.dueMillis)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalTime()
+                        .format(DateTimeFormatter.ofPattern("HH:mm")),
                     fontSize = 38.sp, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
                 if (group.size > 1) {
-                    Text(context.getString(R.string.several_medicines, group.size), fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold, color = Color.White)
+                    Text(
+                        context.getString(R.string.several_medicines, group.size), fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold, color = Color.White
+                    )
                     Spacer(Modifier.height(12.dp))
                 }
                 group.forEach { dose ->
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(bottom = if (group.size > 1) 10.dp else 0.dp)) {
-                        Icon(androidx.compose.ui.res.painterResource(dose.medication.form.iconResource()),
-                            dose.medication.localizedForm(context), tint = Color.White, modifier = Modifier.size(26.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(bottom = if (group.size > 1) 10.dp else 0.dp)
+                    ) {
+                        Icon(
+                            painterResource(dose.medication.form.iconResource()),
+                            dose.medication.localizedForm(context), tint = Color.White, modifier = Modifier.size(26.dp)
+                        )
                         Column(Modifier.weight(1f)) {
-                            Text(dose.medication.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                            Text(dose.localizedDose(context) + (if (dose.medication.note.isNotBlank()) " · ${dose.medication.note}" else ""),
-                                fontSize = 13.sp, color = Color(0xFFE9E5FF))
+                            Text(
+                                dose.medication.name,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                            Text(
+                                dose.localizedDose(context) + (if (dose.medication.note.isNotBlank()) " · ${dose.medication.note}" else ""),
+                                fontSize = 13.sp, color = Color(0xFFE9E5FF)
+                            )
                         }
                     }
                 }
@@ -458,13 +576,20 @@ private fun FeaturedCard(
                     ) {
                         Icon(Icons.Rounded.CheckCircle, null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text(context.getString(if (group.size > 1) R.string.mark_all_as_taken else R.string.mark_as_taken), fontWeight = FontWeight.Bold)
+                        Text(
+                            context.getString(if (group.size > 1) R.string.mark_all_as_taken else R.string.mark_as_taken),
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                     if (group.size > 1) {
                         Spacer(Modifier.height(8.dp))
-                        OutlinedButton(onClick = { onRecordGroup(group, "skipped") }, modifier = Modifier.fillMaxWidth(),
+                        OutlinedButton(
+                            onClick = { onRecordGroup(group, "skipped") },
+                            modifier = Modifier.fillMaxWidth(),
                             border = BorderStroke(1.dp, Color.White.copy(alpha = 0.6f)),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White), shape = RoundedCornerShape(12.dp)) {
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
                             Text(context.getString(R.string.skip_all), fontWeight = FontWeight.Bold)
                         }
                     }
@@ -472,7 +597,9 @@ private fun FeaturedCard(
             } else {
                 Spacer(Modifier.height(23.dp))
                 Text(
-                    if (hasSchedule) context.getString(R.string.all_done_for_today) else if (hasMedications) context.getString(R.string.no_doses_due_today) else context.getString(R.string.your_routine_starts_here),
+                    if (hasSchedule) context.getString(R.string.all_done_for_today) else if (hasMedications) context.getString(
+                        R.string.no_doses_due_today
+                    ) else context.getString(R.string.your_routine_starts_here),
                     fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
                 Spacer(Modifier.height(8.dp))
@@ -484,7 +611,10 @@ private fun FeaturedCard(
                 )
                 if (!hasMedications) {
                     Spacer(Modifier.height(14.dp))
-                    Button(onClick = onAdd, colors = ButtonDefaults.buttonColors(Color.White, contentColor = BrandViolet)) {
+                    Button(
+                        onClick = onAdd,
+                        colors = ButtonDefaults.buttonColors(Color.White, contentColor = BrandViolet)
+                    ) {
                         Icon(Icons.Rounded.Add, null)
                         Spacer(Modifier.width(5.dp))
                         Text(context.getString(R.string.add_medication))
@@ -510,24 +640,50 @@ private fun DoseCard(
         colors = CardDefaults.cardColors(containerColor = Panel),
         border = BorderStroke(1.dp, PanelBorder),
     ) {
-        Row(Modifier.fillMaxWidth().padding(13.dp), verticalAlignment = Alignment.Top) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(13.dp), verticalAlignment = Alignment.Top
+        ) {
             PillAvatar(item.medication.color, item.medication.form, item.medication.localizedForm(context))
             Spacer(Modifier.width(11.dp))
             Column(Modifier.weight(1f)) {
                 Spacer(Modifier.height(3.dp))
-                Text(item.medication.name, fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    item.medication.name,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
                 Text(
                     item.localizedDose(context) + if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else "",
                     fontSize = 12.sp, color = TextMuted, maxLines = 2, overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(Modifier.height(8.dp))
                 if (item.log == null) {
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                        CompactAction(context.getString(R.string.taken), Icons.Rounded.Check, onClick = { onRecord(item, "taken") })
-                        CompactAction(context.getString(R.string.skip), null, onClick = { onRecord(item, "skipped") }, secondary = true)
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
+                        verticalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        CompactAction(
+                            context.getString(R.string.taken),
+                            Icons.Rounded.Check,
+                            onClick = { onRecord(item, "taken") })
+                        CompactAction(
+                            context.getString(R.string.skip),
+                            null,
+                            onClick = { onRecord(item, "skipped") },
+                            secondary = true
+                        )
                     }
                 } else {
-                    CompactAction(context.getString(R.string.undo), Icons.AutoMirrored.Rounded.Undo, onClick = { onUndo(item) }, secondary = true)
+                    CompactAction(
+                        context.getString(R.string.undo),
+                        Icons.AutoMirrored.Rounded.Undo,
+                        onClick = { onUndo(item) },
+                        secondary = true
+                    )
                 }
             }
             Spacer(Modifier.width(7.dp))
@@ -541,7 +697,12 @@ private fun DoseCard(
 }
 
 @Composable
-private fun CompactAction(label: String, icon: ImageVector?, secondary: Boolean = false, onClick: () -> Unit) {
+private fun CompactAction(
+    label: String,
+    icon: ImageVector?,
+    secondary: Boolean = false,
+    onClick: () -> Unit
+) {
     val color = if (secondary) TextMuted else Violet
     Surface(
         onClick = onClick, color = if (secondary) SoftPanel else AccentPanel,
@@ -565,18 +726,31 @@ internal fun StatusBadge(status: String) {
         "skipped" -> Triple(context.getString(R.string.skipped), TextMuted, SoftPanel)
         "due" -> Triple(context.getString(R.string.due_now), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
         "overdue" -> Triple(context.getString(R.string.overdue), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
-        "snoozed" -> Triple(context.getString(R.string.snoozed), themeColor(0xFF456F9B, 0xFFA3C9F3), themeColor(0xFFEAF2FC, 0xFF26384B))
+        "snoozed" -> Triple(
+            context.getString(R.string.snoozed),
+            themeColor(0xFF456F9B, 0xFFA3C9F3),
+            themeColor(0xFFEAF2FC, 0xFF26384B)
+        )
+
         else -> Triple(context.getString(R.string.upcoming), Violet, AccentPanel)
     }
-    Box(Modifier.clip(RoundedCornerShape(8.dp)).background(background).padding(horizontal = 7.dp, vertical = 5.dp)) {
+    Box(
+        Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(background)
+            .padding(horizontal = 7.dp, vertical = 5.dp)
+    ) {
         Text(label, color = color, fontSize = 11.sp, fontWeight = FontWeight.Bold)
     }
 }
 
 @Composable
 private fun MedicationsPage(
-    modifier: Modifier, medications: List<Medication>, onAdd: () -> Unit,
-    onEdit: (Medication) -> Unit, onToggle: (Medication) -> Unit,
+    modifier: Modifier,
+    medications: List<Medication>,
+    onAdd: () -> Unit,
+    onEdit: (Medication) -> Unit,
+    onToggle: (Medication) -> Unit,
     listState: LazyListState,
 ) {
     val context = LocalContext.current
@@ -595,7 +769,13 @@ private fun MedicationsPage(
             }
         }
         if (medications.isEmpty()) {
-            item { EmptyCard(context.getString(R.string.no_medications_yet), context.getString(R.string.medication_list_empty_hint), onAdd) }
+            item {
+                EmptyCard(
+                    context.getString(R.string.no_medications_yet),
+                    context.getString(R.string.medication_list_empty_hint),
+                    onAdd
+                )
+            }
         } else {
             items(medications, key = { it.id }) { med ->
                 Card(
@@ -616,17 +796,30 @@ private fun MedicationsPage(
                                 )
                             }
                             IconButton(onClick = { onEdit(med) }) {
-                                Icon(Icons.Rounded.Edit, context.getString(R.string.edit_named, med.name), tint = TextMuted, modifier = Modifier.size(21.dp))
+                                Icon(
+                                    Icons.Rounded.Edit,
+                                    context.getString(R.string.edit_named, med.name),
+                                    tint = TextMuted,
+                                    modifier = Modifier.size(21.dp)
+                                )
                             }
                         }
                         HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(top = 13.dp, bottom = 9.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                                 med.schedules.forEach { rule ->
-                                    Text(scheduleSummary(context, rule, med.amount, med.quantity), fontSize = 12.sp, color = Violet)
+                                    Text(
+                                        scheduleSummary(context, rule, med.amount, med.quantity),
+                                        fontSize = 12.sp,
+                                        color = Violet
+                                    )
                                 }
                             }
-                            Switch(checked = med.active, onCheckedChange = { onToggle(med) }, modifier = Modifier.height(29.dp))
+                            Switch(
+                                checked = med.active,
+                                onCheckedChange = { onToggle(med) },
+                                modifier = Modifier.height(29.dp)
+                            )
                         }
                     }
                 }
@@ -635,7 +828,9 @@ private fun MedicationsPage(
         item {
             Button(
                 onClick = onAdd,
-                modifier = Modifier.fillMaxWidth().height(53.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(53.dp),
                 shape = RoundedCornerShape(15.dp),
             ) {
                 Icon(Icons.Rounded.Add, null)
@@ -647,12 +842,19 @@ private fun MedicationsPage(
 }
 
 @Composable
-private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: LazyListState, onOpen: (DoseLog) -> Unit) {
+private fun HistoryPage(
+    modifier: Modifier,
+    logs: List<DoseLog>,
+    listState: LazyListState,
+    onOpen: (DoseLog) -> Unit
+) {
     val context = LocalContext.current
     val today = LocalDate.now()
     val dates = (0..6).map { today.minusDays(it.toLong()) }
     val groups = dates.mapNotNull { date ->
-        val matching = logs.filter { it.date == date.toString() }.sortedByDescending { it.time }
+        val matching =
+            logs.filter { it.date == date.toString() }
+                .sortedByDescending { it.time }
         if (matching.isEmpty()) null else date to matching
     }
     LazyColumn(
@@ -671,7 +873,13 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: Lazy
         }
         item { DelayReportCard(logs, today) }
         if (groups.isEmpty()) {
-            item { EmptyCard(context.getString(R.string.no_history_yet), context.getString(R.string.history_empty_hint), null) }
+            item {
+                EmptyCard(
+                    context.getString(R.string.no_history_yet),
+                    context.getString(R.string.history_empty_hint),
+                    null
+                )
+            }
         }
         groups.forEach { (date, dayLogs) ->
             item(key = "day-$date") {
@@ -692,10 +900,21 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: Lazy
                     colors = CardDefaults.cardColors(containerColor = Panel),
                     border = BorderStroke(1.dp, PanelBorder),
                 ) {
-                    Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(14.dp), verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Box(
-                            Modifier.size(38.dp).clip(RoundedCornerShape(11.dp))
-                                .background(if (log.status == "taken") themeColor(0xFFE3F8EF, 0xFF1B3C33) else SoftPanel),
+                            Modifier
+                                .size(38.dp)
+                                .clip(RoundedCornerShape(11.dp))
+                                .background(
+                                    if (log.status == "taken") themeColor(
+                                        0xFFE3F8EF,
+                                        0xFF1B3C33
+                                    ) else SoftPanel
+                                ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
@@ -706,14 +925,37 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: Lazy
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
                             Text(log.medicationName, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                            Text(context.getString(R.string.scheduled_dose, log.time, log.dose), color = TextMuted, fontSize = 12.sp)
+                            Text(
+                                context.getString(R.string.scheduled_dose, log.time, log.dose),
+                                color = TextMuted,
+                                fontSize = 12.sp
+                            )
                             if (log.onTime) Text(context.getString(R.string.on_time), color = Violet, fontSize = 12.sp)
-                            DoseReports.timing(log)?.let { timing ->
-                                val actual = java.time.Instant.ofEpochMilli(log.recordedAt).atZone(java.time.ZoneId.systemDefault())
-                                    .format(DateTimeFormatter.ofPattern("MMM d, HH:mm", AppLanguages.locale(context)))
-                                val difference = delayDuration(context, kotlin.math.abs(timing.differenceMillis).toDouble())
-                                Text(context.getString(R.string.taken_timing, actual, context.getString(if (timing.differenceMillis < 0) R.string.early else R.string.delay), difference), color = TextMuted, fontSize = 12.sp)
-                            }
+                            DoseReports.timing(log)
+                                ?.let { timing ->
+                                    val actual = Instant.ofEpochMilli(log.recordedAt)
+                                        .atZone(ZoneId.systemDefault())
+                                        .format(
+                                            DateTimeFormatter.ofPattern(
+                                                "MMM d, HH:mm",
+                                                AppLanguages.locale(context)
+                                            )
+                                        )
+                                    val difference =
+                                        delayDuration(
+                                            context,
+                                            kotlin.math.abs(timing.differenceMillis)
+                                                .toDouble()
+                                        )
+                                    Text(
+                                        context.getString(
+                                            R.string.taken_timing,
+                                            actual,
+                                            context.getString(if (timing.differenceMillis < 0) R.string.early else R.string.delay),
+                                            difference
+                                        ), color = TextMuted, fontSize = 12.sp
+                                    )
+                                }
                         }
                         Text(
                             if (log.status == "taken") context.getString(R.string.taken) else context.getString(R.string.skipped),
@@ -729,18 +971,38 @@ private fun HistoryPage(modifier: Modifier, logs: List<DoseLog>, listState: Lazy
 
 @Composable
 private fun Eyebrow(text: String) {
-    Text(text, color = themeColor(0xFF796599, 0xFFB9A8DB), fontWeight = FontWeight.ExtraBold, fontSize = 11.sp, letterSpacing = 1.1.sp)
+    Text(
+        text,
+        color = themeColor(0xFF796599, 0xFFB9A8DB),
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 11.sp,
+        letterSpacing = 1.1.sp
+    )
 }
 
 @Composable
-internal fun PillAvatar(color: String, form: MedicationForm, label: String) {
+internal fun PillAvatar(
+    color: String,
+    form: MedicationForm,
+    label: String
+) {
     val (foreground, background) = palette(color)
     Box(
         // Inset the fill so its antialiased edge cannot show outside the border.
-        Modifier.size(49.dp).background(PanelBorder, RoundedCornerShape(16.dp))
-            .padding(1.dp).background(background, RoundedCornerShape(15.dp)),
+        Modifier
+            .size(49.dp)
+            .background(PanelBorder, RoundedCornerShape(16.dp))
+            .padding(1.dp)
+            .background(background, RoundedCornerShape(15.dp)),
         contentAlignment = Alignment.Center,
-    ) { Icon(androidx.compose.ui.res.painterResource(form.iconResource()), label, tint = foreground, modifier = Modifier.size(26.dp)) }
+    ) {
+        Icon(
+            painterResource(form.iconResource()),
+            label,
+            tint = foreground,
+            modifier = Modifier.size(26.dp)
+        )
+    }
 }
 
 internal fun palette(color: String): Pair<Color, Color> {
@@ -749,13 +1011,22 @@ internal fun palette(color: String): Pair<Color, Color> {
 }
 
 @Composable
-private fun InfoBanner(message: String, action: String, onAction: () -> Unit) {
+private fun InfoBanner(
+    message: String,
+    action: String,
+    onAction: () -> Unit
+) {
     Surface(shape = RoundedCornerShape(16.dp), color = AccentPanel) {
         Column(Modifier.padding(14.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Rounded.Info, null, tint = Violet, modifier = Modifier.size(19.dp))
                 Spacer(Modifier.width(10.dp))
-                Text(message, color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 12.sp, modifier = Modifier.weight(1f))
+                Text(
+                    message,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontSize = 12.sp,
+                    modifier = Modifier.weight(1f)
+                )
             }
             TextButton(onClick = onAction, modifier = Modifier.align(Alignment.End)) {
                 Text(action, fontWeight = FontWeight.Bold, fontSize = 12.sp)
@@ -765,7 +1036,11 @@ private fun InfoBanner(message: String, action: String, onAction: () -> Unit) {
 }
 
 @Composable
-private fun EmptyCard(title: String, explanation: String, onAdd: (() -> Unit)?) {
+private fun EmptyCard(
+    title: String,
+    explanation: String,
+    onAdd: (() -> Unit)?
+) {
     val context = LocalContext.current
     Card(
         shape = RoundedCornerShape(20.dp),
@@ -773,7 +1048,9 @@ private fun EmptyCard(title: String, explanation: String, onAdd: (() -> Unit)?) 
         border = BorderStroke(1.dp, PanelBorder),
     ) {
         Column(
-            Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 30.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp, vertical = 30.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(Icons.Rounded.Medication, null, modifier = Modifier.size(35.dp), tint = Violet)

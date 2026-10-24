@@ -1,24 +1,47 @@
 package io.github.sibmaks.app.dose.data
 
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import java.time.*
+import java.time.format.DateTimeFormatter
 
 enum class MedicationForm(val label: String) {
-    PILL("Pill"), CAPSULE("Capsule"), LIQUID("Liquid"), SPRAY("Spray"),
-    DROPS("Drops"), INJECTION("Injection"), CREAM("Cream"), OTHER("Other"),
-    INHALER("Inhaler"), GEL("Gel"), OINTMENT("Ointment"), PATCH("Patch"),
-    POWDER("Powder"), SUPPOSITORY("Suppository");
+    PILL("Pill"),
+    CAPSULE("Capsule"),
+    LIQUID("Liquid"),
+    SPRAY("Spray"),
+    DROPS("Drops"),
+    INJECTION("Injection"),
+    CREAM("Cream"),
+    OTHER("Other"),
+    INHALER("Inhaler"),
+    GEL("Gel"),
+    OINTMENT("Ointment"),
+    PATCH("Patch"),
+    POWDER("Powder"),
+    SUPPOSITORY("Suppository");
 }
 
 enum class ScheduleKind(val label: String) {
-    SPECIFIC_DATES("Specific dates"), WEEKDAYS("Days of week"), MONTH_DAYS("Days of month"), DAILY("Every day");
+    SPECIFIC_DATES("Specific dates"),
+    WEEKDAYS("Days of week"),
+    MONTH_DAYS("Days of month"),
+    DAILY("Every day");
 }
 
-enum class ScheduleField { TIMES, DATES, START, END, BOUNDS, WEEKDAYS, MONTH_DAYS, AMOUNT }
-enum class ScheduleIssue(val field: ScheduleField, val message: String) {
+enum class ScheduleField {
+    TIMES,
+    DATES,
+    START,
+    END,
+    BOUNDS,
+    WEEKDAYS,
+    MONTH_DAYS,
+    AMOUNT
+}
+
+enum class ScheduleIssue(
+    val field: ScheduleField,
+    val message: String
+) {
     TIME_REQUIRED(ScheduleField.TIMES, "Choose at least one valid time."),
     DUPLICATE_TIMES(ScheduleField.TIMES, "Remove duplicate times in this schedule."),
     DATE_REQUIRED(ScheduleField.DATES, "Choose at least one specific date."),
@@ -40,7 +63,8 @@ data class DoseSchedule(
     val monthDays: List<Int> = emptyList(),
     val from: String? = null,
     val until: String? = null,
-    val createdOn: String = LocalDate.now().toString(),
+    val createdOn: String = LocalDate.now()
+        .toString(),
     val immediateAt: Long? = null,
     val amount: String? = null, // null inherits the medication's default amount
     val priority: Int = 0, // higher values win; zero has not been ranked
@@ -53,13 +77,19 @@ data class DoseSchedule(
         times.distinct().size != times.size -> ScheduleIssue.DUPLICATE_TIMES
         kind == ScheduleKind.SPECIFIC_DATES && (dates.isEmpty() || dates.any { !DoseLogic.isDate(it) }) ->
             ScheduleIssue.DATE_REQUIRED
+
         immediateAt != null && (immediateAt <= 0 || kind != ScheduleKind.SPECIFIC_DATES || dates.size != 1 || times.size != 1) ->
             ScheduleIssue.INVALID_IMMEDIATE
+
         kind != ScheduleKind.SPECIFIC_DATES && !DoseLogic.isDate(createdOn) -> ScheduleIssue.INVALID_START
-        kind != ScheduleKind.SPECIFIC_DATES && (from != null && !DoseLogic.isDate(from) || until != null && !DoseLogic.isDate(until)) ->
+        kind != ScheduleKind.SPECIFIC_DATES && (from != null && !DoseLogic.isDate(from) || until != null && !DoseLogic.isDate(
+            until
+        )) ->
             ScheduleIssue.INVALID_BOUNDS
+
         kind != ScheduleKind.SPECIFIC_DATES && until != null && until < (from ?: createdOn) ->
             ScheduleIssue.END_BEFORE_START
+
         kind == ScheduleKind.WEEKDAYS && (weekDays.isEmpty() || weekDays.any { it !in 1..7 }) -> ScheduleIssue.WEEKDAY_REQUIRED
         kind == ScheduleKind.MONTH_DAYS && (monthDays.isEmpty() || monthDays.any { it !in 1..31 }) -> ScheduleIssue.MONTHDAY_REQUIRED
         else -> null
@@ -81,7 +111,9 @@ data class DoseSchedule(
     fun nextDate(onOrAfter: LocalDate): LocalDate? {
         if (validationError() != null) return null
         if (kind == ScheduleKind.SPECIFIC_DATES) {
-            return dates.map(LocalDate::parse).filter { it >= onOrAfter }.minOrNull()
+            return dates.map(LocalDate::parse)
+                .filter { it >= onOrAfter }
+                .minOrNull()
         }
         var date = maxOf(onOrAfter, LocalDate.parse(from ?: createdOn))
         // A valid monthly rule can skip February, but always matches within 62 days.
@@ -96,9 +128,15 @@ data class DoseSchedule(
     companion object {
         fun immediately(now: ZonedDateTime = ZonedDateTime.now()) = DoseSchedule(
             kind = ScheduleKind.SPECIFIC_DATES,
-            times = listOf(now.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))),
-            dates = listOf(now.toLocalDate().toString()), createdOn = now.toLocalDate().toString(),
-            immediateAt = now.toInstant().toEpochMilli(),
+            times = listOf(now.format(DateTimeFormatter.ofPattern("HH:mm"))),
+            dates = listOf(
+                now.toLocalDate()
+                    .toString()
+            ),
+            createdOn = now.toLocalDate()
+                .toString(),
+            immediateAt = now.toInstant()
+                .toEpochMilli(),
         )
     }
 }
@@ -117,20 +155,48 @@ data class Medication(
 ) {
     val formLabel: String get() = customForm.takeIf { form == MedicationForm.OTHER && it.isNotBlank() } ?: form.label
     val doseDescription: String get() = dose + if (form == MedicationForm.OTHER) " · $formLabel" else ""
-    val dose: String get() = listOf(amount, quantity).filter { it.isNotBlank() }.joinToString(" ")
-    val times: List<String> get() = schedules.flatMap { it.times }.distinct().sorted()
-    fun timesOn(date: LocalDate): List<String> = schedules.filter { it.includes(date) }.flatMap { it.times }.distinct().sorted()
-    fun amountAt(date: LocalDate, time: String): String = schedules
-        .filter { it.includes(date) && time in it.times }.maxByOrNull { it.priority }?.amount ?: amount
-    fun doseAt(date: LocalDate, time: String): String =
-        listOf(amountAt(date, time), quantity).filter { it.isNotBlank() }.joinToString(" ")
-    fun scheduledMillis(date: LocalDate, time: String, zone: ZoneId = ZoneId.systemDefault()): Long =
-        schedules.filter { it.includes(date) && time in it.times }.minOfOrNull { it.immediateAt ?: DoseLogic.scheduledMillis(date, time, zone) }
+    val dose: String
+        get() = listOf(amount, quantity).filter { it.isNotBlank() }
+            .joinToString(" ")
+    val times: List<String>
+        get() = schedules.flatMap { it.times }
+            .distinct()
+            .sorted()
+
+    fun timesOn(date: LocalDate): List<String> =
+        schedules.filter { it.includes(date) }
+            .flatMap { it.times }
+            .distinct()
+            .sorted()
+
+    fun amountAt(
+        date: LocalDate,
+        time: String
+    ): String = schedules
+        .filter { it.includes(date) && time in it.times }
+        .maxByOrNull { it.priority }?.amount ?: amount
+
+    fun doseAt(
+        date: LocalDate,
+        time: String
+    ): String =
+        listOf(amountAt(date, time), quantity).filter { it.isNotBlank() }
+            .joinToString(" ")
+
+    fun scheduledMillis(
+        date: LocalDate,
+        time: String,
+        zone: ZoneId = ZoneId.systemDefault()
+    ): Long =
+        schedules.filter { it.includes(date) && time in it.times }
+            .minOfOrNull { it.immediateAt ?: DoseLogic.scheduledMillis(date, time, zone) }
             ?: DoseLogic.scheduledMillis(date, time, zone)
 }
 
 object DoseUnits {
-    val common = listOf("mg", "ml", "g", "mcg", "IU", "tablet", "capsule", "drop", "spray", "puff", "patch", "suppository")
+    val common =
+        listOf("mg", "ml", "g", "mcg", "IU", "tablet", "capsule", "drop", "spray", "puff", "patch", "suppository")
+
     fun defaultFor(form: MedicationForm): String = when (form) {
         MedicationForm.PILL -> "tablet"
         MedicationForm.CAPSULE -> "capsule"
@@ -145,7 +211,11 @@ object DoseUnits {
     }
 
     /** Only an untouched default follows form changes; saved and user-entered units stay intact. */
-    fun forFormChange(form: MedicationForm, current: String, automatic: Boolean): String =
+    fun forFormChange(
+        form: MedicationForm,
+        current: String,
+        automatic: Boolean
+    ): String =
         if (automatic) defaultFor(form) else current
 
     /** Preserve unstructured legacy text instead of discarding or guessing it. */
@@ -164,30 +234,51 @@ object MedicationColors {
         "rose" -> "#D85C88"
         "amber" -> "#BD870F"
         "violet" -> "#7969E7"
-        else -> color.takeIf { Regex("#[0-9a-fA-F]{6}").matches(it) }?.uppercase() ?: "#7969E7"
+        else -> color.takeIf { Regex("#[0-9a-fA-F]{6}").matches(it) }
+            ?.uppercase() ?: "#7969E7"
     }
-    fun choices(usage: Map<String, Int>, medications: List<Medication>, selected: String): List<String> {
+
+    fun choices(
+        usage: Map<String, Int>,
+        medications: List<Medication>,
+        selected: String
+    ): List<String> {
         val counts = mutableMapOf<String, Int>()
         usage.forEach { (color, count) -> counts[hex(color)] = (counts[hex(color)] ?: 0) + count }
-        medications.groupingBy { hex(it.color) }.eachCount().forEach { (color, count) -> counts.putIfAbsent(color, count) }
-        val ranked = (counts.filterValues { it > 0 }.entries.sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
-            .map { entry -> defaults.firstOrNull { hex(it) == entry.key } ?: entry.key } + defaults + selected).distinctBy(::hex)
+        medications.groupingBy { hex(it.color) }
+            .eachCount()
+            .forEach { (color, count) -> counts.putIfAbsent(color, count) }
+        val ranked =
+            (counts.filterValues { it > 0 }.entries.sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
+                .map { entry ->
+                    defaults.firstOrNull { hex(it) == entry.key } ?: entry.key
+                } + defaults + selected).distinctBy(::hex)
         val visible = ranked.take(8)
         return if (visible.any { hex(it) == hex(selected) }) visible else visible.take(7) + selected
     }
 }
 
 data class DoseLog(
-    val date: String, val medicationId: String, val medicationName: String, val dose: String,
-    val time: String, val status: String, val recordedAt: Long,
+    val date: String,
+    val medicationId: String,
+    val medicationName: String,
+    val dose: String,
+    val time: String,
+    val status: String,
+    val recordedAt: Long,
     val scheduledAt: Long? = null,
     val onTime: Boolean = false,
     val clickedAt: Long? = null,
 )
 
 data class DoseItem(
-    val medication: Medication, val date: String, val time: String, val log: DoseLog?,
-    val snoozedUntil: Long?, val dueMillis: Long, val status: String,
+    val medication: Medication,
+    val date: String,
+    val time: String,
+    val log: DoseLog?,
+    val snoozedUntil: Long?,
+    val dueMillis: Long,
+    val status: String,
     val scheduledTime: String = time,
     val scheduledAt: Long = medication.scheduledMillis(LocalDate.parse(date), time),
 ) {
@@ -198,65 +289,146 @@ data class DoseItem(
 
 object DoseLogic {
     /** Snoozing changes alert delivery, never the original dose deadline. */
-    fun isDistantDose(item: DoseItem, nowMillis: Long): Boolean =
+    fun isDistantDose(
+        item: DoseItem,
+        nowMillis: Long
+    ): Boolean =
         item.scheduledAt - nowMillis > 30 * 60_000L
 
-    fun canRecordOnTime(deferred: Boolean, scheduledAt: Long, nowMillis: Long): Boolean =
+    fun canRecordOnTime(
+        deferred: Boolean,
+        scheduledAt: Long,
+        nowMillis: Long
+    ): Boolean =
         deferred && nowMillis >= scheduledAt
 
     /** Acceptance time and actual button-click time are deliberately kept separately. */
-    fun recordedLog(medication: Medication, date: String, time: String, status: String,
-                    scheduledAt: Long, nowMillis: Long, onTime: Boolean = false): DoseLog {
+    fun recordedLog(
+        medication: Medication,
+        date: String,
+        time: String,
+        status: String,
+        scheduledAt: Long,
+        nowMillis: Long,
+        onTime: Boolean = false
+    ): DoseLog {
         require(status == "taken" || status == "skipped")
         require(!onTime || status == "taken" && nowMillis >= scheduledAt)
-        return DoseLog(date, medication.id, medication.name, medication.doseAt(LocalDate.parse(date), time), time, status,
-            if (onTime) scheduledAt else nowMillis, scheduledAt, onTime, nowMillis)
+        return DoseLog(
+            date, medication.id, medication.name, medication.doseAt(LocalDate.parse(date), time), time, status,
+            if (onTime) scheduledAt else nowMillis, scheduledAt, onTime, nowMillis
+        )
     }
 
     fun dateKey(date: LocalDate = LocalDate.now()): String = date.toString()
-    fun slotKey(date: String, medicationId: String, time: String): String = "$date|$medicationId|$time"
-    fun isTime(time: String) = Regex("(?:[01][0-9]|2[0-3]):[0-5][0-9]").matches(time)
-    fun isDate(date: String) = runCatching { LocalDate.parse(date).toString() == date }.getOrDefault(false)
-    fun scheduledMillis(date: LocalDate, time: String, zone: ZoneId = ZoneId.systemDefault()): Long =
-        ZonedDateTime.of(date, LocalTime.parse(time), zone).toInstant().toEpochMilli()
+    fun slotKey(
+        date: String,
+        medicationId: String,
+        time: String
+    ): String = "$date|$medicationId|$time"
 
-    fun effectiveScheduledMillis(medication: Medication, date: LocalDate, time: String,
-                                 overrides: Map<String, String>, zone: ZoneId = ZoneId.systemDefault()): Long =
+    fun isTime(time: String) = Regex("(?:[01][0-9]|2[0-3]):[0-5][0-9]").matches(time)
+    fun isDate(date: String) = runCatching {
+        LocalDate.parse(date)
+            .toString() == date
+    }.getOrDefault(false)
+
+    fun scheduledMillis(
+        date: LocalDate,
+        time: String,
+        zone: ZoneId = ZoneId.systemDefault()
+    ): Long =
+        ZonedDateTime.of(date, LocalTime.parse(time), zone)
+            .toInstant()
+            .toEpochMilli()
+
+    fun effectiveScheduledMillis(
+        medication: Medication,
+        date: LocalDate,
+        time: String,
+        overrides: Map<String, String>,
+        zone: ZoneId = ZoneId.systemDefault()
+    ): Long =
         overrides[slotKey(date.toString(), medication.id, time)]?.takeIf(::isTime)
             ?.let { scheduledMillis(date, it, zone) } ?: medication.scheduledMillis(date, time, zone)
 
-    fun canMoveToday(item: DoseItem, newTime: String, items: List<DoseItem>, now: ZonedDateTime): Boolean =
-        item.date == now.toLocalDate().toString() && item.log == null && isTime(newTime) &&
-            scheduledMillis(now.toLocalDate(), newTime, now.zone) > now.toInstant().toEpochMilli() &&
-            items.none { it.id != item.id && it.medication.id == item.medication.id && it.scheduledTime == newTime }
+    fun canMoveToday(
+        item: DoseItem,
+        newTime: String,
+        items: List<DoseItem>,
+        now: ZonedDateTime
+    ): Boolean =
+        item.date == now.toLocalDate()
+            .toString() && item.log == null && isTime(newTime) &&
+                scheduledMillis(now.toLocalDate(), newTime, now.zone) > now.toInstant()
+            .toEpochMilli() &&
+                items.none { it.id != item.id && it.medication.id == item.medication.id && it.scheduledTime == newTime }
 
-    fun acceptedAt(item: DoseItem, at: Long, nowMillis: Long, zone: ZoneId = ZoneId.systemDefault()): DoseLog {
-        require(item.date == Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate().toString())
-        require(at <= nowMillis && Instant.ofEpochMilli(at).atZone(zone).toLocalDate().toString() == item.date)
-        return DoseLog(item.date, item.medication.id, item.medication.name, item.medication.dose,
+    fun acceptedAt(
+        item: DoseItem,
+        at: Long,
+        nowMillis: Long,
+        zone: ZoneId = ZoneId.systemDefault()
+    ): DoseLog {
+        require(
+            item.date == Instant.ofEpochMilli(nowMillis)
+                .atZone(zone)
+                .toLocalDate()
+                .toString()
+        )
+        require(
+            at <= nowMillis && Instant.ofEpochMilli(at)
+                .atZone(zone)
+                .toLocalDate()
+                .toString() == item.date
+        )
+        return DoseLog(
+            item.date, item.medication.id, item.medication.name, item.medication.dose,
             item.time, "taken", at, item.log?.scheduledAt ?: item.scheduledAt,
-            onTime = at == (item.log?.scheduledAt ?: item.scheduledAt), clickedAt = nowMillis)
+            onTime = at == (item.log?.scheduledAt ?: item.scheduledAt), clickedAt = nowMillis
+        )
     }
 
     /** Finds the next unrecorded slot across all rules, including finite and distant schedules. */
-    fun nextOccurrence(medication: Medication, time: String, now: ZonedDateTime, logs: List<DoseLog>, overrides: Map<String, String> = emptyMap()): Long? {
+    fun nextOccurrence(
+        medication: Medication,
+        time: String,
+        now: ZonedDateTime,
+        logs: List<DoseLog>,
+        overrides: Map<String, String> = emptyMap()
+    ): Long? {
         if (!medication.active || !isTime(time)) return null
-        val recordedDates = logs.filter { it.medicationId == medication.id && it.time == time }.map { it.date }.toSet()
-        return medication.schedules.filter { time in it.times }.mapNotNull { rule ->
-            var search = now.toLocalDate()
-            repeat(recordedDates.size + 2) {
-                val date = rule.nextDate(search) ?: return@mapNotNull null
-                val override = overrides[slotKey(date.toString(), medication.id, time)]?.takeIf(::isTime)
-                val at = override?.let { scheduledMillis(date, it, now.zone) } ?: rule.immediateAt ?: scheduledMillis(date, time, now.zone)
-                if (at > now.toInstant().toEpochMilli() && date.toString() !in recordedDates) return@mapNotNull at
-                search = date.plusDays(1)
+        val recordedDates =
+            logs.filter { it.medicationId == medication.id && it.time == time }
+                .map { it.date }
+                .toSet()
+        return medication.schedules.filter { time in it.times }
+            .mapNotNull { rule ->
+                var search = now.toLocalDate()
+                repeat(recordedDates.size + 2) {
+                    val date = rule.nextDate(search) ?: return@mapNotNull null
+                    val override = overrides[slotKey(date.toString(), medication.id, time)]?.takeIf(::isTime)
+                    val at =
+                        override?.let { scheduledMillis(date, it, now.zone) } ?: rule.immediateAt ?: scheduledMillis(
+                            date,
+                            time,
+                            now.zone
+                        )
+                    if (at > now.toInstant()
+                            .toEpochMilli() && date.toString() !in recordedDates
+                    ) return@mapNotNull at
+                    search = date.plusDays(1)
+                }
+                null
             }
-            null
-        }.minOrNull()
+            .minOrNull()
     }
 
     /** Delivery is an effect of saving a new immediate request, not of resuming the app. */
-    fun newImmediateSchedules(medication: Medication, previous: Medication?): List<DoseSchedule> {
+    fun newImmediateSchedules(
+        medication: Medication,
+        previous: Medication?
+    ): List<DoseSchedule> {
         if (!medication.active) return emptyList()
         val existing = previous?.takeIf { it.id == medication.id }?.schedules.orEmpty()
         return medication.schedules.filter { it.immediateAt != null && it.validationError() == null && it !in existing }
@@ -264,29 +436,37 @@ object DoseLogic {
     }
 
     fun todayItems(
-        medications: List<Medication>, logs: List<DoseLog>, snoozes: Map<String, Long>,
-        nowMillis: Long = System.currentTimeMillis(), date: LocalDate = LocalDate.now(),
+        medications: List<Medication>,
+        logs: List<DoseLog>,
+        snoozes: Map<String, Long>,
+        nowMillis: Long = System.currentTimeMillis(),
+        date: LocalDate = LocalDate.now(),
         overrides: Map<String, String> = emptyMap(),
     ): List<DoseItem> {
         val today = dateKey(date)
-        val logIndex = logs.filter { it.date == today }.associateBy { slotKey(it.date, it.medicationId, it.time) }
-        return medications.filter { it.active }.flatMap { medication ->
-            medication.timesOn(date).map { time ->
-                val key = slotKey(today, medication.id, time)
-                val logged = logIndex[key]
-                val snoozedUntil = snoozes[key]
-                val scheduledTime = overrides[key]?.takeIf(::isTime) ?: time
-                val scheduledAt = effectiveScheduledMillis(medication, date, time, overrides)
-                val due = snoozedUntil ?: scheduledAt
-                val status = when {
-                    logged != null -> logged.status
-                    snoozedUntil != null && nowMillis < snoozedUntil -> "snoozed"
-                    nowMillis < due -> "upcoming"
-                    nowMillis - due >= 30 * 60_000L -> "overdue"
-                    else -> "due"
-                }
-                DoseItem(medication, today, time, logged, snoozedUntil, due, status, scheduledTime, scheduledAt)
+        val logIndex =
+            logs.filter { it.date == today }
+                .associateBy { slotKey(it.date, it.medicationId, it.time) }
+        return medications.filter { it.active }
+            .flatMap { medication ->
+                medication.timesOn(date)
+                    .map { time ->
+                        val key = slotKey(today, medication.id, time)
+                        val logged = logIndex[key]
+                        val snoozedUntil = snoozes[key]
+                        val scheduledTime = overrides[key]?.takeIf(::isTime) ?: time
+                        val scheduledAt = effectiveScheduledMillis(medication, date, time, overrides)
+                        val due = snoozedUntil ?: scheduledAt
+                        val status = when {
+                            logged != null -> logged.status
+                            snoozedUntil != null && nowMillis < snoozedUntil -> "snoozed"
+                            nowMillis < due -> "upcoming"
+                            nowMillis - due >= 30 * 60_000L -> "overdue"
+                            else -> "due"
+                        }
+                        DoseItem(medication, today, time, logged, snoozedUntil, due, status, scheduledTime, scheduledAt)
+                    }
             }
-        }.sortedWith(compareBy({ it.scheduledTime }, { it.medication.name }))
+            .sortedWith(compareBy({ it.scheduledTime }, { it.medication.name }))
     }
 }

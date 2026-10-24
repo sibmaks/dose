@@ -4,11 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.SharedPreferences
+import android.graphics.Color.TRANSPARENT
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -28,11 +32,19 @@ internal val Mint: Color @Composable get() = themeColor(0xFF237C62, 0xFF7BD5B5)
 internal val Peach: Color @Composable get() = themeColor(0xFFAD5726, 0xFFFFB78E)
 internal val OnAccent: Color @Composable get() = MaterialTheme.colorScheme.onPrimary
 
-internal data class Appearance(val mode: ThemeMode, val dark: Boolean, val select: (ThemeMode) -> Unit)
+internal data class Appearance(
+    val mode: ThemeMode,
+    val dark: Boolean,
+    val select: (ThemeMode) -> Unit
+)
+
 internal val LocalAppearance = staticCompositionLocalOf { Appearance(ThemeMode.SYSTEM, false) {} }
 
 @Composable
-internal fun themeColor(light: Long, dark: Long): Color = Color(if (LocalAppearance.current.dark) dark else light)
+internal fun themeColor(
+    light: Long,
+    dark: Long
+): Color = Color(if (LocalAppearance.current.dark) dark else light)
 
 private val LightColors = lightColorScheme(
     primary = Color(0xFF6958D6), onPrimary = Color.White,
@@ -81,7 +93,7 @@ fun DoseTheme(content: @Composable () -> Unit) {
     val activity = context.findActivity() as? ComponentActivity
     SideEffect {
         activity?.enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT) { dark },
+            statusBarStyle = SystemBarStyle.auto(TRANSPARENT, TRANSPARENT) { dark },
             navigationBarStyle = SystemBarStyle.auto(0xE6FFFFFF.toInt(), 0xE612131B.toInt()) { dark },
         )
     }

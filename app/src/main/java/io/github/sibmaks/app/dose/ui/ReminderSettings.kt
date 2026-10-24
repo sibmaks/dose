@@ -22,14 +22,21 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import io.github.sibmaks.app.dose.R
-import io.github.sibmaks.app.dose.data.*
+import io.github.sibmaks.app.dose.data.ReminderEnableStep
+import io.github.sibmaks.app.dose.data.ReminderSetupState
+import io.github.sibmaks.app.dose.data.ReminderStyle
 import io.github.sibmaks.app.dose.reminders.ReminderAlerts
 import io.github.sibmaks.app.dose.reminders.ReminderNotifications
 import io.github.sibmaks.app.dose.reminders.ReminderScheduler
 import kotlinx.coroutines.flow.first
+import androidx.core.net.toUri
 
 @Composable
-internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> Unit, onRefresh: () -> Unit) {
+internal fun ReminderSettingsScreen(
+    state: ReminderSetupState,
+    onDismiss: () -> Unit,
+    onRefresh: () -> Unit
+) {
     val context = LocalContext.current
     // Granting access updates preferences; keep the initial setup layout stable until closed.
     val showPauseControls = rememberSaveable { ReminderAlerts.setupOffered(context) }
@@ -46,11 +53,15 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
         onRefresh()
     }
 
-    fun launchSettings(intent: Intent, fallback: Int) {
+    fun launchSettings(
+        intent: Intent,
+        fallback: Int
+    ) {
         runCatching { settingsLauncher.launch(intent) }.onFailure {
             pendingStyle = null
             requestedStep = null
-            Toast.makeText(context, context.getString(fallback), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(fallback), Toast.LENGTH_LONG)
+                .show()
         }
     }
 
@@ -61,48 +72,76 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
         lifecycle.currentStateFlow.first { it.isAtLeast(Lifecycle.State.RESUMED) }
         returned = false
         val current = ReminderAlerts.setupState(context)
-        val step = current.nextEnableStep(style, requestedStep)
-        when (step) {
+        when (val step = current.nextEnableStep(style, requestedStep)) {
             ReminderEnableStep.ENABLE -> {
-                ReminderAlerts.saveChoices(context, current.feedChecked || style == ReminderStyle.FEED,
-                    current.popupsChecked || style == ReminderStyle.POPUP)
+                ReminderAlerts.saveChoices(
+                    context, current.feedChecked || style == ReminderStyle.FEED,
+                    current.popupsChecked || style == ReminderStyle.POPUP
+                )
                 pendingStyle = null
                 requestedStep = null
                 ReminderScheduler.scheduleAll(context)
                 onRefresh()
             }
-            ReminderEnableStep.CANCEL -> { pendingStyle = null; requestedStep = null }
+
+            ReminderEnableStep.CANCEL -> {
+                pendingStyle = null; requestedStep = null
+            }
+
             else -> {
                 requestedStep = step
                 when (step) {
                     ReminderEnableStep.FEED_ACCESS -> {
-                        if (Build.VERSION.SDK_INT >= 33 && !ReminderNotifications.runtimePermissionGranted(context) && !ReminderAlerts.permissionRequested(context)) {
+                        if (Build.VERSION.SDK_INT >= 33 && !ReminderNotifications.runtimePermissionGranted(context) && !ReminderAlerts.permissionRequested(
+                                context
+                            )
+                        ) {
                             ReminderAlerts.markPermissionRequested(context)
                             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        } else launchSettings(ReminderNotifications.settingsIntent(context), R.string.notification_settings_fallback)
+                        } else launchSettings(
+                            ReminderNotifications.settingsIntent(context),
+                            R.string.notification_settings_fallback
+                        )
                     }
-                    ReminderEnableStep.OVERLAY_ACCESS -> launchSettings(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:${context.packageName}")), R.string.overlay_settings_fallback)
-                    ReminderEnableStep.EXACT_ALARMS -> if (Build.VERSION.SDK_INT >= 31) launchSettings(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
-                        Uri.parse("package:${context.packageName}")), R.string.exact_alarm_settings_fallback)
+
+                    ReminderEnableStep.OVERLAY_ACCESS -> launchSettings(
+                        Intent(
+                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            "package:${context.packageName}".toUri()
+                        ), R.string.overlay_settings_fallback
+                    )
+
+                    ReminderEnableStep.EXACT_ALARMS -> if (Build.VERSION.SDK_INT >= 31) launchSettings(
+                        Intent(
+                            Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                            "package:${context.packageName}".toUri()
+                        ), R.string.exact_alarm_settings_fallback
+                    )
+
                     else -> Unit
                 }
             }
         }
     }
 
-    fun choose(style: ReminderStyle, enabled: Boolean) {
+    fun choose(
+        style: ReminderStyle,
+        enabled: Boolean
+    ) {
         if (enabled) {
             requestedStep = null
             pendingStyle = style
             returned = true
         } else {
             val current = ReminderAlerts.setupState(context)
-            ReminderAlerts.saveChoices(context, current.feedChecked && style != ReminderStyle.FEED,
-                current.popupsChecked && style != ReminderStyle.POPUP)
+            ReminderAlerts.saveChoices(
+                context, current.feedChecked && style != ReminderStyle.FEED,
+                current.popupsChecked && style != ReminderStyle.POPUP
+            )
             onRefresh()
         }
     }
+
     fun accessHint(style: ReminderStyle): String? {
         val step = state.nextEnableStep(style)
         val resource = when (step) {
@@ -114,17 +153,31 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
         return context.getString(resource)
     }
 
-    SetupScreen(title = context.getString(R.string.set_up_reminders), onClose = onDismiss,
-        secondaryLabel = context.getString(R.string.later), showSecondary = !state.complete) {
-        ReminderChoice(context.getString(R.string.notification_feed), context.getString(R.string.notification_feed_hint),
-            state.feedChecked, pendingStyle == null, accessHint(ReminderStyle.FEED)) { choose(ReminderStyle.FEED, it) }
-        ReminderChoice(context.getString(R.string.pop_up_over_other_apps), context.getString(R.string.overlay_hint),
-            state.popupsChecked, pendingStyle == null, accessHint(ReminderStyle.POPUP)) { choose(ReminderStyle.POPUP, it) }
-        if (!state.feedChecked && !state.popupsChecked) Text(context.getString(R.string.reminders_disabled_hint), fontSize = 13.sp, color = TextMuted)
+    SetupScreen(
+        title = context.getString(R.string.set_up_reminders), onClose = onDismiss,
+        secondaryLabel = context.getString(R.string.later), showSecondary = !state.complete
+    ) {
+        ReminderChoice(
+            context.getString(R.string.notification_feed), context.getString(R.string.notification_feed_hint),
+            state.feedChecked, pendingStyle == null, accessHint(ReminderStyle.FEED)
+        ) { choose(ReminderStyle.FEED, it) }
+        ReminderChoice(
+            context.getString(R.string.pop_up_over_other_apps), context.getString(R.string.overlay_hint),
+            state.popupsChecked, pendingStyle == null, accessHint(ReminderStyle.POPUP)
+        ) { choose(ReminderStyle.POPUP, it) }
+        if (!state.feedChecked && !state.popupsChecked) Text(
+            context.getString(R.string.reminders_disabled_hint),
+            fontSize = 13.sp,
+            color = TextMuted
+        )
         if (state.feedChecked) TextButton(onClick = {
             launchSettings(ReminderNotifications.settingsIntent(context), R.string.notification_settings_fallback)
         }) { Text(context.getString(R.string.sound_notification_settings)) }
-        if (state.popupsChecked && !state.feedChecked) Text(context.getString(R.string.popup_feed_disabled_hint), fontSize = 12.sp, color = TextMuted)
+        if (state.popupsChecked && !state.feedChecked) Text(
+            context.getString(R.string.popup_feed_disabled_hint),
+            fontSize = 12.sp,
+            color = TextMuted
+        )
         if (showPauseControls) {
             HorizontalDivider(color = PanelBorder)
             NotificationPauseSection(onRefresh)
@@ -133,10 +186,22 @@ internal fun ReminderSettingsScreen(state: ReminderSetupState, onDismiss: () -> 
 }
 
 @Composable
-private fun ReminderChoice(title: String, explanation: String, checked: Boolean, enabled: Boolean,
-                           accessHint: String?, onChange: (Boolean) -> Unit) {
+private fun ReminderChoice(
+    title: String,
+    explanation: String,
+    checked: Boolean,
+    enabled: Boolean,
+    accessHint: String?,
+    onChange: (Boolean) -> Unit
+) {
     Surface(shape = RoundedCornerShape(14.dp), color = if (checked) AccentPanel else SoftPanel) {
-        Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
                 Text(explanation, color = TextMuted, fontSize = 12.sp)

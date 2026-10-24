@@ -1,7 +1,5 @@
 package io.github.sibmaks.app.dose.reminders
 
-import io.github.sibmaks.app.dose.localization.AppLanguages
-import io.github.sibmaks.app.dose.appearance.AppAppearance
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -21,8 +19,15 @@ import android.view.WindowManager
 import androidx.core.app.NotificationCompat
 import io.github.sibmaks.app.dose.MainActivity
 import io.github.sibmaks.app.dose.R
-import io.github.sibmaks.app.dose.data.*
+import io.github.sibmaks.app.dose.appearance.AppAppearance
+import io.github.sibmaks.app.dose.data.DoseGroups
+import io.github.sibmaks.app.dose.data.DoseLogic
+import io.github.sibmaks.app.dose.data.DoseStore
+import io.github.sibmaks.app.dose.localization.AppLanguages
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 /** Only runs while the opt-in pop-up is visible; notifications remain after it times out. */
 class ReminderOverlayService : Service() {
@@ -36,7 +41,10 @@ class ReminderOverlayService : Service() {
     private val expire = Runnable { finishAlert() }
     private val reconcile = object : Runnable {
         override fun run() {
-            if (NotificationPause.isPaused(this@ReminderOverlayService) || !ReminderAlerts.permissionGranted(this@ReminderOverlayService) || !ReminderAlerts.enabled(this@ReminderOverlayService)) {
+            if (NotificationPause.isPaused(this@ReminderOverlayService) || !ReminderAlerts.permissionGranted(this@ReminderOverlayService) || !ReminderAlerts.enabled(
+                    this@ReminderOverlayService
+                )
+            ) {
                 finishAlert(); return
             }
             val medications = DoseStore.medications(this@ReminderOverlayService)
@@ -44,23 +52,39 @@ class ReminderOverlayService : Service() {
             val snoozes = DoseStore.snoozes(this@ReminderOverlayService)
             slots.entries.removeAll { (_, slot) ->
                 val date = LocalDate.parse(slot.date)
-                date != LocalDate.now() || medications.none { it.id == slot.medicationId && it.active && slot.time in it.timesOn(date) &&
-                    slot.scheduledAt == DoseLogic.effectiveScheduledMillis(it, date, slot.time, DoseStore.timeOverrides(this@ReminderOverlayService)) } ||
-                    logs.any { it.date == slot.date && it.medicationId == slot.medicationId && it.time == slot.time } ||
-                    (snoozes[slot.key] ?: 0L) > System.currentTimeMillis()
+                date != LocalDate.now() || medications.none {
+                    it.id == slot.medicationId && it.active && slot.time in it.timesOn(date) &&
+                            slot.scheduledAt == DoseLogic.effectiveScheduledMillis(
+                        it,
+                        date,
+                        slot.time,
+                        DoseStore.timeOverrides(this@ReminderOverlayService)
+                    )
+                } ||
+                        logs.any { it.date == slot.date && it.medicationId == slot.medicationId && it.time == slot.time } ||
+                        (snoozes[slot.key] ?: 0L) > System.currentTimeMillis()
             }
-            if (slots.isEmpty()) { finishAlert(); return }
+            if (slots.isEmpty()) {
+                finishAlert(); return
+            }
             val language = languageKey()
             val languageChanged = renderedLanguage != null && renderedLanguage != language
             if (languageChanged && !enterForeground()) return
-            if (window == null || renderedKeys != slots.keys.toList() || languageChanged || renderedDark != AppAppearance.isDark(this@ReminderOverlayService)) render()
+            if (window == null || renderedKeys != slots.keys.toList() || languageChanged || renderedDark != AppAppearance.isDark(
+                    this@ReminderOverlayService
+                )
+            ) render()
             handler.postDelayed(this, 1_000)
         }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int
+    ): Int {
         // Always enter the foreground promptly, even if permission was revoked after dispatch.
         if (!enterForeground()) return START_NOT_STICKY
         val slot = intent?.let(ReminderSlot::from)
@@ -80,13 +104,34 @@ class ReminderOverlayService : Service() {
     private fun enterForeground(): Boolean {
         val context = AppLanguages.wrap(this)
         val notifications = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notifications.createNotificationChannel(NotificationChannel(CHANNEL, context.getString(R.string.reminder_pop_up), NotificationManager.IMPORTANCE_LOW))
-        val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        val notification = NotificationCompat.Builder(this, CHANNEL).setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(context.getString(R.string.medication_pop_up_is_open)).setContentText(context.getString(R.string.popup_service_hint))
-            .setContentIntent(open).setOngoing(true).setSilent(true).build()
+        notifications.createNotificationChannel(
+            NotificationChannel(
+                CHANNEL,
+                context.getString(R.string.reminder_pop_up),
+                NotificationManager.IMPORTANCE_LOW
+            )
+        )
+        val open = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, MainActivity::class.java),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val notification =
+            NotificationCompat.Builder(this, CHANNEL)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(context.getString(R.string.medication_pop_up_is_open))
+                .setContentText(context.getString(R.string.popup_service_hint))
+                .setContentIntent(open)
+                .setOngoing(true)
+                .setSilent(true)
+                .build()
         return try {
-            if (Build.VERSION.SDK_INT >= 34) startForeground(SERVICE_NOTIFICATION, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE)
+            if (Build.VERSION.SDK_INT >= 34) startForeground(
+                SERVICE_NOTIFICATION,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE
+            )
             else startForeground(SERVICE_NOTIFICATION, notification)
             true
         } catch (_: SecurityException) {
@@ -99,21 +144,48 @@ class ReminderOverlayService : Service() {
     private fun render() {
         val context = AppLanguages.wrap(this)
         val themed = ContextThemeWrapper(context, AppAppearance.activityTheme(context))
-        val medications = DoseStore.medications(this).associateBy { it.id }
+        val medications =
+            DoseStore.medications(this)
+                .associateBy { it.id }
         val entries = slots.values.mapNotNull { slot ->
             medications[slot.medicationId]?.let { medication ->
-                ReminderPopupView.Entry(medication, java.time.Instant.ofEpochMilli(slot.scheduledAt).atZone(java.time.ZoneId.systemDefault()).toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")), DoseLogic.canRecordOnTime(DoseStore.wasDeferred(this, slot.key), slot.scheduledAt, System.currentTimeMillis()), medication.amountAt(LocalDate.parse(slot.date), slot.time)) { action ->
-                    ReminderScheduler.actionIntent(this, action, slot.medicationId, slot.time, slot.date, slot.scheduledAt).send()
+                ReminderPopupView.Entry(
+                    medication,
+                    Instant.ofEpochMilli(slot.scheduledAt)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalTime()
+                        .format(DateTimeFormatter.ofPattern("HH:mm")),
+                    DoseLogic.canRecordOnTime(
+                        DoseStore.wasDeferred(this, slot.key),
+                        slot.scheduledAt,
+                        System.currentTimeMillis()
+                    ),
+                    medication.amountAt(LocalDate.parse(slot.date), slot.time)
+                ) { action ->
+                    ReminderScheduler.actionIntent(
+                        this,
+                        action,
+                        slot.medicationId,
+                        slot.time,
+                        slot.date,
+                        slot.scheduledAt
+                    )
+                        .send()
                     slots.remove(slot.key)
                     if (slots.isEmpty()) finishAlert() else render()
                 }
             }
         }
-        val current = DoseLogic.todayItems(DoseStore.medications(this), DoseStore.logs(this), DoseStore.snoozes(this),
-            overrides = DoseStore.timeOverrides(this))
+        val current = DoseLogic.todayItems(
+            DoseStore.medications(this), DoseStore.logs(this), DoseStore.snoozes(this),
+            overrides = DoseStore.timeOverrides(this)
+        )
         val members = DoseGroups.snapshot(current.filter { item -> slots[item.id]?.scheduledAt == item.scheduledAt })
-        val popup = ReminderPopupView.create(themed, entries,
-            keepNotification = ReminderAlerts.feedEnabled(this) && ReminderNotifications.allowed(this), onLater = ::deferAlerts,
+        val popup = ReminderPopupView.create(
+            themed,
+            entries,
+            keepNotification = ReminderAlerts.feedEnabled(this) && ReminderNotifications.allowed(this),
+            onLater = ::deferAlerts,
             onAll = { status ->
                 GroupDoseActions.record(this, members, status)
                 handler.removeCallbacks(reconcile)
@@ -121,12 +193,17 @@ class ReminderOverlayService : Service() {
             })
         val metrics = resources.displayMetrics
         val width = minOf(metrics.widthPixels - dp(32), dp(420)).coerceAtLeast(1)
-        popup.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec((metrics.heightPixels * 0.8).toInt(), View.MeasureSpec.AT_MOST))
+        popup.measure(
+            View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec((metrics.heightPixels * 0.8).toInt(), View.MeasureSpec.AT_MOST)
+        )
         val height = popup.measuredHeight
-        val params = WindowManager.LayoutParams(width, height, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+        val params = WindowManager.LayoutParams(
+            width, height, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-            PixelFormat.TRANSLUCENT).apply { gravity = Gravity.CENTER; setTitle(context.getString(R.string.dose_medication_reminder)) }
+            PixelFormat.TRANSLUCENT
+        )
+            .apply { gravity = Gravity.CENTER; setTitle(context.getString(R.string.dose_medication_reminder)) }
         try {
             window?.let { manager.removeView(it) }
             window = null
@@ -153,8 +230,18 @@ class ReminderOverlayService : Service() {
         super.onConfigurationChanged(newConfig)
         if (window != null) render()
     }
-    override fun onTimeout(startId: Int) { finishAlert() }
-    override fun onTimeout(startId: Int, fgsType: Int) { finishAlert() }
+
+    override fun onTimeout(startId: Int) {
+        finishAlert()
+    }
+
+    override fun onTimeout(
+        startId: Int,
+        fgsType: Int
+    ) {
+        finishAlert()
+    }
+
     private fun finishAlert() {
         handler.removeCallbacksAndMessages(null)
         window?.let { runCatching { manager.removeView(it) } }
@@ -162,10 +249,16 @@ class ReminderOverlayService : Service() {
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
-    override fun onDestroy() { finishAlert(); super.onDestroy() }
-    private fun languageKey() = AppLanguages.selectedTag(this) + "|" + AppLanguages.systemLocales(this).toLanguageTags()
+
+    override fun onDestroy() {
+        finishAlert(); super.onDestroy()
+    }
+
+    private fun languageKey() = AppLanguages.selectedTag(this) + "|" + AppLanguages.systemLocales(this)
+        .toLanguageTags()
 
     private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()
+
     companion object {
         private const val CHANNEL = "dose_popup_service"
         private const val SERVICE_NOTIFICATION = -1042

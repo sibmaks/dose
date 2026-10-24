@@ -2,6 +2,8 @@ package io.github.sibmaks.app.dose.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -14,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +28,7 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -47,9 +51,11 @@ import java.time.LocalTime
 import java.time.format.TextStyle
 import java.util.*
 
-private val ScheduleListSaver = androidx.compose.runtime.saveable.Saver<List<DoseSchedule>, String>(
+private val ScheduleListSaver = Saver<List<DoseSchedule>, String>(
     save = { rules ->
-        org.json.JSONArray().apply { rules.forEach { put(MedicationJson.encodeSchedule(it)) } }.toString()
+        org.json.JSONArray()
+            .apply { rules.forEach { put(MedicationJson.encodeSchedule(it)) } }
+            .toString()
     },
     restore = { saved ->
         runCatching {
@@ -62,8 +68,10 @@ private val ScheduleListSaver = androidx.compose.runtime.saveable.Saver<List<Dos
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun MedicationEditor(
-    original: Medication?, onDismiss: () -> Unit,
-    onSave: (Medication) -> Unit, onDelete: (Medication) -> Unit,
+    original: Medication?,
+    onDismiss: () -> Unit,
+    onSave: (Medication) -> Unit,
+    onDelete: (Medication) -> Unit,
 ) {
     val context = LocalContext.current
     var name by rememberSaveable { mutableStateOf(original?.name.orEmpty()) }
@@ -101,7 +109,7 @@ internal fun MedicationEditor(
     }
     val steps = MedicationEditorFlow.steps(form)
     val position = steps.indexOf(step)
-    val keyboard = androidx.compose.ui.platform.LocalSoftwareKeyboardController.current
+    val keyboard = LocalSoftwareKeyboardController.current
 
     fun changeSchedules(updated: List<DoseSchedule>) {
         schedules = updated.map { it.copy(priority = 0) }
@@ -135,7 +143,8 @@ internal fun MedicationEditor(
         MedicationStep.SCHEDULE -> if (schedules.isEmpty()) context.getString(R.string.schedule_required) else schedules.mapIndexedNotNull { index, rule ->
             rule.validationError()
                 ?.let { context.getString(R.string.schedule_error, index + 1, localizedValidationError(context, it)) }
-        }.firstOrNull()
+        }
+            .firstOrNull()
 
         MedicationStep.DETAILS -> if (addInstructions && note.isBlank()) context.getString(R.string.instructions_required) else null
         else -> null
@@ -151,13 +160,16 @@ internal fun MedicationEditor(
         val rules = schedules.map {
             it.copy(
                 times = it.times.sorted(),
-                dates = it.dates.distinct().sorted(),
+                dates = it.dates.distinct()
+                    .sorted(),
                 weekDays = it.weekDays.sorted(),
                 monthDays = it.monthDays.sorted(),
                 amount = it.amount?.trim()
             )
         }
-        if (DoseScheduleConflicts.unresolved(rules, amount.trim()).isNotEmpty()) {
+        if (DoseScheduleConflicts.unresolved(rules, amount.trim())
+                .isNotEmpty()
+        ) {
             resolvingPriorities = true
             return
         }
@@ -375,36 +387,37 @@ internal fun MedicationEditor(
                                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                                     verticalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                    MedicationColors.choices(colorUsage, medications, color).forEach { choice ->
-                                        val foreground =
-                                            Color(android.graphics.Color.parseColor(MedicationColors.hex(choice)))
-                                        val selected = MedicationColors.hex(color) == MedicationColors.hex(choice)
-                                        Box(
-                                            Modifier
-                                                .size(44.dp)
-                                                .clip(RoundedCornerShape(12.dp))
-                                                .background(foreground)
-                                                .border(
-                                                    if (selected) 3.dp else 1.dp,
-                                                    if (selected) TextPrimary else PanelBorder,
-                                                    RoundedCornerShape(12.dp)
-                                                )
-                                                .clickable { color = choice }
-                                                .semantics {
-                                                    contentDescription = context.getString(
-                                                        R.string.color_description,
-                                                        localizedColor(context, choice),
-                                                        if (selected) context.getString(R.string.selected_suffix) else ""
+                                    MedicationColors.choices(colorUsage, medications, color)
+                                        .forEach { choice ->
+                                            val foreground =
+                                                Color(parseColor(MedicationColors.hex(choice)))
+                                            val selected = MedicationColors.hex(color) == MedicationColors.hex(choice)
+                                            Box(
+                                                Modifier
+                                                    .size(44.dp)
+                                                    .clip(RoundedCornerShape(12.dp))
+                                                    .background(foreground)
+                                                    .border(
+                                                        if (selected) 3.dp else 1.dp,
+                                                        if (selected) TextPrimary else PanelBorder,
+                                                        RoundedCornerShape(12.dp)
                                                     )
-                                                }, contentAlignment = Alignment.Center
-                                        ) {
-                                            if (selected) Icon(
-                                                Icons.Rounded.Check,
-                                                null,
-                                                tint = if (foreground.luminance() > 0.45f) Color.Black else Color.White
-                                            )
+                                                    .clickable { color = choice }
+                                                    .semantics {
+                                                        contentDescription = context.getString(
+                                                            R.string.color_description,
+                                                            localizedColor(context, choice),
+                                                            if (selected) context.getString(R.string.selected_suffix) else ""
+                                                        )
+                                                    }, contentAlignment = Alignment.Center
+                                            ) {
+                                                if (selected) Icon(
+                                                    Icons.Rounded.Check,
+                                                    null,
+                                                    tint = if (foreground.luminance() > 0.45f) Color.Black else Color.White
+                                                )
+                                            }
                                         }
-                                    }
                                 }
                                 TextButton(onClick = { colorPickerInitial = color }) {
                                     Icon(
@@ -525,8 +538,9 @@ internal fun MedicationEditor(
                                         amount,
                                         quantity,
                                         onChange = { updated ->
-                                            changeSchedules(schedules.toMutableList()
-                                                .apply { set(index, updated.copy(immediateAt = null)) })
+                                            changeSchedules(
+                                                schedules.toMutableList()
+                                                    .apply { set(index, updated.copy(immediateAt = null)) })
                                         },
                                         onRemove = if (schedules.size > 1) ({
                                             changeSchedules(schedules.filterIndexed { i, _ -> i != index })
@@ -592,9 +606,11 @@ internal fun MedicationEditor(
                         }
                     }
                 }
-                Column(Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 12.dp)) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 12.dp)
+                ) {
                     if (original != null && step == MedicationStep.NAME) OutlinedButton(
                         onClick = { showDeleteConfirm = true },
                         modifier = Modifier
@@ -639,7 +655,8 @@ internal fun MedicationEditor(
             onDismiss = { colorPickerInitial = null },
             onChoose = { color = it; colorPickerInitial = null })
     }
-    if (resolvingPriorities) SchedulePriorityDialog(schedules, amount, quantity,
+    if (resolvingPriorities) SchedulePriorityDialog(
+        schedules, amount, quantity,
         onDismiss = { resolvingPriorities = false },
         onChoose = { index ->
             schedules = DoseScheduleConflicts.prefer(schedules, index)
@@ -678,19 +695,30 @@ private fun ScheduleEditor(
     val context = LocalContext.current
     val issue = if (showValidation) rule.validationIssue() else null
     val errorColor = MaterialTheme.colorScheme.error
-    fun pickDate(initial: String?, onPicked: (String) -> Unit) {
+    fun pickDate(
+        initial: String?,
+        onPicked: (String) -> Unit
+    ) {
         val date = initial?.let(LocalDate::parse) ?: LocalDate.now()
         DatePickerDialog(
             context,
             AppAppearance.dialogTheme(context),
-            { _, year, month, day -> onPicked(LocalDate.of(year, month + 1, day).toString()) },
+            { _, year, month, day ->
+                onPicked(
+                    LocalDate.of(year, month + 1, day)
+                        .toString()
+                )
+            },
             date.year,
             date.monthValue - 1,
             date.dayOfMonth
         ).show()
     }
 
-    fun pickTime(index: Int?, initial: String = "12:00") {
+    fun pickTime(
+        index: Int?,
+        initial: String = "12:00"
+    ) {
         val time = LocalTime.parse(initial)
         TimePickerDialog(context, AppAppearance.dialogTheme(context), { _, hour, minute ->
             val formatted = "%02d:%02d".format(Locale.US, hour, minute)
@@ -702,9 +730,11 @@ private fun ScheduleEditor(
         }, time.hour, time.minute, true).show()
     }
     Surface(shape = RoundedCornerShape(16.dp), color = SoftPanel, border = BorderStroke(1.dp, PanelBorder)) {
-        Column(Modifier
-            .fillMaxWidth()
-            .padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     context.getString(R.string.schedule_number, number),
@@ -730,20 +760,21 @@ private fun ScheduleEditor(
             when (rule.kind) {
                 ScheduleKind.SPECIFIC_DATES -> {
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        rule.dates.sorted().forEach { date ->
-                            InputChip(
-                                selected = false,
-                                onClick = { pickDate(date) { picked -> onChange(rule.copy(dates = (rule.dates - date + picked).distinct())) } },
-                                label = { Text(localizedDate(context, date)) },
-                                trailingIcon = {
-                                    Icon(
-                                        Icons.Rounded.Close,
-                                        context.getString(R.string.remove_date, date),
-                                        Modifier
-                                            .size(20.dp)
-                                            .clickable { onChange(rule.copy(dates = rule.dates - date)) })
-                                })
-                        }
+                        rule.dates.sorted()
+                            .forEach { date ->
+                                InputChip(
+                                    selected = false,
+                                    onClick = { pickDate(date) { picked -> onChange(rule.copy(dates = (rule.dates - date + picked).distinct())) } },
+                                    label = { Text(localizedDate(context, date)) },
+                                    trailingIcon = {
+                                        Icon(
+                                            Icons.Rounded.Close,
+                                            context.getString(R.string.remove_date, date),
+                                            Modifier
+                                                .size(20.dp)
+                                                .clickable { onChange(rule.copy(dates = rule.dates - date)) })
+                                    })
+                            }
                     }
                     TextButton(
                         colors = ButtonDefaults.textButtonColors(contentColor = if (issue?.field == ScheduleField.DATES) errorColor else Violet),
@@ -768,7 +799,8 @@ private fun ScheduleEditor(
                                 onClick = { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) },
                                 label = {
                                     Text(
-                                        DayOfWeek.of(day).getDisplayName(TextStyle.SHORT, AppLanguages.locale(context))
+                                        DayOfWeek.of(day)
+                                            .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context))
                                     )
                                 })
                         }
@@ -777,40 +809,42 @@ private fun ScheduleEditor(
                 }
 
                 ScheduleKind.MONTH_DAYS -> {
-                    (1..31).toList().chunked(7).forEach { row ->
-                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                            row.forEach { day ->
-                                val selected = day in rule.monthDays
-                                Surface(
-                                    onClick = { onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day)) },
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .height(40.dp)
-                                        .semantics {
-                                            contentDescription = context.getString(
-                                                R.string.day_description,
-                                                day,
-                                                if (selected) context.getString(R.string.selected_suffix) else ""
-                                            )
-                                        },
-                                    shape = RoundedCornerShape(8.dp), color = if (selected) Violet else Panel,
-                                    border = BorderStroke(
-                                        1.dp,
-                                        if (issue?.field == ScheduleField.MONTH_DAYS) errorColor else PanelBorder
-                                    )
-                                ) {
-                                    Box(contentAlignment = Alignment.Center) {
-                                        Text(
-                                            "$day",
-                                            fontSize = 12.sp,
-                                            color = if (selected) OnAccent else TextPrimary
+                    (1..31).toList()
+                        .chunked(7)
+                        .forEach { row ->
+                            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                row.forEach { day ->
+                                    val selected = day in rule.monthDays
+                                    Surface(
+                                        onClick = { onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day)) },
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .height(40.dp)
+                                            .semantics {
+                                                contentDescription = context.getString(
+                                                    R.string.day_description,
+                                                    day,
+                                                    if (selected) context.getString(R.string.selected_suffix) else ""
+                                                )
+                                            },
+                                        shape = RoundedCornerShape(8.dp), color = if (selected) Violet else Panel,
+                                        border = BorderStroke(
+                                            1.dp,
+                                            if (issue?.field == ScheduleField.MONTH_DAYS) errorColor else PanelBorder
                                         )
+                                    ) {
+                                        Box(contentAlignment = Alignment.Center) {
+                                            Text(
+                                                "$day",
+                                                fontSize = 12.sp,
+                                                color = if (selected) OnAccent else TextPrimary
+                                            )
+                                        }
                                     }
                                 }
+                                repeat(7 - row.size) { Spacer(Modifier.weight(1f)) }
                             }
-                            repeat(7 - row.size) { Spacer(Modifier.weight(1f)) }
                         }
-                    }
                     ScheduleError(issue, ScheduleField.MONTH_DAYS)
                     Text(context.getString(R.string.missing_month_days_hint), fontSize = 12.sp, color = TextMuted)
                 }
@@ -823,7 +857,15 @@ private fun ScheduleEditor(
                     rule.from,
                     context.getString(R.string.default_date, localizedDate(context, rule.createdOn)),
                     onPick = { pickDate(rule.from ?: rule.createdOn) { onChange(rule.copy(from = it)) } },
-                    onClear = { onChange(rule.copy(from = null, createdOn = LocalDate.now().toString())) },
+                    onClear = {
+                        onChange(
+                            rule.copy(
+                                from = null,
+                                createdOn = LocalDate.now()
+                                    .toString()
+                            )
+                        )
+                    },
                     error = issue?.takeIf { it.field in listOf(ScheduleField.START, ScheduleField.BOUNDS) }
                         ?.let { localizedValidationError(context, it.message) })
                 DateBound(
@@ -889,7 +931,12 @@ private fun ScheduleEditor(
                     modifier = Modifier.fillMaxWidth(),
                 )
                 TextButton(onClick = { onChange(rule.copy(amount = null)) }) {
-                    Text(context.getString(R.string.default_schedule_amount, "$defaultAmount ${localizedUnit(context, quantity)}"))
+                    Text(
+                        context.getString(
+                            R.string.default_schedule_amount,
+                            "$defaultAmount ${localizedUnit(context, quantity)}"
+                        )
+                    )
                 }
             }
         }
@@ -897,7 +944,10 @@ private fun ScheduleEditor(
 }
 
 @Composable
-private fun ScheduleError(issue: ScheduleIssue?, field: ScheduleField) {
+private fun ScheduleError(
+    issue: ScheduleIssue?,
+    field: ScheduleField
+) {
     if (issue?.field == field) Text(
         localizedValidationError(LocalContext.current, issue.message),
         color = MaterialTheme.colorScheme.error,
@@ -940,29 +990,53 @@ private fun DateBound(
     }
 }
 
-internal fun scheduleSummary(context: android.content.Context, rule: DoseSchedule, defaultAmount: String? = null, quantity: String = ""): String {
+internal fun scheduleSummary(
+    context: Context,
+    rule: DoseSchedule,
+    defaultAmount: String? = null,
+    quantity: String = ""
+): String {
     val dates = when (rule.kind) {
         ScheduleKind.DAILY -> context.getString(R.string.every_day)
-        ScheduleKind.SPECIFIC_DATES -> rule.dates.sorted().joinToString(", ") { localizedDate(context, it) }
-        ScheduleKind.WEEKDAYS -> rule.weekDays.sorted()
-            .joinToString(", ") { DayOfWeek.of(it).getDisplayName(TextStyle.SHORT, AppLanguages.locale(context)) }
+        ScheduleKind.SPECIFIC_DATES -> rule.dates.sorted()
+            .joinToString(", ") { localizedDate(context, it) }
 
-        ScheduleKind.MONTH_DAYS -> context.getString(R.string.monthly_days, rule.monthDays.sorted().joinToString(", "))
+        ScheduleKind.WEEKDAYS -> rule.weekDays.sorted()
+            .joinToString(", ") {
+                DayOfWeek.of(it)
+                    .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context))
+            }
+
+        ScheduleKind.MONTH_DAYS -> context.getString(
+            R.string.monthly_days,
+            rule.monthDays.sorted()
+                .joinToString(", ")
+        )
     }
     val bounds = if (rule.kind == ScheduleKind.SPECIFIC_DATES) "" else context.getString(
         R.string.from_date,
         localizedDate(context, rule.from ?: rule.createdOn)
     ) + (rule.until?.let { context.getString(R.string.until_date, localizedDate(context, it)) } ?: "")
-    val dose = defaultAmount?.let { "${rule.amount ?: it} ${localizedUnit(context, quantity)} · " }.orEmpty()
+    val dose =
+        defaultAmount?.let { "${rule.amount ?: it} ${localizedUnit(context, quantity)} · " }
+            .orEmpty()
     return "$dose$dates · ${rule.times.joinToString(", ")}$bounds"
 }
 
 @Composable
-private fun SchedulePriorityDialog(schedules: List<DoseSchedule>, amount: String, quantity: String,
-                                   onDismiss: () -> Unit, onChoose: (Int) -> Unit) {
+private fun SchedulePriorityDialog(
+    schedules: List<DoseSchedule>,
+    amount: String,
+    quantity: String,
+    onDismiss: () -> Unit,
+    onChoose: (Int) -> Unit
+) {
     val context = LocalContext.current
     val overlaps = remember(schedules, amount) { DoseScheduleConflicts.unresolved(schedules, amount) }
-    val choices = overlaps.flatMap { listOf(it.first, it.second) }.distinct().sorted()
+    val choices =
+        overlaps.flatMap { listOf(it.first, it.second) }
+            .distinct()
+            .sorted()
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(context.getString(R.string.dose_overlap_title)) },
@@ -970,15 +1044,27 @@ private fun SchedulePriorityDialog(schedules: List<DoseSchedule>, amount: String
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(context.getString(R.string.dose_overlap_hint))
                 overlaps.forEach { overlap ->
-                    Text("${localizedDate(context, overlap.date.toString())} · ${overlap.times.joinToString(", ")} · " +
-                        "${schedules[overlap.first].amount ?: amount} / ${schedules[overlap.second].amount ?: amount} ${localizedUnit(context, quantity)}",
-                        fontSize = 12.sp, color = TextMuted)
+                    Text(
+                        "${localizedDate(context, overlap.date.toString())} · ${overlap.times.joinToString(", ")} · " +
+                                "${schedules[overlap.first].amount ?: amount} / ${schedules[overlap.second].amount ?: amount} ${
+                                    localizedUnit(
+                                        context,
+                                        quantity
+                                    )
+                                }",
+                        fontSize = 12.sp, color = TextMuted
+                    )
                 }
                 choices.forEach { index ->
                     val rule = schedules[index]
                     OutlinedButton(onClick = { onChoose(index) }, modifier = Modifier.fillMaxWidth()) {
                         Column(Modifier.fillMaxWidth()) {
-                            Text(context.getString(R.string.prioritize_dose, "${rule.amount ?: amount} ${localizedUnit(context, quantity)}"), fontWeight = FontWeight.Bold)
+                            Text(
+                                context.getString(
+                                    R.string.prioritize_dose,
+                                    "${rule.amount ?: amount} ${localizedUnit(context, quantity)}"
+                                ), fontWeight = FontWeight.Bold
+                            )
                             Text(context.getString(R.string.schedule_number, index + 1), fontSize = 12.sp)
                             Text(scheduleSummary(context, rule), fontSize = 12.sp)
                         }

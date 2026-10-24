@@ -1,21 +1,21 @@
 package io.github.sibmaks.app.dose
 
-import io.github.sibmaks.app.dose.appearance.AppAppearance
-import android.os.Bundle
-import android.content.Intent
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableIntStateOf
-import io.github.sibmaks.app.dose.widget.DoseWidget
 import android.content.Context
-import io.github.sibmaks.app.dose.localization.AppLanguages
+import android.content.Intent
+import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import io.github.sibmaks.app.dose.reminders.ReminderScheduler
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
+import io.github.sibmaks.app.dose.appearance.AppAppearance
+import io.github.sibmaks.app.dose.localization.AppLanguages
 import io.github.sibmaks.app.dose.reminders.ReminderNotifications
+import io.github.sibmaks.app.dose.reminders.ReminderScheduler
 import io.github.sibmaks.app.dose.ui.DoseApp
 import io.github.sibmaks.app.dose.ui.DoseTheme
+import io.github.sibmaks.app.dose.widget.DoseWidget
 
 class MainActivity : ComponentActivity() {
     private var todayRequests by mutableIntStateOf(0)
@@ -28,7 +28,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun attachBaseContext(newBase: Context) { super.attachBaseContext(AppLanguages.wrap(newBase)) }
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguages.wrap(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(AppAppearance.activityTheme(this))

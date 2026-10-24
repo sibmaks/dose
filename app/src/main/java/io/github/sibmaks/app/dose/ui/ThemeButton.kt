@@ -23,7 +23,8 @@ internal fun ThemeButton() {
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             ThemeMode.entries.forEach { mode ->
-                DropdownMenuItem(text = { Text(stringResource(mode.label())) },
+                DropdownMenuItem(
+                    text = { Text(stringResource(mode.label())) },
                     leadingIcon = { ThemeIcon(mode, null) },
                     trailingIcon = { if (appearance.mode == mode) Icon(Icons.Rounded.Check, null) },
                     onClick = { expanded = false; appearance.select(mode) })
@@ -39,7 +40,10 @@ private fun ThemeMode.label(): Int = when (this) {
 }
 
 @Composable
-private fun ThemeIcon(mode: ThemeMode, description: String?) {
+private fun ThemeIcon(
+    mode: ThemeMode,
+    description: String?
+) {
     when (mode) {
         ThemeMode.SYSTEM -> Icon(painterResource(R.drawable.ic_theme_system), description, tint = TextMuted)
         ThemeMode.LIGHT -> Icon(Icons.Rounded.LightMode, description, tint = TextMuted)
