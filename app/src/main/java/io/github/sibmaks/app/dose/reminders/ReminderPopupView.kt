@@ -185,7 +185,7 @@ internal object ReminderPopupView {
             val secondary = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
             secondary.addView(
                 pill(context.getString(R.string.snooze_10_min)) { entry.onAction(ReminderReceiver.ACTION_SNOOZE) },
-                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.4f)
+                LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
                     .apply { marginEnd = dp(8) })
             secondary.addView(
                 pill(context.getString(R.string.skip), quiet = true) { entry.onAction(ReminderReceiver.ACTION_SKIP) },
