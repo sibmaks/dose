@@ -16,7 +16,10 @@ import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseStore
 import io.github.sibmaks.app.dose.data.Medication
 import io.github.sibmaks.app.dose.ui.iconResource
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -87,12 +90,25 @@ class ReminderReceiver : BroadcastReceiver() {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
-        val message = medication.localizedDose(context) + if (medication.note.isBlank()) "" else " · ${medication.note}"
+        val items = DoseLogic.todayItems(DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context),
+            overrides = DoseStore.timeOverrides(context))
+        val group = DoseGroups.together(items, items.find { it.medication.id == id && it.time == time && it.date == date })
+        val multiple = group.size > 1
+        val message = if (multiple) group.joinToString("\n") {
+            "${it.medication.name} · ${notificationDetail(context, it.medication, it.scheduledAt)}"
+        } else notificationDetail(context, medication, scheduledAt)
+        val taken = if (multiple) GroupDoseActions.pending(context, GroupDoseActions.TAKEN, group)
+            else ReminderScheduler.actionIntent(context, ACTION_TAKEN, id, time, date, scheduledAt)
+        val skip = if (multiple) GroupDoseActions.pending(context, GroupDoseActions.SKIP, group)
+            else ReminderScheduler.actionIntent(context, ACTION_SKIP, id, time, date, scheduledAt)
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(medication.form.iconResource())
-            .setContentTitle(context.getString(R.string.time_for_named, medication.name))
-            .setContentText(message)
+            .setContentTitle(if (multiple) context.getString(R.string.several_medicines, group.size)
+                else context.getString(R.string.time_for_named, medication.name))
+            .setContentText(if (multiple) group.joinToString(", ") { it.medication.name } else message)
             .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+            .addAction(R.drawable.ic_notification, context.getString(R.string.taken), taken)
+            .addAction(R.drawable.ic_notification, context.getString(R.string.skip), skip)
             .addExtras(Bundle().apply {
                 putString(EXTRA_MEDICATION_ID, id)
                 putString(EXTRA_TIME, time)
@@ -105,24 +121,6 @@ class ReminderReceiver : BroadcastReceiver() {
             .setContentIntent(open)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
-        val items = DoseLogic.todayItems(DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context),
-            overrides = DoseStore.timeOverrides(context))
-        val group = DoseGroups.together(items, items.find { it.medication.id == id && it.time == time && it.date == date })
-        if (group.size > 1) {
-            builder.setContentTitle(context.getString(R.string.several_medicines, group.size))
-                .setContentText(group.joinToString(", ") { it.medication.name })
-        }
-        val onTime = DoseLogic.canRecordOnTime(DoseStore.wasDeferred(context, "$date|$id|$time"), scheduledAt, System.currentTimeMillis())
-        if (group.size > 1 || onTime) {
-            // Custom rows retain the individual actions alongside the two group actions.
-            builder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomBigContentView(DeferredNotificationViews.expanded(context, medication, date, time, scheduledAt, group, onTime))
-                .setCustomHeadsUpContentView(DeferredNotificationViews.headsUp(context, medication, date, time, scheduledAt, group, onTime))
-        } else {
-            builder.addAction(R.drawable.ic_notification, context.getString(R.string.taken), ReminderScheduler.actionIntent(context, ACTION_TAKEN, id, time, date, scheduledAt))
-                .addAction(R.drawable.ic_notification, context.getString(R.string.snooze_10_min), ReminderScheduler.actionIntent(context, ACTION_SNOOZE, id, time, date, scheduledAt))
-                .addAction(R.drawable.ic_notification, context.getString(R.string.skip), ReminderScheduler.actionIntent(context, ACTION_SKIP, id, time, date, scheduledAt))
-        }
         val notification = builder.build()
         try {
             NotificationManagerCompat.from(context).notify(notificationId, notification)
@@ -130,6 +128,12 @@ class ReminderReceiver : BroadcastReceiver() {
             // Permission can be revoked after the readiness check; pop-ups remain independent.
             Log.w("DoseNotifications", "Notification permission was revoked before delivery", failure)
         }
+    }
+
+    private fun notificationDetail(context: Context, medication: Medication, scheduledAt: Long): String {
+        val time = Instant.ofEpochMilli(scheduledAt).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("HH:mm"))
+        return medication.localizedDose(context) + " · " + context.getString(R.string.scheduled_time, time) +
+            if (medication.note.isBlank()) "" else " · ${medication.note}"
     }
 
     companion object {
