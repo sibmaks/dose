@@ -249,4 +249,5 @@
     <string name="dose_overlap_title">"Doza prioriteti"</string>
     <string name="dose_overlap_hint">"Fərqli dozalar üst-üstə düşür. Əvvəlcə ən yüksək prioritetli dozanı seçin. Bu, yalnız cədvəllər üst-üstə düşdükdə tətbiq olunur; digər qəbullar saxlanılır."</string>
     <string name="prioritize_dose">"Prioritet: %1$s"</string>
+    <string name="ready">"Hazır"</string>
 </resources>

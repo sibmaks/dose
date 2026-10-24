@@ -249,4 +249,5 @@
     <string name="dose_overlap_title">"Дозанын артыкчылыгы"</string>
     <string name="dose_overlap_hint">"Ар башка дозалар дал келет. Адегенде артыкчылыгы эң жогору дозаны тандаңыз. Ал графиктер дал келгенде гана колдонулат; башка кабыл алуулар сакталат."</string>
     <string name="prioritize_dose">"Артыкчылык: %1$s"</string>
+    <string name="ready">"Даяр"</string>
 </resources>

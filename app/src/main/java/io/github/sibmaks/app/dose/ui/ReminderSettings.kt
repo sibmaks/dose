@@ -34,12 +34,11 @@ import androidx.core.net.toUri
 @Composable
 internal fun ReminderSettingsScreen(
     state: ReminderSetupState,
+    firstLaunch: Boolean,
     onDismiss: () -> Unit,
     onRefresh: () -> Unit
 ) {
     val context = LocalContext.current
-    // Granting access updates preferences; keep the initial setup layout stable until closed.
-    val showPauseControls = rememberSaveable { ReminderAlerts.setupOffered(context) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var pendingStyle by rememberSaveable { mutableStateOf<ReminderStyle?>(null) }
     var requestedStep by rememberSaveable { mutableStateOf<ReminderEnableStep?>(null) }
@@ -155,6 +154,8 @@ internal fun ReminderSettingsScreen(
 
     SetupScreen(
         title = context.getString(R.string.set_up_reminders), onClose = onDismiss,
+        primaryLabel = if (firstLaunch && state.complete && pendingStyle == null) context.getString(R.string.ready) else null,
+        onPrimary = onDismiss,
         secondaryLabel = context.getString(R.string.later), showSecondary = !state.complete
     ) {
         ReminderChoice(
@@ -178,7 +179,7 @@ internal fun ReminderSettingsScreen(
             fontSize = 12.sp,
             color = TextMuted
         )
-        if (showPauseControls) {
+        if (!firstLaunch) {
             HorizontalDivider(color = PanelBorder)
             NotificationPauseSection(onRefresh)
         }

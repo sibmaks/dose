@@ -249,4 +249,5 @@
     <string name="dose_overlap_title">"დოზის პრიორიტეტი"</string>
     <string name="dose_overlap_hint">"განსხვავებული დოზები ემთხვევა. ჯერ აირჩიეთ ყველაზე მაღალი პრიორიტეტის დოზა. ის გამოიყენება მხოლოდ განრიგების დამთხვევისას; სხვა მიღებები უცვლელი რჩება."</string>
     <string name="prioritize_dose">"პრიორიტეტი: %1$s"</string>
+    <string name="ready">"მზადაა"</string>
 </resources>

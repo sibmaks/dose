@@ -249,4 +249,5 @@
     <string name="dose_overlap_title">"Չափաբաժնի առաջնահերթություն"</string>
     <string name="dose_overlap_hint">"Տարբեր չափաբաժիններ համընկնում են։ Նախ ընտրեք ամենաբարձր առաջնահերթությամբ չափաբաժինը։ Այն կիրառվում է միայն ժամանակացույցերի համընկնման դեպքում, իսկ մյուս ընդունումները պահպանվում են։"</string>
     <string name="prioritize_dose">"Առաջնահերթ՝ %1$s"</string>
+    <string name="ready">"Պատրաստ է"</string>
 </resources>

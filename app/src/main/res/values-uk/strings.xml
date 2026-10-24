@@ -249,4 +249,5 @@
     <string name="dose_overlap_title">"Пріоритет доз"</string>
     <string name="dose_overlap_hint">"Різні дози перетинаються. Спочатку виберіть дозу з найвищим пріоритетом. Вона застосовується лише за перетину розкладів; інші прийоми зберігаються."</string>
     <string name="prioritize_dose">"Пріоритет: %1$s"</string>
+    <string name="ready">"Готово"</string>
 </resources>

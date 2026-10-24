@@ -83,6 +83,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
     var editingId by rememberSaveable { mutableStateOf<String?>(null) }
     var showEditor by rememberSaveable { mutableStateOf(false) }
     var showReminderSettings by rememberSaveable { mutableStateOf(!ReminderAlerts.setupOffered(context)) }
+    var firstReminderSetup by rememberSaveable { mutableStateOf(!ReminderAlerts.setupOffered(context)) }
     var showLanguagePicker by rememberSaveable { mutableStateOf(!AppLanguages.offered(context)) }
     val firstLanguageOffer = !AppLanguages.offered(context)
     LaunchedEffect(openTodayRequest) {
@@ -133,8 +134,9 @@ fun DoseApp(openTodayRequest: Int = 0) {
     }
 
     if (showReminderSettings) {
-        ReminderSettingsScreen(reminderSetup, onDismiss = {
+        ReminderSettingsScreen(reminderSetup, firstLaunch = firstReminderSetup, onDismiss = {
             ReminderAlerts.markSetupOffered(context)
+            firstReminderSetup = false
             showReminderSettings = false
             refresh()
         }, onRefresh = ::refresh)
@@ -236,7 +238,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                 Spacer(Modifier.weight(1f))
                 LanguageButton(onClick = { showLanguagePicker = true })
                 ThemeButton()
-                IconButton(onClick = { showReminderSettings = true }) {
+                IconButton(onClick = { firstReminderSetup = false; showReminderSettings = true }) {
                     Icon(
                         if (reminderSetup.complete) Icons.Rounded.NotificationsActive else Icons.Outlined.Notifications,
                         contentDescription = if (reminderSetup.complete) context.getString(R.string.setup_complete_accessibility) else context.getString(
@@ -291,7 +293,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                     listState = todayScroll,
                     hasMedications = medications.isNotEmpty(),
                     showSetupWarning = !reminderSetup.complete,
-                    onReminderSetup = { showReminderSettings = true },
+                    onReminderSetup = { firstReminderSetup = false; showReminderSettings = true },
                     onAdd = { editingId = null; showEditor = true },
                     onOpen = { todayDoseId = it.id },
                     onManage = { scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) } },

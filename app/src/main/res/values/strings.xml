@@ -251,4 +251,5 @@
     <string name="dose_overlap_title">"Choose dose priority"</string>
     <string name="dose_overlap_hint">"Different amounts overlap. Choose the highest-priority dose first. It applies only where schedules overlap; other doses stay unchanged."</string>
     <string name="prioritize_dose">"Prioritize %1$s"</string>
+    <string name="ready">"Ready"</string>
 </resources>
