@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Абярыце дату"</string>
     <string name="pick_time_placeholder">"Абярыце час"</string>
     <string name="intake_time_required_error">"Укажіце дату і час прыёму."</string>
-    <string name="edit_intake_hint_late">"Час напаміну не падстаўляецца аўтаматычна — укажыце фактычны час прыёму. Гісторыя напамінаў захаваецца."</string>
     <string name="edit_intake_hint_taken">"Выпраўленне часу абновіць статыстыку прыёму. Гісторыя напамінаў захаваецца."</string>
     <string name="current_status_tag">"Бягучы"</string>
     <string name="intake_menu_accessibility">"Дзеянні з запісам"</string>

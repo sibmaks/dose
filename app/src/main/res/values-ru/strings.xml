@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Выберите дату"</string>
     <string name="pick_time_placeholder">"Выберите время"</string>
     <string name="intake_time_required_error">"Укажите дату и время приёма."</string>
-    <string name="edit_intake_hint_late">"Время напоминания не подставляется автоматически — укажите фактическое время приёма. История напоминаний сохранится."</string>
     <string name="edit_intake_hint_taken">"Исправление времени обновит статистику приёма. История напоминаний сохранится."</string>
     <string name="current_status_tag">"Текущий"</string>
     <string name="intake_menu_accessibility">"Действия с записью"</string>

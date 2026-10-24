@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Күндү тандаңыз"</string>
     <string name="pick_time_placeholder">"Убакытты тандаңыз"</string>
     <string name="intake_time_required_error">"Кабыл алуу күнү менен убакытын көрсөтүңүз."</string>
-    <string name="edit_intake_hint_late">"Эскертүү убакыты автоматтык түрдө жазылбайт — чыныгы кабыл алуу убакытын көрсөтүңүз. Эскертүү тарыхы өзгөрбөй калат."</string>
     <string name="edit_intake_hint_taken">"Убакытты түзөтүү статистиканы жаңыртат. Эскертүү тарыхы өзгөрбөй калат."</string>
     <string name="current_status_tag">"Азыркы"</string>
     <string name="intake_menu_accessibility">"Жазуу аракеттери"</string>

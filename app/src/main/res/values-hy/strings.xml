@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Ընտրեք ամսաթիվը"</string>
     <string name="pick_time_placeholder">"Ընտրեք ժամանակը"</string>
     <string name="intake_time_required_error">"Նշեք ընդունման ամսաթիվն ու ժամանակը:"</string>
-    <string name="edit_intake_hint_late">"Հիշեցման ժամանակը ինքնաբերաբար չի լրացվում — նշեք ընդունման իրական ժամանակը: Հիշեցումների պատմությունը կմնա անփոփոխ:"</string>
     <string name="edit_intake_hint_taken">"Ժամանակի ուղղումը թարմացնում է վիճակագրությունը: Հիշեցումների պատմությունը կմնա անփոփոխ:"</string>
     <string name="current_status_tag">"Ընթացիկ"</string>
     <string name="intake_menu_accessibility">"Գրառման գործողություններ"</string>

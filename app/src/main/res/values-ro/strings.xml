@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Alegeți data"</string>
     <string name="pick_time_placeholder">"Alegeți ora"</string>
     <string name="intake_time_required_error">"Specificați data și ora administrării."</string>
-    <string name="edit_intake_hint_late">"Ora memento nu se completează automat — introduceți ora reală de administrare. Istoricul memento-urilor rămâne neschimbat."</string>
     <string name="edit_intake_hint_taken">"Corectarea orei actualizează statisticile. Istoricul memento-urilor rămâne neschimbat."</string>
     <string name="current_status_tag">"Curent"</string>
     <string name="intake_menu_accessibility">"Acțiuni pentru înregistrare"</string>

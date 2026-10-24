@@ -91,4 +91,20 @@ class DoseHistoryTest {
         assertTrue(runCatching { DoseHistory.defer(log, "missed") }.isFailure)
         assertTrue(runCatching { DoseHistory.defer(pending, "skipped") }.isFailure)
     }
+
+    @Test fun `a taken entry reverts to awaiting or cancelled with the audit rules`() {
+        val reopened = DoseHistory.revert(log, "pending", deadline + 3_600_000)
+        assertEquals("pending", reopened.status)
+        assertEquals(0, reopened.recordedAt)
+        assertFalse(reopened.onTime)
+        assertNull(reopened.clickedAt)
+        assertEquals(log.copy(status = "pending", recordedAt = 0, onTime = false, clickedAt = null), reopened)
+        val cancelled = DoseHistory.revert(log, "skipped", deadline + 3_600_000)
+        assertEquals("skipped", cancelled.status)
+        assertEquals(deadline + 3_600_000, cancelled.recordedAt)
+        assertEquals(deadline + 3_600_000, cancelled.clickedAt)
+        assertFalse(cancelled.onTime)
+        assertTrue(runCatching { DoseHistory.revert(log.copy(status = "pending"), "pending", 0) }.isFailure)
+        assertTrue(runCatching { DoseHistory.revert(log, "missed", 0) }.isFailure)
+    }
 }

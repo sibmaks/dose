@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Tarix seçin"</string>
     <string name="pick_time_placeholder">"Vaxt seçin"</string>
     <string name="intake_time_required_error">"Qəbul tarixini və vaxtını göstərin."</string>
-    <string name="edit_intake_hint_late">"Xəbərdarlıq vaxtı avtomatik yazılmır — faktiki qəbul vaxtını göstərin. Xəbərdarlıq tarixçəsi dəyişməz qalır."</string>
     <string name="edit_intake_hint_taken">"Vaxtın düzəldilməsi statistikanı yeniləyir. Xəbərdarlıq tarixçəsi dəyişməz qalır."</string>
     <string name="current_status_tag">"Cari"</string>
     <string name="intake_menu_accessibility">"Yazı üzrə əməliyyatlar"</string>

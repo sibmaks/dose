@@ -271,15 +271,18 @@ object DoseStore {
         return replaceHistory(context, expected, accepted)
     }
 
-    /** Switching between unresolved statuses keeps the slot awaiting; no intake timestamp is implied. */
+    /** Status switches: taken entries may revert; unresolved entries stay unresolved without a timestamp. */
     @Synchronized
     fun resolveHistory(
         context: Context,
         expected: DoseLog,
         status: String
     ): Boolean {
-        val deferred = runCatching { DoseHistory.defer(expected, status) }.getOrNull() ?: return false
-        return replaceHistory(context, expected, deferred)
+        val switched = runCatching {
+            if (expected.status == "taken") DoseHistory.revert(expected, status, System.currentTimeMillis())
+            else DoseHistory.defer(expected, status)
+        }.getOrNull() ?: return false
+        return replaceHistory(context, expected, switched)
     }
 
     @Synchronized

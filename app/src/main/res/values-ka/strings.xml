@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"აირჩიეთ თარიღი"</string>
     <string name="pick_time_placeholder">"აირჩიეთ დრო"</string>
     <string name="intake_time_required_error">"მიუთითეთ მიღების თარიღი და დრო."</string>
-    <string name="edit_intake_hint_late">"შეხსენების დრო ავტომატურად არ ივსება — მიუთითეთ მიღების ფაქტობრივი დრო. შეხსენებების ისტორია უცვლელი დარჩება."</string>
     <string name="edit_intake_hint_taken">"დროის გასწორება განაახლებს სტატისტიკას. შეხსენებების ისტორია უცვლელი დარჩება."</string>
     <string name="current_status_tag">"მიმდინარე"</string>
     <string name="intake_menu_accessibility">"ჩანაწერთან მოქმედებები"</string>

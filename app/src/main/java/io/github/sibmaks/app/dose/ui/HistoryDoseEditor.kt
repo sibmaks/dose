@@ -61,9 +61,10 @@ internal fun HistoryDoseEditor(
     val chosen = at.takeIf { it > 0 }?.let { Instant.ofEpochMilli(it).atZone(zone) }
     val chosenDate = chosen?.toLocalDate()
     val chosenTime = chosen?.toLocalTime()
-    // A taken entry keeps and corrects its status; unresolved entries may switch to taken or between themselves.
+    // A taken entry keeps its status by default but may revert; unresolved entries may become taken or switch.
     val options = when (log.status) {
-        "taken" -> listOf("taken")
+        "taken" -> listOf("taken", "pending", "skipped")
+        "missed" -> listOf("taken", "missed")
         "skipped" -> listOf("taken", "skipped")
         else -> listOf("taken", "pending", "missed")
     }
@@ -124,7 +125,11 @@ internal fun HistoryDoseEditor(
                 style = intakeStatusStyle(option),
                 selected = status == option,
                 current = option == log.status,
-                onClick = { status = option },
+                onClick = {
+                    status = option
+                    // Selecting taken from an unresolved record starts at the current date and time.
+                    if (option == "taken" && at == 0L) at = System.currentTimeMillis()
+                },
             )
         }
 
@@ -154,10 +159,9 @@ internal fun HistoryDoseEditor(
                 at <= 0L -> FieldError(stringResource(R.string.intake_time_required_error))
                 at > now -> FieldError(stringResource(R.string.history_time_error))
             }
-            Text(
-                stringResource(
-                    if (log.status == "taken") R.string.edit_intake_hint_taken else R.string.edit_intake_hint_late
-                ), fontSize = 12.sp, color = TextMuted, modifier = Modifier.padding(top = 2.dp),
+            if (log.status == "taken") Text(
+                stringResource(R.string.edit_intake_hint_taken),
+                fontSize = 12.sp, color = TextMuted, modifier = Modifier.padding(top = 2.dp),
             )
         }
         if (staleError) Text(

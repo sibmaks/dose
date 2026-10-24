@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Оберіть дату"</string>
     <string name="pick_time_placeholder">"Оберіть час"</string>
     <string name="intake_time_required_error">"Укажіть дату й час прийому."</string>
-    <string name="edit_intake_hint_late">"Час нагадування не підставляється автоматично — укажіть фактичний час прийому. Історія нагадувань збережеться."</string>
     <string name="edit_intake_hint_taken">"Виправлення часу оновить статистику прийому. Історія нагадувань збережеться."</string>
     <string name="current_status_tag">"Поточний"</string>
     <string name="intake_menu_accessibility">"Дії із записом"</string>

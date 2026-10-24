@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Sanani tanlang"</string>
     <string name="pick_time_placeholder">"Vaqtini tanlang"</string>
     <string name="intake_time_required_error">"Qabul sanasi va vaqtini koʻrsating."</string>
-    <string name="edit_intake_hint_late">"Eslatma vaqti avtomatik yozilmaydi — haqiqiy qabul vaqtini koʻrsating. Eslatmalar tarixi oʻzgarmaydi."</string>
     <string name="edit_intake_hint_taken">"Vaqtni tuzatish statistikani yangilaydi. Eslatmalar tarixi oʻzgarmaydi."</string>
     <string name="current_status_tag">"Joriy"</string>
     <string name="intake_menu_accessibility">"Yozuv amallari"</string>

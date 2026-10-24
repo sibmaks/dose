@@ -59,7 +59,6 @@
     <string name="pick_date_placeholder">"Choose a date"</string>
     <string name="pick_time_placeholder">"Choose a time"</string>
     <string name="intake_time_required_error">"Specify the intake date and time."</string>
-    <string name="edit_intake_hint_late">"The reminder time is not filled in automatically — enter the actual intake time. The reminder history stays unchanged."</string>
     <string name="edit_intake_hint_taken">"Correcting the time updates the delay statistics. The reminder history stays unchanged."</string>
     <string name="current_status_tag">"Current"</string>
     <string name="intake_menu_accessibility">"Entry actions"</string>

@@ -42,6 +42,20 @@ object DoseHistory {
         return log.copy(status = status, recordedAt = 0, onTime = false, clickedAt = null)
     }
 
+    /** A taken entry may be undone: awaiting forgets the timestamp, cancelled stamps the correction itself. */
+    fun revert(
+        log: DoseLog,
+        status: String,
+        now: Long
+    ): DoseLog {
+        require(log.status == "taken")
+        require(status == "pending" || status == "skipped")
+        return when (status) {
+            "pending" -> log.copy(status = "pending", recordedAt = 0, onTime = false, clickedAt = null)
+            else -> log.copy(status = "skipped", recordedAt = now, onTime = false, clickedAt = now)
+        }
+    }
+
     /** Doses alerted but never accepted become missed once their day is over; null means nothing changed. */
     fun markMissed(
         logs: List<DoseLog>,

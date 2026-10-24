@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Seneni saýlaň"</string>
     <string name="pick_time_placeholder">"Wagty saýlaň"</string>
     <string name="intake_time_required_error">"Kabul senesini we wagtyny görkeziň."</string>
-    <string name="edit_intake_hint_late">"Bellik wagty awtomatiki ýazylmaýar — hakyky kabul wagtyny görkeziň. Bellikleriň taryhy üýgräsiz galýar."</string>
     <string name="edit_intake_hint_taken">"Wagty düzediş statistikany täzeleýär. Bellikleriň taryhy üýgräsiz galýar."</string>
     <string name="current_status_tag">"Häzirki"</string>
     <string name="intake_menu_accessibility">"Hasaba degişli hereketler"</string>

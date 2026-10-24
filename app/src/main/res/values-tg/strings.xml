@@ -58,7 +58,6 @@
     <string name="pick_date_placeholder">"Таърихро интихоб кунед"</string>
     <string name="pick_time_placeholder">"Вақтро интихоб кунед"</string>
     <string name="intake_time_required_error">"Таърих ва вақти қабулро нишон диҳед."</string>
-    <string name="edit_intake_hint_late">"Вақти ёддошнома худкор навишта намешавад — вақти воқеии қабулро нишон диҳед. Таърихи ёддошномаҳо бетағйир мемонад."</string>
     <string name="edit_intake_hint_taken">"Ислоҳи вақт оморро навсозӣ мекунад. Таърихи ёддошномаҳо бетағйир мемонад."</string>
     <string name="current_status_tag">"Ҳозира"</string>
     <string name="intake_menu_accessibility">"Амалҳо бо сабт"</string>
