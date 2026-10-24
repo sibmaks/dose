@@ -83,7 +83,6 @@
     <string name="from">"Başlangyç"</string>
     <string name="until">"Ahyrky"</string>
     <string name="no_end_date">"Ahyrky sene ýok"</string>
-    <string name="date_bounds_hint">"Çäkler islege görä we döwre girýär. Başlangyç boş bolsa görkezilen seneden (täze tertip üçin şu gün), ahyry boş bolsa togtadylýança ýa-da pozulýança."</string>
     <string name="times">"Wagtlar"</string>
     <string name="add_time">"Wagt goşmak"</string>
     <string name="pick_a_color">"Reňk saýlaň"</string>

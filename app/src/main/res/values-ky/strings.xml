@@ -83,7 +83,6 @@
     <string name="from">"Башталышы"</string>
     <string name="until">"Аякташы"</string>
     <string name="no_end_date">"Аяктоо күнү жок"</string>
-    <string name="date_bounds_hint">"Чектер милдеттүү эмес, четки күндөр кирет. Башы бош болсо көрсөтүлгөн күндөн (жаңы жадыбалда бүгүнтөн), аягы бош болсо токтотконго же өчүргөнгө чейин."</string>
     <string name="times">"Убакыттар"</string>
     <string name="add_time">"Убакыт кошуу"</string>
     <string name="pick_a_color">"Түстү тандаңыз"</string>

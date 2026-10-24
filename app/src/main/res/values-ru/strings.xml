@@ -83,7 +83,6 @@
     <string name="from">"С"</string>
     <string name="until">"До"</string>
     <string name="no_end_date">"Без даты окончания"</string>
-    <string name="date_bounds_hint">"Границы необязательны и включены в период. Без начала — с указанной даты по умолчанию (сегодня для нового расписания). Без конца — до паузы или удаления."</string>
     <string name="times">"Время"</string>
     <string name="add_time">"Добавить время"</string>
     <string name="pick_a_color">"Выберите цвет"</string>

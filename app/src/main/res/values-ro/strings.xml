@@ -83,7 +83,6 @@
     <string name="from">"De la"</string>
     <string name="until">"Până la"</string>
     <string name="no_end_date">"Fără dată de sfârșit"</string>
-    <string name="date_bounds_hint">"Limitele sunt opționale și incluse. Început gol: data implicită afișată (astăzi pentru un program nou). Sfârșit gol: până la pauză sau ștergere."</string>
     <string name="times">"Ore"</string>
     <string name="add_time">"Adaugă oră"</string>
     <string name="pick_a_color">"Alege o culoare"</string>

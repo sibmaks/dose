@@ -83,7 +83,6 @@
     <string name="from">"Boshlanish"</string>
     <string name="until">"Tugash"</string>
     <string name="no_end_date">"Tugash sanasi yoʻq"</string>
-    <string name="date_bounds_hint">"Chegaralar ixtiyoriy va davrga kiradi. Boshlanish boʻsh boʻlsa koʻrsatilgan sanadan (yangi jadvalda bugun), tugash boʻsh boʻlsa toʻxtatilguncha yoki oʻchirilguncha."</string>
     <string name="times">"Vaqtlar"</string>
     <string name="add_time">"Vaqt qoʻshish"</string>
     <string name="pick_a_color">"Rang tanlang"</string>

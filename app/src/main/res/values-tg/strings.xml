@@ -83,7 +83,6 @@
     <string name="from">"Аз"</string>
     <string name="until">"То"</string>
     <string name="no_end_date">"Бе санаи анҷом"</string>
-    <string name="date_bounds_hint">"Ҳудудҳо ихтиёрӣ ва дохиланд. Оғози холӣ: аз санаи пешфарзи нишоншуда (барои ҷадвали нав имрӯз). Анҷоми холӣ: то боздоштан ё нест кардан."</string>
     <string name="times">"Вақтҳо"</string>
     <string name="add_time">"Иловаи вақт"</string>
     <string name="pick_a_color">"Рангро интихоб кунед"</string>

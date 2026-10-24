@@ -83,7 +83,6 @@
     <string name="from">"Басталуы"</string>
     <string name="until">"Аяқталуы"</string>
     <string name="no_end_date">"Аяқталу күні жоқ"</string>
-    <string name="date_bounds_hint">"Шектер міндетті емес, шеткі күндер кіреді. Басы бос болса көрсетілген күннен (жаңа кестеде бүгіннен), соңы бос болса тоқтатқанға не жойғанға дейін."</string>
     <string name="times">"Уақыттар"</string>
     <string name="add_time">"Уақыт қосу"</string>
     <string name="pick_a_color">"Түсті таңдаңыз"</string>

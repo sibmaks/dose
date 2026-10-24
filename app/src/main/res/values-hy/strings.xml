@@ -83,7 +83,6 @@
     <string name="from">"Սկսած"</string>
     <string name="until">"Մինչև"</string>
     <string name="no_end_date">"Առանց ավարտի ամսաթվի"</string>
-    <string name="date_bounds_hint">"Սահմանները պարտադիր չեն և ներառական են։ Դատարկ սկիզբը՝ ցուցադրված լռելյայն ամսաթվից (այսօր՝ նորի համար), դատարկ ավարտը՝ մինչև դադարեցում կամ ջնջում։"</string>
     <string name="times">"Ժամեր"</string>
     <string name="add_time">"Ավելացնել ժամ"</string>
     <string name="pick_a_color">"Ընտրեք գույն"</string>

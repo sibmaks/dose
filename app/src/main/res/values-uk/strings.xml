@@ -83,7 +83,6 @@
     <string name="from">"З"</string>
     <string name="until">"До"</string>
     <string name="no_end_date">"Без дати завершення"</string>
-    <string name="date_bounds_hint">"Межі необов’язкові й включені до періоду. Без початку — з указаної типової дати (сьогодні для нового розкладу). Без кінця — до паузи або видалення."</string>
     <string name="times">"Час"</string>
     <string name="add_time">"Додати час"</string>
     <string name="pick_a_color">"Виберіть колір"</string>

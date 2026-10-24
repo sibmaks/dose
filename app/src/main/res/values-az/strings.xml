@@ -83,7 +83,6 @@
     <string name="from">"Başlanğıc"</string>
     <string name="until">"Son"</string>
     <string name="no_end_date">"Son tarix yoxdur"</string>
-    <string name="date_bounds_hint">"Sərhədlər istəyə bağlı və daxildir. Başlanğıc boşdursa göstərilən tarixdən (yeni cədvəldə bu gün), son boşdursa dayandırılana və ya silinənə qədər."</string>
     <string name="times">"Vaxtlar"</string>
     <string name="add_time">"Vaxt əlavə et"</string>
     <string name="pick_a_color">"Rəng seçin"</string>

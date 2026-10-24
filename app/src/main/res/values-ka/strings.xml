@@ -83,7 +83,6 @@
     <string name="from">"დასაწყისი"</string>
     <string name="until">"დასასრული"</string>
     <string name="no_end_date">"დასრულების თარიღის გარეშე"</string>
-    <string name="date_bounds_hint">"საზღვრები არასავალდებულოა და პერიოდის ნაწილია. ცარიელი დასაწყისი ნიშნავს ნაჩვენებ თარიღს (ახლისთვის დღეს). ცარიელი დასასრული — შეჩერებამდე ან წაშლამდე."</string>
     <string name="times">"დროები"</string>
     <string name="add_time">"დროის დამატება"</string>
     <string name="pick_a_color">"აირჩიეთ ფერი"</string>
