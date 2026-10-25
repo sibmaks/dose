@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Управление паузами уведомлений</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#E8EBF1}
+  body{
+    font-family:'Inter','SF Pro Text','Roboto',-apple-system,'Segoe UI',system-ui,sans-serif;
+    color:#252B43;padding:34px 26px 52px;-webkit-font-smoothing:antialiased;
+  }
+  .sprite{display:none}
+
+  .board-head{max-width:1800px;margin:0 auto 8px}
+  .board-title{font-size:21px;font-weight:800;letter-spacing:-.01em}
+  .board-sub{font-size:13.5px;color:#69748A;margin-top:6px}
+  .grid{max-width:1800px;margin:22px auto 0;display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .shot{display:flex;flex-direction:column;gap:12px}
+  .shot-label{font-size:13px;font-weight:800;color:#3A4661}
+  .shot-cap{font-size:12.5px;color:#69748A;line-height:1.55;max-width:384px}
+
+  .phone{
+    width:392px;height:864px;background:#FAFBFE;border-radius:38px;border:10px solid #171C26;
+    box-shadow:0 30px 70px rgba(23,32,56,.22),0 4px 14px rgba(23,32,56,.10);
+    overflow:hidden;display:flex;flex-direction:column;position:relative;
+  }
+  .sbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px 2px;font-size:13px;font-weight:600;flex:none}
+  .appbar{display:flex;align-items:center;padding:6px 12px 10px;flex:none}
+  .icon-btn{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:#26324E;flex:none}
+  .appbar .title{flex:1;font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .content{flex:1;overflow-y:auto;padding:4px 16px 14px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none}
+  .content::-webkit-scrollbar{display:none}
+  .gesture{width:108px;height:4px;border-radius:4px;background:#202A3E;opacity:.9;margin:2px auto 4px;flex:none}
+
+  .card{background:#fff;border:1px solid #E4E8F0;border-radius:18px}
+  .soft{background:#F7F8FB;border:1px solid #ECEFF4;border-radius:18px}
+  .tint{background:#F0EDFB;border:1px solid #D8CFF6;border-radius:18px}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 10px;font-size:11.5px;font-weight:800}
+  .pill .ic{width:13px;height:13px}
+  .pill.white{background:#fff;color:#6D57DA}
+  .pill.violet{background:#F0EDFB;color:#6D57DA}
+  .pill.mint{background:#E4F5ED;color:#1F9D66}
+  .pill.gray{background:#F1F2F7;color:#62677D}
+
+  .row{display:flex;align-items:center;gap:10px}
+  .kv{display:flex;justify-content:space-between;align-items:center;font-size:14px}
+  .kv span{color:#62677D}
+  .kv b{font-weight:600}
+  .meta{font-size:12.5px;color:#8A93A6;line-height:1.45}
+  .helper{font-size:12.5px;color:#8A93A6;line-height:1.45}
+  .sec{font-size:15px;font-weight:800}
+  .count{font-size:11.5px;font-weight:800;color:#6D57DA;background:#F0EDFB;border-radius:999px;padding:2.5px 8px}
+
+  .btn{height:51px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;flex:1}
+  .btn.ghost{border:1px solid #D8DEE8;color:#252B43;background:#fff}
+  .btn.primary{background:#6D57DA;color:#fff;box-shadow:0 10px 22px rgba(109,87,218,.30)}
+  .btn.outline-violet{border:1.5px solid #C9BFEF;color:#6D57DA;background:#fff}
+  .btn.compact{height:44px;font-size:14px}
+
+  .dots{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#7C8698;flex:none}
+  .chev{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;color:#98A1B2;flex:none}
+  .ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+
+  /* bottom sheet screens */
+  .under .fake{padding:40px 21px 0;display:flex;flex-direction:column;gap:13px}
+  .under .block{background:#F3F3FA;border:1px solid #EBECF5;border-radius:20px;height:88px}
+  .under .block.wide{height:110px}
+  .scrim{position:absolute;inset:0;background:rgba(37,43,67,.46)}
+  .sheet{
+    position:absolute;left:10px;right:10px;bottom:10px;
+    background:#fff;border-radius:26px;box-shadow:0 20px 44px rgba(23,32,56,.32);
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  .shead{display:flex;align-items:center;padding:14px 10px 8px 20px;gap:4px}
+  .shead .title{flex:1;font-size:20px;font-weight:800}
+  .sbody{padding:6px 20px 6px;display:flex;flex-direction:column;gap:12px;max-height:640px;overflow-y:auto;scrollbar-width:none}
+  .sbody::-webkit-scrollbar{display:none}
+  .sfoot{padding:12px 20px 14px;display:flex;gap:10px;border-top:1px solid #ECEFF4}
+
+  .fieldlabel{font-size:14px;font-weight:700}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:9px 14px;border:1px solid #E2E6EE;border-radius:11px;background:#fff;font-size:13.5px;font-weight:600;color:#3A4560}
+  .chip.on{background:#F0EDFB;border:1.5px solid #6D57DA;color:#6D57DA;font-weight:700}
+
+  .summary{background:#F7F8FB;border:1px solid #ECEFF4;border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.5}
+
+  /* field styles (same as intake screens) */
+  .fields{display:flex;gap:12px}
+  .fin{position:relative;height:56px;border:1px solid #D8DEE8;border-radius:15px;background:#fff;display:flex;align-items:center;gap:9px;padding:0 13px;flex:1;min-width:0}
+  .flabel{position:absolute;top:-8px;left:11px;background:#fff;padding:0 6px;font-size:11.5px;font-weight:700;color:#62677D}
+  .fval{font-size:15px;font-weight:600;color:#252B43;flex:1;white-space:nowrap;overflow:hidden;font-variant-numeric:tabular-nums}
+  .fval.ph{color:#A5AEBF;font-weight:500}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .addlink{display:flex;align-items:center;justify-content:center;gap:6px;color:#6D57DA;font-weight:700;font-size:14px;height:28px;border-radius:9px}
+  .addtile{height:92px;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1px solid #E4E8F0;border-radius:18px;color:#6D57DA;font-weight:700;font-size:15px}
+  .info{display:flex;gap:8px;align-items:flex-start;background:#F7F8FB;border:1px solid #ECEFF4;border-radius:14px;padding:10px 12px;font-size:12.5px;color:#62677D;line-height:1.45}
+  .info .ic{width:15px;height:15px;flex:none;margin-top:1px}
+
+  /* centered confirmation dialog */
+  .dlg{
+    position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);
+    background:#fff;border-radius:24px;box-shadow:0 22px 48px rgba(23,32,56,.32);
+    padding:22px 20px 12px;display:flex;flex-direction:column;gap:10px;
+  }
+  .dlg .title{font-size:19px;font-weight:800}
+  .dlg .text{font-size:14px;color:#3A4560;line-height:1.5}
+  .dlg .actions{display:flex;justify-content:flex-end;gap:4px;margin-top:4px}
+  .dlg .tbtn{padding:10px 12px;border-radius:12px;font-size:14.5px;font-weight:700;color:#62677D}
+  .dlg .tbtn.violet{color:#6D57DA}
+</style>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true"><defs>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.7" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-belloff" viewBox="0 0 24 24"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.9 17.9 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><path d="M18 8a6 6 0 0 0-9.33-5"/><path d="M3 3l18 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+  <symbol id="i-chevdown" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-resume" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-sig" viewBox="0 0 24 24"><path d="M3.5 18.5v-3M8.5 18.5v-6M13.5 18.5v-9M18.5 18.5V6" stroke-width="2.6"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="19" r="1.3"/></symbol>
+  <symbol id="i-batt" viewBox="0 0 24 24"><rect x="2" y="8" width="16" height="9" rx="2.5"/><path d="M21 11v3"/><rect x="4.5" y="10.5" width="9" height="4" rx="1.2" fill="currentColor" stroke="none"/></symbol>
+</defs></svg>
+
+<header class="board-head">
+  <div class="board-title">Управление паузами уведомлений</div>
+  <div class="board-sub">Трекер лекарств · Android · Material 3 · фиолетовый #6D57DA · активная пауза выделена мягким фиолетовым, без тревожных цветов · 24-часовой формат</div>
+</header>
+
+<main class="grid">
+
+  <!-- ============ SCREEN 1 · pause management ============ -->
+  <div class="shot">
+    <div class="shot-label">1 · Паузы уведомлений — активная + запланированные</div>
+    <div class="phone">
+      <div class="sbar">
+        <span>12:49</span>
+        <span class="row" style="gap:5px">
+          <svg class="ic" width="15" height="15"><use href="#i-sig"/></svg>
+          <svg class="ic" width="15" height="15"><use href="#i-wifi"/></svg>
+          <svg class="ic" width="18" height="15"><use href="#i-batt"/></svg>
+        </span>
+      </div>
+      <div class="appbar">
+        <span class="icon-btn"><svg class="ic" width="22" height="22"><use href="#i-back"/></svg></span>
+        <span class="title">Паузы уведомлений</span>
+        <span style="width:40px;flex:none"></span>
+      </div>
+      <div class="content">
+        <!-- active pause -->
+        <div class="tint">
+          <div class="row" style="padding:13px 14px 0">
+            <span class="pill white"><svg class="ic"><use href="#i-belloff"/></svg>Активна</span>
+          </div>
+          <div class="row" style="padding:7px 14px 0">
+            <span class="sec">Текущая пауза</span>
+          </div>
+          <div style="padding:9px 14px 0;display:flex;flex-direction:column;gap:7px">
+            <div class="kv"><span>Начало</span><b>25 октября, 12:49</b></div>
+            <div class="kv"><span>Окончание</span><b>25 октября, 13:54</b></div>
+          </div>
+          <p class="helper" style="padding:8px 14px 0">Уведомления возобновятся автоматически после окончания паузы.</p>
+          <div class="row" style="padding:11px 14px 13px">
+            <div class="btn ghost compact">Возобновить</div>
+          </div>
+        </div>
+
+        <!-- create -->
+        <div class="addtile"><svg class="ic" width="19" height="19" style="stroke-width:2.4"><use href="#i-plus"/></svg>Добавить паузу</div>
+
+        <!-- scheduled -->
+        <div class="row" style="padding:0 2px;margin-top:2px">
+          <span class="sec">Запланированные</span>
+          <span class="count">2</span>
+          <span style="flex:1"></span>
+        </div>
+        <div class="card">
+          <div class="row" style="padding:12px 6px 0 14px">
+            <b style="font-size:14.5px">26 октября</b>
+            <span style="flex:1"></span>
+            <span class="pill violet"><svg class="ic"><use href="#i-clock"/></svg>Запланирована</span>
+            <span class="dots" style="color:#8A93A6"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span>
+          </div>
+          <div style="padding:5px 14px 0">
+            <div class="kv"><b style="font-size:15px">22:00 — 08:00</b></div>
+          </div>
+          <p class="meta" style="padding:3px 14px 12px">До 27 октября · ночной перерыв напоминаний</p>
+        </div>
+        <div class="card">
+          <div class="row" style="padding:12px 6px 0 14px">
+            <b style="font-size:14.5px">29 октября</b>
+            <span style="flex:1"></span>
+            <span class="pill violet"><svg class="ic"><use href="#i-clock"/></svg>Запланирована</span>
+            <span class="dots" style="color:#8A93A6"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span>
+          </div>
+          <div style="padding:5px 14px 0">
+            <div class="kv"><b style="font-size:15px">14:00 — 17:00</b></div>
+          </div>
+          <p class="meta" style="padding:3px 14px 12px">3 часа</p>
+        </div>
+
+        <!-- history collapsed -->
+        <div class="soft">
+          <div class="row" style="padding:12px 6px 12px 14px">
+            <span class="sec" style="color:#62677D">История пауз</span>
+            <span class="count" style="color:#62677D;background:#EBECF5">3</span>
+            <span style="flex:1"></span>
+            <span class="chev"><svg class="ic" width="20" height="20"><use href="#i-chevdown"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <div class="gesture"></div>
+    </div>
+    <p class="shot-cap">Активная пауза — сверху, мягкий фиолетовый фон, без красного; «Возобновить» завершает её с подтверждением. Редактирования нет: запланированную паузу можно только удалить (иконка корзины, с подтверждением).</p>
+  </div>
+
+  <!-- ============ SCREEN 2 · create pause ============ -->
+  <div class="shot">
+    <div class="shot-label">2 · Новая пауза (нижняя панель)</div>
+    <div class="phone">
+      <div class="under"><div class="fake"><div class="block wide"></div><div class="block"></div><div class="block"></div><div class="block"></div></div></div>
+      <div class="scrim"></div>
+      <div class="sheet">
+        <div class="shead">
+          <span class="title">Новая пауза</span>
+          <span class="icon-btn"><svg class="ic" width="22" height="22"><use href="#i-close"/></svg></span>
+        </div>
+        <div class="sbody">
+          <div class="field">
+            <div class="fieldlabel">Начало</div>
+            <div class="chips">
+              <span class="chip on">Сейчас</span>
+              <span class="chip">Выбрать время</span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="fieldlabel">Окончание</div>
+            <div class="chips">
+              <span class="chip">30 минут</span>
+              <span class="chip">1 час</span>
+              <span class="chip on">2 часа</span>
+              <span class="chip">До утра</span>
+              <span class="chip">Своё время</span>
+            </div>
+          </div>
+          <div class="fields">
+            <div class="fin">
+              <span class="flabel">Дата</span>
+              <span class="fval">25 октября 2026</span>
+              <svg class="ic" width="19" height="19" style="color:#8A93A6"><use href="#i-clock"/></svg>
+            </div>
+            <div class="fin">
+              <span class="flabel">Время</span>
+              <span class="fval">15:00</span>
+              <svg class="ic" width="19" height="19" style="color:#8A93A6"><use href="#i-clock"/></svg>
+            </div>
+          </div>
+          <div class="info"><svg class="ic"><use href="#i-alert"/></svg>Эта пауза пересекается с другой. Уведомления возобновятся после завершения всех активных пауз.</div>
+          <div class="summary">Уведомления будут приостановлены с 25 октября, 13:00 до 25 октября, 15:00.</div>
+        </div>
+        <div class="sfoot">
+          <div class="btn ghost">Отмена</div>
+          <div class="btn primary">Сохранить</div>
+        </div>
+      </div>
+    </div>
+    <p class="shot-cap">Пресет пересчитывает окончание сразу; «Своё время» открывает поля. Сводка обновляется мгновенно; сохранение недоступно при некорректном диапазоне.</p>
+  </div>
+
+  <!-- ============ SCREEN 3 · resume/delete confirmation ============ -->
+  <div class="shot">
+    <div class="shot-label">3 · Подтверждение: возобновить / удалить</div>
+    <div class="phone">
+      <div class="under"><div class="fake"><div class="block wide"></div><div class="block"></div><div class="block"></div><div class="block"></div></div></div>
+      <div class="scrim"></div>
+      <div class="dlg">
+        <div class="title">Возобновить уведомления?</div>
+        <div class="text">Активная пауза (с 25 октября, 12:49) будет завершена, и напоминания возобновятся сразу.</div>
+        <div class="actions">
+          <span class="tbtn">Отмена</span>
+          <span class="tbtn violet">Возобновить</span>
+        </div>
+      </div>
+    </div>
+    <p class="shot-cap">Редактирования пауз нет — только создание и удаление. «Возобновить» на активной паузе и корзина у запланированной («Удалить паузу?») открывают такое подтверждение.</p>
+  </div>
+
+  <!-- ============ SCREEN 4 · no active pause ============ -->
+  <div class="shot">
+    <div class="shot-label">4 · Уведомления активны — есть запланированные</div>
+    <div class="phone">
+      <div class="sbar">
+        <span>12:50</span>
+        <span class="row" style="gap:5px">
+          <svg class="ic" width="15" height="15"><use href="#i-sig"/></svg>
+          <svg class="ic" width="15" height="15"><use href="#i-wifi"/></svg>
+          <svg class="ic" width="18" height="15"><use href="#i-batt"/></svg>
+        </span>
+      </div>
+      <div class="appbar">
+        <span class="icon-btn"><svg class="ic" width="22" height="22"><use href="#i-back"/></svg></span>
+        <span class="title">Паузы уведомлений</span>
+        <span style="width:40px;flex:none"></span>
+      </div>
+      <div class="content">
+        <!-- positive status -->
+        <div class="card" style="border-color:#BFE3D2;background:#F4FBF7">
+          <div class="row" style="padding:13px 14px">
+            <span class="pill mint"><svg class="ic"><use href="#i-check"/></svg>Активны</span>
+            <span style="flex:1"></span>
+            <span class="sec" style="font-size:14.5px;color:#1F9D66">Уведомления сейчас активны</span>
+          </div>
+        </div>
+
+        <div class="addtile"><svg class="ic" width="19" height="19" style="stroke-width:2.4"><use href="#i-plus"/></svg>Добавить паузу</div>
+
+        <div class="row" style="padding:0 2px;margin-top:2px">
+          <span class="sec">Запланированные</span>
+          <span class="count">2</span>
+          <span style="flex:1"></span>
+        </div>
+        <div class="card">
+          <div class="row" style="padding:12px 6px 0 14px">
+            <b style="font-size:14.5px">26 октября</b>
+            <span style="flex:1"></span>
+            <span class="pill violet"><svg class="ic"><use href="#i-clock"/></svg>Запланирована</span>
+            <span class="dots" style="color:#8A93A6"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span>
+          </div>
+          <div style="padding:5px 14px 0">
+            <div class="kv"><b style="font-size:15px">22:00 — 08:00</b></div>
+          </div>
+          <p class="meta" style="padding:3px 14px 12px">До 27 октября</p>
+        </div>
+        <div class="card">
+          <div class="row" style="padding:12px 6px 0 14px">
+            <b style="font-size:14.5px">29 октября</b>
+            <span style="flex:1"></span>
+            <span class="pill violet"><svg class="ic"><use href="#i-clock"/></svg>Запланирована</span>
+            <span class="dots" style="color:#8A93A6"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span>
+          </div>
+          <div style="padding:5px 14px 0">
+            <div class="kv"><b style="font-size:15px">14:00 — 17:00</b></div>
+          </div>
+          <p class="meta" style="padding:3px 14px 12px">3 часа</p>
+        </div>
+
+        <div class="soft">
+          <div class="row" style="padding:12px 6px 12px 14px">
+            <span class="sec" style="color:#62677D">История пауз</span>
+            <span class="count" style="color:#62677D;background:#EBECF5">3</span>
+            <span style="flex:1"></span>
+            <span class="chev"><svg class="ic" width="20" height="20"><use href="#i-chevdown"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <div class="gesture"></div>
+    </div>
+    <p class="shot-cap">Без активной паузы — спокойный положительный статус; ниже — предстоящие паузы и создание новой.</p>
+  </div>
+
+</main>
+</body>
+</html>
