@@ -518,6 +518,26 @@ private fun TodayPage(
             items(items.filter { it.log?.status != "taken" }, key = { it.id }) { item ->
                 DoseCard(item, onRecord = onRecord, onUndo = onUndo, onOpen = onOpen)
             }
+            // Everything taken closes the day's schedule with a success banner.
+            if (items.all { it.log?.status == "taken" }) item(key = "all-taken") {
+                Surface(
+                    color = themeColor(0xFFE3F8EF, 0xFF1B3C33),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Row(
+                        Modifier.padding(14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(Icons.Rounded.CheckCircle, null, tint = Mint, modifier = Modifier.size(19.dp))
+                        Spacer(Modifier.width(10.dp))
+                        Text(
+                            stringResource(R.string.all_medication_taken),
+                            fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Mint,
+                        )
+                    }
+                }
+            }
         }
     }
 }
