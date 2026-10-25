@@ -62,8 +62,10 @@ internal fun HistoryDoseEditor(
     val chosenDate = chosen?.toLocalDate()
     val chosenTime = chosen?.toLocalTime()
     // A taken entry keeps its status by default but may revert; unresolved entries may become taken or switch.
+    // Reopening a past record as awaiting is pointless: the next rollover would mark it missed again.
     val options = when (log.status) {
-        "taken" -> listOf("taken", "pending", "skipped")
+        "taken" -> if (log.date == LocalDate.now().toString()) listOf("taken", "pending", "skipped")
+        else listOf("taken", "skipped")
         "missed" -> listOf("taken", "missed")
         "skipped" -> listOf("taken", "skipped")
         else -> listOf("taken", "pending", "missed")
