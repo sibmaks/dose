@@ -252,6 +252,7 @@
     <string name="widget_description">"See your next pending dose and its time for today."</string>
     <string name="widget_open_today">"Tap to open Today"</string>
     <string name="pause_notifications">"Pause"</string>
+    <string name="notification_pause_title">"Notification pause"</string>
     <string name="notifications_paused_until">"Notifications paused until %1$s"</string>
     <string name="resume_notifications">"Resume notifications now"</string>
     <string name="reminders_disabled_hint">"Reminders are off. Your medication schedules stay saved."</string>

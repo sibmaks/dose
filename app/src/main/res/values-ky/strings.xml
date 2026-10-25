@@ -250,6 +250,7 @@
     <string name="widget_description">"Бүгүнкү кийинки белгиленбеген доза жана анын убактысы."</string>
     <string name="widget_open_today">"«Бүгүн» барагын ачуу үчүн басыңыз"</string>
     <string name="pause_notifications">"Токтотуу"</string>
+    <string name="notification_pause_title">"Билдирүүлөрдү токтотуу"</string>
     <string name="notifications_paused_until">"Билдирүүлөр %1$s чейин тындырылды"</string>
     <string name="resume_notifications">"Билдирүүлөрдү азыр улантуу"</string>
     <string name="reminders_disabled_hint">"Эскертүүлөр өчүрүлгөн. Дары ичүү жадыбалдарыңыз сакталган."</string>

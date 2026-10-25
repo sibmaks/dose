@@ -250,6 +250,7 @@
     <string name="widget_description">"Bu günün növbəti qeyd edilməmiş dozası və vaxtı."</string>
     <string name="widget_open_today">"Bu günü açmaq üçün toxunun"</string>
     <string name="pause_notifications">"Pauza"</string>
+    <string name="notification_pause_title">"Bildiriş pauzası"</string>
     <string name="notifications_paused_until">"Bildirişlər %1$s tarixinədək dayandırılıb"</string>
     <string name="resume_notifications">"Bildirişləri indi bərpa et"</string>
     <string name="reminders_disabled_hint">"Xatırlatmalar söndürülüb. Dərman cədvəlləriniz saxlanılır."</string>

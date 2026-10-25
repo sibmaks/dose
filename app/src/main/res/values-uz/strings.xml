@@ -250,6 +250,7 @@
     <string name="widget_description">"Bugungi navbatdagi qayd etilmagan doza va uning vaqti."</string>
     <string name="widget_open_today">"Bugunni ochish uchun bosing"</string>
     <string name="pause_notifications">"Pauza"</string>
+    <string name="notification_pause_title">"Bildirishnomalar pauzasi"</string>
     <string name="notifications_paused_until">"Bildirishnomalar %1$s gacha toʻxtatildi"</string>
     <string name="resume_notifications">"Bildirishnomalarni hozir davom ettirish"</string>
     <string name="reminders_disabled_hint">"Eslatmalar oʻchirilgan. Dori jadvallaringiz saqlanadi."</string>

@@ -250,6 +250,7 @@
     <string name="widget_description">"Бүгінгі келесі белгіленбеген доза және оның уақыты."</string>
     <string name="widget_open_today">"«Бүгін» бетін ашу үшін түртіңіз"</string>
     <string name="pause_notifications">"Кідірту"</string>
+    <string name="notification_pause_title">"Хабарландыруларды кідірту"</string>
     <string name="notifications_paused_until">"Хабарландырулар %1$s дейін тоқтатылды"</string>
     <string name="resume_notifications">"Хабарландыруларды қазір жалғастыру"</string>
     <string name="reminders_disabled_hint">"Еске салулар өшірілген. Дәрі қабылдау кестелеріңіз сақталған."</string>

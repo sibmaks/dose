@@ -250,6 +250,7 @@
     <string name="widget_description">"დღევანდელი შემდეგი აღურიცხავი დოზა და მისი დრო."</string>
     <string name="widget_open_today">"შეეხეთ დღევანდელი განრიგის გასახსნელად"</string>
     <string name="pause_notifications">"პაუზა"</string>
+    <string name="notification_pause_title">"შეტყობინებების პაუზა"</string>
     <string name="notifications_paused_until">"შეტყობინებები შეჩერებულია %1$s-მდე"</string>
     <string name="resume_notifications">"შეტყობინებების ახლა განახლება"</string>
     <string name="reminders_disabled_hint">"შეხსენებები გამორთულია. წამლების განრიგები შენახულია."</string>

@@ -250,6 +250,7 @@
     <string name="widget_description">"Ближайшая неотмеченная доза на сегодня и время её приёма."</string>
     <string name="widget_open_today">"Нажмите, чтобы открыть «Сегодня»"</string>
     <string name="pause_notifications">"Пауза"</string>
+    <string name="notification_pause_title">"Пауза уведомлений"</string>
     <string name="notifications_paused_until">"Уведомления приостановлены до %1$s"</string>
     <string name="resume_notifications">"Возобновить уведомления сейчас"</string>
     <string name="reminders_disabled_hint">"Напоминания выключены. Ваши расписания приёма лекарств сохранены."</string>

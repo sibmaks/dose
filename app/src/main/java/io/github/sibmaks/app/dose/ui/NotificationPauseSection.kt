@@ -62,7 +62,7 @@ internal fun NotificationPauseSection(onRefresh: () -> Unit) {
     }
 
     Text(
-        stringResource(R.string.pause_notifications),
+        stringResource(R.string.notification_pause_title),
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.Bold
     )

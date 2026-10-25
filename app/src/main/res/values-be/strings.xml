@@ -250,6 +250,7 @@
     <string name="widget_description">"Найбліжэйшая неадзначаная доза на сёння і час яе прыёму."</string>
     <string name="widget_open_today">"Націсніце, каб адкрыць «Сёння»"</string>
     <string name="pause_notifications">"Паўза"</string>
+    <string name="notification_pause_title">"Паўза апавяшчэнняў"</string>
     <string name="notifications_paused_until">"Апавяшчэнні прыпынены да %1$s"</string>
     <string name="resume_notifications">"Аднавіць апавяшчэнні зараз"</string>
     <string name="reminders_disabled_hint">"Напаміны выключаны. Вашы расклады прыёму лекаў захаваны."</string>

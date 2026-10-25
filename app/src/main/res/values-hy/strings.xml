@@ -250,6 +250,7 @@
     <string name="widget_description">"Այսօրվա հաջորդ չգրանցված դեղաչափը և ժամը։"</string>
     <string name="widget_open_today">"Սեղմեք՝ «Այսօր»-ը բացելու համար"</string>
     <string name="pause_notifications">"Դադար"</string>
+    <string name="notification_pause_title">"Ծանուցումների դադար"</string>
     <string name="notifications_paused_until">"Ծանուցումները դադարեցված են մինչև %1$s"</string>
     <string name="resume_notifications">"Վերսկսել ծանուցումները հիմա"</string>
     <string name="reminders_disabled_hint">"Հիշեցումներն անջատված են։ Դեղերի ժամանակացույցերը պահպանված են։"</string>
