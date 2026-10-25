@@ -315,9 +315,6 @@
     <string name="theme_dark">"Garaňky"</string>
     <string name="set_schedule_amount">"Başga mukdary belle"</string>
     <string name="default_schedule_amount">"Esasy mukdary ulan (%1$s)"</string>
-    <string name="dose_overlap_title">"Mukdaryň ileri tutulmagy"</string>
-    <string name="dose_overlap_hint">"Dürli mukdarlar gabat gelýär. Ilki iň ýokary ileri tutulýan mukdary saýlaň. Ol diňe tertipler gabat gelende ulanylýar; beýleki kabul edişler saklanýar."</string>
-    <string name="prioritize_dose">"Ileri tut: %1$s"</string>
     <string name="ready">"Taýýar"</string>
     <string name="vibration_off">"Titreme öçürilen"</string>
     <string name="vibration_unavailable_title">"Titreme elýeterli däl"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Açylýan ýatlatmalar titremez. Android sazlamalarynda jaňly sagadyň titremesini açyň."</string>
     <string name="sound_vibration_settings">"Ses we titreme"</string>
     <string name="vibration_settings_fallback">"Android sazlamalarynda ses we titreme bölümini açyň."</string>
+    <string name="dose_overlap_detected">"Tertipleriň gabat gelýändigi anyklanyldy"</string>
+    <string name="dose_overlap_resolve">"Gabat gelýänligi çözmek"</string>
+    <string name="dose_overlap_choose_title">"Tertipleriň gabat gelýändigi"</string>
+    <string name="dose_overlap_choose_desc">"Bir wagta dürli mukdarlar görkezilýär. Gabat gelende haýsy tertipiň ulanylýandygyny saýlaň."</string>
+    <string name="dose_overlap_what_happens">"Näme boljak"</string>
+    <string name="dose_overlap_result">"Gabat gelende bir kabul bolýar — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Netijäni görmek üçin tertipi saýlaň."</string>
+    <string name="dose_overlap_result_keep">"Iki tertipiň galan kabul edişleri üýtgemän galýar."</string>
+    <string name="dose_overlap_apply">"Ileri tutulýany amala aşyryň"</string>
+    <string name="dose_overlap_resolved_title">"Gabat gelýänlik çözildi"</string>
+    <string name="dose_overlap_resolved_tag">"Çözildi"</string>
+    <string name="dose_overlap_pending_tag">"Saýlamak gerekdir"</string>
+    <string name="dose_overlap_change">"Üýtgetmek"</string>
+    <string name="dose_overlap_priority_dose">"Ileri tutýyş: %1$s"</string>
+    <string name="overlaps_step">"Tertipleriň gabat gelýänlikleri"</string>
+    <string name="dose_overlap_pick_all">"Hemme gabat gelýänlik üçin ileri tutulýany saýlaň."</string>
+    <string name="dose_overlap_found">"Anyklanan gabat gelýänlikler: %1$d"</string>
+    <string name="dose_overlap_progress">"Çözilen: %1$d / %2$d"</string>
 </resources>

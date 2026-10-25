@@ -315,9 +315,6 @@
     <string name="theme_dark">"Тёмная"</string>
     <string name="set_schedule_amount">"Указать другую дозу"</string>
     <string name="default_schedule_amount">"Использовать основную дозу (%1$s)"</string>
-    <string name="dose_overlap_title">"Приоритет доз"</string>
-    <string name="dose_overlap_hint">"Разные дозы пересекаются. Сначала выберите дозу с наивысшим приоритетом. Она применяется только при пересечении расписаний; остальные приёмы сохраняются."</string>
-    <string name="prioritize_dose">"Приоритет: %1$s"</string>
     <string name="ready">"Готово"</string>
     <string name="vibration_off">"Вибрация отключена"</string>
     <string name="vibration_unavailable_title">"Вибрация недоступна"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Всплывающие напоминания не будут вибрировать. Включите вибрацию будильника в настройках Android."</string>
     <string name="sound_vibration_settings">"Звук и вибрация"</string>
     <string name="vibration_settings_fallback">"Откройте раздел «Звук и вибрация» в настройках Android."</string>
+    <string name="dose_overlap_detected">"Обнаружено совпадение расписаний"</string>
+    <string name="dose_overlap_resolve">"Разрешить совпадение"</string>
+    <string name="dose_overlap_choose_title">"Совпадение расписаний"</string>
+    <string name="dose_overlap_choose_desc">"На одно время назначены разные дозы. Выберите, какое расписание использовать при совпадении."</string>
+    <string name="dose_overlap_what_happens">"Что произойдёт"</string>
+    <string name="dose_overlap_result">"При совпадении будет один приём — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Выберите расписание, чтобы увидеть результат."</string>
+    <string name="dose_overlap_result_keep">"Остальные приёмы обоих расписаний сохранятся."</string>
+    <string name="dose_overlap_apply">"Применить приоритет"</string>
+    <string name="dose_overlap_resolved_title">"Совпадение разрешено"</string>
+    <string name="dose_overlap_resolved_tag">"Разрешено"</string>
+    <string name="dose_overlap_pending_tag">"Требует выбора"</string>
+    <string name="dose_overlap_change">"Изменить"</string>
+    <string name="dose_overlap_priority_dose">"Приоритет: %1$s"</string>
+    <string name="overlaps_step">"Совпадения расписаний"</string>
+    <string name="dose_overlap_pick_all">"Выберите приоритет для всех совпадений."</string>
+    <string name="dose_overlap_found">"Найдено совпадений: %1$d"</string>
+    <string name="dose_overlap_progress">"Разрешено %1$d из %2$d"</string>
 </resources>

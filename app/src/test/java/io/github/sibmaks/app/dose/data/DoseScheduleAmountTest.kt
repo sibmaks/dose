@@ -129,4 +129,34 @@ class DoseScheduleAmountTest {
         assertEquals("1 tablet", items(med).single().dose)
         assertTrue(DoseScheduleConflicts.unresolved(med.schedules, med.amount).isEmpty())
     }
+
+    @Test fun `coincidences report every differing pair and mark the resolved ones`() {
+        val rules = listOf(daily(), daily("2"))
+        val overlap = DoseScheduleConflicts.coincidences(rules, "1").single()
+        assertEquals(listOf("08:00"), overlap.times)
+        assertEquals(monday, overlap.date)
+        assertFalse(overlap.resolved)
+        val ranked = DoseScheduleConflicts.prefer(rules, 1)
+        val rankedOverlap = DoseScheduleConflicts.coincidences(ranked, "1").single()
+        assertTrue(rankedOverlap.resolved)
+        assertTrue(DoseScheduleConflicts.unresolved(ranked, "1").isEmpty())
+        // Equal doses are ordinary duplicates, not coincidences demanding a choice.
+        assertTrue(DoseScheduleConflicts.coincidences(listOf(daily(), daily()), "1").isEmpty())
+    }
+
+    @Test fun `resolve keeps the winner above its partner and other schedules in place`() {
+        val rules = listOf(daily(), daily("2"), daily("3"))
+        val ranked = DoseScheduleConflicts.resolve(rules, 1, 0)
+        assertTrue(ranked[1].priority > ranked[0].priority && ranked[1].priority > ranked[2].priority)
+        // The pair of the two still-unranked schedules remains the only open choice.
+        val pending = DoseScheduleConflicts.unresolved(ranked, "1").single()
+        assertEquals(0, pending.first)
+        assertEquals(2, pending.second)
+        // Reopening a resolved pair and choosing the other side swaps only these two positions.
+        val swapped = DoseScheduleConflicts.resolve(ranked, 0, 1)
+        assertEquals(ranked[1].priority, swapped[0].priority)
+        assertEquals(ranked[0].priority, swapped[1].priority)
+        // Applying the already-winning choice does not change anything.
+        assertEquals(DoseScheduleConflicts.resolve(swapped, 0, 1), swapped)
+    }
 }

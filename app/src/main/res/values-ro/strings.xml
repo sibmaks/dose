@@ -315,9 +315,6 @@
     <string name="theme_dark">"Întunecată"</string>
     <string name="set_schedule_amount">"Setează o altă doză"</string>
     <string name="default_schedule_amount">"Folosește doza implicită (%1$s)"</string>
-    <string name="dose_overlap_title">"Prioritatea dozelor"</string>
-    <string name="dose_overlap_hint">"Doze diferite se suprapun. Alege mai întâi doza cu cea mai mare prioritate. Se aplică numai când programele se suprapun; celelalte administrări se păstrează."</string>
-    <string name="prioritize_dose">"Prioritate: %1$s"</string>
     <string name="ready">"Gata"</string>
     <string name="vibration_off">"Vibrațiile sunt dezactivate"</string>
     <string name="vibration_unavailable_title">"Vibrații indisponibile"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Mementourile pop-up nu vor vibra. Activează vibrațiile alarmelor în setările Android."</string>
     <string name="sound_vibration_settings">"Sunet și vibrații"</string>
     <string name="vibration_settings_fallback">"Deschide secțiunea Sunet și vibrații din setările Android."</string>
+    <string name="dose_overlap_detected">"A fost detectată o suprapunere de programe"</string>
+    <string name="dose_overlap_resolve">"Rezolvă suprapunerea"</string>
+    <string name="dose_overlap_choose_title">"Suprapunere de programe"</string>
+    <string name="dose_overlap_choose_desc">"Aceeași oră are doze diferite. Alege programul care se aplică atunci când se suprapun."</string>
+    <string name="dose_overlap_what_happens">"Ce se va întâmpla"</string>
+    <string name="dose_overlap_result">"La suprapunere va exista o singură administrare — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Alege un program pentru a vedea rezultatul."</string>
+    <string name="dose_overlap_result_keep">"Restul administrărilor din ambele programe rămân neschimbate."</string>
+    <string name="dose_overlap_apply">"Aplică prioritatea"</string>
+    <string name="dose_overlap_resolved_title">"Suprapunere rezolvată"</string>
+    <string name="dose_overlap_resolved_tag">"Rezolvat"</string>
+    <string name="dose_overlap_pending_tag">"Necesită o alegere"</string>
+    <string name="dose_overlap_change">"Modifică"</string>
+    <string name="dose_overlap_priority_dose">"Prioritate: %1$s"</string>
+    <string name="overlaps_step">"Suprapuneri de programe"</string>
+    <string name="dose_overlap_pick_all">"Alege o prioritate pentru fiecare suprapunere."</string>
+    <string name="dose_overlap_found">"Suprapuneri găsite: %1$d"</string>
+    <string name="dose_overlap_progress">"Rezolvate: %1$d din %2$d"</string>
 </resources>

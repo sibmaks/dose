@@ -315,9 +315,6 @@
     <string name="theme_dark">"მუქი"</string>
     <string name="set_schedule_amount">"სხვა დოზის მითითება"</string>
     <string name="default_schedule_amount">"ძირითადი დოზის გამოყენება (%1$s)"</string>
-    <string name="dose_overlap_title">"დოზის პრიორიტეტი"</string>
-    <string name="dose_overlap_hint">"განსხვავებული დოზები ემთხვევა. ჯერ აირჩიეთ ყველაზე მაღალი პრიორიტეტის დოზა. ის გამოიყენება მხოლოდ განრიგების დამთხვევისას; სხვა მიღებები უცვლელი რჩება."</string>
-    <string name="prioritize_dose">"პრიორიტეტი: %1$s"</string>
     <string name="ready">"მზადაა"</string>
     <string name="vibration_off">"ვიბრაცია გამორთულია"</string>
     <string name="vibration_unavailable_title">"ვიბრაცია მიუწვდომელია"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"ამომხტარი შეხსენებები არ ივიბრირებს. ჩართეთ მაღვიძარას ვიბრაცია Android-ის პარამეტრებში."</string>
     <string name="sound_vibration_settings">"ხმა და ვიბრაცია"</string>
     <string name="vibration_settings_fallback">"გახსენით ხმისა და ვიბრაციის განყოფილება Android-ის პარამეტრებში."</string>
+    <string name="dose_overlap_detected">"განრიგების დამთხვევა გამოვლენილია"</string>
+    <string name="dose_overlap_resolve">"დამთხვევის მოგვარება"</string>
+    <string name="dose_overlap_choose_title">"განრიგების დამთხვევა"</string>
+    <string name="dose_overlap_choose_desc">"ერთსა და იმავე დროს დანიშნულია განსხვავებული დოზები. აირჩიეთ, რომელი განრიგი გამოიყენება დამთხვევისას."</string>
+    <string name="dose_overlap_what_happens">"რა მოხდება"</string>
+    <string name="dose_overlap_result">"დამთხვევისას ერთი მიღება იქნება — %1$s."</string>
+    <string name="dose_overlap_result_pending">"შედეგის სანახავად აირჩიეთ განრიგი."</string>
+    <string name="dose_overlap_result_keep">"ორივე განრიგის დარჩენილი მიღებები უცვლელი რჩება."</string>
+    <string name="dose_overlap_apply">"პრიორიტეტის გამოყენება"</string>
+    <string name="dose_overlap_resolved_title">"დამთხვევა მოგვარებულია"</string>
+    <string name="dose_overlap_resolved_tag">"მოგვარებულია"</string>
+    <string name="dose_overlap_pending_tag">"არჩევანი სჭირდება"</string>
+    <string name="dose_overlap_change">"შეცვლა"</string>
+    <string name="dose_overlap_priority_dose">"პრიორიტეტი: %1$s"</string>
+    <string name="overlaps_step">"განრიგების დამთხვევები"</string>
+    <string name="dose_overlap_pick_all">"აირჩიეთ პრიორიტეტი ყველა დამთხვევისთვის."</string>
+    <string name="dose_overlap_found">"გამოვლენილი დამთხვევები: %1$d"</string>
+    <string name="dose_overlap_progress">"მოგვარებულია: %1$d / %2$d"</string>
 </resources>

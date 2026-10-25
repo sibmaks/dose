@@ -315,9 +315,6 @@
     <string name="theme_dark">"Торик"</string>
     <string name="set_schedule_amount">"Миқдори дигарро таъин кунед"</string>
     <string name="default_schedule_amount">"Миқдори асосиро истифода баред (%1$s)"</string>
-    <string name="dose_overlap_title">"Афзалияти миқдор"</string>
-    <string name="dose_overlap_hint">"Миқдорҳои гуногун мувофиқ меоянд. Аввал миқдори дорои афзалияти баландтаринро интихоб кунед. Он танҳо ҳангоми мувофиқ омадани ҷадвалҳо амал мекунад; қабули дигар нигоҳ дошта мешавад."</string>
-    <string name="prioritize_dose">"Афзалият: %1$s"</string>
     <string name="ready">"Омода"</string>
     <string name="vibration_off">"Ларзиш хомӯш аст"</string>
     <string name="vibration_unavailable_title">"Ларзиш дастрас нест"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Ёдрасиҳои шинокунанда ларзиш намекунанд. Ларзиши соати зангдорро дар танзимоти Android фаъол кунед."</string>
     <string name="sound_vibration_settings">"Садо ва ларзиш"</string>
     <string name="vibration_settings_fallback">"Бахши садо ва ларзишро дар танзимоти Android кушоед."</string>
+    <string name="dose_overlap_detected">"Мувофиқкунии ҷадвалҳо муайян шуд"</string>
+    <string name="dose_overlap_resolve">"Мувофиқкуниро ҳал кунед"</string>
+    <string name="dose_overlap_choose_title">"Мувофиқкунии ҷадвалҳо"</string>
+    <string name="dose_overlap_choose_desc">"Ба як вақт миқдорҳои гуногун таъин шудаанд. Ҳангоми мувофиқ омадан кадом ҷадвал истифода мешавад, интихоб кунед."</string>
+    <string name="dose_overlap_what_happens">"Чӣ хоҳад шуд"</string>
+    <string name="dose_overlap_result">"Ҳангоми мувофиқкунии ҷадвалҳо як қабул хоҳад буд — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Барои дидани натиҷа ҷадвалро интихоб кунед."</string>
+    <string name="dose_overlap_result_keep">"Қабулҳои боқимондаи ҳарду ҷадвал бетағйир мемонанд."</string>
+    <string name="dose_overlap_apply">"Афзалиятро татбиқ кунед"</string>
+    <string name="dose_overlap_resolved_title">"Мувофиқкунӣ ҳал шуд"</string>
+    <string name="dose_overlap_resolved_tag">"Ҳал шуд"</string>
+    <string name="dose_overlap_pending_tag">"Ба интихоб ниёз дорад"</string>
+    <string name="dose_overlap_change">"Тағйир додан"</string>
+    <string name="dose_overlap_priority_dose">"Афзалият: %1$s"</string>
+    <string name="overlaps_step">"Мувофиқкунии ҷадвалҳо"</string>
+    <string name="dose_overlap_pick_all">"Барои ҳамаи мувофиқкуниҳо афзалият интихоб кунед."</string>
+    <string name="dose_overlap_found">"Мувофиқкуниҳои муайяншуда: %1$d"</string>
+    <string name="dose_overlap_progress">"Ҳалшуда: %1$d аз %2$d"</string>
 </resources>

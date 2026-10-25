@@ -3,12 +3,14 @@ package io.github.sibmaks.app.dose.ui
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -20,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
@@ -34,8 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,6 +54,7 @@ import kotlinx.coroutines.withContext
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 
@@ -102,7 +106,8 @@ internal fun MedicationEditor(
     var suggestedForm by rememberSaveable { mutableStateOf<String?>(null) }
     var addInstructions by rememberSaveable { mutableStateOf(original?.note?.isNotBlank() == true) }
     var showValidation by rememberSaveable { mutableStateOf(false) }
-    var resolvingPriorities by rememberSaveable { mutableStateOf(false) }
+    var conflictAttention by rememberSaveable { mutableStateOf(false) }
+    var expandedConflict by rememberSaveable { mutableStateOf<String?>(null) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var colorPickerInitial by rememberSaveable { mutableStateOf<String?>(null) }
     val colorUsage = remember { DoseStore.colorUsage(context) }
@@ -115,15 +120,25 @@ internal fun MedicationEditor(
     val localizedForms = remember(context, language) {
         MedicationForms.sorted(AppLanguages.locale(context)) { it.localizedLabel(context) }
     }
-    val steps = MedicationEditorFlow.steps(form)
-    val position = steps.indexOf(step)
+    // The overlaps screen appears only when coinciding schedules with different dosages are detected.
+    val hasOverlaps = remember(schedules, amount) {
+        DoseScheduleConflicts.coincidences(schedules, amount.trim()).isNotEmpty()
+    }
+    val steps = MedicationEditorFlow.steps(form, hasOverlaps)
+    var position = steps.indexOf(step)
+    if (position < 0) {
+        // The optional overlaps screen disappeared while it was the current step; fall back to its neighbour.
+        step = if (step == MedicationStep.OVERLAPS) MedicationStep.SCHEDULE else MedicationStep.DETAILS
+        position = steps.indexOf(step).coerceAtLeast(0)
+    }
     val keyboard = LocalSoftwareKeyboardController.current
     // A legacy medication may intentionally have no unit; it stays optional while the amount is untouched.
     val unitOptional = original?.quantity == "" && amount == original.amount
 
     fun changeSchedules(updated: List<DoseSchedule>) {
         schedules = updated.map { it.copy(priority = 0) }
-        resolvingPriorities = false
+        conflictAttention = false
+        expandedConflict = null
     }
 
     fun chooseForm(chosen: MedicationForm) {
@@ -157,7 +172,7 @@ internal fun MedicationEditor(
 
     fun previous() {
         keyboard?.hide()
-        if (step == MedicationStep.NAME) onDismiss() else step = MedicationEditorFlow.previous(step, form)
+        if (step == MedicationStep.NAME) onDismiss() else step = MedicationEditorFlow.previous(step, form, hasOverlaps)
         showValidation = false
     }
 
@@ -176,6 +191,10 @@ internal fun MedicationEditor(
                 ?.let { resources.getString(R.string.schedule_error, index + 1, localizedValidationError(context, it)) }
         }
             .firstOrNull()
+
+        MedicationStep.OVERLAPS -> if (DoseScheduleConflicts.unresolved(schedules, amount.trim())
+                .isNotEmpty()
+        ) resources.getString(R.string.dose_overlap_pick_all) else null
 
         MedicationStep.DETAILS -> if (addInstructions && note.isBlank()) resources.getString(R.string.instructions_required) else null
         else -> null
@@ -201,10 +220,16 @@ internal fun MedicationEditor(
         if (DoseScheduleConflicts.unresolved(rules, amount.trim())
                 .isNotEmpty()
         ) {
-            resolvingPriorities = true
+            // Saving waits until every coincidence has a priority; the overlaps screen collects the choices.
+            conflictAttention = true
+            showValidation = true
+            val first = DoseScheduleConflicts.coincidences(rules, amount.trim())
+                .firstOrNull { !it.resolved }
+            if (first != null) expandedConflict = "${first.first}-${first.second}"
+            step = MedicationStep.OVERLAPS
             return
         }
-        resolvingPriorities = false
+        conflictAttention = false
         onSave(
             (original ?: DoseStore.newMedication(name.trim(), amount.trim(), quantity.trim(), rules, "", color, form))
                 .copy(
@@ -223,22 +248,27 @@ internal fun MedicationEditor(
         keyboard?.hide()
         showValidation = true
         if (stepError(step) != null) return
-        step = MedicationEditorFlow.next(step, form)
+        step = MedicationEditorFlow.next(step, form, hasOverlaps)
         showValidation = false
     }
 
     // Only expose the next page after the same validation used by Continue succeeds.
+    // Pager bookkeeping goes through one snapshot variable: the count and the per-page keys can then
+    // never observe disagreeing versions of the steps list while the overlaps screen appears or vanishes.
+    var pagerPageCount by remember { mutableStateOf(MedicationEditorFlow.steps(form, hasOverlaps).size) }
     val validStep = stepError(step) == null
-    val pager = rememberPagerState(initialPage = position) {
-        if (validStep) steps.size else position + 1
-    }
+    val pager = rememberPagerState(initialPage = position.coerceIn(0, steps.lastIndex)) { pagerPageCount }
     val activePosition by rememberUpdatedState(position)
     LaunchedEffect(step) {
-        if (pager.settledPage != position) pager.animateScrollToPage(position)
+        pager.animateScrollToPage(position.coerceIn(0, steps.lastIndex))
     }
     LaunchedEffect(pager.settledPage) {
         if (pager.settledPage > activePosition) advance()
         else if (pager.settledPage < activePosition) previous()
+    }
+    SideEffect {
+        val wanted = if (validStep) steps.size else position + 1
+        if (pagerPageCount != wanted) pagerPageCount = wanted
     }
     val forwardBlocked by rememberUpdatedState(!validStep || step == MedicationStep.DETAILS)
     val swipeThreshold = with(LocalDensity.current) { 48.dp.toPx() }
@@ -301,7 +331,8 @@ internal fun MedicationEditor(
                     )
                 }
                 HorizontalPager(
-                    state = pager, key = { steps[it] }, beyondViewportPageCount = 1,
+                    state = pager, key = { page -> steps.getOrNull(page)?.ordinal ?: 1000 + page },
+                    beyondViewportPageCount = 1,
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .weight(1f)
@@ -325,7 +356,7 @@ internal fun MedicationEditor(
                                 }
                             }
                         }) { page ->
-                    val pageStep = steps[page]
+                    val pageStep = steps.getOrNull(page) ?: return@HorizontalPager
                     val scroll = rememberScrollState()
                     val validationVisible = showValidation && pageStep == step
                     LaunchedEffect(step) { if (pageStep == step) scroll.scrollTo(0) }
@@ -633,6 +664,21 @@ internal fun MedicationEditor(
                                 }
                             }
 
+                            MedicationStep.OVERLAPS -> {
+                                OverlapsStep(
+                                    schedules,
+                                    amount,
+                                    quantity,
+                                    attention = conflictAttention || validationVisible,
+                                    expandedKey = expandedConflict,
+                                    onExpand = { expandedConflict = it },
+                                    onResolve = { winner, loser ->
+                                        schedules = DoseScheduleConflicts.resolve(schedules, winner, loser)
+                                        expandedConflict = null
+                                    },
+                                )
+                            }
+
                             MedicationStep.DETAILS -> {
                                 Text(
                                     stringResource(R.string.review_finish),
@@ -650,13 +696,16 @@ internal fun MedicationEditor(
                                         Text((if (form == MedicationForm.OTHER) customForm.ifBlank { stringResource(R.string.other) } else form.localizedLabel(
                                             context
                                         )) + " · $amount ${localizedUnit(context, quantity)}", fontSize = 14.sp)
-                                        schedules.forEach {
-                                            Text(
-                                                scheduleSummary(context, it, amount, quantity),
-                                                color = TextMuted,
-                                                fontSize = 12.sp
-                                            )
-                                        }
+                                        // Coinciding schedules collapse into one line: the review shows the dose that wins their overlaps.
+                                        schedules.groupBy { rule -> rule.times.sorted().joinToString(",") }
+                                            .map { (_, part) -> part.maxBy { it.priority } }
+                                            .forEach {
+                                                Text(
+                                                    scheduleSummary(context, it, amount, quantity),
+                                                    color = TextMuted,
+                                                    fontSize = 12.sp
+                                                )
+                                            }
                                     }
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -730,13 +779,6 @@ internal fun MedicationEditor(
             onDismiss = { colorPickerInitial = null },
             onChoose = { color = it; colorPickerInitial = null })
     }
-    if (resolvingPriorities) SchedulePriorityDialog(
-        schedules, amount, quantity,
-        onDismiss = { resolvingPriorities = false },
-        onChoose = { index ->
-            schedules = DoseScheduleConflicts.prefer(schedules, index)
-            save()
-        })
     if (showDeleteConfirm && original != null) AlertDialog(
         onDismissRequest = { showDeleteConfirm = false },
         title = { Text(stringResource(R.string.delete_named, original.name)) },
@@ -1134,59 +1176,397 @@ internal fun scheduleSummary(
     return "$dose$dates · ${rule.times.joinToString(", ")}$bounds"
 }
 
+/** Localized long date (full month name) used by the coincidence cards: «24 октября 2026». */
+internal fun localizedLongDate(
+    context: Context,
+    value: String
+): String = runCatching {
+    LocalDate.parse(value)
+        .format(DateTimeFormatter.ofPattern("d MMMM yyyy", AppLanguages.locale(context)))
+}.getOrDefault(value)
+
+/** One coincidence pair shares the choice between exactly these two schedules; dose text is reused everywhere. */
+private fun doseLabel(
+    context: Context,
+    rule: DoseSchedule,
+    amount: String,
+    quantity: String
+): String = "${rule.amount ?: amount} ${localizedUnit(context, quantity)}"
+
+/** The optional screen after schedule editing: it materialises only while coincidences exist. */
 @Composable
-private fun SchedulePriorityDialog(
+private fun OverlapsStep(
     schedules: List<DoseSchedule>,
     amount: String,
     quantity: String,
-    onDismiss: () -> Unit,
-    onChoose: (Int) -> Unit
+    attention: Boolean,
+    expandedKey: String?,
+    onExpand: (String?) -> Unit,
+    onResolve: (winner: Int, loser: Int) -> Unit,
+) {
+    val coincidences = remember(schedules, amount) { DoseScheduleConflicts.coincidences(schedules, amount.trim()) }
+    if (coincidences.isEmpty()) return
+    val resolvedCount = coincidences.count { it.resolved }
+    Text(
+        stringResource(R.string.dose_overlap_found, coincidences.size),
+        fontSize = 19.sp,
+        fontWeight = FontWeight.Bold
+    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        LinearProgressIndicator(
+            progress = { resolvedCount.toFloat() / coincidences.size },
+            modifier = Modifier
+                .weight(1f)
+                .height(5.dp)
+                .clip(RoundedCornerShape(3.dp)),
+            color = GreenAction,
+            trackColor = AmberBorder,
+        )
+        Text(
+            stringResource(R.string.dose_overlap_progress, resolvedCount, coincidences.size),
+            color = AmberText,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+    Text(
+        stringResource(R.string.dose_overlap_choose_desc),
+        color = TextMuted,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+    )
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        coincidences.forEach { overlap ->
+            ConflictItem(
+                schedules,
+                amount,
+                quantity,
+                overlap,
+                expanded = expandedKey == "${overlap.first}-${overlap.second}",
+                onToggle = {
+                    onExpand(
+                        if (expandedKey == "${overlap.first}-${overlap.second}") null
+                        else "${overlap.first}-${overlap.second}"
+                    )
+                },
+                onResolve = onResolve,
+            )
+        }
+    }
+    if (attention && coincidences.any { !it.resolved }) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(7.dp)
+        ) {
+            Icon(
+                Icons.Rounded.Warning,
+                null,
+                Modifier.size(15.dp),
+                tint = AmberIcon
+            )
+            Text(
+                stringResource(R.string.dose_overlap_pick_all),
+                color = AmberText,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}
+
+@Composable
+private fun ConflictItem(
+    schedules: List<DoseSchedule>,
+    amount: String,
+    quantity: String,
+    overlap: DoseScheduleConflicts.Overlap,
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    onResolve: (winner: Int, loser: Int) -> Unit,
 ) {
     val context = LocalContext.current
-    val overlaps = remember(schedules, amount) { DoseScheduleConflicts.unresolved(schedules, amount) }
-    val choices =
-        overlaps.flatMap { listOf(it.first, it.second) }
-            .distinct()
-            .sorted()
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.dose_overlap_title)) },
-        text = {
-            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(stringResource(R.string.dose_overlap_hint))
-                overlaps.forEach { overlap ->
+    val resolved = overlap.resolved
+    val winner = if (schedules[overlap.first].priority > schedules[overlap.second].priority) overlap.first else overlap.second
+    val firstDose = doseLabel(context, schedules[overlap.first], amount, quantity)
+    val secondDose = doseLabel(context, schedules[overlap.second], amount, quantity)
+    val headline = "${localizedLongDate(context, overlap.date.toString())} · ${overlap.times.joinToString(" · ")} · " +
+            "$firstDose / $secondDose"
+    Surface(
+        onClick = onToggle,
+        color = if (resolved) GreenPanel else AmberPanel,
+        border = BorderStroke(1.dp, if (resolved) GreenBorder else AmberBorder),
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize(),
+    ) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 11.dp),
+            verticalArrangement = Arrangement.spacedBy(7.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    Icons.Rounded.Warning,
+                    null,
+                    Modifier.size(16.dp),
+                    tint = AmberIcon
+                )
+                Text(
+                    headline,
+                    color = TextPrimary,
+                    fontSize = 12.5.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+                ConflictStatus(resolved)
+                Icon(
+                    Icons.Rounded.ExpandMore,
+                    null,
+                    Modifier
+                        .size(18.dp)
+                        .rotate(if (expanded) 180f else 0f),
+                    tint = if (resolved) GreenMuted else AmberIcon,
+                )
+            }
+            if (resolved) {
+                Text(
+                    "${stringResource(R.string.dose_overlap_priority_dose, doseLabel(context, schedules[winner], amount, quantity))} " +
+                            "(${stringResource(R.string.schedule_number, winner + 1)})",
+                    color = GreenMuted,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+            if (expanded) ExpandedConflict(
+                schedules, amount, quantity, overlap, onResolve = onResolve,
+            )
+        }
+    }
+}
+
+/** Collapsed item state: a green pill when the priority is chosen, an amber one while it needs a choice. */
+@Composable
+private fun ConflictStatus(resolved: Boolean) {
+    Surface(
+        color = Panel,
+        border = BorderStroke(1.dp, if (resolved) GreenBorder else AmberBorder),
+        shape = RoundedCornerShape(50.dp),
+    ) {
+        Row(
+            Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Icon(
+                if (resolved) Icons.Rounded.Check else Icons.Rounded.Warning,
+                null,
+                Modifier.size(10.dp),
+                tint = if (resolved) GreenMuted else AmberIcon
+            )
+            Text(
+                stringResource(
+                    if (resolved) R.string.dose_overlap_resolved_tag else R.string.dose_overlap_pending_tag
+                ),
+                fontSize = 10.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = if (resolved) GreenText else AmberText,
+            )
+        }
+    }
+}
+
+/** Expanded body: the overlap moment, one radio card per sibling schedule, live preview, apply action. */
+@Composable
+private fun ExpandedConflict(
+    schedules: List<DoseSchedule>,
+    amount: String,
+    quantity: String,
+    overlap: DoseScheduleConflicts.Overlap,
+    onResolve: (winner: Int, loser: Int) -> Unit,
+) {
+    val context = LocalContext.current
+    val resolved = overlap.resolved
+    val winner = if (schedules[overlap.first].priority > schedules[overlap.second].priority) overlap.first else overlap.second
+    var pending by remember(overlap) { mutableStateOf(if (resolved) winner else null) }
+    HorizontalDivider(color = AmberBorder)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Icon(
+            Icons.Rounded.CalendarMonth,
+            null,
+            Modifier.size(13.dp),
+            tint = TextMuted
+        )
+        Text(
+            localizedLongDate(context, overlap.date.toString()),
+            fontSize = 12.5.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = TextPrimary
+        )
+        Text("·", color = TextMuted, fontSize = 12.5.sp)
+        Icon(
+            Icons.Rounded.AccessTime,
+            null,
+            Modifier.size(13.dp),
+            tint = TextMuted
+        )
+        Text(
+            overlap.times.joinToString(" · "),
+            fontSize = 12.5.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = TextPrimary
+        )
+    }
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        listOf(overlap.first, overlap.second).forEach { index ->
+            val rule = schedules[index]
+            Surface(
+                onClick = { pending = index },
+                color = if (pending == index) AccentPanel else SoftPanel,
+                border = BorderStroke(
+                    if (pending == index) 1.5.dp else 1.dp,
+                    if (pending == index) Violet else PanelBorder
+                ),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.weight(1f),
+            ) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(3.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(7.dp)
+                    ) {
+                        RadioButtonCircle(pending == index)
+                        Text(
+                            doseLabel(context, rule, amount, quantity),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = if (pending == index) Violet else TextPrimary,
+                        )
+                    }
                     Text(
-                        "${localizedDate(context, overlap.date.toString())} · ${overlap.times.joinToString(", ")} · " +
-                                "${schedules[overlap.first].amount ?: amount} / ${schedules[overlap.second].amount ?: amount} ${
-                                    localizedUnit(
-                                        context,
-                                        quantity
-                                    )
-                                }",
-                        fontSize = 12.sp, color = TextMuted
+                        stringResource(R.string.schedule_number, index + 1),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextPrimary
+                    )
+                    Text(
+                        scheduleSummary(context, rule),
+                        color = TextMuted,
+                        fontSize = 10.5.sp,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        lineHeight = 13.sp,
                     )
                 }
-                choices.forEach { index ->
-                    val rule = schedules[index]
-                    OutlinedButton(onClick = { onChoose(index) }, modifier = Modifier.fillMaxWidth()) {
-                        Column(Modifier.fillMaxWidth()) {
-                            Text(
-                                stringResource(
-                                    R.string.prioritize_dose,
-                                    "${rule.amount ?: amount} ${localizedUnit(context, quantity)}"
-                                ), fontWeight = FontWeight.Bold
-                            )
-                            Text(stringResource(R.string.schedule_number, index + 1), fontSize = 12.sp)
-                            Text(scheduleSummary(context, rule), fontSize = 12.sp)
-                        }
-                    }
-                }
             }
-        },
-        confirmButton = {},
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.back)) } },
-    )
+        }
+    }
+    Surface(
+        color = SoftPanel,
+        border = BorderStroke(1.dp, PanelBorder),
+        shape = RoundedCornerShape(12.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(3.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(5.dp)
+            ) {
+                Icon(
+                    Icons.Rounded.Info,
+                    null,
+                    Modifier.size(11.dp),
+                    tint = Violet
+                )
+                Text(
+                    stringResource(R.string.dose_overlap_what_happens),
+                    fontSize = 10.5.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Violet
+                )
+            }
+            Text(
+                pending?.let { index ->
+                    stringResource(
+                        R.string.dose_overlap_result,
+                        doseLabel(context, schedules[index], amount, quantity)
+                    )
+                } ?: stringResource(R.string.dose_overlap_result_pending),
+                fontSize = 12.5.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = TextPrimary,
+            )
+            Text(
+                stringResource(R.string.dose_overlap_result_keep),
+                color = TextMuted,
+                fontSize = 11.sp,
+            )
+        }
+    }
+    Button(
+        enabled = pending != null,
+        onClick = { pending?.let { onResolve(it, overlap.first + overlap.second - it) } },
+        shape = RoundedCornerShape(13.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+    ) {
+        Text(stringResource(R.string.dose_overlap_apply), fontWeight = FontWeight.Bold)
+    }
 }
+
+/** Single-selection radio circle of the option cards: empty ring stays neutral, chosen ring turns violet. */
+@Composable
+private fun RadioButtonCircle(selected: Boolean) {
+    Box(
+        Modifier
+            .size(18.dp)
+            .clip(CircleShape)
+            .border(
+                BorderStroke(2.dp, if (selected) Violet else RadioButtonBorder),
+                CircleShape
+            )
+            .background(Panel),
+        contentAlignment = Alignment.Center
+    ) {
+        if (selected) Box(Modifier.size(8.dp).clip(CircleShape).background(Violet))
+    }
+}
+
+/** Soft amber for warnings, calm green for a settled coincidence — same hues in both themes. */
+private val AmberPanel: Color @Composable get() = themeColor(0xFFFDF4DC, 0xFF3A3118)
+private val AmberBorder: Color @Composable get() = themeColor(0xFFF0E2B8, 0xFF5A4C22)
+private val AmberText: Color @Composable get() = themeColor(0xFF7A600E, 0xFFF2CE74)
+private val AmberMuted: Color @Composable get() = themeColor(0xFFA3842E, 0xFFD9BC7A)
+private val AmberIcon: Color @Composable get() = themeColor(0xFFB8830F, 0xFFEBCC6B)
+private val GreenPanel: Color @Composable get() = themeColor(0xFFEFF9F3, 0xFF1E3A2C)
+private val GreenBorder: Color @Composable get() = themeColor(0xFFD4EBDD, 0xFF2C5240)
+private val GreenText: Color @Composable get() = themeColor(0xFF1E6B45, 0xFF8FE3BC)
+private val GreenMuted: Color @Composable get() = themeColor(0xFF3E8562, 0xFF7BD5B5)
+private val GreenAction: Color @Composable get() = themeColor(0xFF27A468, 0xFF2FA468)
+private val RadioButtonBorder: Color @Composable get() = themeColor(0xFFC9CDDD, 0xFF4A4B60)
 
 /** One half of the unit-mode segmented control; the active side carries the soft purple fill. */
 @Composable

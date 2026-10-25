@@ -315,9 +315,6 @@
     <string name="theme_dark">"Qorongʻi"</string>
     <string name="set_schedule_amount">"Boshqa dozani belgilang"</string>
     <string name="default_schedule_amount">"Asosiy dozadan foydalaning (%1$s)"</string>
-    <string name="dose_overlap_title">"Doza ustuvorligi"</string>
-    <string name="dose_overlap_hint">"Turli dozalar ustma-ust tushmoqda. Avval eng yuqori ustuvorlikdagi dozani tanlang. U faqat jadvallar ustma-ust tushganda qo‘llanadi; boshqa qabullar saqlanadi."</string>
-    <string name="prioritize_dose">"Ustuvor: %1$s"</string>
     <string name="ready">"Tayyor"</string>
     <string name="vibration_off">"Tebranish o‘chirilgan"</string>
     <string name="vibration_unavailable_title">"Tebranish mavjud emas"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Qalqib chiquvchi eslatmalar tebranmaydi. Android sozlamalarida budilnik tebranishini yoqing."</string>
     <string name="sound_vibration_settings">"Ovoz va tebranish"</string>
     <string name="vibration_settings_fallback">"Android sozlamalarida ovoz va tebranish bo‘limini oching."</string>
+    <string name="dose_overlap_detected">"Jadvallar ustma-ust tushishi aniqlandi"</string>
+    <string name="dose_overlap_resolve">"Ustma-ust tushishni hal qilish"</string>
+    <string name="dose_overlap_choose_title">"Jadvallar ustma-ust tushishi"</string>
+    <string name="dose_overlap_choose_desc">"Bir vaqtga turli dozalar belgilangan. Ustma-ust tushganda qaysi jadval qo‘llanilishini tanlang."</string>
+    <string name="dose_overlap_what_happens">"Nima bo‘ladi"</string>
+    <string name="dose_overlap_result">"Ustma-ust tushishda bir qabul bo‘ladi — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Natijani ko‘rish uchun jadvalni tanlang."</string>
+    <string name="dose_overlap_result_keep">"Ikkala jadvalning qolgan qabullari o‘zgarmay qoladi."</string>
+    <string name="dose_overlap_apply">"Ustuvorlikni qo‘llash"</string>
+    <string name="dose_overlap_resolved_title">"Ustma-ust tushish hal qilindi"</string>
+    <string name="dose_overlap_resolved_tag">"Hal qilindi"</string>
+    <string name="dose_overlap_pending_tag">"Tanlov talab qiladi"</string>
+    <string name="dose_overlap_change">"O‘zgartirish"</string>
+    <string name="dose_overlap_priority_dose">"Ustuvorlik: %1$s"</string>
+    <string name="overlaps_step">"Jadvallar ustma-ust tushishi"</string>
+    <string name="dose_overlap_pick_all">"Barcha ustma-ust tushishlar uchun ustuvorlikni tanlang."</string>
+    <string name="dose_overlap_found">"Aniqlangan ustma-ust tushishlar: %1$d"</string>
+    <string name="dose_overlap_progress">"Hal qilingani: %1$d / %2$d"</string>
 </resources>

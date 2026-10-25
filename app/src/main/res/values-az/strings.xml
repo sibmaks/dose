@@ -315,9 +315,6 @@
     <string name="theme_dark">"Tünd"</string>
     <string name="set_schedule_amount">"Başqa doza təyin et"</string>
     <string name="default_schedule_amount">"Əsas dozadan istifadə et (%1$s)"</string>
-    <string name="dose_overlap_title">"Doza prioriteti"</string>
-    <string name="dose_overlap_hint">"Fərqli dozalar üst-üstə düşür. Əvvəlcə ən yüksək prioritetli dozanı seçin. Bu, yalnız cədvəllər üst-üstə düşdükdə tətbiq olunur; digər qəbullar saxlanılır."</string>
-    <string name="prioritize_dose">"Prioritet: %1$s"</string>
     <string name="ready">"Hazır"</string>
     <string name="vibration_off">"Vibrasiya söndürülüb"</string>
     <string name="vibration_unavailable_title">"Vibrasiya əlçatan deyil"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Açılan xatırlatmalar vibrasiya etməyəcək. Android ayarlarında zəngli saat vibrasiyasını aktiv edin."</string>
     <string name="sound_vibration_settings">"Səs və vibrasiya ayarları"</string>
     <string name="vibration_settings_fallback">"Android ayarlarında səs və vibrasiya bölməsini açın."</string>
+    <string name="dose_overlap_detected">"Qrafiklərin üst-üstə düşməsi aşkarlandı"</string>
+    <string name="dose_overlap_resolve">"Üst-üstə düşməni həll edin"</string>
+    <string name="dose_overlap_choose_title">"Qrafiklərin üst-üstə düşməsi"</string>
+    <string name="dose_overlap_choose_desc">"Eyni vaxta müxtəlif dozalar təyin edilib. Üst-üstə düşdükdə hansı qrafikin istifadə olunacağını seçin."</string>
+    <string name="dose_overlap_what_happens">"Nə olacaq"</string>
+    <string name="dose_overlap_result">"Üst-üstə düşmədə bir qəbul olacaq — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Nəticəni görmək üçün qrafik seçin."</string>
+    <string name="dose_overlap_result_keep">"Hər iki qrafikin qalan qəbulları dəyişməz qalır."</string>
+    <string name="dose_overlap_apply">"Prioriteti tətbiq edin"</string>
+    <string name="dose_overlap_resolved_title">"Üst-üstə düşmə həll olundu"</string>
+    <string name="dose_overlap_resolved_tag">"Həll olundu"</string>
+    <string name="dose_overlap_pending_tag">"Seçim tələb edir"</string>
+    <string name="dose_overlap_change">"Dəyişdir"</string>
+    <string name="dose_overlap_priority_dose">"Prioritet: %1$s"</string>
+    <string name="overlaps_step">"Qrafiklərin üst-üstə düşmələri"</string>
+    <string name="dose_overlap_pick_all">"Bütün üst-üstə düşmələr üçün prioritet seçin."</string>
+    <string name="dose_overlap_found">"Aşkarlanmış üst-üstə düşmələr: %1$d"</string>
+    <string name="dose_overlap_progress">"Həll olunmuşlar: %1$d / %2$d"</string>
 </resources>

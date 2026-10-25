@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Совпадения расписаний — встроенное разрешение приоритета доз (шаг «Даты и время приёма»)</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#E8EBF1}
+  body{
+    font-family:'Inter','SF Pro Text','Roboto',-apple-system,'Segoe UI',system-ui,sans-serif;
+    color:#252B43;padding:34px 26px 52px;-webkit-font-smoothing:antialiased;
+  }
+  .sprite{display:none}
+
+  /* ---------- board chrome ---------- */
+  .board-head{max-width:2200px;margin:0 auto 8px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .board-title{font-size:21px;font-weight:800;letter-spacing:-.01em}
+  .board-sub{font-size:13.5px;color:#69748A;margin-top:6px;max-width:760px;line-height:1.5}
+  .legend{display:flex;gap:9px;flex-wrap:wrap}
+  .lg{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #DDE2EA;border-radius:999px;padding:7px 13px;font-size:12.5px;font-weight:700;color:#3A4661}
+  .lg i{width:9px;height:9px;border-radius:50%}
+  .grid{max-width:2200px;margin:22px auto 0;display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+  .shot{display:flex;flex-direction:column;gap:12px}
+  .shot-label{font-size:13px;font-weight:800;color:#3A4661}
+  .shot-cap{font-size:12.5px;color:#69748A;line-height:1.55;max-width:384px}
+
+  /* ---------- device frame ---------- */
+  .phone{
+    width:392px;height:864px;background:#FAFBFE;border-radius:38px;border:10px solid #171C26;
+    box-shadow:0 30px 70px rgba(23,32,56,.22),0 4px 14px rgba(23,32,56,.10);
+    overflow:hidden;display:flex;flex-direction:column;position:relative;
+    /* -------- light palette -------- */
+    --ink:#252B43; --muted:#62677D; --faint:#A5AEBF;
+    --page:#FAFBFE; --panel:#FFFFFF; --card2:#F8F9FD; --soft:#F7F8FB; --softLine:#ECEFF4;
+    --line:#D8DEE8; --chipLine:#E2E6EE; --barTrack:#ECEAF3;
+    --violet:#6D57DA; --violetSoft:#F5F2FE; --violetSoft2:#F0EDFB; --violetLine:#E7E2F4;
+    --amberBg:#FDF4DC; --amberBg2:#FBF0D4; --amberLine:#F0E2B8; --amberTrack:#F1E4C0;
+    --amberInk:#7A600E; --amberSub:#A3842E; --amberAct:#85660D; --amberIc:#B8830F;
+    --greenBg:#F1F9F3; --greenLine:#D4EBDD; --greenInk:#1E6B45; --greenSub:#3E8562;
+    --green:#27A468; --greenChip:#E4F5ED; --greenChipInk:#177A4C;
+    --btnBg:#6D57DA; --btnInk:#FFFFFF; --btnOff:#E7E3F6; --btnOffInk:#B0A8CE;
+    --radioLine:#C9CDDD; --del:#E0684A; --scrim:rgba(37,43,67,.46);
+  }
+  .under{position:absolute;inset:0;background:var(--page)}
+  .under .fake{padding:44px 21px 0;display:flex;flex-direction:column;gap:13px}
+  .under .block{background:var(--card2);border:1px solid var(--softLine);border-radius:20px;height:96px}
+  .under .block.wide{height:120px}
+  .scrim{position:absolute;inset:0;background:var(--scrim)}
+
+  /* ---------- dark palette ---------- */
+  .night{background:#12131B;
+    --ink:#E6E5F0; --muted:#B7B6C9; --faint:#8E8DA0;
+    --page:#12131B; --panel:#1C1D28; --card2:#232430; --soft:#232430; --softLine:#393A49; --barTrack:#2E2F3E;
+    --line:#4A4B5C; --chipLine:#393A49;
+    --violet:#C4B9FF; --violetSoft:#342D52; --violetSoft2:#2E2748; --violetLine:#494063;
+    --amberBg:#3A3118; --amberBg2:#443A20; --amberLine:#5A4C22; --amberTrack:#4A3F1D;
+    --amberInk:#F2CE74; --amberSub:#D9BC7A; --amberAct:#EBCC6B; --amberIc:#EBCC6B;
+    --greenBg:#1E3A2C; --greenLine:#2C5240; --greenInk:#8FE3BC; --greenSub:#7BD5B5;
+    --green:#2FA468; --greenChip:#1F3D2E; --greenChipInk:#7BD5B5;
+    --btnBg:#C4B9FF; --btnInk:#302367; --btnOff:#342D52; --btnOffInk:#8C86A8;
+    --radioLine:#4A4B60; --del:#FFB78E; --scrim:rgba(4,6,12,.55);
+  }
+
+  /* ---------- modal editor card ---------- */
+  .modal{
+    position:absolute;left:12px;right:12px;top:30px;bottom:20px;
+    background:var(--panel);border-radius:26px;box-shadow:0 22px 50px rgba(23,32,56,.30);
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  .mhead{display:flex;align-items:center;padding:8px 10px 2px 20px;gap:6px;height:52px;flex:none}
+  .mtitle{font-size:21px;font-weight:800;color:var(--ink);flex:1;white-space:nowrap;overflow:hidden}
+  .msave{color:var(--violet);font-weight:700;font-size:15px;padding:8px 10px;border-radius:10px;flex:none}
+  .mclose{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:var(--ink);flex:none}
+
+  .mstep{padding:5px 20px 8px;display:flex;flex-direction:column;gap:7px;flex:none}
+  .mstep .lbl{color:var(--violet);font-weight:700;font-size:13px}
+  .bar{height:6px;border-radius:4px;background:var(--barTrack);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:4px;background:var(--violet)}
+
+  .mbody{flex:1;overflow-y:hidden;padding:13px 20px 10px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none}
+  .mbody::-webkit-scrollbar{display:none}
+  .h19{font-size:19px;font-weight:700;color:var(--ink);flex:none}
+
+  .mfoot{padding:12px 20px 16px;display:flex;gap:10px;border-top:1px solid var(--softLine);background:var(--panel);flex:none}
+  .btn{height:51px;border-radius:14px;display:grid;place-items:center;font-size:15.5px;font-weight:700;flex:1}
+  .btn.ghost{border:1px solid var(--line);color:var(--ink);background:var(--panel)}
+  .btn.primary{background:var(--btnBg);color:var(--btnInk);box-shadow:0 10px 22px rgba(109,87,218,.30)}
+  .btn.primary.off{background:var(--btnOff);color:var(--btnOffInk);box-shadow:none}
+
+  .ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* ---------- schedule card (compact) ---------- */
+  .sch{background:var(--soft);border:1px solid var(--softLine);border-radius:16px;padding:12px;flex:none}
+  .sch-head{display:flex;align-items:center;height:20px;gap:8px}
+  .sch-head b{flex:1;font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .sch-del{color:var(--del);flex:none}
+  .sch-meta{display:flex;align-items:center;gap:6px;height:26px}
+  .tag{background:var(--violetSoft2);color:var(--violet);font-size:11.5px;font-weight:700;padding:5px 9px;border-radius:8px;white-space:nowrap}
+  .tchip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--chipLine);border-radius:8px;padding:4px 8px;font-size:11.5px;font-weight:600;background:var(--panel);color:var(--ink)}
+  .tchip .ic{color:var(--muted)}
+  .tchip.add{border-style:dashed;color:var(--muted);font-weight:600}
+  .froml{margin-left:auto;font-size:11px;color:var(--muted);white-space:nowrap}
+  .dose-add{display:flex;align-items:center;gap:6px;color:var(--violet);font-size:12.5px;font-weight:700;height:30px}
+  .dose-add .ic{flex:none}
+  .dfield{position:relative;height:44px;border:1.5px solid var(--line);border-radius:13px;background:var(--panel);display:flex;align-items:center;padding:0 12px}
+  .dlabel{position:absolute;top:-7px;left:10px;background:var(--soft);padding:0 5px;font-size:10.5px;font-weight:700;color:var(--muted)}
+  .dval{font-size:15px;font-weight:600;color:var(--ink)}
+
+  .addbtn{height:46px;border-radius:14px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:700;flex:none}
+
+  /* ---------- collapsed amber warning ---------- */
+  .warn{background:var(--amberBg);border:1px solid var(--amberLine);border-radius:14px;padding:10px 11px;
+    display:flex;align-items:flex-start;gap:8px;flex:none;cursor:pointer}
+  .wic{color:var(--amberIc);flex:none;margin-top:1px}
+  .wcol{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+  .wt{font-size:12px;font-weight:700;color:var(--amberInk);white-space:nowrap;overflow:hidden}
+  .wc{font-size:10.5px;font-weight:500;color:var(--amberSub);white-space:nowrap;overflow:hidden}
+  .wrow{display:flex;align-items:center;gap:6px;min-width:0}
+  .wrow .wc{flex:1}
+  .wact3{display:flex;align-items:center;justify-content:flex-end;gap:3px;margin-top:2px;
+    font-size:11px;font-weight:700;color:var(--amberAct);white-space:nowrap}
+
+  /* ---------- expanded conflict section ---------- */
+  .expand{border:1px solid var(--amberLine);border-radius:16px;overflow:hidden;background:var(--panel);flex:none}
+  .ehead{background:var(--amberBg);padding:10px 12px;display:flex;align-items:center;gap:9px;cursor:pointer}
+  .ehead .ttl{flex:1;font-size:13.5px;font-weight:800;color:var(--amberInk)}
+  .ehead .chev{color:var(--amberIc)}
+  .ebody{padding:11px 12px 12px;display:flex;flex-direction:column;gap:9px}
+  .e-desc{font-size:11.5px;line-height:1.45;color:var(--muted)}
+  .e-meta{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--ink)}
+  .e-meta .ic{color:var(--muted)}
+  .e-meta .sep{color:var(--faint);font-weight:600}
+
+  .opts{display:flex;gap:8px}
+  .opt{flex:1;height:86px;border:1.5px solid var(--chipLine);border-radius:12px;background:var(--card2);
+    padding:9px 10px;display:flex;flex-direction:column;gap:3px}
+  .opt.sel{background:var(--violetSoft);border-color:var(--violet)}
+  .opt-r1{display:flex;align-items:center;gap:7px}
+  .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--radioLine);background:var(--panel);display:grid;place-items:center;flex:none}
+  .radio i{width:8px;height:8px;border-radius:50%;background:transparent}
+  .opt.sel .radio{border-color:var(--violet)}
+  .opt.sel .radio i{background:var(--violet)}
+  .odose{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+  .opt.sel .odose{color:var(--violet)}
+  .osched{font-size:11px;font-weight:700;color:var(--ink)}
+  .ometa{font-size:10.5px;font-weight:500;color:var(--muted);white-space:nowrap;overflow:hidden}
+
+  .preview{background:var(--card2);border:1px solid var(--softLine);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
+  .pv-title{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;letter-spacing:.02em;color:var(--violet)}
+  .pv-main{font-size:12.5px;font-weight:700;color:var(--ink)}
+  .pv-sub{font-size:11px;line-height:1.4;color:var(--muted)}
+
+  .apply{height:44px;border-radius:13px;background:var(--btnBg);color:var(--btnInk);display:grid;place-items:center;
+    font-size:15px;font-weight:700;box-shadow:0 8px 18px rgba(109,87,218,.28)}
+
+  /* ---------- resolved card ---------- */
+  .resolved{background:var(--greenBg);border:1px solid var(--greenLine);border-radius:14px;padding:11px 12px;
+    display:flex;align-items:center;gap:10px;flex:none;cursor:pointer}
+  .ric{width:32px;height:32px;border-radius:11px;background:var(--green);color:#fff;display:grid;place-items:center;flex:none}
+  .rcol{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+  .rt{font-size:13px;font-weight:800;color:var(--greenInk)}
+  .rs{font-size:11.5px;font-weight:600;color:var(--greenSub);white-space:nowrap;overflow:hidden}
+  .ract{flex:none;display:flex;align-items:center;gap:3px;color:var(--violet);font-size:12.5px;font-weight:700}
+  .ract .ic{color:var(--violet)}
+
+  /* ---------- multiple conflicts group ---------- */
+  .group{border:1px solid var(--amberLine);border-radius:16px;overflow:hidden;background:var(--panel);flex:none}
+  .ghead{background:var(--amberBg);padding:10px 12px 9px;display:flex;flex-direction:column;gap:7px}
+  .grow1{display:flex;align-items:center;gap:9px}
+  .grow1 .ttl{flex:1;display:flex;flex-direction:column;gap:1px}
+  .gbar{height:4px;border-radius:3px;background:var(--amberTrack);overflow:hidden}
+  .gbar i{display:block;height:100%;border-radius:3px;background:var(--green)}
+  .gbody{padding:10px;display:flex;flex-direction:column;gap:8px}
+
+  .citem{border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:5px}
+  .citem.warn{background:var(--amberBg);border:1px solid var(--amberLine);cursor:pointer}
+  .citem.ok{background:var(--greenBg);border:1px solid var(--greenLine);cursor:pointer}
+  .crow{display:flex;align-items:center;gap:7px;height:20px}
+  .crow .ct{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:800;color:var(--ink)}
+  .crow .ct .ic{color:var(--muted)}
+  .crow .cd{font-size:11.5px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden}
+  .chip{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:999px;flex:none}
+  .chip .ic{flex:none}
+  .chip.ok{color:var(--greenChipInk);background:var(--greenChip)}
+  .chip.warn{color:var(--amberAct);background:var(--panel);border:1px solid var(--amberLine)}
+  .crow .chev{color:var(--muted);flex:none}
+  .csub{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--greenSub);padding-left:1px}
+
+  /* expanded item content inside the group */
+  .cexp{background:var(--card2);border:1px solid var(--softLine);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+  .cexp .opt{background:var(--panel)}
+  .cexp .preview{background:var(--panel)}
+  .cexp .apply{height:42px}
+  .cexp .e-meta{font-size:11.5px}
+
+  .vnote{display:flex;align-items:center;gap:8px;background:var(--amberBg);border:1px solid var(--amberLine);
+    border-radius:12px;padding:10px 11px;font-size:11px;font-weight:700;color:var(--amberAct)}
+  .vnote .ic{color:var(--amberIc);flex:none}
+</style>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true"><defs>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18.6a2 2 0 0 0 1.8 3h16.8a2 2 0 0 0 1.8-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M6 6l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 7"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></symbol>
+</defs></svg>
+
+<header class="board-head">
+  <div>
+    <div class="board-title">Совпадения расписаний — встроенное разрешение приоритета доз</div>
+    <div class="board-sub">Трекер лекарств · Android · Material 3 · шаг «Даты и время приёма» · амбер — неразрешённые совпадения, зелёный — разрешённая пара · все секции разворачиваются прямо на шаге, без диалогов и переходов</div>
+  </div>
+  <div class="legend">
+    <span class="lg"><i style="background:#6D57DA"></i>выбор приоритета</span>
+    <span class="lg"><i style="background:#B8830F"></i>требует выбора</span>
+    <span class="lg"><i style="background:#27A468"></i>разрешено</span>
+    <span class="lg"><i style="background:#8E8DA0"></i>inline-раскрытие</span>
+  </div>
+</header>
+
+<main class="grid">
+
+  <!-- ============ STATE 1 · collapsed warning ============ -->
+  <div class="shot">
+    <div class="shot-label">Состояние 1 · свёрнутое предупреждение</div>
+    <div class="phone">
+      <div class="under"><div class="fake"><div class="block wide"></div><div class="block"></div><div class="block"></div><div class="block"></div></div></div>
+      <div class="scrim"></div>
+      <div class="modal">
+        <div class="mhead">
+          <span class="mtitle">Редактирование</span>
+          <span class="msave">Сохранить</span>
+          <span class="mclose"><svg class="ic" width="22" height="22"><use href="#i-close"/></svg></span>
+        </div>
+        <div class="mstep">
+          <span class="lbl">Шаг 4 из 5 · Даты и время приёма</span>
+          <span class="bar"><i style="width:80%"></i></span>
+        </div>
+        <div class="mbody">
+          <div class="h19">Когда напомнить?</div>
+
+          <div class="sch">
+            <div class="sch-head"><b>Расписание 1</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>08:00</span>
+              <span class="froml">с 1 октября</span>
+            </div>
+            <div class="dose-add"><svg class="ic" width="15" height="15"><use href="#i-pill"/></svg>Указать другую дозу</div>
+          </div>
+
+          <div class="sch">
+            <div class="sch-head"><b>Расписание 2</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">101</span></div>
+          </div>
+
+          <div class="sch">
+            <div class="sch-head"><b>Расписание 3</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">109</span></div>
+          </div>
+
+          <div class="warn">
+            <svg class="ic wic" width="16" height="16"><use href="#i-alert"/></svg>
+            <div class="wcol">
+              <span class="wt">Обнаружено совпадение расписаний</span>
+              <span class="wc num">24 октября · 09:25 · 101 г / 109 г</span>
+              <span class="wact3">Разрешить совпадение<svg class="ic" width="13" height="13"><use href="#i-chevron"/></svg></span>
+            </div>
+          </div>
+
+          <div class="addbtn"><svg class="ic" width="17" height="17"><use href="#i-plus"/></svg>Добавить расписание</div>
+        </div>
+        <div class="mfoot">
+          <div class="btn ghost">Назад</div>
+          <div class="btn primary">Продолжить</div>
+        </div>
+      </div>
+    </div>
+    <p class="shot-cap">Компактная янтарная карточка появляется сразу после карточек расписаний, не прерывая редактирование. Вся карточка — нажимаемая цель: тап раскрывает секцию здесь же. Базовое расписание (08:00) не затронуто.</p>
+  </div>
+
+  <!-- ============ STATE 2 · expanded inline resolution ============ -->
+  <div class="shot">
+    <div class="shot-label">Состояние 2 · раскрытое совпадение — выбор приоритета</div>
+    <div class="phone">
+      <div class="under"><div class="fake"><div class="block wide"></div><div class="block"></div><div class="block"></div><div class="block"></div></div></div>
+      <div class="scrim"></div>
+      <div class="modal">
+        <div class="mhead">
+          <span class="mtitle">Редактирование</span>
+          <span class="msave">Сохранить</span>
+          <span class="mclose"><svg class="ic" width="22" height="22"><use href="#i-close"/></svg></span>
+        </div>
+        <div class="mstep">
+          <span class="lbl">Шаг 4 из 5 · Даты и время приёма</span>
+          <span class="bar"><i style="width:80%"></i></span>
+        </div>
+        <div class="mbody">
+          <div class="sch" style="margin-top:-46px">
+            <div class="sch-head"><b>Расписание 2</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">101</span></div>
+          </div>
+
+          <div class="sch">
+            <div class="sch-head"><b>Расписание 3</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">109</span></div>
+          </div>
+
+          <div class="expand">
+            <div class="ehead">
+              <svg class="ic wic" width="16" height="16"><use href="#i-alert"/></svg>
+              <span class="ttl">Совпадение расписаний</span>
+              <svg class="ic chev" width="18" height="18"><use href="#i-chevron"/></svg>
+            </div>
+            <div class="ebody">
+              <div class="e-desc">На одно время назначены разные дозы. Выберите, какое расписание использовать при совпадении.</div>
+              <div class="e-meta num">
+                <svg class="ic" width="13" height="13"><use href="#i-calendar"/></svg>24 октября 2026
+                <span class="sep">·</span>
+                <svg class="ic" width="13" height="13"><use href="#i-clock"/></svg>09:25
+              </div>
+              <div class="opts">
+                <div class="opt sel">
+                  <div class="opt-r1"><span class="radio"><i></i></span><span class="odose num">101 г</span></div>
+                  <span class="osched">Расписание 2</span>
+                  <span class="ometa num">Каждый день · 09:25</span>
+                  <span class="ometa num">С 24 октября 2026</span>
+                </div>
+                <div class="opt">
+                  <div class="opt-r1"><span class="radio"><i></i></span><span class="odose num">109 г</span></div>
+                  <span class="osched">Расписание 3</span>
+                  <span class="ometa num">Каждый день · 09:25</span>
+                  <span class="ometa num">С 24 октября 2026</span>
+                </div>
+              </div>
+              <div class="preview">
+                <span class="pv-title"><svg class="ic" width="11" height="11"><use href="#i-info"/></svg>Что произойдёт</span>
+                <span class="pv-main num">При совпадении будет один приём — 101 г.</span>
+                <span class="pv-sub">Остальные приёмы обоих расписаний сохранятся.</span>
+              </div>
+              <div class="apply">Применить приоритет</div>
+            </div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <div class="btn ghost">Назад</div>
+          <div class="btn primary">Продолжить</div>
+        </div>
+      </div>
+    </div>
+    <p class="shot-cap">Секция развёрнута на месте строки предупреждения — без модального окна и переходов. Радио-группа из двух карточек; выбранная доза подсвечена, а живой предпросмотр «Что произойдёт» сразу отражает выбор. Кнопка «Применить приоритет» в том же скролле — значения формы до этого шага не теряются.</p>
+  </div>
+
+  <!-- ============ STATE 3 · resolved ============ -->
+  <div class="shot">
+    <div class="shot-label">Состояние 3 · совпадение разрешено</div>
+    <div class="phone">
+      <div class="under"><div class="fake"><div class="block wide"></div><div class="block"></div><div class="block"></div><div class="block"></div></div></div>
+      <div class="scrim"></div>
+      <div class="modal">
+        <div class="mhead">
+          <span class="mtitle">Редактирование</span>
+          <span class="msave">Сохранить</span>
+          <span class="mclose"><svg class="ic" width="22" height="22"><use href="#i-close"/></svg></span>
+        </div>
+        <div class="mstep">
+          <span class="lbl">Шаг 4 из 5 · Даты и время приёма</span>
+          <span class="bar"><i style="width:80%"></i></span>
+        </div>
+        <div class="mbody">
+          <div class="h19">Когда напомнить?</div>
+
+          <div class="sch">
+            <div class="sch-head"><b>Расписание 1</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>08:00</span>
+              <span class="froml">с 1 октября</span>
+            </div>
+            <div class="dose-add"><svg class="ic" width="15" height="15"><use href="#i-pill"/></svg>Указать другую дозу</div>
+          </div>
+
+          <div class="sch">
+            <div class="sch-head"><b>Расписание 2</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">101</span></div>
+          </div>
+
+          <div class="sch">
+            <div class="sch-head"><b>Расписание 3</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">109</span></div>
+          </div>
+
+          <div class="resolved">
+            <span class="ric"><svg class="ic" width="16" height="16"><use href="#i-check"/></svg></span>
+            <div class="rcol">
+              <span class="rt">Совпадение разрешено</span>
+              <span class="rs num">09:25 · Приоритет: 101 г (Расписание 2)</span>
+            </div>
+            <span class="ract">Изменить<svg class="ic" width="15" height="15"><use href="#i-chevron"/></svg></span>
+          </div>
+
+          <div class="addbtn"><svg class="ic" width="17" height="17"><use href="#i-plus"/></svg>Добавить расписание</div>
+        </div>
+        <div class="mfoot">
+          <div class="btn ghost">Назад</div>
+          <div class="btn primary">Продолжить</div>
+        </div>
+      </div>
+    </div>
+    <p class="shot-cap">После «Применить приоритет» янтарная секция сворачивается в зелёную карточку с выбранной дозой и номером расписания; обычный вид редактора восстановлен. Приоритет сохраняется в состоянии формы между шагами редактора, а «Изменить» снова раскрывает выбор.</p>
+  </div>
+
+  <!-- ============ STATE 4 · multiple conflicts ============ -->
+  <div class="shot">
+    <div class="shot-label">Состояние 4 · несколько совпадений</div>
+    <div class="phone">
+      <div class="under"><div class="fake"><div class="block wide"></div><div class="block"></div><div class="block"></div><div class="block"></div></div></div>
+      <div class="scrim"></div>
+      <div class="modal">
+        <div class="mhead">
+          <span class="mtitle">Редактирование</span>
+          <span class="msave">Сохранить</span>
+          <span class="mclose"><svg class="ic" width="22" height="22"><use href="#i-close"/></svg></span>
+        </div>
+        <div class="mstep">
+          <span class="lbl">Шаг 4 из 5 · Даты и время приёма</span>
+          <span class="bar"><i style="width:80%"></i></span>
+        </div>
+        <div class="mbody">
+          <div class="sch" style="margin-top:-96px">
+            <div class="sch-head"><b>Расписание 3</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">109</span></div>
+          </div>
+
+          <div class="group">
+            <div class="ghead">
+              <div class="grow1">
+                <svg class="ic wic" width="16" height="16"><use href="#i-alert"/></svg>
+                <div class="ttl">
+                  <span class="wt num">Найдено 3 совпадения</span>
+                  <span class="wc num">Разрешено 1 из 3</span>
+                </div>
+              </div>
+              <div class="gbar"><i style="width:33%"></i></div>
+            </div>
+            <div class="gbody">
+
+              <div class="citem ok">
+                <div class="crow">
+                  <span class="ct num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+                  <span class="cd num">101 г / 109 г</span>
+                  <span class="chip ok"><svg class="ic" width="10" height="10"><use href="#i-check"/></svg>Разрешено</span>
+                  <svg class="ic chev" width="15" height="15"><use href="#i-chevron"/></svg>
+                </div>
+                <span class="csub num"><svg class="ic" width="11" height="11"><use href="#i-check"/></svg>Приоритет: 101 г (Расписание 2)</span>
+              </div>
+
+              <div class="citem warn">
+                <div class="crow">
+                  <span class="ct num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>14:00</span>
+                  <span class="cd num">50 г / 75 г</span>
+                  <span class="chip warn"><svg class="ic" width="10" height="10"><use href="#i-alert"/></svg>Требует выбора</span>
+                  <svg class="ic chev" width="15" height="15" style="transform:rotate(180deg)"><use href="#i-chevron"/></svg>
+                </div>
+              </div>
+
+              <div class="cexp">
+                <div class="e-meta num">
+                  <svg class="ic" width="13" height="13"><use href="#i-calendar"/></svg>24 октября 2026
+                  <span class="sep">·</span>
+                  <svg class="ic" width="13" height="13"><use href="#i-clock"/></svg>14:00
+                </div>
+                <div class="opts">
+                  <div class="opt">
+                    <div class="opt-r1"><span class="radio"><i></i></span><span class="odose num">50 г</span></div>
+                    <span class="osched">Расписание 4</span>
+                    <span class="ometa num">Каждый день · 14:00</span>
+                    <span class="ometa num">С 24 октября 2026</span>
+                  </div>
+                  <div class="opt">
+                    <div class="opt-r1"><span class="radio"><i></i></span><span class="odose num">75 г</span></div>
+                    <span class="osched">Расписание 5</span>
+                    <span class="ometa num">Каждый день · 14:00</span>
+                    <span class="ometa num">С 24 октября 2026</span>
+                  </div>
+                </div>
+                <div class="preview">
+                  <span class="pv-title"><svg class="ic" width="11" height="11"><use href="#i-info"/></svg>Что произойдёт</span>
+                  <span class="pv-main">Выберите расписание, чтобы увидеть результат.</span>
+                  <span class="pv-sub">Остальные приёмы обоих расписаний сохранятся.</span>
+                </div>
+                <div class="apply">Применить приоритет</div>
+              </div>
+
+              <div class="citem warn">
+                <div class="crow">
+                  <span class="ct num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>21:00</span>
+                  <span class="cd num">20 г / 30 г</span>
+                  <span class="chip warn"><svg class="ic" width="10" height="10"><use href="#i-alert"/></svg>Требует выбора</span>
+                  <svg class="ic chev" width="15" height="15"><use href="#i-chevron"/></svg>
+                </div>
+              </div>
+
+              <div class="vnote">
+                <svg class="ic" width="14" height="14"><use href="#i-alert"/></svg>
+                Выберите приоритет для всех совпадений.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <div class="btn ghost">Назад</div>
+          <div class="btn primary off">Продолжить</div>
+        </div>
+      </div>
+    </div>
+    <p class="shot-cap">Сводка со счётчиком и прогрессом, каждый повтор — отдельная строка со временем, парой доз и статусом; раскрыто совпадение 14:00 (расписания 4 и 5), ещё ничего не выбрано. Подсвечены только неразрешённые строки; «Продолжить» заблокировано, пока все совпадения не получат приоритет.</p>
+  </div>
+
+  <!-- ============ DARK THEME · state 2 ============ -->
+  <div class="shot">
+    <div class="shot-label">Тёмная тема · состояние 2</div>
+    <div class="phone night">
+      <div class="under"><div class="fake"><div class="block wide"></div><div class="block"></div><div class="block"></div><div class="block"></div></div></div>
+      <div class="scrim"></div>
+      <div class="modal">
+        <div class="mhead">
+          <span class="mtitle">Редактирование</span>
+          <span class="msave">Сохранить</span>
+          <span class="mclose"><svg class="ic" width="22" height="22"><use href="#i-close"/></svg></span>
+        </div>
+        <div class="mstep">
+          <span class="lbl">Шаг 4 из 5 · Даты и время приёма</span>
+          <span class="bar"><i style="width:80%"></i></span>
+        </div>
+        <div class="mbody">
+          <div class="sch" style="margin-top:-46px">
+            <div class="sch-head"><b>Расписание 2</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">101</span></div>
+          </div>
+
+          <div class="sch">
+            <div class="sch-head"><b>Расписание 3</b><span class="sch-del"><svg class="ic" width="19" height="19"><use href="#i-trash"/></svg></span></div>
+            <div class="sch-meta">
+              <span class="tag">Каждый день</span>
+              <span class="tchip num"><svg class="ic" width="12" height="12"><use href="#i-clock"/></svg>09:25</span>
+              <span class="froml">с 24 октября</span>
+            </div>
+            <div class="dfield"><span class="dlabel">Количество · г</span><span class="dval num">109</span></div>
+          </div>
+
+          <div class="expand">
+            <div class="ehead">
+              <svg class="ic wic" width="16" height="16"><use href="#i-alert"/></svg>
+              <span class="ttl">Совпадение расписаний</span>
+              <svg class="ic chev" width="18" height="18"><use href="#i-chevron"/></svg>
+            </div>
+            <div class="ebody">
+              <div class="e-desc">На одно время назначены разные дозы. Выберите, какое расписание использовать при совпадении.</div>
+              <div class="e-meta num">
+                <svg class="ic" width="13" height="13"><use href="#i-calendar"/></svg>24 октября 2026
+                <span class="sep">·</span>
+                <svg class="ic" width="13" height="13"><use href="#i-clock"/></svg>09:25
+              </div>
+              <div class="opts">
+                <div class="opt sel">
+                  <div class="opt-r1"><span class="radio"><i></i></span><span class="odose num">101 г</span></div>
+                  <span class="osched">Расписание 2</span>
+                  <span class="ometa num">Каждый день · 09:25</span>
+                  <span class="ometa num">С 24 октября 2026</span>
+                </div>
+                <div class="opt">
+                  <div class="opt-r1"><span class="radio"><i></i></span><span class="odose num">109 г</span></div>
+                  <span class="osched">Расписание 3</span>
+                  <span class="ometa num">Каждый день · 09:25</span>
+                  <span class="ometa num">С 24 октября 2026</span>
+                </div>
+              </div>
+              <div class="preview">
+                <span class="pv-title"><svg class="ic" width="11" height="11"><use href="#i-info"/></svg>Что произойдёт</span>
+                <span class="pv-main num">При совпадении будет один приём — 101 г.</span>
+                <span class="pv-sub">Остальные приёмы обоих расписаний сохранятся.</span>
+              </div>
+              <div class="apply">Применить приоритет</div>
+            </div>
+          </div>
+        </div>
+        <div class="mfoot">
+          <div class="btn ghost">Назад</div>
+          <div class="btn primary">Продолжить</div>
+        </div>
+      </div>
+    </div>
+    <p class="shot-cap">Та же inline-секция на тёмной палитре: роли цветов сохраняются — амбер для предупреждения, фиолетовый контейнер для выбранной карточки, зелёный контейнер для разрешённого состояния.</p>
+  </div>
+
+</main>
+</body>
+</html>

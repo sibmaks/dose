@@ -85,6 +85,26 @@ class MedicationEntryTest {
         assertEquals(MedicationStep.OTHER_FORM, MedicationEditorFlow.previous(MedicationStep.DOSAGE, MedicationForm.OTHER))
         assertEquals(6, MedicationEditorFlow.steps(MedicationForm.OTHER).size)
     }
+
+    @Test fun `overlaps step appears only when coincidences exist and sits between schedule and details`() {
+        assertEquals(
+            listOf(MedicationStep.NAME, MedicationStep.FORM, MedicationStep.DOSAGE, MedicationStep.SCHEDULE, MedicationStep.DETAILS),
+            MedicationEditorFlow.steps(MedicationForm.PILL)
+        )
+        val withOverlaps = listOf(
+            MedicationStep.NAME, MedicationStep.FORM, MedicationStep.DOSAGE, MedicationStep.SCHEDULE,
+            MedicationStep.OVERLAPS, MedicationStep.DETAILS
+        )
+        assertEquals(withOverlaps, MedicationEditorFlow.steps(MedicationForm.PILL, hasOverlaps = true))
+        assertEquals(MedicationStep.OVERLAPS, MedicationEditorFlow.next(MedicationStep.SCHEDULE, MedicationForm.PILL, true))
+        assertEquals(MedicationStep.SCHEDULE, MedicationEditorFlow.previous(MedicationStep.OVERLAPS, MedicationForm.PILL, true))
+        assertEquals(MedicationStep.DETAILS, MedicationEditorFlow.next(MedicationStep.OVERLAPS, MedicationForm.PILL, true))
+        assertEquals(
+            listOf(MedicationStep.NAME, MedicationStep.FORM, MedicationStep.OTHER_FORM, MedicationStep.DOSAGE,
+                MedicationStep.SCHEDULE, MedicationStep.DETAILS),
+            MedicationEditorFlow.steps(MedicationForm.OTHER)
+        )
+    }
     @Test fun customFormSurvivesPersistenceAndAppearsInDoseDescription() {
         val med = medication("Test", MedicationForm.OTHER, "Patch")
         val restored = MedicationJson.decode(JSONObject(MedicationJson.encode(med).toString()))!!

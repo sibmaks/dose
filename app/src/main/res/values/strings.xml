@@ -317,9 +317,6 @@
     <string name="theme_dark">"Dark"</string>
     <string name="set_schedule_amount">"Set a different amount"</string>
     <string name="default_schedule_amount">"Use default amount (%1$s)"</string>
-    <string name="dose_overlap_title">"Choose dose priority"</string>
-    <string name="dose_overlap_hint">"Different amounts overlap. Choose the highest-priority dose first. It applies only where schedules overlap; other doses stay unchanged."</string>
-    <string name="prioritize_dose">"Prioritize %1$s"</string>
     <string name="ready">"Ready"</string>
     <string name="vibration_off">"Vibration is off"</string>
     <string name="vibration_unavailable_title">"Vibration unavailable"</string>
@@ -329,4 +326,22 @@
     <string name="popup_vibration_disabled_hint">"Pop-up reminders will not vibrate. Enable alarm vibration in Android settings."</string>
     <string name="sound_vibration_settings">"Sound &amp; vibration settings"</string>
     <string name="vibration_settings_fallback">"Open Sound &amp; vibration in Android settings."</string>
+    <string name="dose_overlap_detected">"A schedule overlap was detected"</string>
+    <string name="dose_overlap_resolve">"Resolve the overlap"</string>
+    <string name="dose_overlap_choose_title">"Schedule overlap"</string>
+    <string name="dose_overlap_choose_desc">"A single time has different doses. Choose which schedule applies where they overlap."</string>
+    <string name="dose_overlap_what_happens">"What will happen"</string>
+    <string name="dose_overlap_result">"One intake at the overlap — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Choose a schedule to see the result."</string>
+    <string name="dose_overlap_result_keep">"The remaining intakes of both schedules stay unchanged."</string>
+    <string name="dose_overlap_apply">"Apply priority"</string>
+    <string name="dose_overlap_resolved_title">"Overlap resolved"</string>
+    <string name="dose_overlap_resolved_tag">"Resolved"</string>
+    <string name="dose_overlap_pending_tag">"Needs a choice"</string>
+    <string name="dose_overlap_change">"Change"</string>
+    <string name="dose_overlap_priority_dose">"Priority: %1$s"</string>
+    <string name="overlaps_step">"Schedule overlaps"</string>
+    <string name="dose_overlap_pick_all">"Choose a priority for every overlap."</string>
+    <string name="dose_overlap_found">"Overlaps found: %1$d"</string>
+    <string name="dose_overlap_progress">"Resolved %1$d of %2$d"</string>
 </resources>

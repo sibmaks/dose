@@ -315,9 +315,6 @@
     <string name="theme_dark">"Караңгы"</string>
     <string name="set_schedule_amount">"Башка дозаны көрсөтүү"</string>
     <string name="default_schedule_amount">"Негизги дозаны колдонуу (%1$s)"</string>
-    <string name="dose_overlap_title">"Дозанын артыкчылыгы"</string>
-    <string name="dose_overlap_hint">"Ар башка дозалар дал келет. Адегенде артыкчылыгы эң жогору дозаны тандаңыз. Ал графиктер дал келгенде гана колдонулат; башка кабыл алуулар сакталат."</string>
-    <string name="prioritize_dose">"Артыкчылык: %1$s"</string>
     <string name="ready">"Даяр"</string>
     <string name="vibration_off">"Титирөө өчүрүлгөн"</string>
     <string name="vibration_unavailable_title">"Титирөө жеткиликсиз"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Калкып чыгуучу эскертүүлөр титиребейт. Android жөндөөлөрүндө ойготкучтун титирөөсүн күйгүзүңүз."</string>
     <string name="sound_vibration_settings">"Үн жана титирөө"</string>
     <string name="vibration_settings_fallback">"Android жөндөөлөрүндө үн жана титирөө бөлүмүн ачыңыз."</string>
+    <string name="dose_overlap_detected">"Графиктердин дал келиши табылды"</string>
+    <string name="dose_overlap_resolve">"Дал келүүнү чечүү"</string>
+    <string name="dose_overlap_choose_title">"Графиктердин дал келиши"</string>
+    <string name="dose_overlap_choose_desc">"Бир убакытка ар башка дозалар белгиленди. Дал келгенде кайсы график колдонула турганын тандаңыз."</string>
+    <string name="dose_overlap_what_happens">"Эмне болот"</string>
+    <string name="dose_overlap_result">"Дал келгенде бир кабыл алуу болот — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Натыйжаны көрүү үчүн график тандаңыз."</string>
+    <string name="dose_overlap_result_keep">"Эки графиктин калган кабыл алуулары өзгөрбөй калат."</string>
+    <string name="dose_overlap_apply">"Артыкчылыкты колдонуу"</string>
+    <string name="dose_overlap_resolved_title">"Дал келүү чечилди"</string>
+    <string name="dose_overlap_resolved_tag">"Чечилди"</string>
+    <string name="dose_overlap_pending_tag">"Тандоо керек"</string>
+    <string name="dose_overlap_change">"Өзгөртүү"</string>
+    <string name="dose_overlap_priority_dose">"Артыкчылык: %1$s"</string>
+    <string name="overlaps_step">"Графиктердин дал келүүлөрү"</string>
+    <string name="dose_overlap_pick_all">"Бардык дал келүүлөргө артыкчылык тандаңыз."</string>
+    <string name="dose_overlap_found">"Табылган дал келүүлөр: %1$d"</string>
+    <string name="dose_overlap_progress">"Чечилгени: %1$d / %2$d"</string>
 </resources>

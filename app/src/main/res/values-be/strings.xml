@@ -315,9 +315,6 @@
     <string name="theme_dark">"Цёмная"</string>
     <string name="set_schedule_amount">"Пазначыць іншую дозу"</string>
     <string name="default_schedule_amount">"Выкарыстоўваць асноўную дозу (%1$s)"</string>
-    <string name="dose_overlap_title">"Прыярытэт доз"</string>
-    <string name="dose_overlap_hint">"Розныя дозы перасякаюцца. Спачатку выберыце дозу з найвышэйшым прыярытэтам. Яна дзейнічае толькі пры перасячэнні раскладаў; астатнія прыёмы захоўваюцца."</string>
-    <string name="prioritize_dose">"Прыярытэт: %1$s"</string>
     <string name="ready">"Гатова"</string>
     <string name="vibration_off">"Вібрацыя адключана"</string>
     <string name="vibration_unavailable_title">"Вібрацыя недаступная"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Усплывальныя напаміны не будуць вібраваць. Уключыце вібрацыю будзільніка ў наладах Android."</string>
     <string name="sound_vibration_settings">"Гук і вібрацыя"</string>
     <string name="vibration_settings_fallback">"Адкрыйце раздзел «Гук і вібрацыя» ў наладах Android."</string>
+    <string name="dose_overlap_detected">"Выяўлена супадзенне раскладаў"</string>
+    <string name="dose_overlap_resolve">"Вырашыць супадзенне"</string>
+    <string name="dose_overlap_choose_title">"Супадзенне раскладаў"</string>
+    <string name="dose_overlap_choose_desc">"На адзін час прызначаны розныя дозы. Выберыце, які расклад выкарыстоўваць пры супадзенні."</string>
+    <string name="dose_overlap_what_happens">"Што адбудзецца"</string>
+    <string name="dose_overlap_result">"Пры супадзенні будзе адзін прыём — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Выберыце расклад, каб пабачыць вынік."</string>
+    <string name="dose_overlap_result_keep">"Астатнія прыёмы абодвух раскладаў захаваюцца."</string>
+    <string name="dose_overlap_apply">"Ужыць прыярытэт"</string>
+    <string name="dose_overlap_resolved_title">"Супадзенне вырашана"</string>
+    <string name="dose_overlap_resolved_tag">"Вырашана"</string>
+    <string name="dose_overlap_pending_tag">"Патрабуе выбару"</string>
+    <string name="dose_overlap_change">"Змяніць"</string>
+    <string name="dose_overlap_priority_dose">"Прыярытэт: %1$s"</string>
+    <string name="overlaps_step">"Супадзенні раскладаў"</string>
+    <string name="dose_overlap_pick_all">"Выберыце прыярытэт для ўсіх супадзенняў."</string>
+    <string name="dose_overlap_found">"Знойдзена супадзенняў: %1$d"</string>
+    <string name="dose_overlap_progress">"Вырашана %1$d з %2$d"</string>
 </resources>

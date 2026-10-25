@@ -43,6 +43,7 @@ fun MedicationStep.localizedTitle(context: Context): String = context.getString(
         MedicationStep.OTHER_FORM -> R.string.describe_the_form
         MedicationStep.DOSAGE -> R.string.amount_unit
         MedicationStep.SCHEDULE -> R.string.due_dates_times
+        MedicationStep.OVERLAPS -> R.string.overlaps_step
         MedicationStep.DETAILS -> R.string.final_details
     }
 )

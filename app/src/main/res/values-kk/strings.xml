@@ -315,9 +315,6 @@
     <string name="theme_dark">"Қараңғы"</string>
     <string name="set_schedule_amount">"Басқа дозаны көрсету"</string>
     <string name="default_schedule_amount">"Негізгі дозаны пайдалану (%1$s)"</string>
-    <string name="dose_overlap_title">"Доза басымдығы"</string>
-    <string name="dose_overlap_hint">"Әртүрлі дозалар қабаттасады. Алдымен басымдығы ең жоғары дозаны таңдаңыз. Ол тек кестелер қабаттасқанда қолданылады; басқа қабылдаулар сақталады."</string>
-    <string name="prioritize_dose">"Басымдық: %1$s"</string>
     <string name="ready">"Дайын"</string>
     <string name="vibration_off">"Діріл өшірулі"</string>
     <string name="vibration_unavailable_title">"Діріл қолжетімсіз"</string>
@@ -327,4 +324,22 @@
     <string name="popup_vibration_disabled_hint">"Қалқымалы еске салғыштар дірілдемейді. Android параметрлерінде оятқыш дірілін қосыңыз."</string>
     <string name="sound_vibration_settings">"Дыбыс және діріл"</string>
     <string name="vibration_settings_fallback">"Android параметрлерінде дыбыс және діріл бөлімін ашыңыз."</string>
+    <string name="dose_overlap_detected">"Кестелердің сәйкес келуі анықталды"</string>
+    <string name="dose_overlap_resolve">"Сәйкес келуді шешу"</string>
+    <string name="dose_overlap_choose_title">"Кестелердің сәйкес келуі"</string>
+    <string name="dose_overlap_choose_desc">"Бір уақытқа әртүрлі дозалар белгіленді. Сәйкес келгенде қай кесте қолданылатынын таңдаңыз."</string>
+    <string name="dose_overlap_what_happens">"Не болады"</string>
+    <string name="dose_overlap_result">"Сәйкес келгенде бір қабылдау болады — %1$s."</string>
+    <string name="dose_overlap_result_pending">"Нәтижені көру үшін кестені таңдаңыз."</string>
+    <string name="dose_overlap_result_keep">"Екі кестенің қалған қабылдаулары өзгеріссіз қалады."</string>
+    <string name="dose_overlap_apply">"Басымдықты қолдану"</string>
+    <string name="dose_overlap_resolved_title">"Сәйкес келу шешілді"</string>
+    <string name="dose_overlap_resolved_tag">"Шешілді"</string>
+    <string name="dose_overlap_pending_tag">"Таңдау қажет"</string>
+    <string name="dose_overlap_change">"Өзгерту"</string>
+    <string name="dose_overlap_priority_dose">"Басымдық: %1$s"</string>
+    <string name="overlaps_step">"Кестелердің сәйкес келулері"</string>
+    <string name="dose_overlap_pick_all">"Барлық сәйкес келуге басымдық таңдаңыз."</string>
+    <string name="dose_overlap_found">"Анықталған сәйкес келулер: %1$d"</string>
+    <string name="dose_overlap_progress">"Шешілгені: %1$d / %2$d"</string>
 </resources>
