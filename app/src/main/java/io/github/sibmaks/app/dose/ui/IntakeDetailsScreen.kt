@@ -27,7 +27,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import android.content.Context
 import androidx.compose.foundation.background
 
 /**
@@ -104,8 +103,27 @@ internal fun IntakeDetailsScreen(
                 Spacer(Modifier.width(13.dp))
                 Column(Modifier.weight(1f)) {
                     Text(style.label, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = style.accent)
-                    Text(
-                        statusMeta(context, log), fontSize = 13.sp,
+                    if (log.status == "taken") {
+                        // The real intake instant, with the delay as its own second line.
+                        Text(
+                            Instant.ofEpochMilli(log.recordedAt)
+                                .atZone(ZoneId.systemDefault())
+                                .format(momentFormatter),
+                            fontSize = 13.sp,
+                            color = style.accent.copy(alpha = 0.85f), modifier = Modifier.padding(top = 2.dp),
+                        )
+                        DoseTimeline.delayMinutes(log)?.takeIf { it > 0 }?.let { delay ->
+                            Text(
+                                stringResource(R.string.event_taken_late, durationMinutes(context, delay)),
+                                fontSize = 12.sp,
+                                color = style.accent.copy(alpha = 0.75f), modifier = Modifier.padding(top = 2.dp),
+                            )
+                        }
+                    } else Text(
+                        stringResource(
+                            if (log.status == "pending") R.string.status_pending_hint else R.string.status_missed_hint
+                        ),
+                        fontSize = 13.sp,
                         color = style.accent.copy(alpha = 0.85f), modifier = Modifier.padding(top = 2.dp),
                     )
                 }
@@ -133,23 +151,4 @@ internal fun IntakeDetailsScreen(
             TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) }
         },
     )
-}
-
-/** Taken shows the real intake instant; awaiting, missed and cancelled entries never invent one. */
-@Composable
-private fun statusMeta(
-    context: Context,
-    log: DoseLog
-): String = when (log.status) {
-    "taken" -> {
-        val actual = Instant.ofEpochMilli(log.recordedAt)
-            .atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm", AppLanguages.locale(context)))
-        val delay = DoseTimeline.delayMinutes(log)
-            ?.takeIf { it > 0 }
-            ?.let { context.getString(R.string.event_taken_late, durationMinutes(context, it)) }
-        listOfNotNull(actual, delay).joinToString(" · ")
-    }
-    "pending" -> stringResource(R.string.status_pending_hint)
-    else -> stringResource(R.string.status_missed_hint)
 }
