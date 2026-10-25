@@ -122,14 +122,17 @@ internal fun MedicationEditor(
     }
     // The overlaps screen appears only when coinciding schedules with different dosages are detected.
     val hasOverlaps = remember(schedules, amount) {
-        DoseScheduleConflicts.coincidences(schedules, amount.trim()).isNotEmpty()
+        DoseScheduleConflicts.coincidences(schedules, amount.trim())
+            .isNotEmpty()
     }
     val steps = MedicationEditorFlow.steps(form, hasOverlaps)
     var position = steps.indexOf(step)
     if (position < 0) {
         // The optional overlaps screen disappeared while it was the current step; fall back to its neighbour.
         step = if (step == MedicationStep.OVERLAPS) MedicationStep.SCHEDULE else MedicationStep.DETAILS
-        position = steps.indexOf(step).coerceAtLeast(0)
+        position =
+            steps.indexOf(step)
+                .coerceAtLeast(0)
     }
     val keyboard = LocalSoftwareKeyboardController.current
     // A legacy medication may intentionally have no unit; it stays optional while the amount is untouched.
@@ -181,8 +184,11 @@ internal fun MedicationEditor(
         MedicationStep.DOSAGE -> when {
             amount.isBlank() -> resources.getString(R.string.amount_required)
             quantity.isBlank() && !unitOptional -> resources.getString(R.string.unit_required)
-            (amount.trim().replace(',', '.').toDoubleOrNull() ?: 1.0) <= 0.0 ->
+            (amount.trim()
+                .replace(',', '.')
+                .toDoubleOrNull() ?: 1.0) <= 0.0 ->
                 resources.getString(R.string.amount_positive)
+
             else -> null
         }
 
@@ -331,7 +337,7 @@ internal fun MedicationEditor(
                     )
                 }
                 HorizontalPager(
-                    state = pager, key = { page -> steps.getOrNull(page)?.ordinal ?: 1000 + page },
+                    state = pager, key = { page -> steps.getOrNull(page)?.ordinal ?: (1000 + page) },
                     beyondViewportPageCount = 1,
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
@@ -584,7 +590,12 @@ internal fun MedicationEditor(
                                         modifier = Modifier.weight(1f),
                                         onClick = ::useListedUnit,
                                     )
-                                    Box(Modifier.width(1.dp).fillMaxHeight().background(PanelBorder))
+                                    Box(
+                                        Modifier
+                                            .width(1.dp)
+                                            .fillMaxHeight()
+                                            .background(PanelBorder)
+                                    )
                                     UnitModeSegment(
                                         stringResource(R.string.unit_custom_mode),
                                         active = customUnitMode,
@@ -595,7 +606,10 @@ internal fun MedicationEditor(
                                 if (customUnitMode) {
                                     OutlinedTextField(
                                         customUnitText,
-                                        { customUnitText = it.take(40); quantity = customUnitText; automaticUnit = false },
+                                        {
+                                            customUnitText = it.take(40); quantity = customUnitText; automaticUnit =
+                                            false
+                                        },
                                         label = { Text(stringResource(R.string.unit_custom_name)) },
                                         placeholder = { Text(stringResource(R.string.unit_custom_placeholder)) },
                                         isError = validationVisible && quantity.isBlank() && !unitOptional,
@@ -609,18 +623,19 @@ internal fun MedicationEditor(
                                     )
                                 } else {
                                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                        DoseUnits.common.chunked(3).forEach { rowUnits ->
-                                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                                rowUnits.forEach { unit ->
-                                                    UnitChip(
-                                                        localizedUnit(context, unit),
-                                                        selected = quantity == unit,
-                                                        modifier = Modifier.weight(1f),
-                                                    ) { chooseUnit(unit) }
+                                        DoseUnits.common.chunked(3)
+                                            .forEach { rowUnits ->
+                                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                                    rowUnits.forEach { unit ->
+                                                        UnitChip(
+                                                            localizedUnit(context, unit),
+                                                            selected = quantity == unit,
+                                                            modifier = Modifier.weight(1f),
+                                                        ) { chooseUnit(unit) }
+                                                    }
+                                                    repeat(3 - rowUnits.size) { Spacer(Modifier.weight(1f)) }
                                                 }
-                                                repeat(3 - rowUnits.size) { Spacer(Modifier.weight(1f)) }
                                             }
-                                        }
                                     }
                                     if (validationVisible && quantity.isBlank() && !unitOptional) Text(
                                         stringResource(R.string.unit_required),
@@ -696,16 +711,13 @@ internal fun MedicationEditor(
                                         Text((if (form == MedicationForm.OTHER) customForm.ifBlank { stringResource(R.string.other) } else form.localizedLabel(
                                             context
                                         )) + " · $amount ${localizedUnit(context, quantity)}", fontSize = 14.sp)
-                                        // Coinciding schedules collapse into one line: the review shows the dose that wins their overlaps.
-                                        schedules.groupBy { rule -> rule.times.sorted().joinToString(",") }
-                                            .map { (_, part) -> part.maxBy { it.priority } }
-                                            .forEach {
-                                                Text(
-                                                    scheduleSummary(context, it, amount, quantity),
-                                                    color = TextMuted,
-                                                    fontSize = 12.sp
-                                                )
-                                            }
+                                        schedules.forEach {
+                                            Text(
+                                                scheduleSummary(context, it, amount, quantity),
+                                                color = TextMuted,
+                                                fontSize = 12.sp
+                                            )
+                                        }
                                     }
                                 }
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -866,17 +878,18 @@ private fun ScheduleEditor(
                 }
             }
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                ScheduleKind.entries.chunked(2).forEach { rowKinds ->
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        rowKinds.forEach { kind ->
-                            UnitChip(
-                                kind.localizedLabel(context),
-                                selected = rule.kind == kind,
-                                modifier = Modifier.weight(1f),
-                            ) { onChange(rule.copy(kind = kind)) }
+                ScheduleKind.entries.chunked(2)
+                    .forEach { rowKinds ->
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            rowKinds.forEach { kind ->
+                                UnitChip(
+                                    kind.localizedLabel(context),
+                                    selected = rule.kind == kind,
+                                    modifier = Modifier.weight(1f),
+                                ) { onChange(rule.copy(kind = kind)) }
+                            }
                         }
                     }
-                }
             }
             when (rule.kind) {
                 ScheduleKind.SPECIFIC_DATES -> {
@@ -910,20 +923,21 @@ private fun ScheduleEditor(
 
                 ScheduleKind.WEEKDAYS -> {
                     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                        (1..7).chunked(4).forEach { rowDays ->
-                            Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                                rowDays.forEach { day ->
-                                    UnitChip(
-                                        DayOfWeek.of(day)
-                                            .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context)),
-                                        selected = day in rule.weekDays,
-                                        modifier = Modifier.weight(1f),
-                                        borderColor = if (issue?.field == ScheduleField.WEEKDAYS) errorColor else Violet,
-                                    ) { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) }
+                        (1..7).chunked(4)
+                            .forEach { rowDays ->
+                                Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                                    rowDays.forEach { day ->
+                                        UnitChip(
+                                            DayOfWeek.of(day)
+                                                .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context)),
+                                            selected = day in rule.weekDays,
+                                            modifier = Modifier.weight(1f),
+                                            borderColor = if (issue?.field == ScheduleField.WEEKDAYS) errorColor else Violet,
+                                        ) { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) }
+                                    }
+                                    repeat(4 - rowDays.size) { Spacer(Modifier.weight(1f)) }
                                 }
-                                repeat(4 - rowDays.size) { Spacer(Modifier.weight(1f)) }
                             }
-                        }
                     }
                     ScheduleError(issue, ScheduleField.WEEKDAYS)
                 }
@@ -1284,7 +1298,7 @@ private fun ConflictItem(
 ) {
     val context = LocalContext.current
     val resolved = group.resolved
-    val winner = group.members.maxBy { schedules[it].priority } ?: group.members.first()
+    val winner = group.members.maxBy { schedules[it].priority }
     val headline = "${localizedLongDate(context, group.date.toString())} · ${group.times.joinToString(" · ")} · " +
             group.members.joinToString(" / ") { index -> doseLabel(context, schedules[index], amount, quantity) }
     Surface(
@@ -1333,7 +1347,12 @@ private fun ConflictItem(
             }
             if (resolved) {
                 Text(
-                    "${stringResource(R.string.dose_overlap_priority_dose, doseLabel(context, schedules[winner], amount, quantity))} " +
+                    "${
+                        stringResource(
+                            R.string.dose_overlap_priority_dose,
+                            doseLabel(context, schedules[winner], amount, quantity)
+                        )
+                    } " +
                             "(${stringResource(R.string.schedule_number, winner + 1)})",
                     color = GreenMuted,
                     fontSize = 11.sp,
@@ -1389,7 +1408,7 @@ private fun ExpandedConflict(
 ) {
     val context = LocalContext.current
     val resolved = group.resolved
-    val winner = group.members.maxBy { schedules[it].priority } ?: group.members.first()
+    val winner = group.members.maxBy { schedules[it].priority }
     var pending by remember(group) { mutableStateOf(if (resolved) winner else null) }
     HorizontalDivider(color = AmberBorder)
     Row(
@@ -1424,58 +1443,59 @@ private fun ExpandedConflict(
     }
     // One grid keeps every overlapping dose visible; the choice stays a single radio group.
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        group.members.chunked(2).forEach { rowMembers ->
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                rowMembers.forEach { index ->
-                    val rule = schedules[index]
-                    Surface(
-                        onClick = { pending = index },
-                        color = if (pending == index) AccentPanel else SoftPanel,
-                        border = BorderStroke(
-                            if (pending == index) 1.5.dp else 1.dp,
-                            if (pending == index) Violet else PanelBorder
-                        ),
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Column(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(10.dp),
-                            verticalArrangement = Arrangement.spacedBy(3.dp)
+        group.members.chunked(2)
+            .forEach { rowMembers ->
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    rowMembers.forEach { index ->
+                        val rule = schedules[index]
+                        Surface(
+                            onClick = { pending = index },
+                            color = if (pending == index) AccentPanel else SoftPanel,
+                            border = BorderStroke(
+                                if (pending == index) 1.5.dp else 1.dp,
+                                if (pending == index) Violet else PanelBorder
+                            ),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.weight(1f),
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(7.dp)
+                            Column(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp),
+                                verticalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
-                                RadioButtonCircle(pending == index)
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(7.dp)
+                                ) {
+                                    RadioButtonCircle(pending == index)
+                                    Text(
+                                        doseLabel(context, rule, amount, quantity),
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        color = if (pending == index) Violet else TextPrimary,
+                                    )
+                                }
                                 Text(
-                                    doseLabel(context, rule, amount, quantity),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    color = if (pending == index) Violet else TextPrimary,
+                                    stringResource(R.string.schedule_number, index + 1),
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = TextPrimary
+                                )
+                                Text(
+                                    scheduleSummary(context, rule),
+                                    color = TextMuted,
+                                    fontSize = 10.5.sp,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    lineHeight = 13.sp,
                                 )
                             }
-                            Text(
-                                stringResource(R.string.schedule_number, index + 1),
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = TextPrimary
-                            )
-                            Text(
-                                scheduleSummary(context, rule),
-                                color = TextMuted,
-                                fontSize = 10.5.sp,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                lineHeight = 13.sp,
-                            )
                         }
                     }
+                    if (rowMembers.size < 2) Spacer(Modifier.weight(1f))
                 }
-                if (rowMembers.size < 2) Spacer(Modifier.weight(1f))
             }
-        }
     }
     Surface(
         color = SoftPanel,
@@ -1550,7 +1570,12 @@ private fun RadioButtonCircle(selected: Boolean) {
             .background(Panel),
         contentAlignment = Alignment.Center
     ) {
-        if (selected) Box(Modifier.size(8.dp).clip(CircleShape).background(Violet))
+        if (selected) Box(
+            Modifier
+                .size(8.dp)
+                .clip(CircleShape)
+                .background(Violet)
+        )
     }
 }
 
