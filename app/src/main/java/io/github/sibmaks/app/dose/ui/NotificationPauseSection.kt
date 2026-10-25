@@ -664,7 +664,7 @@ private fun CreatePauseSheet(
                         // "Сейчас" resolves at the tap instant; fresh values guard the store call.
                         val freshStart = parseStart()
                         val freshEnd = endFor(freshStart)
-                        if (freshStart > 0 && freshEnd > freshStart) onSave(freshStart, freshEnd)
+                        if (freshStart in 1..<freshEnd) onSave(freshStart, freshEnd)
                     },
                     enabled = valid,
                     modifier = Modifier

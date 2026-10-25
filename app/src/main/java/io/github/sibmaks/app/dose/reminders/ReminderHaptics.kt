@@ -1,9 +1,9 @@
 package io.github.sibmaks.app.dose.reminders
 
-import android.content.Context
 import android.app.NotificationManager
-import android.media.AudioManager
+import android.content.Context
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.os.*
 import android.provider.Settings
 import android.util.Log
@@ -22,9 +22,12 @@ object ReminderHaptics {
 
     fun vibrationState(context: Context): ReminderVibrationState {
         fun setting(name: String): Int? = runCatching {
-            Settings.System.getString(context.contentResolver, name)?.toIntOrNull()
+            Settings.System.getString(context.contentResolver, name)
+                ?.toIntOrNull()
         }.getOrNull()
-        fun intensityEnabled(name: String): Boolean? = setting(name)?.takeIf { it in 0..3 }?.let { it != 0 }
+
+        fun intensityEnabled(name: String): Boolean? = setting(name)?.takeIf { it in 0..3 }
+            ?.let { it != 0 }
         ReminderNotifications.createChannel(context)
         return ReminderVibrationState(
             hasVibrator = vibrator(context)?.hasVibrator() == true,
@@ -34,7 +37,8 @@ object ReminderHaptics {
             // Alarm intensity is an Android 13+ setting and may be unreadable on some devices.
             alarmEnabled = if (Build.VERSION.SDK_INT >= 33) intensityEnabled(ALARM_INTENSITY) else null,
             channelEnabled = context.getSystemService(NotificationManager::class.java)
-                .getNotificationChannel(ReminderReceiver.CHANNEL_ID)?.shouldVibrate(),
+                .getNotificationChannel(ReminderReceiver.CHANNEL_ID)
+                ?.shouldVibrate(),
             silentMode = context.getSystemService(AudioManager::class.java)?.ringerMode == AudioManager.RINGER_MODE_SILENT,
         )
     }

@@ -201,7 +201,7 @@ class ReminderOverlayService : Service() {
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
             PixelFormat.TRANSLUCENT
         )
-            .apply { gravity = Gravity.CENTER; setTitle(context.getString(R.string.dose_medication_reminder)) }
+            .apply { gravity = Gravity.CENTER; title = context.getString(R.string.dose_medication_reminder) }
         try {
             window?.let { manager.removeView(it) }
             window = null

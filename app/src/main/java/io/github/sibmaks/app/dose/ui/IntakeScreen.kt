@@ -9,8 +9,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Medication
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -68,7 +68,11 @@ internal fun IntakeScreen(
                             IconButton(onClick = { expanded = true }) {
                                 Icon(Icons.Rounded.MoreVert, stringResource(R.string.intake_menu_accessibility))
                             }
-                            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }, content = menuContent)
+                            DropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false },
+                                content = menuContent
+                            )
                         }
                     } else Spacer(Modifier.width(48.dp))
                 }

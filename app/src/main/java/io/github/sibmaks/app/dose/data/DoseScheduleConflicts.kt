@@ -111,17 +111,21 @@ object DoseScheduleConflicts {
         if (above > below) return schedules
         if (above == below) {
             if (above == 0) return prefer(schedules, winner)
-            return schedules.mapIndexed { i, rule -> when (i) {
-                winner -> rule.copy(priority = below)
-                loser -> rule.copy(priority = (below - 1).coerceAtLeast(1))
-                else -> rule
-            } }
+            return schedules.mapIndexed { i, rule ->
+                when (i) {
+                    winner -> rule.copy(priority = below)
+                    loser -> rule.copy(priority = (below - 1).coerceAtLeast(1))
+                    else -> rule
+                }
+            }
         }
-        return schedules.mapIndexed { i, rule -> when (i) {
-            winner -> rule.copy(priority = below)
-            loser -> rule.copy(priority = above)
-            else -> rule
-        } }
+        return schedules.mapIndexed { i, rule ->
+            when (i) {
+                winner -> rule.copy(priority = below)
+                loser -> rule.copy(priority = above)
+                else -> rule
+            }
+        }
     }
 
     /** Choosing one member finishes a cluster's debate: the winner outranks every other member. */

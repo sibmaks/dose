@@ -5,11 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.createBitmap
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.Medication
 import io.github.sibmaks.app.dose.data.MedicationIconColors
 import io.github.sibmaks.app.dose.ui.iconResource
-import androidx.core.graphics.createBitmap
 
 /** RemoteViews receives finished badges, preserving each color and pale-icon contrast. */
 internal object WidgetMedicationIcons {

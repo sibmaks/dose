@@ -10,7 +10,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.github.sibmaks.app.dose.MainActivity
 import io.github.sibmaks.app.dose.R
-import io.github.sibmaks.app.dose.data.DoseEvent
 import io.github.sibmaks.app.dose.data.DoseGroups
 import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseStore

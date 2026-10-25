@@ -211,10 +211,11 @@ fun DoseApp(openTodayRequest: Int = 0) {
             HistoryDoseEditor(
                 selectedHistory, onDismiss = { editingHistory = false },
                 onSave = { status, at ->
-                    val saved = when {
-                        status == "taken" && selectedHistory.status == "taken" ->
+                    val saved = when (status) {
+                        "taken" if selectedHistory.status == "taken" ->
                             DoseStore.correctHistoryTime(context, selectedHistory, at)
-                        status == "taken" -> DoseStore.acceptHistory(context, selectedHistory, at)
+
+                        "taken" -> DoseStore.acceptHistory(context, selectedHistory, at)
                         else -> DoseStore.resolveHistory(context, selectedHistory, status)
                     }
                     if (saved) {
@@ -774,6 +775,7 @@ internal fun StatusBadge(status: String) {
             themeColor(0xFF456F9B, 0xFFA3C9F3),
             themeColor(0xFFEAF2FC, 0xFF26384B)
         )
+
         "pending" -> Triple(stringResource(R.string.pending), Violet, AccentPanel)
         "missed" -> Triple(stringResource(R.string.missed), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
 
@@ -960,6 +962,7 @@ private fun HistoryPage(
                                             0xFFE3F8EF,
                                             0xFF1B3C33
                                         )
+
                                         "pending" -> AccentPanel
                                         else -> SoftPanel
                                     }
@@ -973,7 +976,8 @@ private fun HistoryPage(
                                     "missed" -> Icons.Rounded.Close
                                     else -> Icons.Rounded.Remove
                                 },
-                                null, tint = when (log.status) {
+                                null,
+                                tint = when (log.status) {
                                     "taken" -> Mint
                                     "pending" -> Violet
                                     else -> TextMuted

@@ -4,14 +4,8 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AlarmOff
-import androidx.compose.material.icons.rounded.Block
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Flag
-import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.material.icons.rounded.Schedule
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,14 +48,17 @@ internal fun intakeStatusStyle(status: String): IntakeStatusStyle = when (status
         stringResource(R.string.taken), stringResource(R.string.status_taken_hint),
         Icons.Rounded.Check, Color(0xFF237C62), Mint, themeColor(0xFFE3F8EF, 0xFF1B3C33),
     )
+
     "pending" -> IntakeStatusStyle(
         stringResource(R.string.pending), stringResource(R.string.status_pending_hint),
         Icons.Rounded.Schedule, Color(0xFF6958D6), Violet, AccentPanel,
     )
+
     "missed" -> IntakeStatusStyle(
         stringResource(R.string.missed), stringResource(R.string.status_missed_hint),
         Icons.Rounded.AlarmOff, Color(0xFFAD5726), Peach, themeColor(0xFFFFF0E5, 0xFF493329),
     )
+
     else -> IntakeStatusStyle(
         stringResource(R.string.skipped), stringResource(R.string.event_skipped),
         Icons.Rounded.Block, Color(0xFF62677D), TextMuted, SoftPanel,
@@ -92,7 +89,11 @@ internal fun IntakeTimeline(
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
     val dayFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy", locale)
     val entries = remember(log, events) { DoseTimeline.build(log, events) }
-    val rows = entries.map { it to Instant.ofEpochMilli(it.at).atZone(zone) }
+    val rows =
+        entries.map {
+            it to Instant.ofEpochMilli(it.at)
+                .atZone(zone)
+        }
 
     Column(modifier) {
         rows.forEachIndexed { index, (entry, moment) ->
@@ -150,11 +151,15 @@ internal fun IntakeTimeline(
     }
 }
 
-private fun timelineTitle(context: Context, entry: TimelineEntry): String = when (entry.kind) {
+private fun timelineTitle(
+    context: Context,
+    entry: TimelineEntry
+): String = when (entry.kind) {
     "snooze" -> context.getString(
         R.string.event_snooze,
         durationMinutes(context, entry.minutes ?: 0)
     )
+
     "taken" -> context.getString(R.string.event_taken)
     "missed" -> context.getString(R.string.event_missed)
     "skipped" -> context.getString(R.string.event_skipped)
@@ -162,7 +167,11 @@ private fun timelineTitle(context: Context, entry: TimelineEntry): String = when
     else -> context.getString(R.string.event_reminder)
 }
 
-private fun timelineMeta(context: Context, entry: TimelineEntry, moment: ZonedDateTime): String? =
+private fun timelineMeta(
+    context: Context,
+    entry: TimelineEntry,
+    moment: ZonedDateTime
+): String? =
     when (entry.kind) {
         "snooze" -> entry.nextAt?.let {
             context.getString(
@@ -172,14 +181,17 @@ private fun timelineMeta(context: Context, entry: TimelineEntry, moment: ZonedDa
                     .format(DateTimeFormatter.ofPattern("HH:mm"))
             )
         }
+
         "taken" -> when {
             entry.onTime -> context.getString(R.string.event_taken_ontime)
             (entry.delayMinutes ?: 0L) > 0 -> context.getString(
                 R.string.event_taken_late,
                 durationMinutes(context, entry.delayMinutes ?: 0)
             )
+
             else -> null
         }
+
         "missed" -> context.getString(R.string.event_missed_meta)
         else -> null
     }

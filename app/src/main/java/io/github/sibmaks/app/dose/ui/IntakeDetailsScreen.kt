@@ -1,13 +1,17 @@
 package io.github.sibmaks.app.dose.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,15 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.DoseEvent
-import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseLog
+import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseTimeline
 import io.github.sibmaks.app.dose.localization.AppLanguages
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import androidx.compose.foundation.background
 
 /**
  * Read-only intake details: the current status stays at the top, the full reminder
@@ -42,7 +45,6 @@ internal fun IntakeDetailsScreen(
     onDelete: () -> Boolean
 ) {
     val context = LocalContext.current
-    val zone = ZoneId.systemDefault()
     var confirmDelete by rememberSaveable(log) { mutableStateOf(false) }
     var staleError by rememberSaveable(log) { mutableStateOf(false) }
     val style = intakeStatusStyle(log.status)
@@ -112,13 +114,15 @@ internal fun IntakeDetailsScreen(
                             fontSize = 13.sp,
                             color = style.accent.copy(alpha = 0.85f), modifier = Modifier.padding(top = 2.dp),
                         )
-                        DoseTimeline.delayMinutes(log)?.takeIf { it > 0 }?.let { delay ->
-                            Text(
-                                stringResource(R.string.event_taken_late, durationMinutes(context, delay)),
-                                fontSize = 12.sp,
-                                color = style.accent.copy(alpha = 0.75f), modifier = Modifier.padding(top = 2.dp),
-                            )
-                        }
+                        DoseTimeline.delayMinutes(log)
+                            ?.takeIf { it > 0 }
+                            ?.let { delay ->
+                                Text(
+                                    stringResource(R.string.event_taken_late, durationMinutes(context, delay)),
+                                    fontSize = 12.sp,
+                                    color = style.accent.copy(alpha = 0.75f), modifier = Modifier.padding(top = 2.dp),
+                                )
+                            }
                     } else Text(
                         stringResource(
                             if (log.status == "pending") R.string.status_pending_hint else R.string.status_missed_hint

@@ -1,6 +1,12 @@
 package io.github.sibmaks.app.dose.data
 
-enum class ReminderVibrationWarning { UNAVAILABLE, DEVICE, FEED, POPUP, BOTH }
+enum class ReminderVibrationWarning {
+    UNAVAILABLE,
+    DEVICE,
+    FEED,
+    POPUP,
+    BOTH
+}
 
 /** Unknown platform/vendor settings stay unknown; touch and ringtone preferences are unrelated. */
 data class ReminderVibrationState(
@@ -11,7 +17,10 @@ data class ReminderVibrationState(
     val channelEnabled: Boolean? = null,
     val silentMode: Boolean = false,
 ) {
-    fun warning(feed: Boolean, popups: Boolean): ReminderVibrationWarning? {
+    fun warning(
+        feed: Boolean,
+        popups: Boolean
+    ): ReminderVibrationWarning? {
         if (!hasVibrator) return ReminderVibrationWarning.UNAVAILABLE
         if (systemEnabled == false) return ReminderVibrationWarning.DEVICE
         val feedOff = feed && (notificationEnabled == false || channelEnabled == false || silentMode)
@@ -24,7 +33,10 @@ data class ReminderVibrationState(
         }
     }
 
-    fun onlyChannelDisabled(feed: Boolean, popups: Boolean): Boolean =
+    fun onlyChannelDisabled(
+        feed: Boolean,
+        popups: Boolean
+    ): Boolean =
         warning(feed, popups) == ReminderVibrationWarning.FEED && channelEnabled == false &&
-            notificationEnabled != false && !silentMode
+                notificationEnabled != false && !silentMode
 }

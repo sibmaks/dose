@@ -41,8 +41,14 @@ object DoseTimeline {
             "skipped" -> TimelineEntry(log.recordedAt, "skipped")
             // The rollover fires at the start of the day after the dose's own day.
             "missed" -> runCatching {
-                TimelineEntry(DoseLogic.scheduledMillis(LocalDate.parse(log.date).plusDays(1), "00:00"), "missed")
+                TimelineEntry(
+                    DoseLogic.scheduledMillis(
+                        LocalDate.parse(log.date)
+                            .plusDays(1), "00:00"
+                    ), "missed"
+                )
             }.getOrNull()
+
             else -> null
         }
         // A stable sort keeps same-instant reminder rows ahead of the intake they prompted.

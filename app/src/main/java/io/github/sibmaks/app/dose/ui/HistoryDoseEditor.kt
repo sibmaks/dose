@@ -58,14 +58,22 @@ internal fun HistoryDoseEditor(
     }
     var staleError by rememberSaveable(log) { mutableStateOf(false) }
 
-    val chosen = at.takeIf { it > 0 }?.let { Instant.ofEpochMilli(it).atZone(zone) }
+    val chosen =
+        at.takeIf { it > 0 }
+            ?.let {
+                Instant.ofEpochMilli(it)
+                    .atZone(zone)
+            }
     val chosenDate = chosen?.toLocalDate()
     val chosenTime = chosen?.toLocalTime()
     // A taken entry keeps its status by default but may revert; unresolved entries may become taken or switch.
     // Reopening a past record as awaiting is pointless: the next rollover would mark it missed again.
     val options = when (log.status) {
-        "taken" -> if (log.date == LocalDate.now().toString()) listOf("taken", "pending", "skipped")
+        "taken" -> if (log.date == LocalDate.now()
+                .toString()
+        ) listOf("taken", "pending", "skipped")
         else listOf("taken", "skipped")
+
         "missed" -> listOf("taken", "missed")
         "skipped" -> listOf("taken", "skipped")
         else -> listOf("taken", "pending", "missed")
@@ -82,25 +90,30 @@ internal fun HistoryDoseEditor(
 
     fun pickDate() {
         DatePickerDialog(
-            context, AppAppearance.dialogTheme(context), { _, year, month, day ->
+            context, AppAppearance.dialogTheme(context),
+            { _, year, month, day ->
                 at = LocalDate.of(year, month + 1, day)
                     .atTime(pickerBase.toLocalTime())
                     .atZone(zone)
                     .toInstant()
                     .toEpochMilli()
-            }, pickerBase.year, pickerBase.monthValue - 1, pickerBase.dayOfMonth,
-        ).apply { datePicker.maxDate = now }.show()
+            },
+            pickerBase.year, pickerBase.monthValue - 1, pickerBase.dayOfMonth,
+        ).apply { datePicker.maxDate = now }
+            .show()
     }
 
     fun pickTime() {
         TimePickerDialog(
-            context, AppAppearance.dialogTheme(context), { _, hour, minute ->
+            context, AppAppearance.dialogTheme(context),
+            { _, hour, minute ->
                 at = pickerBase.toLocalDate()
                     .atTime(hour, minute)
                     .atZone(zone)
                     .toInstant()
                     .toEpochMilli()
-            }, pickerBase.hour, pickerBase.minute, true,
+            },
+            pickerBase.hour, pickerBase.minute, true,
         ).show()
     }
 

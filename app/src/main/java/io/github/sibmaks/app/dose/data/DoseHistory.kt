@@ -51,7 +51,10 @@ object DoseHistory {
         require(log.status == "taken")
         require(status == "pending" || status == "skipped")
         // Awaiting only makes sense for today's dose; a past pending entry would flip to missed at the next rollover.
-        require(status == "skipped" || log.date == LocalDate.now().toString())
+        require(
+            status == "skipped" || log.date == LocalDate.now()
+                .toString()
+        )
         return when (status) {
             "pending" -> log.copy(status = "pending", recordedAt = 0, onTime = false, clickedAt = null)
             else -> log.copy(status = "skipped", recordedAt = now, onTime = false, clickedAt = now)

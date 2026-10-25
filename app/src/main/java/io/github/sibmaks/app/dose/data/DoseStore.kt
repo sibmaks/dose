@@ -95,7 +95,9 @@ object DoseStore {
                 .commit()
         }
         // Reminder events survive only where their dose entry survives.
-        val surviving = keptLogs.map { DoseLogic.slotKey(it.date, it.medicationId, it.time) }.toSet()
+        val surviving =
+            keptLogs.map { DoseLogic.slotKey(it.date, it.medicationId, it.time) }
+                .toSet()
         val allEvents = events(context)
         val keptEvents = allEvents.filter { DoseLogic.slotKey(it.date, it.medicationId, it.time) in surviving }
         if (keptEvents.size != allEvents.size) saveEvents(context, keptEvents)
@@ -189,11 +191,13 @@ object DoseStore {
         val existing = logs(context)
         val additions = items.filter { item ->
             existing.none { it.date == item.date && it.medicationId == item.medication.id && it.time == item.time }
-        }.map { DoseLogic.pendingLog(it.medication, it.date, it.time, it.scheduledAt) }
+        }
+            .map { DoseLogic.pendingLog(it.medication, it.date, it.time, it.scheduledAt) }
         val allEvents = events(context)
         val events = if (repeat == null) emptyList() else items.map {
             DoseEvent(it.date, it.medication.id, it.time, if (repeat) "repeat" else "reminder", now)
-        }.filter { eventKey(it) !in allEvents.mapTo(mutableSetOf(), ::eventKey) }
+        }
+            .filter { eventKey(it) !in allEvents.mapTo(mutableSetOf(), ::eventKey) }
         if (additions.isEmpty() && events.isEmpty()) return
         val logsArray = JSONArray()
         (existing + additions).forEach { logsArray.put(DoseLogJson.encode(it)) }
