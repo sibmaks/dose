@@ -225,7 +225,7 @@ internal fun MedicationEditor(
             showValidation = true
             val first = DoseScheduleConflicts.coincidences(rules, amount.trim())
                 .firstOrNull { !it.resolved }
-            if (first != null) expandedConflict = "${first.first}-${first.second}"
+            if (first != null) expandedConflict = first.key
             step = MedicationStep.OVERLAPS
             return
         }
@@ -672,8 +672,8 @@ internal fun MedicationEditor(
                                     attention = conflictAttention || validationVisible,
                                     expandedKey = expandedConflict,
                                     onExpand = { expandedConflict = it },
-                                    onResolve = { winner, loser ->
-                                        schedules = DoseScheduleConflicts.resolve(schedules, winner, loser)
+                                    onResolve = { group, winner ->
+                                        schedules = DoseScheduleConflicts.resolveGroup(schedules, winner, group.members)
                                         expandedConflict = null
                                     },
                                 )
@@ -1202,7 +1202,7 @@ private fun OverlapsStep(
     attention: Boolean,
     expandedKey: String?,
     onExpand: (String?) -> Unit,
-    onResolve: (winner: Int, loser: Int) -> Unit,
+    onResolve: (group: DoseScheduleConflicts.Coincidence, winner: Int) -> Unit,
 ) {
     val coincidences = remember(schedules, amount) { DoseScheduleConflicts.coincidences(schedules, amount.trim()) }
     if (coincidences.isEmpty()) return
@@ -1239,19 +1239,14 @@ private fun OverlapsStep(
         lineHeight = 16.sp,
     )
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        coincidences.forEach { overlap ->
+        coincidences.forEach { group ->
             ConflictItem(
                 schedules,
                 amount,
                 quantity,
-                overlap,
-                expanded = expandedKey == "${overlap.first}-${overlap.second}",
-                onToggle = {
-                    onExpand(
-                        if (expandedKey == "${overlap.first}-${overlap.second}") null
-                        else "${overlap.first}-${overlap.second}"
-                    )
-                },
+                group,
+                expanded = expandedKey == group.key,
+                onToggle = { onExpand(if (expandedKey == group.key) null else group.key) },
                 onResolve = onResolve,
             )
         }
@@ -1282,18 +1277,16 @@ private fun ConflictItem(
     schedules: List<DoseSchedule>,
     amount: String,
     quantity: String,
-    overlap: DoseScheduleConflicts.Overlap,
+    group: DoseScheduleConflicts.Coincidence,
     expanded: Boolean,
     onToggle: () -> Unit,
-    onResolve: (winner: Int, loser: Int) -> Unit,
+    onResolve: (group: DoseScheduleConflicts.Coincidence, winner: Int) -> Unit,
 ) {
     val context = LocalContext.current
-    val resolved = overlap.resolved
-    val winner = if (schedules[overlap.first].priority > schedules[overlap.second].priority) overlap.first else overlap.second
-    val firstDose = doseLabel(context, schedules[overlap.first], amount, quantity)
-    val secondDose = doseLabel(context, schedules[overlap.second], amount, quantity)
-    val headline = "${localizedLongDate(context, overlap.date.toString())} · ${overlap.times.joinToString(" · ")} · " +
-            "$firstDose / $secondDose"
+    val resolved = group.resolved
+    val winner = group.members.maxBy { schedules[it].priority } ?: group.members.first()
+    val headline = "${localizedLongDate(context, group.date.toString())} · ${group.times.joinToString(" · ")} · " +
+            group.members.joinToString(" / ") { index -> doseLabel(context, schedules[index], amount, quantity) }
     Surface(
         onClick = onToggle,
         color = if (resolved) GreenPanel else AmberPanel,
@@ -1348,7 +1341,7 @@ private fun ConflictItem(
                 )
             }
             if (expanded) ExpandedConflict(
-                schedules, amount, quantity, overlap, onResolve = onResolve,
+                schedules, amount, quantity, group, onResolve = onResolve,
             )
         }
     }
@@ -1385,19 +1378,19 @@ private fun ConflictStatus(resolved: Boolean) {
     }
 }
 
-/** Expanded body: the overlap moment, one radio card per sibling schedule, live preview, apply action. */
+/** Expanded body: the overlap moment, one radio card per participating schedule, live preview, apply action. */
 @Composable
 private fun ExpandedConflict(
     schedules: List<DoseSchedule>,
     amount: String,
     quantity: String,
-    overlap: DoseScheduleConflicts.Overlap,
-    onResolve: (winner: Int, loser: Int) -> Unit,
+    group: DoseScheduleConflicts.Coincidence,
+    onResolve: (group: DoseScheduleConflicts.Coincidence, winner: Int) -> Unit,
 ) {
     val context = LocalContext.current
-    val resolved = overlap.resolved
-    val winner = if (schedules[overlap.first].priority > schedules[overlap.second].priority) overlap.first else overlap.second
-    var pending by remember(overlap) { mutableStateOf(if (resolved) winner else null) }
+    val resolved = group.resolved
+    val winner = group.members.maxBy { schedules[it].priority } ?: group.members.first()
+    var pending by remember(group) { mutableStateOf(if (resolved) winner else null) }
     HorizontalDivider(color = AmberBorder)
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -1410,7 +1403,7 @@ private fun ExpandedConflict(
             tint = TextMuted
         )
         Text(
-            localizedLongDate(context, overlap.date.toString()),
+            localizedLongDate(context, group.date.toString()),
             fontSize = 12.5.sp,
             fontWeight = FontWeight.ExtraBold,
             color = TextPrimary
@@ -1423,58 +1416,64 @@ private fun ExpandedConflict(
             tint = TextMuted
         )
         Text(
-            overlap.times.joinToString(" · "),
+            group.times.joinToString(" · "),
             fontSize = 12.5.sp,
             fontWeight = FontWeight.ExtraBold,
             color = TextPrimary
         )
     }
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        listOf(overlap.first, overlap.second).forEach { index ->
-            val rule = schedules[index]
-            Surface(
-                onClick = { pending = index },
-                color = if (pending == index) AccentPanel else SoftPanel,
-                border = BorderStroke(
-                    if (pending == index) 1.5.dp else 1.dp,
-                    if (pending == index) Violet else PanelBorder
-                ),
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.weight(1f),
-            ) {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(3.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(7.dp)
+    // One grid keeps every overlapping dose visible; the choice stays a single radio group.
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        group.members.chunked(2).forEach { rowMembers ->
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                rowMembers.forEach { index ->
+                    val rule = schedules[index]
+                    Surface(
+                        onClick = { pending = index },
+                        color = if (pending == index) AccentPanel else SoftPanel,
+                        border = BorderStroke(
+                            if (pending == index) 1.5.dp else 1.dp,
+                            if (pending == index) Violet else PanelBorder
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.weight(1f),
                     ) {
-                        RadioButtonCircle(pending == index)
-                        Text(
-                            doseLabel(context, rule, amount, quantity),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = if (pending == index) Violet else TextPrimary,
-                        )
+                        Column(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(3.dp)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(7.dp)
+                            ) {
+                                RadioButtonCircle(pending == index)
+                                Text(
+                                    doseLabel(context, rule, amount, quantity),
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    color = if (pending == index) Violet else TextPrimary,
+                                )
+                            }
+                            Text(
+                                stringResource(R.string.schedule_number, index + 1),
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextPrimary
+                            )
+                            Text(
+                                scheduleSummary(context, rule),
+                                color = TextMuted,
+                                fontSize = 10.5.sp,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 13.sp,
+                            )
+                        }
                     }
-                    Text(
-                        stringResource(R.string.schedule_number, index + 1),
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextPrimary
-                    )
-                    Text(
-                        scheduleSummary(context, rule),
-                        color = TextMuted,
-                        fontSize = 10.5.sp,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        lineHeight = 13.sp,
-                    )
                 }
+                if (rowMembers.size < 2) Spacer(Modifier.weight(1f))
             }
         }
     }
@@ -1527,7 +1526,7 @@ private fun ExpandedConflict(
     }
     Button(
         enabled = pending != null,
-        onClick = { pending?.let { onResolve(it, overlap.first + overlap.second - it) } },
+        onClick = { pending?.let { onResolve(group, it) } },
         shape = RoundedCornerShape(13.dp),
         modifier = Modifier
             .fillMaxWidth()

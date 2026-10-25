@@ -4,47 +4,85 @@ import java.time.LocalDate
 
 /** Compare calendar occurrences, not just matching clock times or a short preview window. */
 object DoseScheduleConflicts {
-    data class Overlap(
-        val first: Int,
-        val second: Int,
-        val date: LocalDate,
+    /**
+     * One accordion per collision cluster: schedules joined by real calendar collisions, however
+     * many clock times bind them. Schedules that merely share a time without ever meeting stay apart.
+     */
+    data class Coincidence(
+        val members: List<Int>,
         val times: List<String>,
+        val date: LocalDate,
         val resolved: Boolean
-    )
+    ) {
+        /** Clusters never share members, so the membership alone identifies the debate. */
+        val key: String get() = members.joinToString("-")
+    }
 
     fun unresolved(
         schedules: List<DoseSchedule>,
         defaultAmount: String
-    ): List<Overlap> = coincidences(schedules, defaultAmount)
+    ): List<Coincidence> = coincidences(schedules, defaultAmount)
         .filter { !it.resolved }
 
-    /** Every coinciding pair with different dosages; the ranking decides who supplies the dose on overlap. */
+    /** Coinciding clusters; the ranking decides which member supplies the dose on overlap. */
     fun coincidences(
         schedules: List<DoseSchedule>,
         defaultAmount: String
-    ): List<Overlap> = buildList {
-        schedules.forEachIndexed { first, a ->
-            for (second in first + 1 until schedules.size) {
-                val b = schedules[second]
-                if (sameAmount(
-                        a.amount ?: defaultAmount,
-                        b.amount ?: defaultAmount
-                    )
-                ) continue
-                val times =
-                    a.times.intersect(b.times.toSet())
+    ): List<Coincidence> {
+        val collisions = buildList {
+            schedules.forEachIndexed { first, a ->
+                for (second in first + 1 until schedules.size) {
+                    val b = schedules[second]
+                    val shared = a.times.intersect(b.times.toSet())
                         .sorted()
-                if (times.isEmpty()) continue
-                val date = firstDate(a, b) ?: continue
-                add(
-                    Overlap(
-                        first, second, date, times,
-                        a.priority != b.priority
-                    )
-                )
+                    if (shared.isEmpty()) continue
+                    if (sameAmount(
+                            a.amount ?: defaultAmount,
+                            b.amount ?: defaultAmount
+                        )
+                    ) continue
+                    val date = firstDate(a, b) ?: continue
+                    add(Collision(first, second, date, shared))
+                }
             }
         }
+        // Schedules brushing against a common partner belong to one debate (A–B and A–C once each).
+        val parent = IntArray(schedules.size) { it }
+        fun root(index: Int): Int {
+            var node = index
+            while (parent[node] != node) node = parent[node]
+            return node
+        }
+
+        collisions.forEach { collision ->
+            parent[root(collision.first)] = root(collision.second)
+        }
+        return collisions.groupBy { root(it.first) }
+            .values
+            .map { edges ->
+                val members = edges.flatMap { listOf(it.first, it.second) }
+                    .distinct()
+                    .sorted()
+                Coincidence(
+                    members = members,
+                    times = edges.flatMap { it.shared }
+                        .distinct()
+                        .sorted(),
+                    date = edges.minOf { it.date },
+                    resolved = members.count { schedule ->
+                        schedules[schedule].priority == members.maxOf { schedules[it].priority }
+                    } == 1
+                )
+            }
+            .sortedBy { it.date }
     }
+
+    private data class Collision(
+        val first: Int,
+        val second: Int,
+        val date: LocalDate,
+        val shared: List<String>
+    )
 
     /** Rank one choice above all remaining unranked schedules; previous choices stay higher. */
     fun prefer(
@@ -84,6 +122,19 @@ object DoseScheduleConflicts {
             loser -> rule.copy(priority = above)
             else -> rule
         } }
+    }
+
+    /** Choosing one member finishes a cluster's debate: the winner outranks every other member. */
+    fun resolveGroup(
+        schedules: List<DoseSchedule>,
+        winner: Int,
+        members: List<Int>
+    ): List<DoseSchedule> {
+        var result = schedules
+        members.forEach { member ->
+            if (member != winner) result = resolve(result, winner, member)
+        }
+        return result
     }
 
     private fun sameAmount(
