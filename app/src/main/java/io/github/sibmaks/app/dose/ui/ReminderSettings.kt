@@ -178,11 +178,6 @@ internal fun ReminderSettingsScreen(
         } else {
             ReminderVibrationAlert(state.feedChecked, state.popupsChecked, ::launchSettings)
         }
-        if (state.feedChecked) {
-            TextButton(onClick = {
-                launchSettings(ReminderNotifications.settingsIntent(context), R.string.notification_settings_fallback)
-            }) { Text(stringResource(R.string.sound_notification_settings)) }
-        }
         if (state.popupsChecked && !state.feedChecked) {
             Text(
                 stringResource(R.string.popup_feed_disabled_hint),
