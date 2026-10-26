@@ -6,7 +6,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 |---|---|---|
 | UI-01 | Small-text contrast on hero, status, overlap and widget surfaces | Complete |
 | UI-02 | Native widget dose action hit areas | Complete |
-| UI-03 | Visible validation for non-positive dosage | Pending |
+| UI-03 | Visible validation for non-positive dosage | Complete |
 | UI-04 | Empty custom pause end state | Pending |
 | UI-05 | Accessible switch names | Pending |
 | UI-06 | Semantic selection for custom choices | Pending |
@@ -32,3 +32,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - Expanded widget Taken/Skip hit areas to at least 48 x 48 dp and increased row height/capacity thresholds together. Smaller widgets retain the compact layout until a complete expanded row fits.
 - Verification: widget-state and shipping-layout geometry tests (9 total) plus debug assembly passed. Launcher hit testing remains device-host dependent.
+
+### UI-03
+
+- One amount-validation result drives both navigation blocking and field error/supporting text, preserving free-form dosage descriptions.
+- Verification: three focused tests and debug assembly passed. A guarded unsaved emulator replay confirmed the localized error for amount 0, then discarded the draft.

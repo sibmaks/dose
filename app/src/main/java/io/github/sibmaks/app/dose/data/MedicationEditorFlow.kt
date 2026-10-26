@@ -10,7 +10,16 @@ enum class MedicationStep(val title: String) {
     DETAILS("Final details");
 }
 
+enum class MedicationAmountIssue { REQUIRED, NON_POSITIVE }
+
 object MedicationEditorFlow {
+    /** Free-form dosage descriptions stay valid; recognizable numeric amounts must be positive. */
+    fun amountIssue(amount: String): MedicationAmountIssue? = when {
+        amount.isBlank() -> MedicationAmountIssue.REQUIRED
+        (amount.trim().replace(',', '.').toDoubleOrNull() ?: 1.0) <= 0.0 -> MedicationAmountIssue.NON_POSITIVE
+        else -> null
+    }
+
     /** The overlaps screen exists only when coinciding schedules with different dosages are detected. */
     fun steps(
         form: MedicationForm,

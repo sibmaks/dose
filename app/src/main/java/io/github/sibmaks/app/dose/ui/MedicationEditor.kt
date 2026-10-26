@@ -179,16 +179,17 @@ internal fun MedicationEditor(
         showValidation = false
     }
 
+    fun amountError(): String? = when (MedicationEditorFlow.amountIssue(amount)) {
+        MedicationAmountIssue.REQUIRED -> resources.getString(R.string.amount_required)
+        MedicationAmountIssue.NON_POSITIVE -> resources.getString(R.string.amount_positive)
+        null -> null
+    }
+
     fun stepError(candidate: MedicationStep): String? = when (candidate) {
         MedicationStep.NAME -> if (name.isBlank()) resources.getString(R.string.name_required) else null
         MedicationStep.DOSAGE -> when {
-            amount.isBlank() -> resources.getString(R.string.amount_required)
+            amountError() != null -> amountError()
             quantity.isBlank() && !unitOptional -> resources.getString(R.string.unit_required)
-            (amount.trim()
-                .replace(',', '.')
-                .toDoubleOrNull() ?: 1.0) <= 0.0 ->
-                resources.getString(R.string.amount_positive)
-
             else -> null
         }
 
@@ -552,6 +553,7 @@ internal fun MedicationEditor(
                             }
 
                             MedicationStep.DOSAGE -> {
+                                val visibleAmountError = if (validationVisible) amountError() else null
                                 Text(
                                     stringResource(R.string.how_much_per_dose),
                                     fontSize = 19.sp,
@@ -562,11 +564,9 @@ internal fun MedicationEditor(
                                     { amount = it.take(70); changeSchedules(schedules) },
                                     label = { Text(stringResource(R.string.amount)) },
                                     placeholder = { Text(stringResource(R.string.e_g_500)) },
-                                    isError = validationVisible && amount.isBlank(),
+                                    isError = visibleAmountError != null,
                                     supportingText = {
-                                        if (validationVisible && amount.isBlank()) Text(
-                                            stringResource(R.string.amount_required)
-                                        )
+                                        visibleAmountError?.let { Text(it) }
                                     },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                                     singleLine = true,
