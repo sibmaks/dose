@@ -234,7 +234,6 @@ private fun VibrationStyleSection() {
     var expanded by remember { mutableStateOf(false) }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(stringResource(R.string.vibration_style), fontWeight = FontWeight.Bold, fontSize = 15.sp)
-        Text(stringResource(R.string.vibration_style_hint), color = TextMuted, fontSize = 12.sp)
         Box {
             Surface(
                 onClick = { expanded = true },

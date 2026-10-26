@@ -327,7 +327,6 @@
     <string name="sound_vibration_settings">"Sound &amp; vibration settings"</string>
     <string name="vibration_settings_fallback">"Open Sound &amp; vibration in Android settings."</string>
     <string name="vibration_style">"Vibration style"</string>
-    <string name="vibration_style_hint">"How a reminder buzzes when a dose is due. Tap a style to feel it."</string>
     <string name="vibration_style_default">"Default"</string>
     <string name="vibration_style_short">"Short tap"</string>
     <string name="vibration_style_double">"Double tap"</string>

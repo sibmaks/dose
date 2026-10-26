@@ -325,7 +325,6 @@
     <string name="sound_vibration_settings">"ხმა და ვიბრაცია"</string>
     <string name="vibration_settings_fallback">"გახსენით ხმისა და ვიბრაციის განყოფილება Android-ის პარამეტრებში."</string>
     <string name="vibration_style">"ვიბრაციის სტილი"</string>
-    <string name="vibration_style_hint">"როგორ ივიბრირებს შეხსენება, როცა წამლის დროა. შეეხეთ სტილს, რომ იგრძნოთ."</string>
     <string name="vibration_style_default">"ჩვეულებრივი"</string>
     <string name="vibration_style_short">"მოკლე"</string>
     <string name="vibration_style_double">"ორმაგი"</string>

@@ -325,7 +325,6 @@
     <string name="sound_vibration_settings">"Дыбыс және діріл"</string>
     <string name="vibration_settings_fallback">"Android параметрлерінде дыбыс және діріл бөлімін ашыңыз."</string>
     <string name="vibration_style">"Діріл стилі"</string>
-    <string name="vibration_style_hint">"Доза қабылдау уақыты келгенде еске салғыш қалай дірілдейтіні. Стильді басып көріңіз."</string>
     <string name="vibration_style_default">"Әдеттегі"</string>
     <string name="vibration_style_short">"Қысқа"</string>
     <string name="vibration_style_double">"Қосарлы"</string>

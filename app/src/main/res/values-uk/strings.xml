@@ -325,7 +325,6 @@
     <string name="sound_vibration_settings">"Звук і вібрація"</string>
     <string name="vibration_settings_fallback">"Відкрийте розділ «Звук і вібрація» в налаштуваннях Android."</string>
     <string name="vibration_style">"Стиль вібрації"</string>
-    <string name="vibration_style_hint">"Як сповіщення вібруватиме, коли настане час прийняти дозу. Торкніться стилю, щоб відчути його."</string>
     <string name="vibration_style_default">"Звичайний"</string>
     <string name="vibration_style_short">"Короткий"</string>
     <string name="vibration_style_double">"Подвійний"</string>

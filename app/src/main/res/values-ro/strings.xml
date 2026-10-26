@@ -325,7 +325,6 @@
     <string name="sound_vibration_settings">"Sunet și vibrații"</string>
     <string name="vibration_settings_fallback">"Deschide secțiunea Sunet și vibrații din setările Android."</string>
     <string name="vibration_style">"Stilul vibrației"</string>
-    <string name="vibration_style_hint">"Cum vibrează mementoarea când este ora dozei. Apasă un stil pentru a-l simți."</string>
     <string name="vibration_style_default">"Implicit"</string>
     <string name="vibration_style_short">"Scurtă"</string>
     <string name="vibration_style_double">"Dublă"</string>

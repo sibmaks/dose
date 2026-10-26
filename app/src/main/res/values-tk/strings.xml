@@ -325,7 +325,6 @@
     <string name="sound_vibration_settings">"Ses we titreme"</string>
     <string name="vibration_settings_fallback">"Android sazlamalarynda ses we titreme bölümini açyň."</string>
     <string name="vibration_style">"Titreme usuly"</string>
-    <string name="vibration_style_hint">"Derman wagty gelende ýatlatma nähili titrer. Usuly duýmak üçin basyň."</string>
     <string name="vibration_style_default">"Adaty"</string>
     <string name="vibration_style_short">"Gysga"</string>
     <string name="vibration_style_double">"Goşa"</string>

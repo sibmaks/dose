@@ -325,7 +325,6 @@
     <string name="sound_vibration_settings">"Ovoz va tebranish"</string>
     <string name="vibration_settings_fallback">"Android sozlamalarida ovoz va tebranish bo‘limini oching."</string>
     <string name="vibration_style">"Tebranish uslubi"</string>
-    <string name="vibration_style_hint">"Dori vaqti kelganda eslatma qanday tebranadi. Uslubni his qilish uchun bosing."</string>
     <string name="vibration_style_default">"Oddiy"</string>
     <string name="vibration_style_short">"Qisqa"</string>
     <string name="vibration_style_double">"Ikki marta"</string>

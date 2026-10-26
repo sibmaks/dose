@@ -325,7 +325,6 @@
     <string name="sound_vibration_settings">"Ձայն և թրթռում"</string>
     <string name="vibration_settings_fallback">"Բացեք ձայնի և թրթռման բաժինը Android-ի կարգավորումներում։"</string>
     <string name="vibration_style">"Թրթռման ոճ"</string>
-    <string name="vibration_style_hint">"Ինչպես է թրթռում հիշեցումը, երբ դեղի ընդունման ժամն է։ Հպեք ոճին՝ զգալու համար։"</string>
     <string name="vibration_style_default">"Սովորական"</string>
     <string name="vibration_style_short">"Կարճ"</string>
     <string name="vibration_style_double">"Կրկնակի"</string>
