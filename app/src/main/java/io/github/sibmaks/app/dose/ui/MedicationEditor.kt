@@ -283,11 +283,16 @@ internal fun MedicationEditor(
 
     Dialog(
         onDismissRequest = ::previous,
-        properties = DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            dismissOnClickOutside = false,
+            decorFitsSystemWindows = false,
+        )
     ) {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
+                .safeDrawingPadding()
                 .padding(horizontal = 12.dp)
                 .fillMaxHeight(0.94f)
                 .imePadding(),
