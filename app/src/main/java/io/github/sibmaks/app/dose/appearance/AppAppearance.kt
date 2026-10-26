@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import androidx.core.content.edit
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.ThemeMode
+import io.github.sibmaks.app.dose.widget.DoseWidget
 
 object AppAppearance {
     const val MODE = "theme_mode"
@@ -20,6 +21,7 @@ object AppAppearance {
         mode: ThemeMode
     ) {
         preferences(context).edit { putString(MODE, mode.preference) }
+        DoseWidget.updateAll(context)
     }
 
     fun isDark(context: Context): Boolean = mode(context).isDark(

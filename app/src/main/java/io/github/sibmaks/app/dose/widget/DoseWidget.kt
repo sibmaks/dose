@@ -73,6 +73,7 @@ class DoseWidget : AppWidgetProvider() {
             val ids = manager.getAppWidgetIds(ComponentName(context, DoseWidget::class.java))
             if (ids.isEmpty()) return
             val now = ZonedDateTime.now()
+            val appearance = WidgetAppearance(context)
             val items = DoseLogic.todayItems(
                 DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context),
                 now.toInstant()
@@ -141,6 +142,7 @@ class DoseWidget : AppWidgetProvider() {
                 if (height < DoseWidgetState.EXPANDED_HEIGHT) return compact
                 val count = DoseWidgetState.visibleRows(height, pending.size)
                 return RemoteViews(context.packageName, R.layout.widget_dose_list).apply {
+                    appearance.list(this)
                     setTextViewText(R.id.widget_title, context.getString(R.string.today_s_schedule))
                     setTextViewText(
                         R.id.widget_time,
@@ -178,13 +180,7 @@ class DoseWidget : AppWidgetProvider() {
                                     else -> R.string.upcoming
                                 }
                                 setTextViewText(R.id.widget_row_status, context.getString(status))
-                                setTextColor(
-                                    R.id.widget_row_status, when (item.status) {
-                                        "taken" -> 0xFF379D80.toInt()
-                                        "due", "overdue" -> 0xFFB65E24.toInt()
-                                        else -> 0xFF6F748B.toInt()
-                                    }
-                                )
+                                appearance.row(this, item.status)
                                 setImageViewBitmap(R.id.widget_icon, icons.getValue(item.medication.id))
                                 setContentDescription(R.id.widget_icon, item.medication.localizedForm(context))
                                 setOnClickPendingIntent(R.id.widget_row, openToday)

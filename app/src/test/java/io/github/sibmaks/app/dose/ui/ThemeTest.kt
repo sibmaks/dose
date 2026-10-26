@@ -65,23 +65,38 @@ class ThemeTest {
                 .parse(File(resources, path)).getElementsByTagName(tag)
             return (0 until nodes.length).map { nodes.item(it) as Element }
         }
-        val colors = elements("values/colors.xml", "color").associate { it.getAttribute("name") to it.textContent.trim() }
-        fun parseColor(value: String): Color {
-            val hex = if (value.startsWith("@color/")) colors.getValue(value.substringAfter('/')) else value
-            return Color((hex.removePrefix("#").toLong(16) or 0xFF000000).toInt())
-        }
-        fun background(path: String) = parseColor(elements(path, "solid").single().getAttribute("android:color"))
-        for ((layout, fill) in listOf(
-            "widget_upcoming_dose" to "widget_background",
-            "widget_dose_list" to "widget_list_background",
-        )) {
-            val surface = background("drawable/$fill.xml")
-            elements("layout/$layout.xml", "TextView").forEach { view ->
-                val size = view.getAttribute("android:textSize").removeSuffix("sp").toFloat()
-                val large = size >= if (view.getAttribute("android:textStyle") == "bold") 14f else 18f
-                val foreground = parseColor(view.getAttribute("android:textColor"))
-                assertTrue("${view.getAttribute("android:id")} on $fill", contrast(foreground, surface) >= if (large) 3.0 else 4.5)
+        val baseColors = elements("values/colors.xml", "color").associate { it.getAttribute("name") to it.textContent.trim() }
+        for (dark in listOf(false, true)) {
+            val colors = baseColors + if (dark) elements("values-night/colors.xml", "color")
+                .associate { it.getAttribute("name") to it.textContent.trim() } else emptyMap()
+            fun parseColor(value: String): Color {
+                if (value.startsWith("@color/")) return parseColor(colors.getValue(value.substringAfter('/')))
+                return Color((value.removePrefix("#").toLong(16) or 0xFF000000).toInt())
             }
+            fun background(path: String) = parseColor(elements(path, "solid").single().getAttribute("android:color"))
+            for ((layout, fill) in listOf(
+                "widget_upcoming_dose" to "widget_background",
+                "widget_dose_list" to "widget_list_background",
+                "widget_dose_row" to "widget_row_background",
+            )) {
+                val surface = background("drawable/$fill.xml")
+                elements("layout/$layout.xml", "TextView").forEach { view ->
+                    val size = view.getAttribute("android:textSize").removeSuffix("sp").toFloat()
+                    val large = size >= if (view.getAttribute("android:textStyle") == "bold") 14f else 18f
+                    val ownBackground = view.getAttribute("android:background")
+                    val behindText = if (ownBackground.startsWith("@drawable/"))
+                        background("drawable/${ownBackground.substringAfter('/')}.xml") else surface
+                    val foreground = parseColor(view.getAttribute("android:textColor"))
+                    assertTrue("dark=$dark ${view.getAttribute("android:id")} on $fill",
+                        contrast(foreground, behindText) >= if (large) 3.0 else 4.5)
+                }
+            }
+            val scheme = doseColorScheme(dark)
+            assertEquals(scheme.background, parseColor("@color/dose_widget_page"))
+            assertEquals(scheme.surface, parseColor("@color/dose_widget_panel"))
+            assertEquals(scheme.onSurface, parseColor("@color/dose_widget_text"))
+            assertEquals(scheme.primary, parseColor("@color/dose_widget_primary"))
+            assertEquals(scheme.onPrimary, parseColor("@color/dose_widget_on_primary"))
         }
     }
 

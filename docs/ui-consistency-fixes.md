@@ -12,7 +12,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-06 | Semantic selection for custom choices | Complete |
 | UI-07 | Medication wizard keyboard and footer layout | Complete |
 | UI-08 | Large-text navigation and compact layouts | Complete |
-| UI-09 | Widget appearance policy and updates | Pending |
+| UI-09 | Widget appearance policy and updates | Complete |
 | UI-10 | Shared semantic color ownership | Pending |
 | UI-11 | Shared accessible picker fields | Pending |
 | UI-12 | Shared typography roles | Pending |
@@ -62,3 +62,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - Navigation labels stay on one line with ellipsis when necessary; their full accessible text is retained. Choice cells grow with text, unit/weekday columns adapt, month-day columns respect a 48 dp cell minimum, presets wrap, and paired fields stack for large text/narrow content.
 - Verification: debug assembly passed. Emulator checks at 200% confirmed one-line navigation and a scrollable two-column unit grid with growing cells. Text size was restored and the draft discarded. Full locale/tablet/landscape coverage remains outstanding.
+
+### UI-09
+
+- Expanded widgets follow System/Light/Dark; compact widgets retain the same fixed violet hero as Today. Theme selection refreshes existing widgets immediately. Configuration changes refresh widgets while the process is running; API 31+ text actions retain day/night colors for host reapplication. Native resources cover light/dark backgrounds and actions.
+- Verification: 13 palette/layout/widget-state tests, debug assembly and lint passed. A temporary API 27 launcher widget was resized to expanded mode and visibly refreshed from light to dark after app theme selection. System appearance was restored and the test widget removed. Populated widget rows and other launcher hosts remain unverified visually.

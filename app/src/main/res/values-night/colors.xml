@@ -1,0 +1,11 @@
+<resources>
+    <color name="dose_widget_page">@color/dose_page_dark</color>
+    <color name="dose_widget_panel">@color/dose_panel_dark</color>
+    <color name="dose_widget_text">@color/dose_text_dark</color>
+    <color name="dose_widget_muted">@color/dose_muted_dark</color>
+    <color name="dose_widget_border">@color/dose_border_dark</color>
+    <color name="dose_widget_primary">@color/dose_primary_dark</color>
+    <color name="dose_widget_on_primary">@color/dose_on_primary_dark</color>
+    <color name="dose_widget_primary_container">@color/dose_primary_container_dark</color>
+    <color name="dose_widget_on_primary_container">@color/dose_on_primary_container_dark</color>
+</resources>
