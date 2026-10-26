@@ -154,7 +154,7 @@ internal fun HistoryDoseEditor(
 
         if (status == "taken") {
             TimelineHeading(stringResource(R.string.intake_time_section))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            ResponsiveFields(gap = 12.dp) {
                 PickerField(
                     label = stringResource(R.string.intake_date_label),
                     value = chosenDate?.format(dateFormatter) ?: "",

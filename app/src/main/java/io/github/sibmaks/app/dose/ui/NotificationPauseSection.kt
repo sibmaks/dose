@@ -228,7 +228,7 @@ private fun PauseActiveCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 11.dp)
-                    .height(44.dp),
+                    .heightIn(min = 48.dp),
             ) {
                 Row(
                     Modifier.fillMaxSize(),
@@ -263,7 +263,7 @@ private fun AddPauseTile(onClick: () -> Unit) {
         border = BorderStroke(1.dp, PanelBorder),
         modifier = Modifier
             .fillMaxWidth()
-            .height(92.dp),
+            .heightIn(min = 92.dp),
     ) {
         Row(
             Modifier.fillMaxSize(),
@@ -493,7 +493,7 @@ private fun CreatePauseSheet(
                 ) { startNow = false }
             }
             if (!startNow) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                ResponsiveFields {
                     PauseField(
                         label = stringResource(R.string.pause_date_label),
                         value = runCatching {
@@ -538,34 +538,30 @@ private fun CreatePauseSheet(
             }
 
             Text(stringResource(R.string.pause_end_label), fontWeight = FontWeight.Bold, fontSize = 14.sp)
-            Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    PauseOptionChip(stringResource(R.string.pause_30_min), selected = preset == PausePreset.MIN30.name) {
-                        preset = PausePreset.MIN30.name
-                    }
-                    PauseOptionChip(stringResource(R.string.pause_1_hour), selected = preset == PausePreset.HOUR1.name) {
-                        preset = PausePreset.HOUR1.name
-                    }
-                    PauseOptionChip(stringResource(R.string.pause_2_hours), selected = preset == PausePreset.HOURS2.name) {
-                        preset = PausePreset.HOURS2.name
-                    }
+            FlowRow(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                PauseOptionChip(stringResource(R.string.pause_30_min), selected = preset == PausePreset.MIN30.name) {
+                    preset = PausePreset.MIN30.name
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    PauseOptionChip(
-                        stringResource(R.string.pause_until_morning),
-                        selected = preset == PausePreset.MORNING.name
-                    ) {
-                        preset = PausePreset.MORNING.name
-                    }
-                    PauseOptionChip(
-                        stringResource(R.string.pause_custom_time),
-                        selected = preset == PausePreset.CUSTOM.name
-                    ) {
-                        preset = PausePreset.CUSTOM.name
-                    }
+                PauseOptionChip(stringResource(R.string.pause_1_hour), selected = preset == PausePreset.HOUR1.name) {
+                    preset = PausePreset.HOUR1.name
+                }
+                PauseOptionChip(stringResource(R.string.pause_2_hours), selected = preset == PausePreset.HOURS2.name) {
+                    preset = PausePreset.HOURS2.name
+                }
+                PauseOptionChip(
+                    stringResource(R.string.pause_until_morning),
+                    selected = preset == PausePreset.MORNING.name
+                ) {
+                    preset = PausePreset.MORNING.name
+                }
+                PauseOptionChip(
+                    stringResource(R.string.pause_custom_time),
+                    selected = preset == PausePreset.CUSTOM.name
+                ) {
+                    preset = PausePreset.CUSTOM.name
                 }
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            ResponsiveFields {
                 PauseField(
                     label = stringResource(R.string.pause_date_label),
                     value = if (preset == PausePreset.CUSTOM.name) runCatching {

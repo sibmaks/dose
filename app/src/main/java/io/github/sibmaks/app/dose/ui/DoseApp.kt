@@ -291,7 +291,9 @@ fun DoseApp(openTodayRequest: Int = 0) {
                             Text(
                                 stringResource(target.title),
                                 fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
@@ -878,7 +880,7 @@ private fun MedicationsPage(
                 onClick = onAdd,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(53.dp),
+                    .heightIn(min = 53.dp),
                 shape = RoundedCornerShape(15.dp),
             ) {
                 Icon(Icons.Rounded.Add, null)

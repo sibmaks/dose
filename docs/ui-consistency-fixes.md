@@ -11,7 +11,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-05 | Accessible switch names | Complete |
 | UI-06 | Semantic selection for custom choices | Complete |
 | UI-07 | Medication wizard keyboard and footer layout | Complete |
-| UI-08 | Large-text navigation and compact layouts | Pending |
+| UI-08 | Large-text navigation and compact layouts | Complete |
 | UI-09 | Widget appearance policy and updates | Pending |
 | UI-10 | Shared semantic color ownership | Pending |
 | UI-11 | Shared accessible picker fields | Pending |
@@ -57,3 +57,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - The full-width dialog explicitly opts into window insets and safe-drawing padding, enabling the appropriate platform resize/inset path instead of an unspecified IME mode.
 - Verification: debug assembly passed. On API 27, Continue was visible above the IME and successfully advanced while the keyboard was open. Modern Android IME animation behavior remains a runtime coverage limit.
+
+### UI-08
+
+- Navigation labels stay on one line with ellipsis when necessary; their full accessible text is retained. Choice cells grow with text, unit/weekday columns adapt, month-day columns respect a 48 dp cell minimum, presets wrap, and paired fields stack for large text/narrow content.
+- Verification: debug assembly passed. Emulator checks at 200% confirmed one-line navigation and a scrollable two-column unit grid with growing cells. Text size was restored and the draft discarded. Full locale/tablet/landscape coverage remains outstanding.

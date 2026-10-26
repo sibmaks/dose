@@ -136,6 +136,7 @@ internal fun MedicationEditor(
                 .coerceAtLeast(0)
     }
     val keyboard = LocalSoftwareKeyboardController.current
+    val unitColumns = if (LocalDensity.current.fontScale >= 1.5f) 2 else 3
     // A legacy medication may intentionally have no unit; it stays optional while the amount is untouched.
     val unitOptional = original?.quantity == "" && amount == original.amount
 
@@ -589,7 +590,8 @@ internal fun MedicationEditor(
                                 Row(
                                     Modifier
                                         .fillMaxWidth()
-                                        .height(50.dp)
+                                        .heightIn(min = 50.dp)
+                                        .height(IntrinsicSize.Min)
                                         .clip(RoundedCornerShape(14.dp))
                                         .border(1.dp, PanelBorder, RoundedCornerShape(14.dp))
                                         .selectableGroup(),
@@ -633,7 +635,7 @@ internal fun MedicationEditor(
                                     )
                                 } else {
                                     Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                        DoseUnits.common.chunked(3)
+                                        DoseUnits.common.chunked(unitColumns)
                                             .forEach { rowUnits ->
                                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                                     rowUnits.forEach { unit ->
@@ -643,7 +645,7 @@ internal fun MedicationEditor(
                                                             modifier = Modifier.weight(1f),
                                                         ) { chooseUnit(unit) }
                                                     }
-                                                    repeat(3 - rowUnits.size) { Spacer(Modifier.weight(1f)) }
+                                                    repeat(unitColumns - rowUnits.size) { Spacer(Modifier.weight(1f)) }
                                                 }
                                             }
                                     }
@@ -836,6 +838,7 @@ private fun ScheduleEditor(
     val context = LocalContext.current
     val issue = if (showValidation) rule.validationIssue() else null
     val errorColor = MaterialTheme.colorScheme.error
+    val weekdayColumns = if (LocalDensity.current.fontScale >= 1.5f) 2 else 4
     fun pickDate(
         initial: String?,
         onPicked: (String) -> Unit
@@ -936,7 +939,7 @@ private fun ScheduleEditor(
 
                 ScheduleKind.WEEKDAYS -> {
                     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                        (1..7).chunked(4)
+                        (1..7).chunked(weekdayColumns)
                             .forEach { rowDays ->
                                 Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                                     rowDays.forEach { day ->
@@ -949,7 +952,7 @@ private fun ScheduleEditor(
                                             borderColor = if (issue?.field == ScheduleField.WEEKDAYS) errorColor else Violet,
                                         ) { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) }
                                     }
-                                    repeat(4 - rowDays.size) { Spacer(Modifier.weight(1f)) }
+                                    repeat(weekdayColumns - rowDays.size) { Spacer(Modifier.weight(1f)) }
                                 }
                             }
                     }
@@ -957,45 +960,50 @@ private fun ScheduleEditor(
                 }
 
                 ScheduleKind.MONTH_DAYS -> {
-                    (1..31).toList()
-                        .chunked(7)
-                        .forEach { row ->
-                            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                                row.forEach { day ->
-                                    val selected = day in rule.monthDays
-                                    val dayDescriptionLocalization = stringResource(
-                                        R.string.day_description,
-                                        day,
-                                        ""
-                                    )
-                                    Surface(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .height(40.dp)
-                                            .selectionControl(selected, multiple = true) {
-                                                onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day))
-                                            }
-                                            .semantics {
-                                                contentDescription = dayDescriptionLocalization
-                                            },
-                                        shape = RoundedCornerShape(8.dp), color = if (selected) Violet else Panel,
-                                        border = BorderStroke(
-                                            1.dp,
-                                            if (issue?.field == ScheduleField.MONTH_DAYS) errorColor else PanelBorder
-                                        )
-                                    ) {
-                                        Box(contentAlignment = Alignment.Center) {
-                                            Text(
-                                                "$day",
-                                                fontSize = 12.sp,
-                                                color = if (selected) OnAccent else TextPrimary
+                    BoxWithConstraints(Modifier.fillMaxWidth()) {
+                        val columns = ((maxWidth + 4.dp) / 52.dp).toInt().coerceIn(1, 7)
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            (1..31).toList()
+                                .chunked(columns)
+                                .forEach { row ->
+                                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                        row.forEach { day ->
+                                            val selected = day in rule.monthDays
+                                            val dayDescriptionLocalization = stringResource(
+                                                R.string.day_description,
+                                                day,
+                                                ""
                                             )
+                                            Surface(
+                                                modifier = Modifier
+                                                    .weight(1f)
+                                                    .heightIn(min = 48.dp)
+                                                    .selectionControl(selected, multiple = true) {
+                                                        onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day))
+                                                    }
+                                                    .semantics {
+                                                        contentDescription = dayDescriptionLocalization
+                                                    },
+                                                shape = RoundedCornerShape(8.dp), color = if (selected) Violet else Panel,
+                                                border = BorderStroke(
+                                                    1.dp,
+                                                    if (issue?.field == ScheduleField.MONTH_DAYS) errorColor else PanelBorder
+                                                )
+                                            ) {
+                                                Box(Modifier.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
+                                                    Text(
+                                                        "$day",
+                                                        fontSize = 12.sp,
+                                                        color = if (selected) OnAccent else TextPrimary
+                                                    )
+                                                }
+                                            }
                                         }
+                                        repeat(columns - row.size) { Spacer(Modifier.weight(1f)) }
                                     }
                                 }
-                                repeat(7 - row.size) { Spacer(Modifier.weight(1f)) }
-                            }
                         }
+                    }
                     ScheduleError(issue, ScheduleField.MONTH_DAYS)
                     Text(stringResource(R.string.missing_month_days_hint), fontSize = 12.sp, color = TextMuted)
                 }
@@ -1004,7 +1012,7 @@ private fun ScheduleEditor(
             }
             if (rule.kind != ScheduleKind.SPECIFIC_DATES) {
                 HorizontalDivider(color = PanelBorder)
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                ResponsiveFields {
                     DateBound(
                         stringResource(R.string.from),
                         rule.from,
@@ -1565,7 +1573,7 @@ private fun ExpandedConflict(
         shape = RoundedCornerShape(13.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(44.dp),
+            .heightIn(min = 48.dp),
     ) {
         Text(stringResource(R.string.dose_overlap_apply), fontWeight = FontWeight.Bold)
     }
@@ -1619,7 +1627,8 @@ private fun UnitModeSegment(
         modifier
             .fillMaxHeight()
             .background(if (active) AccentPanel else Color.Transparent)
-            .selectionControl(active, onClick = onClick),
+            .selectionControl(active, onClick = onClick)
+            .padding(horizontal = 8.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -1643,17 +1652,17 @@ private fun UnitChip(
 ) {
     Box(
         modifier
-            .height(46.dp)
+            .heightIn(min = 48.dp)
             .clip(RoundedCornerShape(11.dp))
             .background(if (selected) AccentPanel else Color.Transparent)
             .border(1.5.dp, if (selected) borderColor else PanelBorder, RoundedCornerShape(11.dp))
-            .selectionControl(selected, multiple, onClick),
+            .selectionControl(selected, multiple, onClick)
+            .padding(horizontal = 8.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             label,
             fontSize = 14.sp,
-            maxLines = 2,
             textAlign = TextAlign.Center,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
             color = if (selected) Violet else TextPrimary,
