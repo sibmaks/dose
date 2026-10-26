@@ -7,7 +7,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-01 | Small-text contrast on hero, status, overlap and widget surfaces | Complete |
 | UI-02 | Native widget dose action hit areas | Complete |
 | UI-03 | Visible validation for non-positive dosage | Complete |
-| UI-04 | Empty custom pause end state | Pending |
+| UI-04 | Empty custom pause end state | Complete |
 | UI-05 | Accessible switch names | Pending |
 | UI-06 | Semantic selection for custom choices | Pending |
 | UI-07 | Medication wizard keyboard and footer layout | Pending |
@@ -37,3 +37,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - One amount-validation result drives both navigation blocking and field error/supporting text, preserving free-form dosage descriptions.
 - Verification: three focused tests and debug assembly passed. A guarded unsaved emulator replay confirmed the localized error for amount 0, then discarded the draft.
+
+### UI-04
+
+- Unchosen custom ends are nullable; the date stays meaningful and the time displays a localized placeholder instead of formatting epoch zero. Save stays disabled and an unchosen time is not immediately shown as an invalid range.
+- Verification: 11 pause-window tests and debug assembly passed. Guarded emulator replay confirmed no 1970 value, a Choose a time placeholder, and disabled Save; no pause was saved.

@@ -433,24 +433,26 @@ private fun CreatePauseSheet(
             .toEpochMilli()
     }.getOrDefault(0L)
 
-    fun endFor(start: Long): Long = when (PausePreset.valueOf(preset)) {
+    fun endFor(start: Long): Long? = when (PausePreset.valueOf(preset)) {
         PausePreset.MIN30 -> start + 30 * 60_000L
         PausePreset.HOUR1 -> start + 3_600_000L
         PausePreset.HOURS2 -> start + 7_200_000L
-        PausePreset.MORNING -> if (start > 0) PauseWindows.morningAfter(start, zone) else 0L
+        PausePreset.MORNING -> if (start > 0) PauseWindows.morningAfter(start, zone) else null
         PausePreset.CUSTOM -> runCatching {
             LocalDate.parse(endDate)
                 .atTime(LocalTime.parse(endTime))
                 .atZone(zone)
                 .toInstant()
                 .toEpochMilli()
-        }.getOrDefault(0L)
+        }.getOrNull()
     }
 
     val startAt: Long = parseStart()
-    val computedEnd: Long = endFor(startAt)
+    val computedEnd = endFor(startAt)
+    val endMoment = computedEnd?.let { Instant.ofEpochMilli(it).atZone(zone) }
+    val needsEndTime = preset == PausePreset.CUSTOM.name && endTime.isBlank()
 
-    val valid = startAt > 0 && computedEnd > startAt && computedEnd > System.currentTimeMillis()
+    val valid = startAt > 0 && computedEnd != null && computedEnd > startAt && computedEnd > System.currentTimeMillis()
     val overlaps = valid && PauseWindows.overlaps(windows, startAt, computedEnd)
 
     ModalBottomSheet(
@@ -563,13 +565,13 @@ private fun CreatePauseSheet(
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 PauseField(
                     label = stringResource(R.string.pause_date_label),
-                    value = Instant.ofEpochMilli(computedEnd.coerceAtLeast(0))
-                        .atZone(zone)
-                        .format(dateFormatter),
-                    invalid = !valid,
+                    value = if (preset == PausePreset.CUSTOM.name) runCatching {
+                        LocalDate.parse(endDate).format(dateFormatter)
+                    }.getOrDefault("") else endMoment?.format(dateFormatter).orEmpty(),
+                    invalid = !valid && !needsEndTime,
                     modifier = Modifier.weight(1.4f),
                     onClick = {
-                        val base = Instant.ofEpochMilli(computedEnd.takeIf { it > 0 } ?: System.currentTimeMillis())
+                        val base = Instant.ofEpochMilli(computedEnd?.takeIf { it > 0 } ?: System.currentTimeMillis())
                             .atZone(zone)
                         DatePickerDialog(
                             context, AppAppearance.dialogTheme(context),
@@ -596,13 +598,12 @@ private fun CreatePauseSheet(
                 )
                 PauseField(
                     label = stringResource(R.string.pause_time_label),
-                    value = Instant.ofEpochMilli(computedEnd.coerceAtLeast(0))
-                        .atZone(zone)
-                        .format(DateTimeFormatter.ofPattern("HH:mm")),
-                    invalid = !valid,
+                    value = endMoment?.format(DateTimeFormatter.ofPattern("HH:mm")).orEmpty(),
+                    placeholder = stringResource(R.string.pick_time_placeholder),
+                    invalid = !valid && !needsEndTime,
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        val base = Instant.ofEpochMilli(computedEnd.takeIf { it > 0 } ?: System.currentTimeMillis())
+                        val base = Instant.ofEpochMilli(computedEnd?.takeIf { it > 0 } ?: System.currentTimeMillis())
                             .atZone(zone)
                         TimePickerDialog(
                             context, AppAppearance.dialogTheme(context),
@@ -635,12 +636,10 @@ private fun CreatePauseSheet(
                         Instant.ofEpochMilli(startAt)
                             .atZone(zone)
                             .format(momentFormatter),
-                        Instant.ofEpochMilli(computedEnd)
-                            .atZone(zone)
-                            .format(momentFormatter),
-                    ) else stringResource(R.string.pause_range_invalid),
+                        endMoment?.format(momentFormatter).orEmpty(),
+                    ) else stringResource(if (needsEndTime) R.string.pick_time_placeholder else R.string.pause_range_invalid),
                     fontSize = 13.5.sp, lineHeight = 19.sp,
-                    color = if (valid) TextPrimary else MaterialTheme.colorScheme.error,
+                    color = if (needsEndTime) TextMuted else if (valid) TextPrimary else MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(12.dp),
                 )
             }
@@ -658,7 +657,7 @@ private fun CreatePauseSheet(
                         // "Сейчас" resolves at the tap instant; fresh values guard the store call.
                         val freshStart = parseStart()
                         val freshEnd = endFor(freshStart)
-                        if (freshStart in 1..<freshEnd) onSave(freshStart, freshEnd)
+                        if (freshEnd != null && freshStart in 1..<freshEnd) onSave(freshStart, freshEnd)
                     },
                     enabled = valid,
                     modifier = Modifier
@@ -704,6 +703,7 @@ private fun PauseField(
     label: String,
     value: String,
     invalid: Boolean,
+    placeholder: String = "",
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -726,7 +726,7 @@ private fun PauseField(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                value, fontSize = 15.sp,
+                value.ifBlank { placeholder }, fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = if (value.isBlank()) TextMuted else TextPrimary,
                 maxLines = 1,
