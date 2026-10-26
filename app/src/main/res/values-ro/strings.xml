@@ -251,7 +251,6 @@
     <string name="widget_open_today">"Atingeți pentru a deschide Astăzi"</string>
     <string name="pause_notifications">"Pauză"</string>
     <string name="notification_pause_title">"Pauze notificări"</string>
-    <string name="pause_active_status">"Activă"</string>
     <string name="pause_current_title">"Pauza curentă"</string>
     <string name="pause_start_label">"Început"</string>
     <string name="pause_end_label">"Sfârșit"</string>

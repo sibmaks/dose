@@ -251,7 +251,6 @@
     <string name="widget_open_today">"Bu günü açmaq üçün toxunun"</string>
     <string name="pause_notifications">"Pauza"</string>
     <string name="notification_pause_title">"Bildiriş pauzaları"</string>
-    <string name="pause_active_status">"Aktivdir"</string>
     <string name="pause_current_title">"Cari pauza"</string>
     <string name="pause_start_label">"Başlanğıc"</string>
     <string name="pause_end_label">"Son"</string>

@@ -251,7 +251,6 @@
     <string name="widget_open_today">"«Бүгүн» барагын ачуу үчүн басыңыз"</string>
     <string name="pause_notifications">"Токтотуу"</string>
     <string name="notification_pause_title">"Билдирүүлөрдү токтотуу"</string>
-    <string name="pause_active_status">"Жигердүү"</string>
     <string name="pause_current_title">"Азыркы токтотуу"</string>
     <string name="pause_start_label">"Башталышы"</string>
     <string name="pause_end_label">"Бүтүшү"</string>

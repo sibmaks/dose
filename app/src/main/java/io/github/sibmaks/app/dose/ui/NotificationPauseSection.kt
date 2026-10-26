@@ -6,7 +6,10 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -160,12 +163,6 @@ private fun PauseStatusCard(
         modifier = modifier,
     ) {
         Column(Modifier.padding(13.dp)) {
-            PausePill(
-                text = stringResource(R.string.pause_active_status),
-                icon = Icons.Rounded.Check,
-                content = themeColor(0xFFE4F5ED, 0xFF1F3A2D),
-                tint = Mint,
-            )
             Text(
                 stringResource(
                     if (neverUsed) R.string.pause_notifications_enabled else R.string.pause_notifications_active
@@ -197,12 +194,6 @@ private fun PauseActiveCard(
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(Modifier.padding(14.dp)) {
-            PausePill(
-                text = stringResource(R.string.pause_active_status),
-                icon = Icons.Rounded.AlarmOff,
-                content = Panel,
-                tint = Violet,
-            )
             Text(
                 stringResource(R.string.pause_current_title),
                 fontWeight = FontWeight.Bold, fontSize = 15.sp,

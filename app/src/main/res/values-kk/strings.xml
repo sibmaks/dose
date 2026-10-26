@@ -251,7 +251,6 @@
     <string name="widget_open_today">"«Бүгін» бетін ашу үшін түртіңіз"</string>
     <string name="pause_notifications">"Кідірту"</string>
     <string name="notification_pause_title">"Хабарландыруларды кідірту"</string>
-    <string name="pause_active_status">"Белсенді"</string>
     <string name="pause_current_title">"Ағымдағы кідірту"</string>
     <string name="pause_start_label">"Басталуы"</string>
     <string name="pause_end_label">"Аяқталуы"</string>

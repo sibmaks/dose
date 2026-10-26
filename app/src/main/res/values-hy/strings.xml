@@ -251,7 +251,6 @@
     <string name="widget_open_today">"Սեղմեք՝ «Այսօր»-ը բացելու համար"</string>
     <string name="pause_notifications">"Դադար"</string>
     <string name="notification_pause_title">"Ծանուցումների դադարներ"</string>
-    <string name="pause_active_status">"Ակտիվ է"</string>
     <string name="pause_current_title">"Ընթացիկ դադար"</string>
     <string name="pause_start_label">"Սկիզբ"</string>
     <string name="pause_end_label">"Ավարտ"</string>

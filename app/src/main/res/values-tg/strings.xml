@@ -251,7 +251,6 @@
     <string name="widget_open_today">"Барои кушодани «Имрӯз» пахш кунед"</string>
     <string name="pause_notifications">"Таваққуф"</string>
     <string name="notification_pause_title">"Таваққуфи огоҳиҳо"</string>
-    <string name="pause_active_status">"Фаъол"</string>
     <string name="pause_current_title">"Таваққуфи ҷорӣ"</string>
     <string name="pause_start_label">"Оғоз"</string>
     <string name="pause_end_label">"Анҷом"</string>

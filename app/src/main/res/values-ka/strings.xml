@@ -251,7 +251,6 @@
     <string name="widget_open_today">"შეეხეთ დღევანდელი განრიგის გასახსნელად"</string>
     <string name="pause_notifications">"პაუზა"</string>
     <string name="notification_pause_title">"შეტყობინებების პაუზები"</string>
-    <string name="pause_active_status">"აქტიურია"</string>
     <string name="pause_current_title">"მიმდინარე პაუზა"</string>
     <string name="pause_start_label">"დასაწყისი"</string>
     <string name="pause_end_label">"დასასრული"</string>

@@ -251,7 +251,6 @@
     <string name="widget_open_today">"Націсніце, каб адкрыць «Сёння»"</string>
     <string name="pause_notifications">"Паўза"</string>
     <string name="notification_pause_title">"Паўзы апавяшчэнняў"</string>
-    <string name="pause_active_status">"Актыўная"</string>
     <string name="pause_current_title">"Бягучая паўза"</string>
     <string name="pause_start_label">"Пачатак"</string>
     <string name="pause_end_label">"Сканчэнне"</string>

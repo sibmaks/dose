@@ -251,7 +251,6 @@
     <string name="widget_open_today">"Şu güni açmak üçin basyň"</string>
     <string name="pause_notifications">"Pauza"</string>
     <string name="notification_pause_title">"Habarnamalar pauzalary"</string>
-    <string name="pause_active_status">"Işleýär"</string>
     <string name="pause_current_title">"Häzirki pauza"</string>
     <string name="pause_start_label">"Başlangyç"</string>
     <string name="pause_end_label">"Ahyry"</string>

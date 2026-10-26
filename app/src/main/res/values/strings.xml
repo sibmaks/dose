@@ -253,7 +253,6 @@
     <string name="widget_open_today">"Tap to open Today"</string>
     <string name="pause_notifications">"Pause"</string>
     <string name="notification_pause_title">"Notification pauses"</string>
-    <string name="pause_active_status">"Active"</string>
     <string name="pause_current_title">"Current pause"</string>
     <string name="pause_start_label">"Start"</string>
     <string name="pause_end_label">"End"</string>

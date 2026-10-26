@@ -251,7 +251,6 @@
     <string name="widget_open_today">"Нажмите, чтобы открыть «Сегодня»"</string>
     <string name="pause_notifications">"Пауза"</string>
     <string name="notification_pause_title">"Паузы уведомлений"</string>
-    <string name="pause_active_status">"Активна"</string>
     <string name="pause_current_title">"Текущая пауза"</string>
     <string name="pause_start_label">"Начало"</string>
     <string name="pause_end_label">"Окончание"</string>

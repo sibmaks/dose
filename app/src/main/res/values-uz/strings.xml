@@ -251,7 +251,6 @@
     <string name="widget_open_today">"Bugunni ochish uchun bosing"</string>
     <string name="pause_notifications">"Pauza"</string>
     <string name="notification_pause_title">"Bildirishnomalar pauzalari"</string>
-    <string name="pause_active_status">"Faol"</string>
     <string name="pause_current_title">"Joriy pauza"</string>
     <string name="pause_start_label">"Boshlanishi"</string>
     <string name="pause_end_label">"Tugashi"</string>
