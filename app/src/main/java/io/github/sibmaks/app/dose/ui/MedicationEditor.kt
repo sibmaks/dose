@@ -1129,56 +1129,21 @@ private fun DateBound(
     onPick: () -> Unit,
     onClear: () -> Unit,
     modifier: Modifier = Modifier,
-    error: String? = null
+    error: String? = null,
 ) {
     val context = LocalContext.current
-    val border = if (error != null) MaterialTheme.colorScheme.error else PanelBorder
-    val labelColor = if (error != null) MaterialTheme.colorScheme.error else TextMuted
-    Column(modifier) {
-        Box {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .clip(RoundedCornerShape(15.dp))
-                    .border(BorderStroke(1.dp, border), RoundedCornerShape(15.dp))
-                    .clickable(onClick = onPick)
-                    .padding(horizontal = 13.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    value?.let { localizedDate(context, it) } ?: fallback,
-                    fontSize = 15.sp,
-                    fontWeight = if (value != null) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (value != null) TextPrimary else TextMuted,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
-                )
-                if (value != null) IconButton(onClick = onClear) {
-                    Icon(
-                        Icons.Rounded.Close,
-                        stringResource(R.string.clear_bound, label),
-                        tint = TextMuted,
-                        modifier = Modifier.size(20.dp),
-                    )
-                }
-            }
-            Box(Modifier.offset(x = 11.dp, y = (-8).dp)) {
-                Text(
-                    label,
-                    fontSize = 11.5.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = labelColor,
-                    // The caption masks the border behind it with the panel's own color.
-                    modifier = Modifier
-                        .background(SoftPanel)
-                        .padding(horizontal = 6.dp),
-                )
-            }
-        }
-        if (error != null) Text(error, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-    }
+    OutlinedPickerField(
+        label = label,
+        value = value?.let { localizedDate(context, it) }.orEmpty(),
+        onClick = onPick,
+        modifier = modifier,
+        placeholder = fallback,
+        icon = Icons.Rounded.CalendarMonth,
+        onClear = onClear.takeIf { value != null },
+        errorMessage = error,
+        supportingError = true,
+        containerColor = SoftPanel,
+    )
 }
 
 internal fun scheduleSummary(

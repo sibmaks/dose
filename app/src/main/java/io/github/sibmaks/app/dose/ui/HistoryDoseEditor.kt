@@ -4,8 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.selection.selectableGroup
@@ -20,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -155,21 +152,21 @@ internal fun HistoryDoseEditor(
         if (status == "taken") {
             TimelineHeading(stringResource(R.string.intake_time_section))
             ResponsiveFields(gap = 12.dp) {
-                PickerField(
+                OutlinedPickerField(
                     label = stringResource(R.string.intake_date_label),
                     value = chosenDate?.format(dateFormatter) ?: "",
                     placeholder = stringResource(R.string.pick_date_placeholder),
                     icon = Icons.Rounded.CalendarMonth,
-                    invalid = !valid,
+                    errorMessage = if (!valid) stringResource(if (at <= 0L) R.string.intake_time_required_error else R.string.history_time_error) else null,
                     modifier = Modifier.weight(1.4f),
                     onClick = ::pickDate,
                 )
-                PickerField(
+                OutlinedPickerField(
                     label = stringResource(R.string.intake_time_label),
                     value = chosenTime?.format(timeFormatter) ?: "",
                     placeholder = stringResource(R.string.pick_time_placeholder),
                     icon = Icons.Rounded.Schedule,
-                    invalid = !valid,
+                    errorMessage = if (!valid) stringResource(if (at <= 0L) R.string.intake_time_required_error else R.string.history_time_error) else null,
                     modifier = Modifier.weight(1f),
                     onClick = ::pickTime,
                 )
@@ -239,54 +236,6 @@ private fun StatusOption(
                 Text(style.hint, fontSize = 12.sp, color = TextMuted, modifier = Modifier.padding(top = 1.dp))
             }
             RadioButton(selected = selected, onClick = null)
-        }
-    }
-}
-
-@Composable
-private fun PickerField(
-    label: String,
-    value: String,
-    placeholder: String,
-    icon: ImageVector,
-    invalid: Boolean,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
-    val background = if (invalid) Semantic.invalidFieldContainer else Panel
-    Box(modifier) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .heightIn(min = 58.dp)
-                .clip(RoundedCornerShape(15.dp))
-                .background(background)
-                .border(
-                    BorderStroke(1.5.dp, if (invalid) MaterialTheme.colorScheme.error else PanelBorder),
-                    RoundedCornerShape(15.dp)
-                )
-                .clickable(onClick = onClick)
-                .padding(horizontal = 13.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                value.ifBlank { placeholder },
-                fontSize = 15.sp,
-                fontWeight = if (value.isBlank()) FontWeight.Normal else FontWeight.SemiBold,
-                color = if (value.isBlank()) TextMuted else TextPrimary,
-                modifier = Modifier.weight(1f),
-                maxLines = 1,
-            )
-            Icon(icon, null, tint = TextMuted, modifier = Modifier.size(19.dp))
-        }
-        Box(Modifier.offset(x = 10.dp, y = (-8).dp)) {
-            Text(
-                label, fontSize = 11.sp, fontWeight = FontWeight.Bold,
-                color = if (invalid) MaterialTheme.colorScheme.error else TextMuted,
-                modifier = Modifier
-                    .background(background)
-                    .padding(horizontal = 6.dp),
-            )
         }
     }
 }

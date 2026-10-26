@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Schedule
@@ -456,6 +457,9 @@ private fun CreatePauseSheet(
     val valid = startAt > 0 && computedEnd != null && computedEnd > startAt && computedEnd > System.currentTimeMillis()
     val overlaps = valid && PauseWindows.overlaps(windows, startAt, computedEnd)
 
+    val startError = if (startAt <= 0) stringResource(R.string.pause_range_invalid) else null
+    val endError = if (!valid && !needsEndTime) stringResource(R.string.pause_range_invalid) else null
+
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -494,13 +498,15 @@ private fun CreatePauseSheet(
             }
             if (!startNow) {
                 ResponsiveFields {
-                    PauseField(
+                    OutlinedPickerField(
                         label = stringResource(R.string.pause_date_label),
+                        placeholder = stringResource(R.string.pick_date_placeholder),
+                        icon = Icons.Rounded.CalendarMonth,
                         value = runCatching {
                             LocalDate.parse(startDate)
                                 .format(dateFormatter)
                         }.getOrDefault(""),
-                        invalid = startAt <= 0,
+                        errorMessage = startError,
                         modifier = Modifier.weight(1.4f),
                         onClick = {
                             val base = runCatching { LocalDate.parse(startDate) }.getOrDefault(LocalDate.now())
@@ -518,10 +524,12 @@ private fun CreatePauseSheet(
                                 .show()
                         },
                     )
-                    PauseField(
+                    OutlinedPickerField(
                         label = stringResource(R.string.pause_time_label),
+                        placeholder = stringResource(R.string.pick_time_placeholder),
+                        icon = Icons.Rounded.Schedule,
                         value = if (DoseLogic.isTime(startTime)) startTime else "",
-                        invalid = startAt <= 0,
+                        errorMessage = startError,
                         modifier = Modifier.weight(1f),
                         onClick = {
                             val base = runCatching { LocalTime.parse(startTime) }.getOrDefault(LocalTime.now())
@@ -562,12 +570,14 @@ private fun CreatePauseSheet(
                 }
             }
             ResponsiveFields {
-                PauseField(
+                OutlinedPickerField(
                     label = stringResource(R.string.pause_date_label),
+                    placeholder = stringResource(R.string.pick_date_placeholder),
+                    icon = Icons.Rounded.CalendarMonth,
                     value = if (preset == PausePreset.CUSTOM.name) runCatching {
                         LocalDate.parse(endDate).format(dateFormatter)
                     }.getOrDefault("") else endMoment?.format(dateFormatter).orEmpty(),
-                    invalid = !valid && !needsEndTime,
+                    errorMessage = endError,
                     modifier = Modifier.weight(1.4f),
                     onClick = {
                         val base = Instant.ofEpochMilli(computedEnd?.takeIf { it > 0 } ?: System.currentTimeMillis())
@@ -595,11 +605,12 @@ private fun CreatePauseSheet(
                             .show()
                     },
                 )
-                PauseField(
+                OutlinedPickerField(
                     label = stringResource(R.string.pause_time_label),
-                    value = endMoment?.format(DateTimeFormatter.ofPattern("HH:mm")).orEmpty(),
                     placeholder = stringResource(R.string.pick_time_placeholder),
-                    invalid = !valid && !needsEndTime,
+                    icon = Icons.Rounded.Schedule,
+                    value = endMoment?.format(DateTimeFormatter.ofPattern("HH:mm")).orEmpty(),
+                    errorMessage = endError,
                     modifier = Modifier.weight(1f),
                     onClick = {
                         val base = Instant.ofEpochMilli(computedEnd?.takeIf { it > 0 } ?: System.currentTimeMillis())
@@ -691,53 +702,6 @@ private fun PauseOptionChip(
             color = if (selected) Violet else TextPrimary,
             modifier = Modifier
                 .padding(horizontal = 14.dp, vertical = 9.dp),
-        )
-    }
-}
-
-/** An outlined field with a floating caption; the whole field is the tap target. */
-@Composable
-private fun PauseField(
-    label: String,
-    value: String,
-    invalid: Boolean,
-    placeholder: String = "",
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
-    Box(modifier) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .clip(RoundedCornerShape(15.dp))
-                .background(Panel)
-                .border(
-                    BorderStroke(
-                        1.dp,
-                        if (invalid) MaterialTheme.colorScheme.error else PanelBorder
-                    ),
-                    RoundedCornerShape(15.dp)
-                )
-                .clickable(onClick = onClick)
-                .padding(horizontal = 13.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                value.ifBlank { placeholder }, fontSize = 15.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = if (value.isBlank()) TextMuted else TextPrimary,
-                maxLines = 1,
-                modifier = Modifier.weight(1f),
-            )
-        }
-        Text(
-            label, fontSize = 11.5.sp, fontWeight = FontWeight.Bold,
-            color = if (invalid) MaterialTheme.colorScheme.error else TextMuted,
-            modifier = Modifier
-                .offset(x = 11.dp, y = (-8).dp)
-                .background(Panel)
-                .padding(horizontal = 6.dp),
         )
     }
 }

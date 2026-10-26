@@ -14,7 +14,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-08 | Large-text navigation and compact layouts | Complete |
 | UI-09 | Widget appearance policy and updates | Complete |
 | UI-10 | Shared semantic color ownership | Complete |
-| UI-11 | Shared accessible picker fields | Pending |
+| UI-11 | Shared accessible picker fields | Complete |
 | UI-12 | Shared typography roles | Pending |
 | UI-13 | Named geometry conventions | Pending |
 
@@ -72,3 +72,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - Consolidated success, attention, resolved, warning, snooze, pause, eyebrow and invalid-field colors in one semantic palette. Feature screens no longer define hex colors or light/dark pairs. Native reminder popup colors now come from the same Material scheme; platform dialog themes reuse fixed light/dark resource roles.
 - Verification: four expanded palette/contrast/resource-parity tests and debug assembly passed. Intentional branded surfaces, user-selected medication colors, and the functional color wheel remain distinct. Native reminder popup rendering was source verified, not visually exercised.
+
+### UI-11
+
+- Scheduling, intake history and pause editing share one outlined picker field using Material label/border decoration, the theme interactive outline, scalable height, associated label/value and error semantics, optional icons and an independent clear action. Date formats and validation rules remain owned by each flow.
+- Verification: debug assembly and lint passed. Emulator replay confirmed label/value descriptions, a working native date-picker action, empty-time semantics, and stacked date/time fields at 200% text. Final field decoration was visually checked at normal size; history data-specific states remain source verified.
