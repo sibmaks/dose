@@ -46,7 +46,7 @@ internal data class IntakeStatusStyle(
 internal fun intakeStatusStyle(status: String): IntakeStatusStyle = when (status) {
     "taken" -> IntakeStatusStyle(
         stringResource(R.string.taken), stringResource(R.string.status_taken_hint),
-        Icons.Rounded.Check, Color(0xFF237C62), Mint, themeColor(0xFFE3F8EF, 0xFF1B3C33),
+        Icons.Rounded.Check, Color(0xFF237C62), Mint, SuccessPanel,
     )
 
     "pending" -> IntakeStatusStyle(
@@ -56,7 +56,7 @@ internal fun intakeStatusStyle(status: String): IntakeStatusStyle = when (status
 
     "missed" -> IntakeStatusStyle(
         stringResource(R.string.missed), stringResource(R.string.status_missed_hint),
-        Icons.Rounded.AlarmOff, Color(0xFFAD5726), Peach, themeColor(0xFFFFF0E5, 0xFF493329),
+        Icons.Rounded.AlarmOff, Color(0xFFAD5726), Peach, AttentionPanel,
     )
 
     else -> IntakeStatusStyle(
@@ -109,8 +109,8 @@ internal fun IntakeTimeline(
             }
             val (tileBackground, tileTint, tileIcon) = when (entry.kind) {
                 "snooze" -> Triple(SoftPanel, TextMuted, Icons.Rounded.Schedule)
-                "taken" -> Triple(themeColor(0xFFE3F8EF, 0xFF1B3C33), Mint, Icons.Rounded.Check)
-                "missed" -> Triple(themeColor(0xFFFFF0E5, 0xFF493329), Peach, Icons.Rounded.Flag)
+                "taken" -> Triple(SuccessPanel, Mint, Icons.Rounded.Check)
+                "missed" -> Triple(AttentionPanel, Peach, Icons.Rounded.Flag)
                 "skipped" -> Triple(SoftPanel, TextMuted, Icons.Rounded.Block)
                 else -> Triple(AccentPanel, Violet, Icons.Rounded.Notifications)
             }

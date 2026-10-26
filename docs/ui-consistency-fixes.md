@@ -1,0 +1,29 @@
+# UI consistency fixes
+
+Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue is implemented, verified and committed separately. Existing visual hierarchy and context-specific variants are preserved.
+
+| Issue | Scope | Status |
+|---|---|---|
+| UI-01 | Small-text contrast on hero, status, overlap and widget surfaces | Complete |
+| UI-02 | Native widget dose action hit areas | Pending |
+| UI-03 | Visible validation for non-positive dosage | Pending |
+| UI-04 | Empty custom pause end state | Pending |
+| UI-05 | Accessible switch names | Pending |
+| UI-06 | Semantic selection for custom choices | Pending |
+| UI-07 | Medication wizard keyboard and footer layout | Pending |
+| UI-08 | Large-text navigation and compact layouts | Pending |
+| UI-09 | Widget appearance policy and updates | Pending |
+| UI-10 | Shared semantic color ownership | Pending |
+| UI-11 | Shared accessible picker fields | Pending |
+| UI-12 | Shared typography roles | Pending |
+| UI-13 | Named geometry conventions | Pending |
+
+## Verification
+
+Commands use JDK 21 and the cached Gradle distribution. Runtime observations are recorded separately from source and unit-test checks. Device-specific behavior is not inferred from unit-test results.
+
+### UI-01
+
+- Reused full-opacity, contrast-validated text on brand, status and resolved-overlap surfaces; aligned compact-widget violet with the app hero.
+- Added shared status color pairs and contrast checks against shipped widget XML.
+- Verification: four theme/contrast tests, debug APK assembly and lint passed. Current emulator build checked for hero appearance; populated detail and launcher-widget visuals remain unverified.

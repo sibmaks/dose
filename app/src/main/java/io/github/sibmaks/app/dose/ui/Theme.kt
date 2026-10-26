@@ -20,6 +20,7 @@ import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.data.ThemeMode
 
 internal val BrandViolet = Color(0xFF7163E5)
+internal val OnBrandViolet = Color.White
 internal val Violet: Color @Composable get() = MaterialTheme.colorScheme.primary
 internal val TextPrimary: Color @Composable get() = MaterialTheme.colorScheme.onSurface
 internal val TextMuted: Color @Composable get() = MaterialTheme.colorScheme.onSurfaceVariant
@@ -28,8 +29,10 @@ internal val PanelBorder: Color @Composable get() = MaterialTheme.colorScheme.ou
 internal val Panel: Color @Composable get() = MaterialTheme.colorScheme.surface
 internal val SoftPanel: Color @Composable get() = MaterialTheme.colorScheme.surfaceContainerLow
 internal val AccentPanel: Color @Composable get() = MaterialTheme.colorScheme.primaryContainer
-internal val Mint: Color @Composable get() = themeColor(0xFF237C62, 0xFF7BD5B5)
-internal val Peach: Color @Composable get() = themeColor(0xFFAD5726, 0xFFFFB78E)
+internal val Mint: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).success
+internal val Peach: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).attention
+internal val SuccessPanel: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).successContainer
+internal val AttentionPanel: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).attentionContainer
 internal val OnAccent: Color @Composable get() = MaterialTheme.colorScheme.onPrimary
 
 internal data class Appearance(

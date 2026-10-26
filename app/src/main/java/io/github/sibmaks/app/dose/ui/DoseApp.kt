@@ -522,7 +522,7 @@ private fun TodayPage(
             // Everything taken closes the day's schedule with a success banner.
             if (items.all { it.log?.status == "taken" }) item(key = "all-taken") {
                 Surface(
-                    color = themeColor(0xFFE3F8EF, 0xFF1B3C33),
+                    color = SuccessPanel,
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -563,13 +563,13 @@ private fun FeaturedCard(
                 .padding(23.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Rounded.Alarm, null, tint = Color(0xFFE5E0FF), modifier = Modifier.size(17.dp))
+                Icon(Icons.Rounded.Alarm, null, tint = OnBrandViolet, modifier = Modifier.size(17.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(
                     if (distant) stringResource(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") stringResource(
                         R.string.dose_needs_attention
                     ) else stringResource(R.string.your_next_reminder),
-                    fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFFE5E0FF),
+                    fontSize = 12.sp, fontWeight = FontWeight.Bold, color = OnBrandViolet,
                 )
             }
             if (item != null) {
@@ -607,7 +607,7 @@ private fun FeaturedCard(
                             )
                             Text(
                                 dose.localizedDose(context) + (if (dose.medication.note.isNotBlank()) " · ${dose.medication.note}" else ""),
-                                fontSize = 13.sp, color = Color(0xFFE9E5FF)
+                                fontSize = 13.sp, color = OnBrandViolet
                             )
                         }
                     }
@@ -653,7 +653,7 @@ private fun FeaturedCard(
                     if (hasSchedule) stringResource(R.string.routine_complete_hint)
                     else if (hasMedications) stringResource(R.string.routine_future_hint)
                     else stringResource(R.string.routine_add_hint),
-                    color = Color(0xFFE9E5FF), fontSize = 14.sp,
+                    color = OnBrandViolet, fontSize = 14.sp,
                 )
                 if (!hasMedications) {
                     Spacer(Modifier.height(14.dp))
@@ -766,10 +766,10 @@ private fun CompactAction(
 @Composable
 internal fun StatusBadge(status: String) {
     val (label, color, background) = when (status) {
-        "taken" -> Triple(stringResource(R.string.taken), Mint, themeColor(0xFFE3F8EF, 0xFF1B3C33))
+        "taken" -> Triple(stringResource(R.string.taken), Mint, SuccessPanel)
         "skipped" -> Triple(stringResource(R.string.skipped), TextMuted, SoftPanel)
-        "due" -> Triple(stringResource(R.string.due_now), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
-        "overdue" -> Triple(stringResource(R.string.overdue), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
+        "due" -> Triple(stringResource(R.string.due_now), Peach, AttentionPanel)
+        "overdue" -> Triple(stringResource(R.string.overdue), Peach, AttentionPanel)
         "snoozed" -> Triple(
             stringResource(R.string.snoozed),
             themeColor(0xFF456F9B, 0xFFA3C9F3),
@@ -777,7 +777,7 @@ internal fun StatusBadge(status: String) {
         )
 
         "pending" -> Triple(stringResource(R.string.pending), Violet, AccentPanel)
-        "missed" -> Triple(stringResource(R.string.missed), Peach, themeColor(0xFFFFF0E5, 0xFF493329))
+        "missed" -> Triple(stringResource(R.string.missed), Peach, AttentionPanel)
 
         else -> Triple(stringResource(R.string.upcoming), Violet, AccentPanel)
     }
@@ -958,10 +958,7 @@ private fun HistoryPage(
                                 .clip(RoundedCornerShape(11.dp))
                                 .background(
                                     when (log.status) {
-                                        "taken" -> themeColor(
-                                            0xFFE3F8EF,
-                                            0xFF1B3C33
-                                        )
+                                        "taken" -> SuccessPanel
 
                                         "pending" -> AccentPanel
                                         else -> SoftPanel

@@ -112,7 +112,7 @@ internal fun IntakeDetailsScreen(
                                 .atZone(ZoneId.systemDefault())
                                 .format(momentFormatter),
                             fontSize = 13.sp,
-                            color = style.accent.copy(alpha = 0.85f), modifier = Modifier.padding(top = 2.dp),
+                            color = style.accent, modifier = Modifier.padding(top = 2.dp),
                         )
                         DoseTimeline.delayMinutes(log)
                             ?.takeIf { it > 0 }
@@ -120,7 +120,7 @@ internal fun IntakeDetailsScreen(
                                 Text(
                                     stringResource(R.string.event_taken_late, durationMinutes(context, delay)),
                                     fontSize = 12.sp,
-                                    color = style.accent.copy(alpha = 0.75f), modifier = Modifier.padding(top = 2.dp),
+                                    color = style.accent, modifier = Modifier.padding(top = 2.dp),
                                 )
                             }
                     } else Text(
@@ -128,7 +128,7 @@ internal fun IntakeDetailsScreen(
                             if (log.status == "pending") R.string.status_pending_hint else R.string.status_missed_hint
                         ),
                         fontSize = 13.sp,
-                        color = style.accent.copy(alpha = 0.85f), modifier = Modifier.padding(top = 2.dp),
+                        color = style.accent, modifier = Modifier.padding(top = 2.dp),
                     )
                 }
             }

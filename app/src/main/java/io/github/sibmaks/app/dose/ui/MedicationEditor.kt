@@ -1585,10 +1585,10 @@ private val AmberBorder: Color @Composable get() = themeColor(0xFFF0E2B8, 0xFF5A
 private val AmberText: Color @Composable get() = themeColor(0xFF7A600E, 0xFFF2CE74)
 private val AmberMuted: Color @Composable get() = themeColor(0xFFA3842E, 0xFFD9BC7A)
 private val AmberIcon: Color @Composable get() = themeColor(0xFFB8830F, 0xFFEBCC6B)
-private val GreenPanel: Color @Composable get() = themeColor(0xFFEFF9F3, 0xFF1E3A2C)
+private val GreenPanel: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).resolvedContainer
 private val GreenBorder: Color @Composable get() = themeColor(0xFFD4EBDD, 0xFF2C5240)
-private val GreenText: Color @Composable get() = themeColor(0xFF1E6B45, 0xFF8FE3BC)
-private val GreenMuted: Color @Composable get() = themeColor(0xFF3E8562, 0xFF7BD5B5)
+private val GreenText: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).resolved
+private val GreenMuted: Color @Composable get() = GreenText
 private val GreenAction: Color @Composable get() = themeColor(0xFF27A468, 0xFF2FA468)
 private val RadioButtonBorder: Color @Composable get() = themeColor(0xFFC9CDDD, 0xFF4A4B60)
 
