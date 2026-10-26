@@ -182,8 +182,13 @@ internal fun ReminderSettingsScreen(
                 color = TextMuted
             )
         } else {
-            ReminderVibrationAlert(state.feedChecked, state.popupsChecked, ::launchSettings)
-            VibrationStyleSection()
+            // Live state keeps the warning and the picker in sync while system vibration changes.
+            val vibration = rememberVibrationState()
+            ReminderVibrationAlert(state.feedChecked, state.popupsChecked, vibration, ::launchSettings)
+            // The picker is only meaningful when enabled reminders will actually buzz.
+            if (vibration.warning(state.feedChecked, state.popupsChecked) == null) {
+                VibrationStyleSection()
+            }
         }
         if (state.popupsChecked && !state.feedChecked) {
             Text(

@@ -25,16 +25,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import io.github.sibmaks.app.dose.R
+import io.github.sibmaks.app.dose.data.ReminderVibrationState
 import io.github.sibmaks.app.dose.data.ReminderVibrationWarning
 import io.github.sibmaks.app.dose.reminders.ReminderHaptics
 import io.github.sibmaks.app.dose.reminders.ReminderNotifications
 
+/** Platform vibration switches, refreshed live by settings changes, ringer mode and resumes. */
 @Composable
-internal fun ReminderVibrationAlert(
-    feed: Boolean,
-    popups: Boolean,
-    onSettings: (Intent, Int) -> Unit
-) {
+internal fun rememberVibrationState(): ReminderVibrationState {
     val context = LocalContext.current
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var vibration by remember(context) { mutableStateOf(ReminderHaptics.vibrationState(context)) }
@@ -83,6 +81,17 @@ internal fun ReminderVibrationAlert(
             lifecycle.removeObserver(lifecycleObserver)
         }
     }
+    return vibration
+}
+
+@Composable
+internal fun ReminderVibrationAlert(
+    feed: Boolean,
+    popups: Boolean,
+    vibration: ReminderVibrationState,
+    onSettings: (Intent, Int) -> Unit
+) {
+    val context = LocalContext.current
     val warning = vibration.warning(feed, popups) ?: return
     val unavailable = warning == ReminderVibrationWarning.UNAVAILABLE
     val channelSettings = vibration.onlyChannelDisabled(feed, popups)
