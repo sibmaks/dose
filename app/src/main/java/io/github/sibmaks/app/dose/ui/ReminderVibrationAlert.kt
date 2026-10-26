@@ -10,7 +10,6 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Vibration
 import androidx.compose.material3.*
@@ -19,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -101,14 +99,14 @@ internal fun ReminderVibrationAlert(
         ReminderVibrationWarning.POPUP -> R.string.popup_vibration_disabled_hint
         else -> R.string.vibration_disabled_hint
     }
-    Surface(color = MaterialTheme.colorScheme.errorContainer, shape = RoundedCornerShape(14.dp)) {
+    Surface(color = MaterialTheme.colorScheme.errorContainer, shape = DoseShapes.button) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)
+                .padding(DoseSpacing.small), horizontalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)
         ) {
             Icon(Icons.Rounded.Vibration, null, tint = MaterialTheme.colorScheme.onErrorContainer)
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(DoseSpacing.tiny)) {
                 Text(
                     stringResource(if (unavailable) R.string.vibration_unavailable_title else R.string.vibration_off),
                     color = MaterialTheme.colorScheme.onErrorContainer,

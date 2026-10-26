@@ -98,7 +98,7 @@ fun DoseTheme(content: @Composable () -> Unit) {
         mode = selected
         AppAppearance.select(context, selected)
     }) {
-        MaterialTheme(colorScheme = doseColorScheme(dark), typography = DoseTypography, content = content)
+        MaterialTheme(colorScheme = doseColorScheme(dark), typography = DoseTypography, shapes = DoseMaterialShapes, content = content)
     }
 }
 

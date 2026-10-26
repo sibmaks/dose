@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.outlined.Notifications
@@ -248,7 +247,7 @@ fun DoseApp(openTodayRequest: Int = 0) {
                     .fillMaxWidth()
                     .background(Page)
                     .statusBarsPadding()
-                    .padding(horizontal = 10.dp, vertical = 14.dp),
+                    .padding(horizontal = DoseSpacing.controlGap, vertical = DoseSpacing.cardInset),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AndroidView(
@@ -382,7 +381,7 @@ private fun LanguageButton(onClick: () -> Unit) {
                 modifier = Modifier
                     .size(28.dp)
                     .clip(CircleShape)
-                    .border(1.dp, PanelBorder, CircleShape)
+                    .border(DoseDimensions.border, PanelBorder, CircleShape)
             )
         }
     }
@@ -422,7 +421,7 @@ private fun TodayPage(
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 10.dp, bottom = 24.dp),
+        contentPadding = PaddingValues(start = DoseSpacing.pageGutter, end = DoseSpacing.pageGutter, top = DoseSpacing.controlGap, bottom = DoseSpacing.extraLarge),
         verticalArrangement = Arrangement.spacedBy(15.dp),
     ) {
         if (showSetupWarning) {
@@ -435,9 +434,9 @@ private fun TodayPage(
             }
         }
         item {
-            Column(Modifier.padding(top = 10.dp, bottom = 3.dp)) {
+            Column(Modifier.padding(top = DoseSpacing.controlGap, bottom = 3.dp)) {
                 Eyebrow(day.uppercase(AppLanguages.locale(context)))
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DoseSpacing.extraSmall))
                 Text(
                     stringResource(R.string.every_dose_counts),
                     fontWeight = FontWeight.ExtraBold,
@@ -460,9 +459,9 @@ private fun TodayPage(
         }
         item {
             Card(
-                shape = RoundedCornerShape(20.dp),
+                shape = DoseShapes.card,
                 colors = CardDefaults.cardColors(containerColor = Panel),
-                border = BorderStroke(1.dp, PanelBorder),
+                border = BorderStroke(DoseDimensions.border, PanelBorder),
             ) {
                 Row(
                     Modifier
@@ -493,7 +492,7 @@ private fun TodayPage(
             }
         }
         item {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 10.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = DoseSpacing.controlGap)) {
                 Text(
                     stringResource(R.string.today_s_schedule),
                     style = DoseText.sectionTitle,
@@ -524,15 +523,15 @@ private fun TodayPage(
             if (items.all { it.log?.status == "taken" }) item(key = "all-taken") {
                 Surface(
                     color = SuccessPanel,
-                    shape = RoundedCornerShape(16.dp),
+                    shape = DoseShapes.tile,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Row(
-                        Modifier.padding(14.dp),
+                        Modifier.padding(DoseSpacing.cardInset),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(Icons.Rounded.CheckCircle, null, tint = Mint, modifier = Modifier.size(19.dp))
-                        Spacer(Modifier.width(10.dp))
+                        Spacer(Modifier.width(DoseSpacing.controlGap))
                         Text(
                             stringResource(R.string.all_medication_taken),
                             fontWeight = FontWeight.Bold, style = DoseText.supporting, color = Mint,
@@ -557,15 +556,15 @@ private fun FeaturedCard(
     val context = LocalContext.current
     val item = group.firstOrNull()
     val distant = DoseGroups.isDistant(group, nowMillis)
-    Card(shape = RoundedCornerShape(27.dp), colors = CardDefaults.cardColors(containerColor = BrandViolet)) {
+    Card(shape = DoseShapes.hero, colors = CardDefaults.cardColors(containerColor = BrandViolet)) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(23.dp)
+                .padding(DoseSpacing.heroInset)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Rounded.Alarm, null, tint = OnBrandViolet, modifier = Modifier.size(17.dp))
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(DoseSpacing.extraSmall))
                 Text(
                     if (distant) stringResource(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") stringResource(
                         R.string.dose_needs_attention
@@ -574,7 +573,7 @@ private fun FeaturedCard(
                 )
             }
             if (item != null) {
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(DoseSpacing.large))
                 Text(
                     Instant.ofEpochMilli(item.dueMillis)
                         .atZone(ZoneId.systemDefault())
@@ -587,17 +586,17 @@ private fun FeaturedCard(
                         stringResource(R.string.several_medicines, group.size), style = DoseText.emphasis,
                         fontWeight = FontWeight.Bold, color = Color.White
                     )
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(DoseSpacing.small))
                 }
                 group.forEach { dose ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall),
                         modifier = Modifier.padding(bottom = if (group.size > 1) 10.dp else 0.dp)
                     ) {
                         Icon(
                             painterResource(dose.medication.form.iconResource()),
-                            dose.medication.localizedForm(context), tint = Color.White, modifier = Modifier.size(26.dp)
+                            dose.medication.localizedForm(context), tint = Color.White, modifier = Modifier.size(DoseDimensions.medicationGlyph)
                         )
                         Column(Modifier.weight(1f)) {
                             Text(
@@ -613,43 +612,43 @@ private fun FeaturedCard(
                         }
                     }
                 }
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(DoseSpacing.large))
                 if (!distant) {
                     Button(
                         onClick = { if (group.size > 1) onRecordGroup(group, "taken") else onRecord(item, "taken") },
                         modifier = if (group.size > 1) Modifier.fillMaxWidth() else Modifier,
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = BrandViolet),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = DoseShapes.choice,
                     ) {
                         Icon(Icons.Rounded.CheckCircle, null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(8.dp))
+                        Spacer(Modifier.width(DoseSpacing.extraSmall))
                         Text(
                             stringResource(if (group.size > 1) R.string.mark_all_as_taken else R.string.mark_as_taken),
                             fontWeight = FontWeight.Bold
                         )
                     }
                     if (group.size > 1) {
-                        Spacer(Modifier.height(8.dp))
+                        Spacer(Modifier.height(DoseSpacing.extraSmall))
                         OutlinedButton(
                             onClick = { onRecordGroup(group, "skipped") },
                             modifier = Modifier.fillMaxWidth(),
-                            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.6f)),
+                            border = BorderStroke(DoseDimensions.border, Color.White.copy(alpha = 0.6f)),
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = DoseShapes.choice
                         ) {
                             Text(stringResource(R.string.skip_all), fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             } else {
-                Spacer(Modifier.height(23.dp))
+                Spacer(Modifier.height(DoseSpacing.heroInset))
                 Text(
                     if (hasSchedule) stringResource(R.string.all_done_for_today) else if (hasMedications) stringResource(
                         R.string.no_doses_due_today
                     ) else stringResource(R.string.your_routine_starts_here),
                     style = DoseText.emptyHero, fontWeight = FontWeight.ExtraBold, color = Color.White,
                 )
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DoseSpacing.extraSmall))
                 Text(
                     if (hasSchedule) stringResource(R.string.routine_complete_hint)
                     else if (hasMedications) stringResource(R.string.routine_future_hint)
@@ -657,7 +656,7 @@ private fun FeaturedCard(
                     color = OnBrandViolet, style = DoseText.body,
                 )
                 if (!hasMedications) {
-                    Spacer(Modifier.height(14.dp))
+                    Spacer(Modifier.height(DoseSpacing.cardInset))
                     Button(
                         onClick = onAdd,
                         colors = ButtonDefaults.buttonColors(Color.White, contentColor = BrandViolet)
@@ -682,9 +681,9 @@ private fun DoseCard(
     val context = LocalContext.current
     Card(
         onClick = { onOpen(item) },
-        shape = RoundedCornerShape(19.dp),
+        shape = DoseShapes.card,
         colors = CardDefaults.cardColors(containerColor = Panel),
-        border = BorderStroke(1.dp, PanelBorder),
+        border = BorderStroke(DoseDimensions.border, PanelBorder),
     ) {
         Row(
             Modifier
@@ -706,7 +705,7 @@ private fun DoseCard(
                     item.localizedDose(context) + if (item.medication.note.isNotBlank()) " · ${item.medication.note}" else "",
                     style = DoseText.caption, color = TextMuted, maxLines = 2, overflow = TextOverflow.Ellipsis,
                 )
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DoseSpacing.extraSmall))
                 if (item.log == null) {
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -752,7 +751,7 @@ private fun CompactAction(
     val color = if (secondary) TextMuted else Violet
     Surface(
         onClick = onClick, color = if (secondary) SoftPanel else AccentPanel,
-        shape = RoundedCornerShape(9.dp),
+        shape = DoseShapes.badge,
     ) {
         Row(Modifier.padding(horizontal = 9.dp, vertical = 7.dp), verticalAlignment = Alignment.CenterVertically) {
             if (icon != null) {
@@ -784,7 +783,7 @@ internal fun StatusBadge(status: String) {
     }
     Box(
         Modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(DoseShapes.badge)
             .background(background)
             .padding(horizontal = 7.dp, vertical = 5.dp)
     ) {
@@ -805,13 +804,13 @@ private fun MedicationsPage(
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 22.dp, bottom = 28.dp),
+        contentPadding = PaddingValues(start = DoseSpacing.pageGutter, end = DoseSpacing.pageGutter, top = 22.dp, bottom = 28.dp),
         verticalArrangement = Arrangement.spacedBy(13.dp),
     ) {
         item {
-            Column(Modifier.padding(bottom = 12.dp)) {
+            Column(Modifier.padding(bottom = DoseSpacing.small)) {
                 Eyebrow(stringResource(R.string.your_daily_routine))
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DoseSpacing.extraSmall))
                 Text(stringResource(R.string.my_medications), style = DoseText.pageTitle, fontWeight = FontWeight.ExtraBold)
                 Text(stringResource(R.string.medication_list_hint), style = DoseText.body, color = TextMuted)
             }
@@ -827,9 +826,9 @@ private fun MedicationsPage(
         } else {
             items(medications, key = { it.id }) { med ->
                 Card(
-                    shape = RoundedCornerShape(20.dp),
+                    shape = DoseShapes.card,
                     colors = CardDefaults.cardColors(containerColor = Panel),
-                    border = BorderStroke(1.dp, PanelBorder),
+                    border = BorderStroke(DoseDimensions.border, PanelBorder),
                     modifier = Modifier.alpha(if (med.active) 1f else 0.6f),
                 ) {
                     Column(Modifier.padding(15.dp)) {
@@ -879,8 +878,8 @@ private fun MedicationsPage(
                 onClick = onAdd,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 53.dp),
-                shape = RoundedCornerShape(15.dp),
+                    .heightIn(min = DoseDimensions.primaryAction),
+                shape = DoseShapes.button,
             ) {
                 Icon(Icons.Rounded.Add, null)
                 Spacer(Modifier.width(7.dp))
@@ -909,13 +908,13 @@ private fun HistoryPage(
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 21.dp, end = 21.dp, top = 22.dp, bottom = 28.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(start = DoseSpacing.pageGutter, end = DoseSpacing.pageGutter, top = 22.dp, bottom = 28.dp),
+        verticalArrangement = Arrangement.spacedBy(DoseSpacing.small),
     ) {
         item {
-            Column(Modifier.padding(bottom = 12.dp)) {
+            Column(Modifier.padding(bottom = DoseSpacing.small)) {
                 Eyebrow(stringResource(R.string.keep_your_streak_going))
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(DoseSpacing.extraSmall))
                 Text(stringResource(R.string.dose_history), style = DoseText.pageTitle, fontWeight = FontWeight.ExtraBold)
                 Text(stringResource(R.string.history_hint), style = DoseText.body, color = TextMuted)
             }
@@ -945,19 +944,19 @@ private fun HistoryPage(
             items(dayLogs, key = { "${it.date}|${it.medicationId}|${it.time}" }) { log ->
                 Card(
                     onClick = { onOpen(log) },
-                    shape = RoundedCornerShape(15.dp),
+                    shape = DoseShapes.tile,
                     colors = CardDefaults.cardColors(containerColor = Panel),
-                    border = BorderStroke(1.dp, PanelBorder),
+                    border = BorderStroke(DoseDimensions.border, PanelBorder),
                 ) {
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(14.dp), verticalAlignment = Alignment.CenterVertically
+                            .padding(DoseSpacing.cardInset), verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             Modifier
                                 .size(38.dp)
-                                .clip(RoundedCornerShape(11.dp))
+                                .clip(DoseShapes.choice)
                                 .background(
                                     when (log.status) {
                                         "taken" -> SuccessPanel
@@ -983,7 +982,7 @@ private fun HistoryPage(
                                 },
                             )
                         }
-                        Spacer(Modifier.width(12.dp))
+                        Spacer(Modifier.width(DoseSpacing.small))
                         Column(Modifier.weight(1f)) {
                             Text(log.medicationName, style = DoseText.body, fontWeight = FontWeight.Bold)
                             Text(
@@ -1063,17 +1062,17 @@ internal fun PillAvatar(
     Box(
         // Inset the fill so its antialiased edge cannot show outside the border.
         Modifier
-            .size(49.dp)
-            .background(PanelBorder, RoundedCornerShape(16.dp))
+            .size(DoseDimensions.medicationTile)
+            .background(PanelBorder, DoseShapes.tile)
             .padding(1.dp)
-            .background(background, RoundedCornerShape(15.dp)),
+            .background(background, DoseShapes.tileInset),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
             painterResource(form.iconResource()),
             label,
             tint = foreground,
-            modifier = Modifier.size(26.dp)
+            modifier = Modifier.size(DoseDimensions.medicationGlyph)
         )
     }
 }
@@ -1089,11 +1088,11 @@ private fun InfoBanner(
     action: String,
     onAction: () -> Unit
 ) {
-    Surface(shape = RoundedCornerShape(16.dp), color = AccentPanel) {
-        Column(Modifier.padding(14.dp)) {
+    Surface(shape = DoseShapes.tile, color = AccentPanel) {
+        Column(Modifier.padding(DoseSpacing.cardInset)) {
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Rounded.Info, null, tint = Violet, modifier = Modifier.size(19.dp))
-                Spacer(Modifier.width(10.dp))
+                Spacer(Modifier.width(DoseSpacing.controlGap))
                 Text(
                     message,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -1115,9 +1114,9 @@ private fun EmptyCard(
     onAdd: (() -> Unit)?
 ) {
     Card(
-        shape = RoundedCornerShape(20.dp),
+        shape = DoseShapes.card,
         colors = CardDefaults.cardColors(containerColor = Panel),
-        border = BorderStroke(1.dp, PanelBorder),
+        border = BorderStroke(DoseDimensions.border, PanelBorder),
     ) {
         Column(
             Modifier
@@ -1126,12 +1125,12 @@ private fun EmptyCard(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(Icons.Rounded.Medication, null, modifier = Modifier.size(35.dp), tint = Violet)
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(DoseSpacing.small))
             Text(title, fontWeight = FontWeight.Bold, style = DoseText.contextTitle, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(DoseSpacing.tiny))
             Text(explanation, color = TextMuted, style = DoseText.supporting, textAlign = TextAlign.Center)
             if (onAdd != null) {
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(DoseSpacing.controlGap))
                 TextButton(onClick = onAdd) { Text(stringResource(R.string.add_medication)) }
             }
         }

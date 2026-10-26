@@ -6,7 +6,6 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -62,21 +61,21 @@ internal fun ColorPicker(
                 Modifier
                     .heightIn(max = 520.dp)
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)
             ) {
                 ColorWheel(selection, ::choose)
                 Box(
                     Modifier
                         .fillMaxWidth()
                         .height(40.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(DoseShapes.choice)
                         .background(
                             Color(
                                 selection.hex()
                                     .toColorInt()
                             )
                         )
-                        .border(1.dp, PanelBorder, RoundedCornerShape(12.dp))
+                        .border(DoseDimensions.border, PanelBorder, DoseShapes.choice)
                 )
                 Text(brightnessString, style = DoseText.supporting)
                 Slider(
@@ -95,6 +94,7 @@ internal fun ColorPicker(
                             brightness = parsed.brightness
                         }
                     },
+                    shape = DoseShapes.field,
                     label = { Text(stringResource(R.string.hex_color_rrggbb)) },
                     singleLine = true,
                     isError = !validHex,

@@ -9,7 +9,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
@@ -212,15 +211,15 @@ private fun ReminderChoice(
     accessHint: String?,
     onChange: (Boolean) -> Unit
 ) {
-    Surface(shape = RoundedCornerShape(14.dp), color = if (checked) AccentPanel else SoftPanel) {
+    Surface(shape = DoseShapes.button, color = if (checked) AccentPanel else SoftPanel) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(DoseSpacing.small),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)
         ) {
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(DoseSpacing.tiny)) {
                 Text(title, fontWeight = FontWeight.Bold, style = DoseText.itemTitle)
                 Text(explanation, color = TextMuted, style = DoseText.caption)
                 if (accessHint != null) Text(accessHint, color = Violet, style = DoseText.caption)
@@ -239,20 +238,20 @@ private fun VibrationStyleSection() {
     val context = LocalContext.current
     var selected by rememberSaveable { mutableStateOf(ReminderAlerts.vibrationStyle(context)) }
     var expanded by remember { mutableStateOf(false) }
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
         Text(stringResource(R.string.vibration_style), fontWeight = FontWeight.Bold, style = DoseText.itemTitle)
         Box {
             Surface(
                 onClick = { expanded = true },
-                shape = RoundedCornerShape(11.dp),
+                shape = DoseShapes.choice,
                 color = Panel,
-                border = BorderStroke(1.5.dp, if (expanded) Violet else PanelBorder),
+                border = BorderStroke(DoseDimensions.selectionBorder, if (expanded) Violet else PanelBorder),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
-                    Modifier.padding(start = 14.dp, end = 10.dp, top = 9.dp, bottom = 9.dp),
+                    Modifier.padding(start = DoseSpacing.cardInset, end = DoseSpacing.controlGap, top = 9.dp, bottom = 9.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)
                 ) {
                     Icon(
                         selected.icon(), null,

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -293,16 +292,16 @@ internal fun MedicationEditor(
             modifier = Modifier
                 .fillMaxWidth()
                 .safeDrawingPadding()
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = DoseSpacing.shellMargin)
                 .fillMaxHeight(0.94f)
                 .imePadding(),
-            shape = RoundedCornerShape(26.dp), color = Panel
+            shape = DoseShapes.shell, color = Panel
         ) {
             Column {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(start = 20.dp, end = 10.dp, top = 10.dp),
+                        .padding(start = DoseSpacing.shellInset, end = DoseSpacing.controlGap, top = DoseSpacing.controlGap),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
@@ -326,8 +325,8 @@ internal fun MedicationEditor(
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                        .padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.extraSmall),
+                    verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)
                 ) {
                     Text(
                         stringResource(
@@ -377,8 +376,8 @@ internal fun MedicationEditor(
                         Modifier
                             .fillMaxSize()
                             .verticalScroll(scroll)
-                            .padding(horizontal = 20.dp, vertical = 12.dp),
-                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                            .padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.small),
+                        verticalArrangement = Arrangement.spacedBy(DoseSpacing.cardInset)
                     ) {
                         when (pageStep) {
                             MedicationStep.NAME -> {
@@ -387,6 +386,7 @@ internal fun MedicationEditor(
                                     { name = it.take(70); showSuggestions = true; suggestedForm = null },
                                     isError = validationVisible && name.isBlank(),
                                     supportingText = { if (validationVisible && name.isBlank()) Text(stringResource(R.string.name_required)) },
+                                    shape = DoseShapes.field,
                                     label = { Text(stringResource(R.string.medication_name)) },
                                     placeholder = { Text(stringResource(R.string.start_typing_a_name)) },
                                     singleLine = true,
@@ -411,14 +411,14 @@ internal fun MedicationEditor(
                                                 suggestedForm = suggestion.localizedForm(context); showSuggestions =
                                                 false; keyboard?.hide()
                                             },
-                                            shape = RoundedCornerShape(13.dp),
+                                            shape = DoseShapes.button,
                                             color = AccentPanel,
                                             modifier = Modifier.fillMaxWidth()
                                         ) {
                                             Row(
-                                                Modifier.padding(12.dp),
+                                                Modifier.padding(DoseSpacing.small),
                                                 verticalAlignment = Alignment.CenterVertically,
-                                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                                horizontalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)
                                             ) {
                                                 Icon(
                                                     painterResource(suggestion.form.iconResource()),
@@ -460,8 +460,8 @@ internal fun MedicationEditor(
                                 Text(stringResource(R.string.color), fontWeight = FontWeight.Bold, style = DoseText.itemTitle)
                                 FlowRow(
                                     modifier = Modifier.selectableGroup(),
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap),
+                                    verticalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)
                                 ) {
                                     MedicationColors.choices(colorUsage, medications, color)
                                         .forEach { choice ->
@@ -479,12 +479,12 @@ internal fun MedicationEditor(
                                             Box(
                                                 Modifier
                                                     .size(44.dp)
-                                                    .clip(RoundedCornerShape(12.dp))
+                                                    .clip(DoseShapes.choice)
                                                     .background(foreground)
                                                     .border(
                                                         if (selected) 3.dp else 1.dp,
                                                         if (selected) TextPrimary else PanelBorder,
-                                                        RoundedCornerShape(12.dp)
+                                                        DoseShapes.choice
                                                     )
                                                     .selectionControl(selected) { color = choice }
                                                     .semantics {
@@ -503,7 +503,7 @@ internal fun MedicationEditor(
                                     Icon(
                                         Icons.Rounded.Palette,
                                         null
-                                    ); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.pick_a_custom_color))
+                                    ); Spacer(Modifier.width(DoseSpacing.compactGap)); Text(stringResource(R.string.pick_a_custom_color))
                                 }
                             }
 
@@ -519,17 +519,17 @@ internal fun MedicationEditor(
                                         suggestedForm.orEmpty()
                                     ), color = TextMuted, style = DoseText.supporting
                                 )
-                                Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                                Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(DoseSpacing.cardInset)) {
                                     localizedForms.forEach { choice ->
                                         Surface(
-                                            shape = RoundedCornerShape(14.dp),
+                                            shape = DoseShapes.button,
                                             color = if (form == choice) AccentPanel else SoftPanel,
                                             modifier = Modifier.fillMaxWidth().selectionControl(form == choice) { chooseForm(choice) }
                                         ) {
                                             Row(
-                                                Modifier.padding(12.dp),
+                                                Modifier.padding(DoseSpacing.small),
                                                 verticalAlignment = Alignment.CenterVertically,
-                                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                                horizontalArrangement = Arrangement.spacedBy(DoseSpacing.small)
                                             ) {
                                                 PillAvatar(color, choice, choice.localizedLabel(context))
                                                 Text(
@@ -555,6 +555,7 @@ internal fun MedicationEditor(
                                 OutlinedTextField(
                                     customForm,
                                     { customForm = it.take(40) },
+                                    shape = DoseShapes.field,
                                     label = { Text(stringResource(R.string.custom_form_optional)) },
                                     singleLine = true,
                                     modifier = Modifier.fillMaxWidth()
@@ -571,6 +572,7 @@ internal fun MedicationEditor(
                                 OutlinedTextField(
                                     amount,
                                     { amount = it.take(70); changeSchedules(schedules) },
+                                    shape = DoseShapes.field,
                                     label = { Text(stringResource(R.string.amount)) },
                                     placeholder = { Text(stringResource(R.string.e_g_500)) },
                                     isError = visibleAmountError != null,
@@ -589,10 +591,10 @@ internal fun MedicationEditor(
                                 Row(
                                     Modifier
                                         .fillMaxWidth()
-                                        .heightIn(min = 50.dp)
+                                        .heightIn(min = DoseDimensions.segmentedControl)
                                         .height(IntrinsicSize.Min)
-                                        .clip(RoundedCornerShape(14.dp))
-                                        .border(1.dp, PanelBorder, RoundedCornerShape(14.dp))
+                                        .clip(DoseShapes.button)
+                                        .border(DoseDimensions.border, PanelBorder, DoseShapes.button)
                                         .selectableGroup(),
                                 ) {
                                     UnitModeSegment(
@@ -621,6 +623,7 @@ internal fun MedicationEditor(
                                             customUnitText = it.take(40); quantity = customUnitText; automaticUnit =
                                             false
                                         },
+                                        shape = DoseShapes.field,
                                         label = { Text(stringResource(R.string.unit_custom_name)) },
                                         placeholder = { Text(stringResource(R.string.unit_custom_placeholder)) },
                                         isError = validationVisible && quantity.isBlank() && !unitOptional,
@@ -633,10 +636,10 @@ internal fun MedicationEditor(
                                         modifier = Modifier.fillMaxWidth()
                                     )
                                 } else {
-                                    Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
                                         DoseUnits.common.chunked(unitColumns)
                                             .forEach { rowUnits ->
-                                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                                Row(horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
                                                     rowUnits.forEach { unit ->
                                                         UnitChip(
                                                             localizedUnit(context, unit),
@@ -711,12 +714,12 @@ internal fun MedicationEditor(
                                     style = DoseText.sectionTitle,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Surface(color = AccentPanel, shape = RoundedCornerShape(16.dp)) {
+                                Surface(color = AccentPanel, shape = DoseShapes.tile) {
                                     Column(
                                         Modifier
                                             .fillMaxWidth()
-                                            .padding(16.dp),
-                                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                                            .padding(DoseSpacing.medium),
+                                        verticalArrangement = Arrangement.spacedBy(DoseSpacing.compactGap)
                                     ) {
                                         Text(name, fontWeight = FontWeight.Bold)
                                         Text((if (form == MedicationForm.OTHER) customForm.ifBlank { stringResource(R.string.other) } else form.localizedLabel(
@@ -745,6 +748,7 @@ internal fun MedicationEditor(
                                 if (addInstructions) OutlinedTextField(
                                     note,
                                     { note = it.take(140) },
+                                    shape = DoseShapes.field,
                                     label = { Text(stringResource(R.string.instructions)) },
                                     placeholder = { Text(stringResource(R.string.e_g_take_after_a_meal)) },
                                     isError = validationVisible && note.isBlank(),
@@ -759,34 +763,34 @@ internal fun MedicationEditor(
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 12.dp)
+                        .padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.small)
                 ) {
                     if (original != null && step == MedicationStep.NAME) OutlinedButton(
                         onClick = { showDeleteConfirm = true },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp)
-                            .heightIn(min = 51.dp),
-                        shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                            .padding(bottom = DoseSpacing.extraSmall)
+                            .heightIn(min = DoseDimensions.dialogAction),
+                        shape = DoseShapes.button, border = BorderStroke(DoseDimensions.border, MaterialTheme.colorScheme.error),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
                     ) { Text(stringResource(R.string.delete_medication), fontWeight = FontWeight.Bold) }
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (step != MedicationStep.NAME) OutlinedButton(
                             onClick = ::previous,
                             modifier = Modifier
                                 .weight(1f)
-                                .heightIn(min = 51.dp),
-                            shape = RoundedCornerShape(14.dp)
+                                .heightIn(min = DoseDimensions.dialogAction),
+                            shape = DoseShapes.button
                         ) { Text(stringResource(R.string.back), fontWeight = FontWeight.Bold) }
                         Button(
                             onClick = ::advance,
                             modifier = Modifier
                                 .weight(1f)
-                                .heightIn(min = 51.dp),
-                            shape = RoundedCornerShape(14.dp)
+                                .heightIn(min = DoseDimensions.dialogAction),
+                            shape = DoseShapes.button
                         ) {
                             Text(
                                 if (step == MedicationStep.DETAILS) stringResource(R.string.save) else stringResource(
@@ -872,11 +876,11 @@ private fun ScheduleEditor(
             )
         }, time.hour, time.minute, true).show()
     }
-    Surface(shape = RoundedCornerShape(16.dp), color = SoftPanel, border = BorderStroke(1.dp, PanelBorder)) {
+    Surface(shape = DoseShapes.tile, color = SoftPanel, border = BorderStroke(DoseDimensions.border, PanelBorder)) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(DoseSpacing.small), verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -892,10 +896,10 @@ private fun ScheduleEditor(
                     )
                 }
             }
-            Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
                 ScheduleKind.entries.chunked(2)
                     .forEach { rowKinds ->
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
                             rowKinds.forEach { kind ->
                                 UnitChip(
                                     kind.localizedLabel(context),
@@ -908,7 +912,7 @@ private fun ScheduleEditor(
             }
             when (rule.kind) {
                 ScheduleKind.SPECIFIC_DATES -> {
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(DoseSpacing.compactGap)) {
                         rule.dates.sorted()
                             .forEach { date ->
                                 InputChip(
@@ -931,7 +935,7 @@ private fun ScheduleEditor(
                         Icon(
                             Icons.Rounded.CalendarMonth,
                             null
-                        ); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.add_date))
+                        ); Spacer(Modifier.width(DoseSpacing.compactGap)); Text(stringResource(R.string.add_date))
                     }
                     ScheduleError(issue, ScheduleField.DATES)
                 }
@@ -961,11 +965,11 @@ private fun ScheduleEditor(
                 ScheduleKind.MONTH_DAYS -> {
                     BoxWithConstraints(Modifier.fillMaxWidth()) {
                         val columns = ((maxWidth + 4.dp) / 52.dp).toInt().coerceIn(1, 7)
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
                             (1..31).toList()
                                 .chunked(columns)
                                 .forEach { row ->
-                                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    Row(horizontalArrangement = Arrangement.spacedBy(DoseSpacing.tiny)) {
                                         row.forEach { day ->
                                             val selected = day in rule.monthDays
                                             val dayDescriptionLocalization = stringResource(
@@ -976,20 +980,20 @@ private fun ScheduleEditor(
                                             Surface(
                                                 modifier = Modifier
                                                     .weight(1f)
-                                                    .heightIn(min = 48.dp)
+                                                    .heightIn(min = DoseDimensions.touchTarget)
                                                     .selectionControl(selected, multiple = true) {
                                                         onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day))
                                                     }
                                                     .semantics {
                                                         contentDescription = dayDescriptionLocalization
                                                     },
-                                                shape = RoundedCornerShape(8.dp), color = if (selected) Violet else Panel,
+                                                shape = DoseShapes.badge, color = if (selected) Violet else Panel,
                                                 border = BorderStroke(
                                                     1.dp,
                                                     if (issue?.field == ScheduleField.MONTH_DAYS) errorColor else PanelBorder
                                                 )
                                             ) {
-                                                Box(Modifier.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
+                                                Box(Modifier.padding(vertical = DoseSpacing.extraSmall), contentAlignment = Alignment.Center) {
                                                     Text(
                                                         "$day",
                                                         style = DoseText.caption,
@@ -1047,7 +1051,7 @@ private fun ScheduleEditor(
                 style = DoseText.supporting,
                 fontWeight = FontWeight.Bold
             )
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(DoseSpacing.compactGap)) {
                 rule.times.forEachIndexed { index, time ->
                     InputChip(
                         selected = false,
@@ -1075,18 +1079,19 @@ private fun ScheduleEditor(
                 Icon(
                     Icons.Rounded.Add,
                     null
-                ); Spacer(Modifier.width(6.dp)); Text(stringResource(R.string.add_time))
+                ); Spacer(Modifier.width(DoseSpacing.compactGap)); Text(stringResource(R.string.add_time))
             }
             if (rule.amount == null) {
                 TextButton(onClick = { onChange(rule.copy(amount = defaultAmount)) }) {
                     Icon(Icons.Rounded.Medication, null)
-                    Spacer(Modifier.width(6.dp))
+                    Spacer(Modifier.width(DoseSpacing.compactGap))
                     Text(stringResource(R.string.set_schedule_amount))
                 }
             } else {
                 OutlinedTextField(
                     value = rule.amount,
                     onValueChange = { onChange(rule.copy(amount = it.take(70))) },
+                    shape = DoseShapes.field,
                     label = { Text(stringResource(R.string.amount) + " · " + localizedUnit(context, quantity)) },
                     isError = issue?.field == ScheduleField.AMOUNT,
                     supportingText = { ScheduleError(issue, ScheduleField.AMOUNT) },
@@ -1216,14 +1221,14 @@ private fun OverlapsStep(
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)
     ) {
         LinearProgressIndicator(
             progress = { resolvedCount.toFloat() / coincidences.size },
             modifier = Modifier
                 .weight(1f)
                 .height(5.dp)
-                .clip(RoundedCornerShape(3.dp)),
+                .clip(DoseShapes.pill),
             color = GreenAction,
             trackColor = AmberBorder,
         )
@@ -1239,7 +1244,7 @@ private fun OverlapsStep(
         color = TextMuted,
         style = DoseText.caption,
     )
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
         coincidences.forEach { group ->
             ConflictItem(
                 schedules,
@@ -1291,8 +1296,8 @@ private fun ConflictItem(
     Surface(
         onClick = onToggle,
         color = if (resolved) GreenPanel else AmberPanel,
-        border = BorderStroke(1.dp, if (resolved) GreenBorder else AmberBorder),
-        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(DoseDimensions.border, if (resolved) GreenBorder else AmberBorder),
+        shape = DoseShapes.tile,
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
@@ -1300,12 +1305,12 @@ private fun ConflictItem(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 11.dp),
+                .padding(horizontal = DoseSpacing.small, vertical = 11.dp),
             verticalArrangement = Arrangement.spacedBy(7.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)
             ) {
                 Icon(
                     Icons.Rounded.Warning,
@@ -1358,13 +1363,13 @@ private fun ConflictItem(
 private fun ConflictStatus(resolved: Boolean) {
     Surface(
         color = Panel,
-        border = BorderStroke(1.dp, if (resolved) GreenBorder else AmberBorder),
-        shape = RoundedCornerShape(50.dp),
+        border = BorderStroke(DoseDimensions.border, if (resolved) GreenBorder else AmberBorder),
+        shape = DoseShapes.pill,
     ) {
         Row(
-            Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+            Modifier.padding(horizontal = DoseSpacing.extraSmall, vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(DoseSpacing.tiny)
         ) {
             Icon(
                 if (resolved) Icons.Rounded.Check else Icons.Rounded.Warning,
@@ -1400,7 +1405,7 @@ private fun ExpandedConflict(
     HorizontalDivider(color = AmberBorder)
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+        horizontalArrangement = Arrangement.spacedBy(DoseSpacing.compactGap)
     ) {
         Icon(
             Icons.Rounded.CalendarMonth,
@@ -1429,25 +1434,25 @@ private fun ExpandedConflict(
         )
     }
     // One grid keeps every overlapping dose visible; the choice stays a single radio group.
-    Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
         group.members.chunked(2)
             .forEach { rowMembers ->
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
                     rowMembers.forEach { index ->
                         val rule = schedules[index]
                         Surface(
                             color = if (pending == index) AccentPanel else SoftPanel,
                             border = BorderStroke(
-                                if (pending == index) 1.5.dp else 1.dp,
+                                if (pending == index) DoseDimensions.selectionBorder else 1.dp,
                                 if (pending == index) Violet else PanelBorder
                             ),
-                            shape = RoundedCornerShape(12.dp),
+                            shape = DoseShapes.choice,
                             modifier = Modifier.weight(1f).selectionControl(pending == index) { pending = index },
                         ) {
                             Column(
                                 Modifier
                                     .fillMaxWidth()
-                                    .padding(10.dp),
+                                    .padding(DoseSpacing.controlGap),
                                 verticalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
                                 Row(
@@ -1484,14 +1489,14 @@ private fun ExpandedConflict(
     }
     Surface(
         color = SoftPanel,
-        border = BorderStroke(1.dp, PanelBorder),
-        shape = RoundedCornerShape(12.dp),
+        border = BorderStroke(DoseDimensions.border, PanelBorder),
+        shape = DoseShapes.choice,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 8.dp),
+                .padding(horizontal = DoseSpacing.controlGap, vertical = DoseSpacing.extraSmall),
             verticalArrangement = Arrangement.spacedBy(3.dp)
         ) {
             Row(
@@ -1532,10 +1537,10 @@ private fun ExpandedConflict(
     Button(
         enabled = pending != null,
         onClick = { pending?.let { onResolve(group, it) } },
-        shape = RoundedCornerShape(13.dp),
+        shape = DoseShapes.button,
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 48.dp),
+            .heightIn(min = DoseDimensions.touchTarget),
     ) {
         Text(stringResource(R.string.dose_overlap_apply), fontWeight = FontWeight.Bold)
     }
@@ -1589,7 +1594,7 @@ private fun UnitModeSegment(
             .fillMaxHeight()
             .background(if (active) AccentPanel else Color.Transparent)
             .selectionControl(active, onClick = onClick)
-            .padding(horizontal = 8.dp, vertical = 8.dp),
+            .padding(horizontal = DoseSpacing.extraSmall, vertical = DoseSpacing.extraSmall),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -1613,12 +1618,12 @@ private fun UnitChip(
 ) {
     Box(
         modifier
-            .heightIn(min = 48.dp)
-            .clip(RoundedCornerShape(11.dp))
+            .heightIn(min = DoseDimensions.touchTarget)
+            .clip(DoseShapes.choice)
             .background(if (selected) AccentPanel else Color.Transparent)
-            .border(1.5.dp, if (selected) borderColor else PanelBorder, RoundedCornerShape(11.dp))
+            .border(DoseDimensions.selectionBorder, if (selected) borderColor else PanelBorder, DoseShapes.choice)
             .selectionControl(selected, multiple, onClick)
-            .padding(horizontal = 8.dp, vertical = 8.dp),
+            .padding(horizontal = DoseSpacing.extraSmall, vertical = DoseSpacing.extraSmall),
         contentAlignment = Alignment.Center,
     ) {
         Text(

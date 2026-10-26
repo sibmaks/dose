@@ -130,7 +130,7 @@ internal fun IntakeTimeline(
                             modifier = Modifier.weight(1f),
                             style = DoseText.body, fontWeight = FontWeight.SemiBold, color = TextPrimary,
                         )
-                        Spacer(Modifier.width(8.dp))
+                        Spacer(Modifier.width(DoseSpacing.extraSmall))
                         Text(
                             moment.format(timeFormatter), style = DoseText.supporting, fontWeight = FontWeight.Bold,
                             color = when (entry.kind) {
@@ -216,7 +216,7 @@ private fun RailRow(
             )
             tile()
         }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(DoseSpacing.small))
         Box(Modifier.weight(1f)) { content() }
     }
 }

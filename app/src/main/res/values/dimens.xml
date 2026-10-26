@@ -6,4 +6,22 @@
     <dimen name="dose_text_emphasis">18sp</dimen>
     <dimen name="dose_text_detail">20sp</dimen>
     <dimen name="dose_text_widget_time">36sp</dimen>
+    <!-- Shared native geometry; role parity and widget capacity are checked against Compose/model values. -->
+    <dimen name="dose_space_compact_gap">6dp</dimen>
+    <dimen name="dose_space_extra_small">8dp</dimen>
+    <dimen name="dose_space_control_gap">10dp</dimen>
+    <dimen name="dose_space_small">12dp</dimen>
+    <dimen name="dose_space_medium">16dp</dimen>
+    <dimen name="dose_radius_tile">16dp</dimen>
+    <dimen name="dose_radius_card">20dp</dimen>
+    <dimen name="dose_radius_large_panel">24dp</dimen>
+    <dimen name="dose_border">1dp</dimen>
+    <dimen name="dose_touch_target">48dp</dimen>
+    <dimen name="dose_widget_row_height">128dp</dimen>
+    <dimen name="dose_widget_row_heading">58dp</dimen>
+    <dimen name="dose_widget_icon">34dp</dimen>
+    <dimen name="dose_widget_compact_icon">38dp</dimen>
+    <dimen name="dose_widget_list_header">40dp</dimen>
+    <dimen name="dose_widget_footer">24dp</dimen>
+    <dimen name="dose_widget_detail_gap">5dp</dimen>
 </resources>

@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 /** Keep related fields together on phones, but give each a full line when text or space needs it. */
 @Composable
 internal fun ResponsiveFields(
-    gap: Dp = 8.dp,
+    gap: Dp = DoseSpacing.extraSmall,
     content: @Composable FlowRowScope.() -> Unit,
 ) {
     val largeText = LocalDensity.current.fontScale >= 1.5f
@@ -19,7 +19,7 @@ internal fun ResponsiveFields(
             modifier = Modifier.fillMaxWidth(),
             maxItemsInEachRow = if (largeText || maxWidth < 320.dp) 1 else 2,
             horizontalArrangement = Arrangement.spacedBy(gap),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(DoseSpacing.medium),
             content = content,
         )
     }

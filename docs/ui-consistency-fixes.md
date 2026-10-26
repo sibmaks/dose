@@ -2,6 +2,8 @@
 
 Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue is implemented, verified and committed separately. Existing visual hierarchy and context-specific variants are preserved.
 
+Shared roles and usage guidance are recorded in [UI design conventions](ui-design-system.md).
+
 | Issue | Scope | Status |
 |---|---|---|
 | UI-01 | Small-text contrast on hero, status, overlap and widget surfaces | Complete |
@@ -16,7 +18,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-10 | Shared semantic color ownership | Complete |
 | UI-11 | Shared accessible picker fields | Complete |
 | UI-12 | Shared typography roles | Complete |
-| UI-13 | Named geometry conventions | Pending |
+| UI-13 | Named geometry conventions | Complete |
 
 ## Verification
 
@@ -82,3 +84,16 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - Introduced the app's complete Material typography and named text roles, including line heights. Consolidated half-size caption variants, retained the heading/hero hierarchy, and reused role sizes in the native reminder popup and named XML widget dimensions.
 - Verification: theme/contrast tests and debug assembly passed. Emulator replay checked normal picker decoration and 200% navigation, dosage choices and stacked picker fields. Native text still follows Android font scaling; brand lettering and the compact widget clock retain their explicit display roles.
+
+### UI-13
+
+- Added shared spacing, radii, shapes and minimum-control dimensions; installed the Material shapes and reused the roles across Compose and the native reminder popup. Consolidated adjacent card/button/badge variants, matched editable and picker-field shapes, and retained named shell/hero/native-surface variants.
+- Widget XML now uses named geometry resources. The shipping-layout test resolves these resources, verifies physical actions and row capacity, and checks shared XML/Compose dimension parity. Added design conventions covering color, text, geometry, semantics and adaptive layouts.
+- Verification: all 236 unit tests, debug APK assembly and lint passed. Final API 27 emulator checks covered the normal home screen and picker fields, 200% navigation/dosage choices/stacked fields, native date-picker opening, and advancing the medication wizard with the keyboard open. Drafts were discarded and the original font/theme settings restored.
+
+## Final validation
+
+`JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`
+
+- 236 tests in 32 suites; no failures or errors. Lint completes without errors; non-blocking warnings remain in the project.
+- Runtime evidence is from the existing API 27 phone emulator. Modern Android IME behavior, TalkBack speech, populated overlay/widget rows, other launcher hosts, every locale, landscape and tablet layouts remain coverage limits. Source checks and unit tests are not substitutes for those observations.

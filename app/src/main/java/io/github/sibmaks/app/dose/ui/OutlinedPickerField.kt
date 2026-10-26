@@ -3,7 +3,6 @@ package io.github.sibmaks.app.dose.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.*
@@ -39,7 +38,7 @@ internal fun OutlinedPickerField(
     val display = value.ifBlank { placeholder }
     val invalid = errorMessage != null
     val background = if (invalid) Semantic.invalidFieldContainer else containerColor
-    val shape = RoundedCornerShape(15.dp)
+    val shape = DoseShapes.field
     val colors = OutlinedTextFieldDefaults.colors(
         focusedContainerColor = background,
         unfocusedContainerColor = background,
@@ -50,8 +49,8 @@ internal fun OutlinedPickerField(
         Box(
             Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
-                .heightIn(min = 56.dp)
+                .padding(top = DoseSpacing.extraSmall)
+                .heightIn(min = DoseDimensions.field)
                 .clickable(interactionSource = interactions, indication = null, role = Role.Button,
                     onClickLabel = label, onClick = onClick)
                 .semantics(mergeDescendants = true) {
@@ -94,7 +93,7 @@ internal fun OutlinedPickerField(
         }
         if (supportingError && errorMessage != null) Text(
             errorMessage, color = MaterialTheme.colorScheme.error, style = DoseText.caption,
-            modifier = Modifier.padding(top = 4.dp).semantics { liveRegion = LiveRegionMode.Polite },
+            modifier = Modifier.padding(top = DoseSpacing.tiny).semantics { liveRegion = LiveRegionMode.Polite },
         )
     }
 }

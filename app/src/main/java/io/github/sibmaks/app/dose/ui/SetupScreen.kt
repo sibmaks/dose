@@ -3,7 +3,6 @@ package io.github.sibmaks.app.dose.ui
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
@@ -14,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import io.github.sibmaks.app.dose.R
 
 /** Full page with the same card, spacing, typography, and balanced actions as medication entry. */
@@ -36,42 +34,42 @@ internal fun SetupScreen(
     LaunchedEffect(pageKey) { scroll.scrollTo(0) }
     Surface(color = Page, modifier = Modifier.fillMaxSize()) {
         Surface(
-            color = Panel, shape = RoundedCornerShape(26.dp),
+            color = Panel, shape = DoseShapes.shell,
             modifier = Modifier
                 .fillMaxSize()
                 .safeDrawingPadding()
-                .padding(12.dp)
+                .padding(DoseSpacing.shellMargin)
         ) {
             Column {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(start = 20.dp, end = 10.dp, top = 10.dp),
+                        .padding(start = DoseSpacing.shellInset, end = DoseSpacing.controlGap, top = DoseSpacing.controlGap),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(title, style = DoseText.shellTitle, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
                     IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, stringResource(R.string.close_screen)) }
                 }
-                HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+                HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.extraSmall))
                 Column(
                     Modifier
                         .weight(1f)
                         .verticalScroll(scroll)
-                        .padding(horizontal = 20.dp, vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp), content = content
+                        .padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.small),
+                    verticalArrangement = Arrangement.spacedBy(DoseSpacing.small), content = content
                 )
                 if (showSecondary || primaryLabel != null) Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        .padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.small),
+                    horizontalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)
                 ) {
                     if (showSecondary) OutlinedButton(
                         onClick = onSecondary,
                         modifier = Modifier
                             .weight(1f)
-                            .heightIn(min = 51.dp),
-                        shape = RoundedCornerShape(14.dp)
+                            .heightIn(min = DoseDimensions.dialogAction),
+                        shape = DoseShapes.button
                     ) {
                         Text(secondaryLabel, fontWeight = FontWeight.Bold)
                     }
@@ -79,8 +77,8 @@ internal fun SetupScreen(
                         onClick = onPrimary,
                         modifier = Modifier
                             .weight(1f)
-                            .heightIn(min = 51.dp),
-                        shape = RoundedCornerShape(14.dp)
+                            .heightIn(min = DoseDimensions.dialogAction),
+                        shape = DoseShapes.button
                     ) {
                         Text(primaryLabel, fontWeight = FontWeight.Bold)
                     }

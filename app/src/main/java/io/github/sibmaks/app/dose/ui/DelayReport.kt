@@ -3,7 +3,6 @@ package io.github.sibmaks.app.dose.ui
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -28,14 +27,14 @@ internal fun DelayReportCard(
     val report =
         remember(logs, days, today) { DoseReports.summarize(logs, days?.let { today.minusDays(it - 1L) }, today) }
     Card(
-        shape = RoundedCornerShape(20.dp),
+        shape = DoseShapes.card,
         colors = CardDefaults.cardColors(containerColor = Panel),
-        border = BorderStroke(1.dp, PanelBorder)
+        border = BorderStroke(DoseDimensions.border, PanelBorder)
     ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(17.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
+                .padding(17.dp), verticalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)
         ) {
             Text(stringResource(R.string.time_to_take), style = DoseText.sectionTitle, fontWeight = FontWeight.ExtraBold)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
@@ -61,7 +60,7 @@ internal fun DelayReportCard(
             if (report.count > 0) {
                 report.medications.forEach { med ->
                     HorizontalDivider(color = PanelBorder)
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)) {
                         Column(Modifier.weight(1f)) {
                             Text(med.name, style = DoseText.body, fontWeight = FontWeight.Bold)
                             Text(

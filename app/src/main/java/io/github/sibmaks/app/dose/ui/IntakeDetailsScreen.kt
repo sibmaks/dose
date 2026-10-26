@@ -2,7 +2,6 @@ package io.github.sibmaks.app.dose.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
@@ -78,8 +77,8 @@ internal fun IntakeDetailsScreen(
                 onClick = onEdit,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 51.dp),
-                shape = RoundedCornerShape(14.dp),
+                    .heightIn(min = DoseDimensions.dialogAction),
+                shape = DoseShapes.button,
             ) {
                 Text(stringResource(R.string.edit_action), fontWeight = FontWeight.Bold)
             }
@@ -87,15 +86,15 @@ internal fun IntakeDetailsScreen(
     ) {
         IntakeMedicationCard(log, scheduled, momentFormatter)
 
-        Surface(color = style.panel, shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth()) {
+        Surface(color = style.panel, shape = DoseShapes.panel, modifier = Modifier.fillMaxWidth()) {
             Row(
-                Modifier.padding(14.dp),
+                Modifier.padding(DoseSpacing.cardInset),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
                     Modifier
                         .size(42.dp)
-                        .clip(RoundedCornerShape(14.dp))
+                        .clip(DoseShapes.button)
                         .background(style.tile),
                     contentAlignment = Alignment.Center,
                 ) {

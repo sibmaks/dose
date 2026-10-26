@@ -5,7 +5,6 @@ import android.app.TimePickerDialog
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
@@ -123,8 +122,8 @@ internal fun HistoryDoseEditor(
                 enabled = enabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 51.dp),
-                shape = RoundedCornerShape(14.dp),
+                    .heightIn(min = DoseDimensions.dialogAction),
+                shape = DoseShapes.button,
             ) {
                 Text(stringResource(R.string.save), fontWeight = FontWeight.Bold)
             }
@@ -133,7 +132,7 @@ internal fun HistoryDoseEditor(
         IntakeMedicationCard(log, scheduled, DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm", locale))
 
         TimelineHeading(stringResource(R.string.status_section))
-        Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(DoseSpacing.small)) {
             options.forEach { option ->
                 StatusOption(
                     style = intakeStatusStyle(option),
@@ -194,25 +193,25 @@ private fun StatusOption(
     onClick: () -> Unit
 ) {
     Surface(
-        shape = RoundedCornerShape(16.dp),
+        shape = DoseShapes.tile,
         color = if (selected) AccentPanel else Panel,
-        border = BorderStroke(1.dp, if (selected) Violet else PanelBorder),
+        border = BorderStroke(DoseDimensions.border, if (selected) Violet else PanelBorder),
         modifier = Modifier.fillMaxWidth().selectionControl(selected, onClick = onClick),
     ) {
         Row(
-            Modifier.padding(horizontal = 13.dp, vertical = 10.dp),
+            Modifier.padding(horizontal = 13.dp, vertical = DoseSpacing.controlGap),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 Modifier
                     .size(36.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(DoseShapes.choice)
                     .background(style.tile),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(style.icon, null, tint = Color.White, modifier = Modifier.size(18.dp))
             }
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(DoseSpacing.small))
             Column(Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(style.label, style = DoseText.itemTitle, fontWeight = FontWeight.Bold, color = TextPrimary)
@@ -220,7 +219,7 @@ private fun StatusOption(
                         Spacer(Modifier.width(7.dp))
                         Box(
                             Modifier
-                                .clip(RoundedCornerShape(6.dp))
+                                .clip(DoseShapes.badge)
                                 .background(if (selected) Panel else AccentPanel)
                                 .padding(horizontal = 7.dp, vertical = 2.dp)
                         ) {

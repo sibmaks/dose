@@ -6,7 +6,6 @@ import android.content.ContextWrapper
 import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Language
@@ -60,17 +59,17 @@ internal fun LanguagePicker(
         if (firstStart) Text(stringResource(R.string.first_language_offer), style = DoseText.body, color = TextMuted)
         val options =
             listOf("" to stringResource(R.string.system_language)) + AppLanguages.supported.map { it.tag to it.nativeName }
-        Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(DoseSpacing.small)) {
             options.forEach { (tag, name) ->
                 Surface(
-                    shape = RoundedCornerShape(14.dp),
+                    shape = DoseShapes.button,
                     color = if (selected == tag) AccentPanel else SoftPanel,
                     modifier = Modifier.fillMaxWidth().selectionControl(selected == tag) { selected = tag }
                 ) {
                     Row(
-                        Modifier.padding(12.dp),
+                        Modifier.padding(DoseSpacing.small),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.spacedBy(DoseSpacing.small)
                     ) {
                         val flag = languageFlag(tag)
                         if (flag == null) Icon(Icons.Rounded.Language, null, tint = Violet, modifier = Modifier.size(36.dp))

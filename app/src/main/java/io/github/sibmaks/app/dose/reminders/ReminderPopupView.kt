@@ -17,6 +17,10 @@ import io.github.sibmaks.app.dose.localization.localizedForm
 import io.github.sibmaks.app.dose.ui.iconResource
 import io.github.sibmaks.app.dose.ui.doseColorScheme
 import io.github.sibmaks.app.dose.ui.DoseText
+import io.github.sibmaks.app.dose.ui.DoseSpacing
+import io.github.sibmaks.app.dose.ui.DoseRadii
+import io.github.sibmaks.app.dose.ui.DoseDimensions
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.graphics.toArgb
 
 /** Explicit shapes and colors keep the pop-up consistent across device button themes. */
@@ -45,14 +49,15 @@ internal object ReminderPopupView {
         val surface = colors.surface.toArgb()
         val cardSurface = colors.surfaceContainerLow.toArgb()
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
+        fun dimension(value: Dp) = (value.value * context.resources.displayMetrics.density).toInt()
         fun shape(
             color: Int,
-            radius: Int,
+            radius: Dp,
             stroke: Int? = null
         ) = GradientDrawable().apply {
             setColor(color)
-            cornerRadius = dp(radius).toFloat()
-            if (stroke != null) setStroke(dp(1), stroke)
+            cornerRadius = dimension(radius).toFloat()
+            if (stroke != null) setStroke(dimension(DoseDimensions.border), stroke)
         }
 
         fun text(
@@ -81,10 +86,10 @@ internal object ReminderPopupView {
                 gravity = Gravity.CENTER
                 minWidth = 0
                 minimumWidth = 0
-                minHeight = dp(48)
-                minimumHeight = dp(48)
+                minHeight = dimension(DoseDimensions.touchTarget)
+                minimumHeight = dimension(DoseDimensions.touchTarget)
                 maxLines = 2
-                setPadding(dp(14), dp(12), dp(14), dp(12))
+                setPadding(dimension(DoseSpacing.cardInset), dimension(DoseSpacing.small), dimension(DoseSpacing.cardInset), dimension(DoseSpacing.small))
                 // Clear OEM tint, inset background, and raised-button animation before applying our pill.
                 backgroundTintList = null
                 stateListAnimator = null
@@ -95,44 +100,44 @@ internal object ReminderPopupView {
                 setTextColor(if (primary) colors.onPrimary.toArgb() else if (quiet) muted else colors.onPrimaryContainer.toArgb())
                 background = RippleDrawable(
                     ColorStateList.valueOf((if (primary) colors.onPrimary else colors.primary).copy(alpha = 0.12f).toArgb()),
-                    shape(fill, 28, if (quiet) border else null), shape(Color.WHITE, 28)
+                    shape(fill, DoseRadii.nativeAction, if (quiet) border else null), shape(Color.WHITE, DoseRadii.nativeAction)
                 )
                 setOnClickListener { onClick() }
             }
 
         val content = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(18), dp(20), dp(18), dp(16))
+            setPadding(dp(18), dimension(DoseSpacing.large), dp(18), dimension(DoseSpacing.medium))
         }
         content.addView(text(context.getString(R.string.time_for_your_medication), DoseText.detailTitle.fontSize.value, true))
         if (entries.size > 1) {
             content.addView(
                 text(context.getString(R.string.several_medicines, entries.size), DoseText.body.fontSize.value, color = muted),
                 LinearLayout.LayoutParams(-1, -2)
-                    .apply { topMargin = dp(8) })
+                    .apply { topMargin = dimension(DoseSpacing.extraSmall) })
             content.addView(
                 pill(context.getString(R.string.taken_all), primary = true) { onAll("taken") },
                 LinearLayout.LayoutParams(-1, -2)
-                    .apply { topMargin = dp(12) })
+                    .apply { topMargin = dimension(DoseSpacing.small) })
             content.addView(
                 pill(context.getString(R.string.skip_all), quiet = true) { onAll("skipped") },
                 LinearLayout.LayoutParams(-1, -2)
-                    .apply { topMargin = dp(8) })
+                    .apply { topMargin = dimension(DoseSpacing.extraSmall) })
         }
         entries.forEach { entry ->
             val medication = entry.medication
             val (medicationColor, iconBackground) = MedicationIconColors.palette(medication.color)
             val card = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
-                setPadding(dp(14), dp(14), dp(14), dp(14))
-                background = shape(cardSurface, 20, border)
+                setPadding(dimension(DoseSpacing.cardInset), dimension(DoseSpacing.cardInset), dimension(DoseSpacing.cardInset), dimension(DoseSpacing.cardInset))
+                background = shape(cardSurface, DoseRadii.card, border)
             }
             val heading = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
             heading.addView(ImageView(context).apply {
                 setImageResource(medication.form.iconResource())
                 setColorFilter(medicationColor)
                 setPadding(dp(9), dp(9), dp(9), dp(9))
-                background = shape(iconBackground, 14, border)
+                background = shape(iconBackground, DoseRadii.button, border)
                 contentDescription = medication.localizedForm(context)
             }, LinearLayout.LayoutParams(dp(44), dp(44)))
             val description = LinearLayout(context).apply {
@@ -150,11 +155,11 @@ internal object ReminderPopupView {
                 description,
                 LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                     .apply {
-                        marginStart = dp(10); marginEnd = dp(8)
+                        marginStart = dimension(DoseSpacing.controlGap); marginEnd = dimension(DoseSpacing.extraSmall)
                     })
             heading.addView(text(entry.time, DoseText.caption.fontSize.value, true, accent).apply {
-                background = shape(lavender, 20)
-                setPadding(dp(10), dp(6), dp(10), dp(6))
+                background = shape(lavender, DoseRadii.card)
+                setPadding(dimension(DoseSpacing.controlGap), dimension(DoseSpacing.compactGap), dimension(DoseSpacing.controlGap), dimension(DoseSpacing.compactGap))
                 contentDescription = context.getString(R.string.scheduled_time, entry.time)
             })
             card.addView(heading)
@@ -164,7 +169,7 @@ internal object ReminderPopupView {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                    .apply { topMargin = dp(10) })
+                    .apply { topMargin = dimension(DoseSpacing.controlGap) })
             val actions = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
             actions.addView(
                 pill(
@@ -176,27 +181,27 @@ internal object ReminderPopupView {
             actions.addView(
                 pill(context.getString(R.string.skip), quiet = true) { entry.onAction(ReminderReceiver.ACTION_SKIP) },
                 LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
-                    .apply { marginStart = dp(8) })
+                    .apply { marginStart = dimension(DoseSpacing.extraSmall) })
             card.addView(
                 actions,
                 LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                    .apply { topMargin = dp(14) })
+                    .apply { topMargin = dimension(DoseSpacing.cardInset) })
             card.addView(
                 pill(context.getString(R.string.snooze_10_min)) { entry.onAction(ReminderReceiver.ACTION_SNOOZE) },
                 LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                    .apply { topMargin = dp(8) })
+                    .apply { topMargin = dimension(DoseSpacing.extraSmall) })
             content.addView(
                 card, LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                    .apply { topMargin = dp(14) })
+                    .apply { topMargin = dimension(DoseSpacing.cardInset) })
         }
         content.addView(
             pill(
@@ -205,9 +210,9 @@ internal object ReminderPopupView {
                 onClick = onLater
             ),
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                .apply { topMargin = dp(16) })
+                .apply { topMargin = dimension(DoseSpacing.medium) })
         return ScrollView(context).apply {
-            background = shape(surface, 24)
+            background = shape(surface, DoseRadii.largePanel)
             clipToOutline = true
             isFillViewport = true
             addView(content)

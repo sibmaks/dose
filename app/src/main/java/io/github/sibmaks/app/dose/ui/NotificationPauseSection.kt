@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -70,7 +69,7 @@ internal fun NotificationPauseSection(onRefresh: () -> Unit) {
     val active = PauseWindows.active(windows, now)
     val scheduled = PauseWindows.scheduled(windows, now)
 
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)) {
         Text(
             stringResource(R.string.notification_pause_title),
             style = MaterialTheme.typography.titleMedium,
@@ -158,9 +157,9 @@ private fun PauseStatusCard(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        shape = RoundedCornerShape(18.dp),
+        shape = DoseShapes.panel,
         color = Semantic.pauseAvailableContainer,
-        border = BorderStroke(1.dp, Semantic.pauseAvailableBorder),
+        border = BorderStroke(DoseDimensions.border, Semantic.pauseAvailableBorder),
         modifier = modifier,
     ) {
         Column(Modifier.padding(13.dp)) {
@@ -171,7 +170,7 @@ private fun PauseStatusCard(
                 fontWeight = FontWeight.Bold,
                 style = DoseText.itemTitle,
                 color = Mint,
-                modifier = Modifier.padding(top = 6.dp),
+                modifier = Modifier.padding(top = DoseSpacing.compactGap),
             )
             if (neverUsed) Text(
                 stringResource(R.string.pause_enabled_hint),
@@ -192,12 +191,12 @@ private fun PauseActiveCard(
     val locale = AppLanguages.locale(LocalContext.current)
     val momentFormatter = DateTimeFormatter.ofPattern("d MMMM, HH:mm", locale)
     Surface(
-        shape = RoundedCornerShape(18.dp),
+        shape = DoseShapes.panel,
         color = Semantic.pauseActiveContainer,
-        border = BorderStroke(1.dp, Semantic.pauseActiveBorder),
+        border = BorderStroke(DoseDimensions.border, Semantic.pauseActiveBorder),
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(Modifier.padding(14.dp)) {
+        Column(Modifier.padding(DoseSpacing.cardInset)) {
             Text(
                 stringResource(R.string.pause_current_title),
                 fontWeight = FontWeight.Bold, style = DoseText.itemTitle,
@@ -218,17 +217,17 @@ private fun PauseActiveCard(
             Text(
                 stringResource(R.string.pause_auto_resume),
                 style = DoseText.supporting, color = TextMuted,
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier.padding(top = DoseSpacing.extraSmall),
             )
             Surface(
                 onClick = onResume,
-                shape = RoundedCornerShape(12.dp),
+                shape = DoseShapes.choice,
                 color = Panel,
-                border = BorderStroke(1.dp, PanelBorder),
+                border = BorderStroke(DoseDimensions.border, PanelBorder),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 11.dp)
-                    .heightIn(min = 48.dp),
+                    .heightIn(min = DoseDimensions.touchTarget),
             ) {
                 Row(
                     Modifier.fillMaxSize(),
@@ -258,9 +257,9 @@ private fun BoundRow(
 private fun AddPauseTile(onClick: () -> Unit) {
     Surface(
         onClick = onClick,
-        shape = RoundedCornerShape(18.dp),
+        shape = DoseShapes.panel,
         color = Panel,
-        border = BorderStroke(1.dp, PanelBorder),
+        border = BorderStroke(DoseDimensions.border, PanelBorder),
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 92.dp),
@@ -271,7 +270,7 @@ private fun AddPauseTile(onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(Icons.Rounded.Add, null, tint = Violet, modifier = Modifier.size(19.dp))
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(DoseSpacing.extraSmall))
             Text(
                 stringResource(R.string.pause_add_action),
                 color = Violet,
@@ -297,12 +296,12 @@ private fun PauseScheduledCard(
         Instant.ofEpochMilli(window.endAt)
             .atZone(zone)
     Surface(
-        shape = RoundedCornerShape(18.dp),
+        shape = DoseShapes.panel,
         color = Panel,
-        border = BorderStroke(1.dp, PanelBorder),
+        border = BorderStroke(DoseDimensions.border, PanelBorder),
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(Modifier.padding(start = 14.dp, end = 6.dp, top = 12.dp, bottom = 12.dp)) {
+        Column(Modifier.padding(start = DoseSpacing.cardInset, end = DoseSpacing.compactGap, top = DoseSpacing.small, bottom = DoseSpacing.small)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     start.format(DateTimeFormatter.ofPattern("d MMMM", locale)),
@@ -353,9 +352,9 @@ private fun PauseCountChip(
         style = DoseText.caption, fontWeight = FontWeight.Bold,
         color = if (muted) TextMuted else Violet,
         modifier = Modifier
-            .clip(RoundedCornerShape(999.dp))
+            .clip(DoseShapes.pill)
             .background(if (muted) MaterialTheme.colorScheme.surfaceVariant else AccentPanel)
-            .padding(horizontal = 8.dp, vertical = 2.5.dp),
+            .padding(horizontal = DoseSpacing.extraSmall, vertical = 2.5.dp),
     )
 }
 
@@ -368,9 +367,9 @@ private fun PausePill(
 ) {
     Row(
         Modifier
-            .clip(RoundedCornerShape(999.dp))
+            .clip(DoseShapes.pill)
             .background(content)
-            .padding(horizontal = 10.dp, vertical = 5.dp),
+            .padding(horizontal = DoseSpacing.controlGap, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
@@ -468,8 +467,8 @@ private fun CreatePauseSheet(
                 .fillMaxWidth()
                 .imePadding()
                 .verticalScroll(rememberScrollState())
-                .padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(start = DoseSpacing.large, end = DoseSpacing.large, top = DoseSpacing.tiny, bottom = DoseSpacing.medium),
+            verticalArrangement = Arrangement.spacedBy(DoseSpacing.small),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -483,7 +482,7 @@ private fun CreatePauseSheet(
             }
 
             Text(stringResource(R.string.pause_start_label), fontWeight = FontWeight.Bold, style = DoseText.body)
-            Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
                 PauseOptionChip(
                     stringResource(R.string.pause_start_now),
                     selected = startNow,
@@ -545,7 +544,7 @@ private fun CreatePauseSheet(
             }
 
             Text(stringResource(R.string.pause_end_label), fontWeight = FontWeight.Bold, style = DoseText.body)
-            FlowRow(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall), verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
                 PauseOptionChip(stringResource(R.string.pause_30_min), selected = preset == PausePreset.MIN30.name) {
                     preset = PausePreset.MIN30.name
                 }
@@ -634,9 +633,9 @@ private fun CreatePauseSheet(
                 style = DoseText.supporting, color = TextMuted,
             )
             Surface(
-                shape = RoundedCornerShape(14.dp),
+                shape = DoseShapes.button,
                 color = SoftPanel,
-                border = BorderStroke(1.dp, PanelBorder),
+                border = BorderStroke(DoseDimensions.border, PanelBorder),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
@@ -649,17 +648,17 @@ private fun CreatePauseSheet(
                     ) else stringResource(if (needsEndTime) R.string.pick_time_placeholder else R.string.pause_range_invalid),
                     style = DoseText.body,
                     color = if (needsEndTime) TextMuted else if (valid) TextPrimary else MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(12.dp),
+                    modifier = Modifier.padding(DoseSpacing.small),
                 )
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(DoseSpacing.controlGap)) {
                 OutlinedButton(
                     onClick = onDismiss,
                     modifier = Modifier
                         .weight(1f)
-                        .heightIn(min = 51.dp),
-                    shape = RoundedCornerShape(14.dp),
+                        .heightIn(min = DoseDimensions.dialogAction),
+                    shape = DoseShapes.button,
                 ) { Text(stringResource(R.string.cancel), fontWeight = FontWeight.Bold) }
                 Button(
                     onClick = {
@@ -671,8 +670,8 @@ private fun CreatePauseSheet(
                     enabled = valid,
                     modifier = Modifier
                         .weight(1f)
-                        .heightIn(min = 51.dp),
-                    shape = RoundedCornerShape(14.dp),
+                        .heightIn(min = DoseDimensions.dialogAction),
+                    shape = DoseShapes.button,
                 ) { Text(stringResource(R.string.save), fontWeight = FontWeight.Bold) }
             }
         }
@@ -687,10 +686,10 @@ private fun PauseOptionChip(
     onClick: () -> Unit
 ) {
     Surface(
-        shape = RoundedCornerShape(11.dp),
+        shape = DoseShapes.choice,
         color = if (selected) AccentPanel else Panel,
         border = BorderStroke(
-            1.5.dp,
+            DoseDimensions.selectionBorder,
             if (selected) Violet else PanelBorder
         ),
         modifier = modifier.selectionControl(selected, onClick = onClick),
@@ -700,7 +699,7 @@ private fun PauseOptionChip(
             fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
             color = if (selected) Violet else TextPrimary,
             modifier = Modifier
-                .padding(horizontal = 14.dp, vertical = 9.dp),
+                .padding(horizontal = DoseSpacing.cardInset, vertical = 9.dp),
         )
     }
 }

@@ -3,7 +3,6 @@ package io.github.sibmaks.app.dose.ui
 import android.app.TimePickerDialog
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.*
@@ -56,17 +55,17 @@ internal fun TodayDoseEditor(
         secondaryLabel = stringResource(R.string.back)
     ) {
         Card(
-            shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = SoftPanel),
-            border = BorderStroke(1.dp, PanelBorder)
+            shape = DoseShapes.panel, colors = CardDefaults.cardColors(containerColor = SoftPanel),
+            border = BorderStroke(DoseDimensions.border, PanelBorder)
         ) {
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)
+                    .padding(DoseSpacing.medium), verticalArrangement = Arrangement.spacedBy(DoseSpacing.small)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(DoseSpacing.small)
                 ) {
                     PillAvatar(medication.color, medication.form, medication.localizedForm(context))
                     Column(Modifier.weight(1f)) {
@@ -103,11 +102,11 @@ internal fun TodayDoseEditor(
             onClick = onEdit,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 48.dp),
-            shape = RoundedCornerShape(14.dp)
+                .heightIn(min = DoseDimensions.touchTarget),
+            shape = DoseShapes.button
         ) {
             Icon(Icons.Rounded.Edit, null, modifier = Modifier.size(18.dp))
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(DoseSpacing.extraSmall))
             Text(stringResource(R.string.edit_medication), fontWeight = FontWeight.Bold)
         }
         if (item.log == null) {
@@ -125,7 +124,7 @@ internal fun TodayDoseEditor(
                     }, parsed.hour, parsed.minute, true).show()
                 }, modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 56.dp)
+                    .heightIn(min = DoseDimensions.field)
             ) {
                 Text(
                     reminderTime,

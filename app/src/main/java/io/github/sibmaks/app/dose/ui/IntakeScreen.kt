@@ -5,7 +5,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -41,17 +40,17 @@ internal fun IntakeScreen(
     val scroll = rememberScrollState()
     Surface(color = Page, modifier = Modifier.fillMaxSize()) {
         Surface(
-            color = Panel, shape = RoundedCornerShape(26.dp),
+            color = Panel, shape = DoseShapes.shell,
             modifier = Modifier
                 .fillMaxSize()
                 .safeDrawingPadding()
-                .padding(12.dp)
+                .padding(DoseSpacing.shellMargin)
         ) {
             Column {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(start = 4.dp, end = 4.dp, top = 6.dp),
+                        .padding(start = DoseSpacing.tiny, end = DoseSpacing.tiny, top = DoseSpacing.compactGap),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     IconButton(onClick = onClose) {
@@ -77,18 +76,18 @@ internal fun IntakeScreen(
                 }
                 HorizontalDivider(
                     color = PanelBorder,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+                    modifier = Modifier.padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.extraSmall)
                 )
                 Column(
                     Modifier
                         .weight(1f)
                         .verticalScroll(scroll)
-                        .padding(horizontal = 20.dp, vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                        .padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.small),
+                    verticalArrangement = Arrangement.spacedBy(DoseSpacing.small),
                     content = content,
                 )
                 if (bottomBar != null) {
-                    Column(Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) { bottomBar() }
+                    Column(Modifier.padding(horizontal = DoseSpacing.shellInset, vertical = DoseSpacing.small)) { bottomBar() }
                 }
             }
         }
@@ -104,21 +103,21 @@ internal fun IntakeMedicationCard(
 ) {
     val zone = ZoneId.systemDefault()
     Surface(
-        color = SoftPanel, shape = RoundedCornerShape(18.dp),
-        border = BorderStroke(1.dp, PanelBorder), modifier = Modifier.fillMaxWidth(),
+        color = SoftPanel, shape = DoseShapes.panel,
+        border = BorderStroke(DoseDimensions.border, PanelBorder), modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(Modifier.padding(14.dp)) {
+        Column(Modifier.padding(DoseSpacing.cardInset)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     Modifier
                         .size(46.dp)
-                        .clip(RoundedCornerShape(15.dp))
+                        .clip(DoseShapes.tile)
                         .background(AccentPanel),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(Icons.Rounded.Medication, null, tint = Violet, modifier = Modifier.size(23.dp))
                 }
-                Spacer(Modifier.width(12.dp))
+                Spacer(Modifier.width(DoseSpacing.small))
                 Column(Modifier.weight(1f)) {
                     Text(
                         log.medicationName, style = DoseText.contextTitle, fontWeight = FontWeight.Bold,
@@ -128,11 +127,11 @@ internal fun IntakeMedicationCard(
                 }
             }
             if (scheduledAt != null) {
-                HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(top = 12.dp))
+                HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(top = DoseSpacing.small))
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = 10.dp),
+                        .padding(top = DoseSpacing.controlGap),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
