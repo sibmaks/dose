@@ -87,6 +87,7 @@ object ReminderScheduler {
             .commit()
         NotificationPause.restore(app)
         rescheduleSnoozes(app, manager)
+        VibrationRepeat.restore(app)
         scheduleMidnightRollover(app, manager)
         ReminderReceiver.refreshVisible(app)
         io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(app)

@@ -7,6 +7,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import io.github.sibmaks.app.dose.data.DoseGroups
 import io.github.sibmaks.app.dose.data.DoseItem
+import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseStore
 import java.security.MessageDigest
 
@@ -77,6 +78,7 @@ object GroupDoseActions {
         val recorded = DoseStore.recordGroup(context, members, status)
         recorded.forEach { item ->
             ReminderScheduler.cancelSnooze(context, item.medication.id, item.time, item.date)
+            VibrationRepeat.stop(context, DoseLogic.slotKey(item.date, item.medication.id, item.time))
             NotificationManagerCompat.from(context)
                 .cancel(ReminderReceiver.notificationId(item.medication.id, item.time, item.date))
             ReminderScheduler.refreshSlot(context, item.medication.id, item.time)

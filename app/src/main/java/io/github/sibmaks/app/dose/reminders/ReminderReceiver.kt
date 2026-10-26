@@ -73,6 +73,7 @@ class ReminderReceiver : BroadcastReceiver() {
                         )
                     }
                     ReminderScheduler.cancelSnooze(context, id, time, date)
+                    VibrationRepeat.stop(context, slot.key)
                     NotificationManagerCompat.from(context)
                         .cancel(notificationId)
                     ReminderScheduler.refreshSlot(context, id, time)
@@ -87,6 +88,8 @@ class ReminderReceiver : BroadcastReceiver() {
                     ) {
                         ReminderScheduler.snooze(context, id, time, date)
                     }
+                    // The postponed dose stops buzzing; the snooze alarm starts a fresh cycle.
+                    VibrationRepeat.stop(context, slot.key)
                     NotificationManagerCompat.from(context)
                         .cancel(notificationId)
                 }
@@ -109,6 +112,7 @@ class ReminderReceiver : BroadcastReceiver() {
                         repeat = intent.action == ACTION_SNOOZE_FIRED,
                     )
                     ReminderAlerts.show(context, slot)
+                    VibrationRepeat.start(context, slot)
                 }
             }
             if (intent.action != ACTION_REMIND && intent.action != ACTION_SNOOZE_FIRED) refreshVisible(context)
