@@ -42,7 +42,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.graphics.toColorInt
@@ -308,7 +307,7 @@ internal fun MedicationEditor(
                 ) {
                     Text(
                         if (original == null) stringResource(R.string.add_medication) else stringResource(R.string.edit_medication),
-                        fontSize = 21.sp,
+                        style = DoseText.shellTitle,
                         fontWeight = FontWeight.ExtraBold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -336,7 +335,7 @@ internal fun MedicationEditor(
                             position + 1,
                             steps.size,
                             step.localizedTitle(context)
-                        ), color = Violet, fontWeight = FontWeight.Bold, fontSize = 13.sp
+                        ), color = Violet, fontWeight = FontWeight.Bold, style = DoseText.supporting
                     )
                     LinearProgressIndicator(
                         progress = { (position + 1f) / steps.size },
@@ -400,7 +399,7 @@ internal fun MedicationEditor(
                                     Text(
                                         stringResource(R.string.name_suggestions),
                                         fontWeight = FontWeight.Bold,
-                                        fontSize = 13.sp
+                                        style = DoseText.supporting
                                     )
                                     suggestions.forEach { suggestion ->
                                         Surface(
@@ -431,12 +430,12 @@ internal fun MedicationEditor(
                                                     Text(
                                                         suggestion.name,
                                                         fontWeight = FontWeight.Bold,
-                                                        fontSize = 14.sp
+                                                        style = DoseText.body
                                                     )
                                                     Text(
                                                         suggestion.localizedForm(context) + if (suggestion.saved) stringResource(
                                                             R.string.previously_entered
-                                                        ) else "", color = TextMuted, fontSize = 12.sp
+                                                        ) else "", color = TextMuted, style = DoseText.caption
                                                     )
                                                 }
                                                 Icon(
@@ -456,9 +455,9 @@ internal fun MedicationEditor(
                                     stringResource(
                                         R.string.suggested_form,
                                         suggestedForm.orEmpty()
-                                    ), fontSize = 13.sp, color = Violet
+                                    ), style = DoseText.supporting, color = Violet
                                 )
-                                Text(stringResource(R.string.color), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                Text(stringResource(R.string.color), fontWeight = FontWeight.Bold, style = DoseText.itemTitle)
                                 FlowRow(
                                     modifier = Modifier.selectableGroup(),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -511,14 +510,14 @@ internal fun MedicationEditor(
                             MedicationStep.FORM -> {
                                 Text(
                                     stringResource(R.string.choose_form, name),
-                                    fontSize = 16.sp,
+                                    style = DoseText.contextTitle,
                                     fontWeight = FontWeight.Bold
                                 )
                                 if (suggestedForm != null) Text(
                                     stringResource(
                                         R.string.change_suggested_form,
                                         suggestedForm.orEmpty()
-                                    ), color = TextMuted, fontSize = 13.sp
+                                    ), color = TextMuted, style = DoseText.supporting
                                 )
                                 Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(14.dp)) {
                                     localizedForms.forEach { choice ->
@@ -549,10 +548,10 @@ internal fun MedicationEditor(
                             MedicationStep.OTHER_FORM -> {
                                 Text(
                                     stringResource(R.string.give_this_form_a_name),
-                                    fontSize = 19.sp,
+                                    style = DoseText.sectionTitle,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Text(stringResource(R.string.custom_form_hint), fontSize = 13.sp, color = TextMuted)
+                                Text(stringResource(R.string.custom_form_hint), style = DoseText.supporting, color = TextMuted)
                                 OutlinedTextField(
                                     customForm,
                                     { customForm = it.take(40) },
@@ -566,7 +565,7 @@ internal fun MedicationEditor(
                                 val visibleAmountError = if (validationVisible) amountError() else null
                                 Text(
                                     stringResource(R.string.how_much_per_dose),
-                                    fontSize = 19.sp,
+                                    style = DoseText.sectionTitle,
                                     fontWeight = FontWeight.Bold
                                 )
                                 OutlinedTextField(
@@ -585,7 +584,7 @@ internal fun MedicationEditor(
                                 Text(
                                     stringResource(R.string.unit),
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 15.sp
+                                    style = DoseText.itemTitle
                                 )
                                 Row(
                                     Modifier
@@ -652,7 +651,7 @@ internal fun MedicationEditor(
                                     if (validationVisible && quantity.isBlank() && !unitOptional) Text(
                                         stringResource(R.string.unit_required),
                                         color = MaterialTheme.colorScheme.error,
-                                        fontSize = 13.sp,
+                                        style = DoseText.supporting,
                                     )
                                 }
                             }
@@ -660,7 +659,7 @@ internal fun MedicationEditor(
                             MedicationStep.SCHEDULE -> {
                                 Text(
                                     stringResource(R.string.when_should_dose_remind_you),
-                                    fontSize = 19.sp,
+                                    style = DoseText.sectionTitle,
                                     fontWeight = FontWeight.Bold
                                 )
                                 schedules.forEachIndexed { index, rule ->
@@ -709,7 +708,7 @@ internal fun MedicationEditor(
                             MedicationStep.DETAILS -> {
                                 Text(
                                     stringResource(R.string.review_finish),
-                                    fontSize = 19.sp,
+                                    style = DoseText.sectionTitle,
                                     fontWeight = FontWeight.Bold
                                 )
                                 Surface(color = AccentPanel, shape = RoundedCornerShape(16.dp)) {
@@ -722,12 +721,12 @@ internal fun MedicationEditor(
                                         Text(name, fontWeight = FontWeight.Bold)
                                         Text((if (form == MedicationForm.OTHER) customForm.ifBlank { stringResource(R.string.other) } else form.localizedLabel(
                                             context
-                                        )) + " · $amount ${localizedUnit(context, quantity)}", fontSize = 14.sp)
+                                        )) + " · $amount ${localizedUnit(context, quantity)}", style = DoseText.body)
                                         schedules.forEach {
                                             Text(
                                                 scheduleSummary(context, it, amount, quantity),
                                                 color = TextMuted,
-                                                fontSize = 12.sp
+                                                style = DoseText.caption
                                             )
                                         }
                                     }
@@ -993,7 +992,7 @@ private fun ScheduleEditor(
                                                 Box(Modifier.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
                                                     Text(
                                                         "$day",
-                                                        fontSize = 12.sp,
+                                                        style = DoseText.caption,
                                                         color = if (selected) OnAccent else TextPrimary
                                                     )
                                                 }
@@ -1005,7 +1004,7 @@ private fun ScheduleEditor(
                         }
                     }
                     ScheduleError(issue, ScheduleField.MONTH_DAYS)
-                    Text(stringResource(R.string.missing_month_days_hint), fontSize = 12.sp, color = TextMuted)
+                    Text(stringResource(R.string.missing_month_days_hint), style = DoseText.caption, color = TextMuted)
                 }
 
                 ScheduleKind.DAILY -> Unit
@@ -1045,7 +1044,7 @@ private fun ScheduleEditor(
             Text(
                 stringResource(R.string.times),
                 color = if (issue?.field == ScheduleField.TIMES) errorColor else TextPrimary,
-                fontSize = 13.sp,
+                style = DoseText.supporting,
                 fontWeight = FontWeight.Bold
             )
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -1116,7 +1115,7 @@ private fun ScheduleError(
     if (issue?.field == field) Text(
         localizedValidationError(LocalContext.current, issue.message),
         color = MaterialTheme.colorScheme.error,
-        fontSize = 12.sp
+        style = DoseText.caption
     )
 }
 
@@ -1212,7 +1211,7 @@ private fun OverlapsStep(
     val resolvedCount = coincidences.count { it.resolved }
     Text(
         stringResource(R.string.dose_overlap_found, coincidences.size),
-        fontSize = 19.sp,
+        style = DoseText.sectionTitle,
         fontWeight = FontWeight.Bold
     )
     Row(
@@ -1231,15 +1230,14 @@ private fun OverlapsStep(
         Text(
             stringResource(R.string.dose_overlap_progress, resolvedCount, coincidences.size),
             color = AmberText,
-            fontSize = 12.sp,
+            style = DoseText.caption,
             fontWeight = FontWeight.SemiBold
         )
     }
     Text(
         stringResource(R.string.dose_overlap_choose_desc),
         color = TextMuted,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
+        style = DoseText.caption,
     )
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         coincidences.forEach { group ->
@@ -1268,7 +1266,7 @@ private fun OverlapsStep(
             Text(
                 stringResource(R.string.dose_overlap_pick_all),
                 color = AmberText,
-                fontSize = 12.sp,
+                style = DoseText.caption,
                 fontWeight = FontWeight.SemiBold
             )
         }
@@ -1318,7 +1316,7 @@ private fun ConflictItem(
                 Text(
                     headline,
                     color = TextPrimary,
-                    fontSize = 12.5.sp,
+                    style = DoseText.supporting,
                     fontWeight = FontWeight.ExtraBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -1344,7 +1342,7 @@ private fun ConflictItem(
                     } " +
                             "(${stringResource(R.string.schedule_number, winner + 1)})",
                     color = GreenMuted,
-                    fontSize = 11.sp,
+                    style = DoseText.label,
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -1378,7 +1376,7 @@ private fun ConflictStatus(resolved: Boolean) {
                 stringResource(
                     if (resolved) R.string.dose_overlap_resolved_tag else R.string.dose_overlap_pending_tag
                 ),
-                fontSize = 10.sp,
+                style = DoseText.label,
                 fontWeight = FontWeight.ExtraBold,
                 color = if (resolved) GreenText else AmberText,
             )
@@ -1412,11 +1410,11 @@ private fun ExpandedConflict(
         )
         Text(
             localizedLongDate(context, group.date.toString()),
-            fontSize = 12.5.sp,
+            style = DoseText.supporting,
             fontWeight = FontWeight.ExtraBold,
             color = TextPrimary
         )
-        Text("·", color = TextMuted, fontSize = 12.5.sp)
+        Text("·", color = TextMuted, style = DoseText.supporting)
         Icon(
             Icons.Rounded.AccessTime,
             null,
@@ -1425,7 +1423,7 @@ private fun ExpandedConflict(
         )
         Text(
             group.times.joinToString(" · "),
-            fontSize = 12.5.sp,
+            style = DoseText.supporting,
             fontWeight = FontWeight.ExtraBold,
             color = TextPrimary
         )
@@ -1459,24 +1457,23 @@ private fun ExpandedConflict(
                                     RadioButtonCircle(pending == index)
                                     Text(
                                         doseLabel(context, rule, amount, quantity),
-                                        fontSize = 16.sp,
+                                        style = DoseText.contextTitle,
                                         fontWeight = FontWeight.ExtraBold,
                                         color = if (pending == index) Violet else TextPrimary,
                                     )
                                 }
                                 Text(
                                     stringResource(R.string.schedule_number, index + 1),
-                                    fontSize = 11.sp,
+                                    style = DoseText.label,
                                     fontWeight = FontWeight.Bold,
                                     color = TextPrimary
                                 )
                                 Text(
                                     scheduleSummary(context, rule),
                                     color = TextMuted,
-                                    fontSize = 10.5.sp,
+                                    style = DoseText.label,
                                     maxLines = 2,
                                     overflow = TextOverflow.Ellipsis,
-                                    lineHeight = 13.sp,
                                 )
                             }
                         }
@@ -1509,7 +1506,7 @@ private fun ExpandedConflict(
                 )
                 Text(
                     stringResource(R.string.dose_overlap_what_happens),
-                    fontSize = 10.5.sp,
+                    style = DoseText.label,
                     fontWeight = FontWeight.ExtraBold,
                     color = Violet
                 )
@@ -1521,14 +1518,14 @@ private fun ExpandedConflict(
                         doseLabel(context, schedules[index], amount, quantity)
                     )
                 } ?: stringResource(R.string.dose_overlap_result_pending),
-                fontSize = 12.5.sp,
+                style = DoseText.supporting,
                 fontWeight = FontWeight.SemiBold,
                 color = TextPrimary,
             )
             Text(
                 stringResource(R.string.dose_overlap_result_keep),
                 color = TextMuted,
-                fontSize = 11.sp,
+                style = DoseText.label,
             )
         }
     }
@@ -1597,7 +1594,7 @@ private fun UnitModeSegment(
     ) {
         Text(
             label,
-            fontSize = 14.sp,
+            style = DoseText.body,
             fontWeight = if (active) FontWeight.Bold else FontWeight.SemiBold,
             color = if (active) Violet else TextMuted,
         )
@@ -1626,7 +1623,7 @@ private fun UnitChip(
     ) {
         Text(
             label,
-            fontSize = 14.sp,
+            style = DoseText.body,
             textAlign = TextAlign.Center,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
             color = if (selected) Violet else TextPrimary,

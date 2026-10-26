@@ -3,13 +3,13 @@
     android:padding="12dp" android:background="@drawable/widget_list_background">
     <LinearLayout android:id="@+id/widget_header" android:layout_width="match_parent" android:layout_height="40dp" android:gravity="center_vertical">
         <TextView android:id="@+id/widget_title" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
-            android:textColor="@color/dose_widget_text" android:textSize="14sp" android:textStyle="bold" android:maxLines="2" android:ellipsize="end" />
+            android:textColor="@color/dose_widget_text" android:textSize="@dimen/dose_text_body" android:textStyle="bold" android:maxLines="2" android:ellipsize="end" />
         <TextView android:id="@+id/widget_time" android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_marginStart="8dp" android:textColor="@color/dose_widget_primary" android:textSize="20sp" android:textStyle="bold" />
+            android:layout_marginStart="8dp" android:textColor="@color/dose_widget_primary" android:textSize="@dimen/dose_text_detail" android:textStyle="bold" />
     </LinearLayout>
     <TextView android:id="@+id/widget_empty_message" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
-        android:gravity="center" android:padding="8dp" android:visibility="gone" android:textColor="@color/dose_widget_text" android:textSize="18sp" android:textStyle="bold" />
+        android:gravity="center" android:padding="8dp" android:visibility="gone" android:textColor="@color/dose_widget_text" android:textSize="@dimen/dose_text_emphasis" android:textStyle="bold" />
     <LinearLayout android:id="@+id/widget_rows" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" />
     <TextView android:id="@+id/widget_dose" android:layout_width="match_parent" android:layout_height="24dp" android:gravity="center_vertical"
-        android:textColor="@color/dose_widget_primary" android:textSize="12sp" android:maxLines="1" android:ellipsize="end" />
+        android:textColor="@color/dose_widget_primary" android:textSize="@dimen/dose_text_caption" android:maxLines="1" android:ellipsize="end" />
 </LinearLayout>

@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.DoseEvent
 import io.github.sibmaks.app.dose.data.DoseLog
@@ -104,14 +103,14 @@ internal fun IntakeDetailsScreen(
                 }
                 Spacer(Modifier.width(13.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(style.label, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = style.accent)
+                    Text(style.label, style = DoseText.contextTitle, fontWeight = FontWeight.Bold, color = style.accent)
                     if (log.status == "taken") {
                         // The real intake instant, with the delay as its own second line.
                         Text(
                             Instant.ofEpochMilli(log.recordedAt)
                                 .atZone(ZoneId.systemDefault())
                                 .format(momentFormatter),
-                            fontSize = 13.sp,
+                            style = DoseText.supporting,
                             color = style.accent, modifier = Modifier.padding(top = 2.dp),
                         )
                         DoseTimeline.delayMinutes(log)
@@ -119,7 +118,7 @@ internal fun IntakeDetailsScreen(
                             ?.let { delay ->
                                 Text(
                                     stringResource(R.string.event_taken_late, durationMinutes(context, delay)),
-                                    fontSize = 12.sp,
+                                    style = DoseText.caption,
                                     color = style.accent, modifier = Modifier.padding(top = 2.dp),
                                 )
                             }
@@ -127,7 +126,7 @@ internal fun IntakeDetailsScreen(
                         stringResource(
                             if (log.status == "pending") R.string.status_pending_hint else R.string.status_missed_hint
                         ),
-                        fontSize = 13.sp,
+                        style = DoseText.supporting,
                         color = style.accent, modifier = Modifier.padding(top = 2.dp),
                     )
                 }
@@ -138,7 +137,7 @@ internal fun IntakeDetailsScreen(
         IntakeTimeline(log, events)
 
         if (staleError) Text(
-            stringResource(R.string.history_changed_error), fontSize = 13.sp,
+            stringResource(R.string.history_changed_error), style = DoseText.supporting,
             color = MaterialTheme.colorScheme.error,
         )
     }

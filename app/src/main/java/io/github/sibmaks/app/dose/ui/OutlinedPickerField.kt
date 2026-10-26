@@ -18,7 +18,6 @@ import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 
 /** A picker action with Material field decoration, without editable-text or keyboard semantics. */
@@ -65,7 +64,7 @@ internal fun OutlinedPickerField(
             OutlinedTextFieldDefaults.DecorationBox(
                 value = display,
                 innerTextField = {
-                    Text(display, fontSize = 15.sp,
+                    Text(display, style = DoseText.itemTitle,
                         fontWeight = if (value.isBlank()) FontWeight.Normal else FontWeight.SemiBold,
                         color = if (value.isBlank()) TextMuted else TextPrimary,
                         modifier = Modifier.clearAndSetSemantics {})
@@ -94,7 +93,7 @@ internal fun OutlinedPickerField(
             )
         }
         if (supportingError && errorMessage != null) Text(
-            errorMessage, color = MaterialTheme.colorScheme.error, fontSize = 12.sp,
+            errorMessage, color = MaterialTheme.colorScheme.error, style = DoseText.caption,
             modifier = Modifier.padding(top = 4.dp).semantics { liveRegion = LiveRegionMode.Polite },
         )
     }

@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.data.DoseItem
@@ -71,7 +70,7 @@ internal fun TodayDoseEditor(
                 ) {
                     PillAvatar(medication.color, medication.form, medication.localizedForm(context))
                     Column(Modifier.weight(1f)) {
-                        Text(stringResource(R.string.dose_label), fontSize = 12.sp, color = TextMuted)
+                        Text(stringResource(R.string.dose_label), style = DoseText.caption, color = TextMuted)
                         Text(
                             listOf(item.amount, localizedUnit(context, medication.quantity)).filter { it.isNotBlank() }
                                 .joinToString(" "),
@@ -84,7 +83,7 @@ internal fun TodayDoseEditor(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(stringResource(R.string.dose_status), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.dose_status), style = DoseText.supporting, fontWeight = FontWeight.Bold)
                     StatusBadge(item.status)
                 }
                 DoseDetail(stringResource(R.string.medication_form), medication.localizedForm(context))
@@ -113,7 +112,7 @@ internal fun TodayDoseEditor(
         }
         if (item.log == null) {
             HorizontalDivider(color = PanelBorder)
-            Text(stringResource(R.string.today_only_hint), fontSize = 13.sp, color = TextMuted)
+            Text(stringResource(R.string.today_only_hint), style = DoseText.supporting, color = TextMuted)
             Text(stringResource(R.string.reminder_time), fontWeight = FontWeight.Bold)
             OutlinedButton(
                 onClick = {
@@ -148,7 +147,7 @@ internal fun TodayDoseEditor(
                     rule,
                     medication.amount,
                     medication.quantity
-                ), fontSize = 14.sp
+                ), style = DoseText.body
             )
         }
     }
@@ -160,7 +159,7 @@ private fun DoseDetail(
     value: String
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-        Text(label, color = TextMuted, fontSize = 12.sp)
-        Text(value, fontSize = 14.sp)
+        Text(label, color = TextMuted, style = DoseText.caption)
+        Text(value, style = DoseText.body)
     }
 }

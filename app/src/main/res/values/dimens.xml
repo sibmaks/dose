@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="dose_text_label">11sp</dimen>
+    <dimen name="dose_text_caption">12sp</dimen>
+    <dimen name="dose_text_body">14sp</dimen>
+    <dimen name="dose_text_item">15sp</dimen>
+    <dimen name="dose_text_emphasis">18sp</dimen>
+    <dimen name="dose_text_detail">20sp</dimen>
+    <dimen name="dose_text_widget_time">36sp</dimen>
+</resources>

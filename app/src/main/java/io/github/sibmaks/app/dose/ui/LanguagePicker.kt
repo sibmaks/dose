@@ -26,7 +26,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.localization.AppLanguages
 
@@ -58,7 +57,7 @@ internal fun LanguagePicker(
                 ?.recreate()
         }, secondaryLabel = stringResource(R.string.cancel)
     ) {
-        if (firstStart) Text(stringResource(R.string.first_language_offer), fontSize = 14.sp, color = TextMuted)
+        if (firstStart) Text(stringResource(R.string.first_language_offer), style = DoseText.body, color = TextMuted)
         val options =
             listOf("" to stringResource(R.string.system_language)) + AppLanguages.supported.map { it.tag to it.nativeName }
         Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(12.dp)) {

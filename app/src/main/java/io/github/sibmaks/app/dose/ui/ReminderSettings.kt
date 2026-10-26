@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -178,7 +177,7 @@ internal fun ReminderSettingsScreen(
         if (!state.feedChecked && !state.popupsChecked) {
             Text(
                 stringResource(R.string.reminders_disabled_hint),
-                fontSize = 13.sp,
+                style = DoseText.supporting,
                 color = TextMuted
             )
         } else {
@@ -193,7 +192,7 @@ internal fun ReminderSettingsScreen(
         if (state.popupsChecked && !state.feedChecked) {
             Text(
                 stringResource(R.string.popup_feed_disabled_hint),
-                fontSize = 12.sp,
+                style = DoseText.caption,
                 color = TextMuted
             )
         }
@@ -222,9 +221,9 @@ private fun ReminderChoice(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                Text(explanation, color = TextMuted, fontSize = 12.sp)
-                if (accessHint != null) Text(accessHint, color = Violet, fontSize = 12.sp)
+                Text(title, fontWeight = FontWeight.Bold, style = DoseText.itemTitle)
+                Text(explanation, color = TextMuted, style = DoseText.caption)
+                if (accessHint != null) Text(accessHint, color = Violet, style = DoseText.caption)
             }
             LabeledSwitch(
                 checked = checked, onCheckedChange = onChange, enabled = enabled,
@@ -241,7 +240,7 @@ private fun VibrationStyleSection() {
     var selected by rememberSaveable { mutableStateOf(ReminderAlerts.vibrationStyle(context)) }
     var expanded by remember { mutableStateOf(false) }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(stringResource(R.string.vibration_style), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+        Text(stringResource(R.string.vibration_style), fontWeight = FontWeight.Bold, style = DoseText.itemTitle)
         Box {
             Surface(
                 onClick = { expanded = true },
@@ -262,7 +261,7 @@ private fun VibrationStyleSection() {
                     )
                     Text(
                         stringResource(selected.label()),
-                        fontSize = 13.5.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary,
+                        style = DoseText.body, fontWeight = FontWeight.SemiBold, color = TextPrimary,
                         modifier = Modifier.weight(1f)
                     )
                     Icon(Icons.Rounded.ExpandMore, null, tint = TextMuted)

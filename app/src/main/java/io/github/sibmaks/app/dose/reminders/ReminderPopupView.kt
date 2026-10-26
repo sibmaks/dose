@@ -16,6 +16,7 @@ import io.github.sibmaks.app.dose.localization.localizedDose
 import io.github.sibmaks.app.dose.localization.localizedForm
 import io.github.sibmaks.app.dose.ui.iconResource
 import io.github.sibmaks.app.dose.ui.doseColorScheme
+import io.github.sibmaks.app.dose.ui.DoseText
 import androidx.compose.ui.graphics.toArgb
 
 /** Explicit shapes and colors keep the pop-up consistent across device button themes. */
@@ -74,7 +75,7 @@ internal object ReminderPopupView {
         ) =
             Button(context).apply {
                 text = label
-                textSize = 14f
+                textSize = DoseText.body.fontSize.value
                 isAllCaps = false
                 setTypeface(typeface, Typeface.BOLD)
                 gravity = Gravity.CENTER
@@ -103,10 +104,10 @@ internal object ReminderPopupView {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(18), dp(20), dp(18), dp(16))
         }
-        content.addView(text(context.getString(R.string.time_for_your_medication), 20f, true))
+        content.addView(text(context.getString(R.string.time_for_your_medication), DoseText.detailTitle.fontSize.value, true))
         if (entries.size > 1) {
             content.addView(
-                text(context.getString(R.string.several_medicines, entries.size), 14f, color = muted),
+                text(context.getString(R.string.several_medicines, entries.size), DoseText.body.fontSize.value, color = muted),
                 LinearLayout.LayoutParams(-1, -2)
                     .apply { topMargin = dp(8) })
             content.addView(
@@ -136,9 +137,9 @@ internal object ReminderPopupView {
             }, LinearLayout.LayoutParams(dp(44), dp(44)))
             val description = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
-                addView(text(medication.name, 17f, true))
+                addView(text(medication.name, DoseText.contextTitle.fontSize.value, true))
                 addView(
-                    text(medication.localizedDose(context, entry.amount), 13f, color = muted),
+                    text(medication.localizedDose(context, entry.amount), DoseText.supporting.fontSize.value, color = muted),
                     LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -151,14 +152,14 @@ internal object ReminderPopupView {
                     .apply {
                         marginStart = dp(10); marginEnd = dp(8)
                     })
-            heading.addView(text(entry.time, 12f, true, accent).apply {
+            heading.addView(text(entry.time, DoseText.caption.fontSize.value, true, accent).apply {
                 background = shape(lavender, 20)
                 setPadding(dp(10), dp(6), dp(10), dp(6))
                 contentDescription = context.getString(R.string.scheduled_time, entry.time)
             })
             card.addView(heading)
             if (medication.note.isNotBlank()) card.addView(
-                text(medication.note, 13f, color = muted),
+                text(medication.note, DoseText.supporting.fontSize.value, color = muted),
                 LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT

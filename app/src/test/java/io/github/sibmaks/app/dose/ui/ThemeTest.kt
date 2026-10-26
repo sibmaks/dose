@@ -71,6 +71,7 @@ class ThemeTest {
                 .parse(File(resources, path)).getElementsByTagName(tag)
             return (0 until nodes.length).map { nodes.item(it) as Element }
         }
+        val dimensions = elements("values/dimens.xml", "dimen").associate { it.getAttribute("name") to it.textContent.trim() }
         val baseColors = elements("values/colors.xml", "color").associate { it.getAttribute("name") to it.textContent.trim() }
         for (dark in listOf(false, true)) {
             val colors = baseColors + if (dark) elements("values-night/colors.xml", "color")
@@ -87,7 +88,8 @@ class ThemeTest {
             )) {
                 val surface = background("drawable/$fill.xml")
                 elements("layout/$layout.xml", "TextView").forEach { view ->
-                    val size = view.getAttribute("android:textSize").removeSuffix("sp").toFloat()
+                    val sizeValue = view.getAttribute("android:textSize")
+                    val size = (if (sizeValue.startsWith("@dimen/")) dimensions.getValue(sizeValue.substringAfter('/')) else sizeValue).removeSuffix("sp").toFloat()
                     val large = size >= if (view.getAttribute("android:textStyle") == "bold") 14f else 18f
                     val ownBackground = view.getAttribute("android:background")
                     val behindText = if (ownBackground.startsWith("@drawable/"))

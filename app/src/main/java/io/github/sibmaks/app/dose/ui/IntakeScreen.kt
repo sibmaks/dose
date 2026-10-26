@@ -21,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.DoseLog
 import java.time.Instant
@@ -59,7 +58,7 @@ internal fun IntakeScreen(
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.back))
                     }
                     Text(
-                        title, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold,
+                        title, style = DoseText.detailTitle, fontWeight = FontWeight.ExtraBold,
                         modifier = Modifier.weight(1f), textAlign = TextAlign.Center,
                     )
                     if (showMenu) {
@@ -122,10 +121,10 @@ internal fun IntakeMedicationCard(
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
                     Text(
-                        log.medicationName, fontSize = 16.sp, fontWeight = FontWeight.Bold,
+                        log.medicationName, style = DoseText.contextTitle, fontWeight = FontWeight.Bold,
                         maxLines = 2, overflow = TextOverflow.Ellipsis,
                     )
-                    Text(log.dose, fontSize = 13.sp, color = TextMuted)
+                    Text(log.dose, style = DoseText.supporting, color = TextMuted)
                 }
             }
             if (scheduledAt != null) {
@@ -137,14 +136,14 @@ internal fun IntakeMedicationCard(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        stringResource(R.string.scheduled_intake), fontSize = 13.sp,
+                        stringResource(R.string.scheduled_intake), style = DoseText.supporting,
                         color = TextMuted, modifier = Modifier.weight(1f),
                     )
                     Text(
                         Instant.ofEpochMilli(scheduledAt)
                             .atZone(zone)
                             .format(momentFormatter),
-                        fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                        style = DoseText.supporting, fontWeight = FontWeight.SemiBold,
                     )
                 }
             }

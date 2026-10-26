@@ -11,7 +11,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.DoseLog
 import io.github.sibmaks.app.dose.data.DoseReports
@@ -38,7 +37,7 @@ internal fun DelayReportCard(
                 .fillMaxWidth()
                 .padding(17.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(stringResource(R.string.time_to_take), fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+            Text(stringResource(R.string.time_to_take), style = DoseText.sectionTitle, fontWeight = FontWeight.ExtraBold)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                 listOf(7, 30, null).forEach { period ->
                     FilterChip(
@@ -52,11 +51,11 @@ internal fun DelayReportCard(
             }
             Text(report.averageDelayMillis?.let { delayDuration(context, it) } ?: "—",
                 color = Violet,
-                fontSize = 30.sp,
+                style = DoseText.metric,
                 fontWeight = FontWeight.ExtraBold)
             Text(
                 stringResource(R.string.average_delay_count, report.count),
-                fontSize = 13.sp,
+                style = DoseText.supporting,
                 fontWeight = FontWeight.Bold
             )
             if (report.count > 0) {
@@ -64,16 +63,16 @@ internal fun DelayReportCard(
                     HorizontalDivider(color = PanelBorder)
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         Column(Modifier.weight(1f)) {
-                            Text(med.name, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            Text(med.name, style = DoseText.body, fontWeight = FontWeight.Bold)
                             Text(
                                 stringResource(R.string.taken_count, med.count),
-                                fontSize = 12.sp,
+                                style = DoseText.caption,
                                 color = TextMuted
                             )
                         }
                         Text(
                             delayDuration(context, med.averageDelayMillis),
-                            fontSize = 14.sp,
+                            style = DoseText.body,
                             color = Violet,
                             fontWeight = FontWeight.Bold
                         )
@@ -82,7 +81,7 @@ internal fun DelayReportCard(
             }
             if (report.estimatedCount > 0) Text(
                 stringResource(R.string.estimated_entries, report.estimatedCount),
-                fontSize = 12.sp,
+                style = DoseText.caption,
                 color = TextMuted
             )
         }

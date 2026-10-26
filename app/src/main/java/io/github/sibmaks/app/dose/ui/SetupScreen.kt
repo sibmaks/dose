@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 
 /** Full page with the same card, spacing, typography, and balanced actions as medication entry. */
@@ -50,7 +49,7 @@ internal fun SetupScreen(
                         .padding(start = 20.dp, end = 10.dp, top = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(title, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+                    Text(title, style = DoseText.shellTitle, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
                     IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, stringResource(R.string.close_screen)) }
                 }
                 HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))

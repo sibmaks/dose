@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.data.DoseLogic
@@ -93,7 +92,7 @@ internal fun NotificationPauseSection(onRefresh: () -> Unit) {
 
         if (scheduled.isNotEmpty()) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(R.string.pause_scheduled_section), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                Text(stringResource(R.string.pause_scheduled_section), fontWeight = FontWeight.Bold, style = DoseText.itemTitle)
                 Spacer(Modifier.width(7.dp))
                 PauseCountChip(scheduled.size)
             }
@@ -170,13 +169,13 @@ private fun PauseStatusCard(
                     if (neverUsed) R.string.pause_notifications_enabled else R.string.pause_notifications_active
                 ),
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.5.sp,
+                style = DoseText.itemTitle,
                 color = Mint,
                 modifier = Modifier.padding(top = 6.dp),
             )
             if (neverUsed) Text(
                 stringResource(R.string.pause_enabled_hint),
-                fontSize = 12.5.sp,
+                style = DoseText.supporting,
                 color = TextMuted,
                 modifier = Modifier.padding(top = 2.dp),
             )
@@ -201,7 +200,7 @@ private fun PauseActiveCard(
         Column(Modifier.padding(14.dp)) {
             Text(
                 stringResource(R.string.pause_current_title),
-                fontWeight = FontWeight.Bold, fontSize = 15.sp,
+                fontWeight = FontWeight.Bold, style = DoseText.itemTitle,
                 modifier = Modifier.padding(top = 7.dp),
             )
             BoundRow(
@@ -218,7 +217,7 @@ private fun PauseActiveCard(
             )
             Text(
                 stringResource(R.string.pause_auto_resume),
-                fontSize = 12.5.sp, color = TextMuted, lineHeight = 17.sp,
+                style = DoseText.supporting, color = TextMuted,
                 modifier = Modifier.padding(top = 8.dp),
             )
             Surface(
@@ -236,7 +235,7 @@ private fun PauseActiveCard(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(stringResource(R.string.pause_resume_action), fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Text(stringResource(R.string.pause_resume_action), fontWeight = FontWeight.Bold, style = DoseText.body)
                 }
             }
         }
@@ -249,8 +248,8 @@ private fun BoundRow(
     value: String
 ) {
     Row(Modifier.padding(top = 9.dp)) {
-        Text(label, color = TextMuted, fontSize = 14.sp, modifier = Modifier.weight(1f))
-        Text(value, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+        Text(label, color = TextMuted, style = DoseText.body, modifier = Modifier.weight(1f))
+        Text(value, fontWeight = FontWeight.SemiBold, style = DoseText.body)
     }
 }
 
@@ -277,7 +276,7 @@ private fun AddPauseTile(onClick: () -> Unit) {
                 stringResource(R.string.pause_add_action),
                 color = Violet,
                 fontWeight = FontWeight.Bold,
-                fontSize = 15.sp
+                style = DoseText.itemTitle
             )
         }
     }
@@ -307,7 +306,7 @@ private fun PauseScheduledCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     start.format(DateTimeFormatter.ofPattern("d MMMM", locale)),
-                    fontWeight = FontWeight.Bold, fontSize = 14.5.sp,
+                    fontWeight = FontWeight.Bold, style = DoseText.itemTitle,
                     modifier = Modifier.weight(1f),
                 )
                 PausePill(
@@ -328,7 +327,7 @@ private fun PauseScheduledCard(
             Text(
                 start.format(DateTimeFormatter.ofPattern("HH:mm", locale)) + " — " +
                         end.format(DateTimeFormatter.ofPattern("HH:mm", locale)),
-                fontWeight = FontWeight.SemiBold, fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold, style = DoseText.itemTitle,
                 modifier = Modifier.padding(top = 5.dp),
             )
             val crossesMidnight = end.toLocalDate() != start.toLocalDate()
@@ -337,7 +336,7 @@ private fun PauseScheduledCard(
                     R.string.pause_until_date,
                     end.format(DateTimeFormatter.ofPattern("d MMMM", locale))
                 ) else durationMinutes(context, (window.endAt - window.startAt) / 60_000),
-                fontSize = 12.5.sp, color = TextMuted,
+                style = DoseText.supporting, color = TextMuted,
                 modifier = Modifier.padding(top = 3.dp),
             )
         }
@@ -351,7 +350,7 @@ private fun PauseCountChip(
 ) {
     Text(
         "$count",
-        fontSize = 11.5.sp, fontWeight = FontWeight.Bold,
+        style = DoseText.caption, fontWeight = FontWeight.Bold,
         color = if (muted) TextMuted else Violet,
         modifier = Modifier
             .clip(RoundedCornerShape(999.dp))
@@ -376,7 +375,7 @@ private fun PausePill(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         Icon(icon, null, tint = tint, modifier = Modifier.size(13.dp))
-        Text(text, fontSize = 11.5.sp, fontWeight = FontWeight.Bold, color = tint)
+        Text(text, style = DoseText.caption, fontWeight = FontWeight.Bold, color = tint)
     }
 }
 
@@ -475,7 +474,7 @@ private fun CreatePauseSheet(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     stringResource(R.string.pause_new_title),
-                    fontSize = 20.sp, fontWeight = FontWeight.Bold,
+                    style = DoseText.detailTitle, fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
                 )
                 IconButton(onClick = onDismiss) {
@@ -483,7 +482,7 @@ private fun CreatePauseSheet(
                 }
             }
 
-            Text(stringResource(R.string.pause_start_label), fontWeight = FontWeight.Bold, fontSize = 14.sp)
+            Text(stringResource(R.string.pause_start_label), fontWeight = FontWeight.Bold, style = DoseText.body)
             Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 PauseOptionChip(
                     stringResource(R.string.pause_start_now),
@@ -545,7 +544,7 @@ private fun CreatePauseSheet(
                 }
             }
 
-            Text(stringResource(R.string.pause_end_label), fontWeight = FontWeight.Bold, fontSize = 14.sp)
+            Text(stringResource(R.string.pause_end_label), fontWeight = FontWeight.Bold, style = DoseText.body)
             FlowRow(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 PauseOptionChip(stringResource(R.string.pause_30_min), selected = preset == PausePreset.MIN30.name) {
                     preset = PausePreset.MIN30.name
@@ -632,7 +631,7 @@ private fun CreatePauseSheet(
 
             if (overlaps) Text(
                 stringResource(R.string.pause_overlap_info),
-                fontSize = 12.5.sp, color = TextMuted, lineHeight = 17.sp,
+                style = DoseText.supporting, color = TextMuted,
             )
             Surface(
                 shape = RoundedCornerShape(14.dp),
@@ -648,7 +647,7 @@ private fun CreatePauseSheet(
                             .format(momentFormatter),
                         endMoment?.format(momentFormatter).orEmpty(),
                     ) else stringResource(if (needsEndTime) R.string.pick_time_placeholder else R.string.pause_range_invalid),
-                    fontSize = 13.5.sp, lineHeight = 19.sp,
+                    style = DoseText.body,
                     color = if (needsEndTime) TextMuted else if (valid) TextPrimary else MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(12.dp),
                 )
@@ -697,7 +696,7 @@ private fun PauseOptionChip(
         modifier = modifier.selectionControl(selected, onClick = onClick),
     ) {
         Text(
-            label, fontSize = 13.5.sp,
+            label, style = DoseText.body,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
             color = if (selected) Violet else TextPrimary,
             modifier = Modifier

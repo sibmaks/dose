@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.data.DoseLog
@@ -177,11 +176,11 @@ internal fun HistoryDoseEditor(
             }
             if (log.status == "taken") Text(
                 stringResource(R.string.edit_intake_hint_taken),
-                fontSize = 12.sp, color = TextMuted, modifier = Modifier.padding(top = 2.dp),
+                style = DoseText.caption, color = TextMuted, modifier = Modifier.padding(top = 2.dp),
             )
         }
         if (staleError) Text(
-            stringResource(R.string.history_changed_error), fontSize = 13.sp,
+            stringResource(R.string.history_changed_error), style = DoseText.supporting,
             color = MaterialTheme.colorScheme.error,
         )
     }
@@ -216,7 +215,7 @@ private fun StatusOption(
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(style.label, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
+                    Text(style.label, style = DoseText.itemTitle, fontWeight = FontWeight.Bold, color = TextPrimary)
                     if (current) {
                         Spacer(Modifier.width(7.dp))
                         Box(
@@ -226,14 +225,14 @@ private fun StatusOption(
                                 .padding(horizontal = 7.dp, vertical = 2.dp)
                         ) {
                             Text(
-                                stringResource(R.string.current_status_tag), fontSize = 10.sp,
+                                stringResource(R.string.current_status_tag), style = DoseText.label,
                                 fontWeight = FontWeight.Bold,
                                 color = if (selected) TextMuted else Violet,
                             )
                         }
                     }
                 }
-                Text(style.hint, fontSize = 12.sp, color = TextMuted, modifier = Modifier.padding(top = 1.dp))
+                Text(style.hint, style = DoseText.caption, color = TextMuted, modifier = Modifier.padding(top = 1.dp))
             }
             RadioButton(selected = selected, onClick = null)
         }
@@ -248,6 +247,6 @@ private fun FieldError(message: String) {
             tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(16.dp),
         )
         Spacer(Modifier.width(7.dp))
-        Text(message, color = MaterialTheme.colorScheme.error, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+        Text(message, color = MaterialTheme.colorScheme.error, style = DoseText.supporting, fontWeight = FontWeight.SemiBold)
     }
 }

@@ -15,7 +15,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-09 | Widget appearance policy and updates | Complete |
 | UI-10 | Shared semantic color ownership | Complete |
 | UI-11 | Shared accessible picker fields | Complete |
-| UI-12 | Shared typography roles | Pending |
+| UI-12 | Shared typography roles | Complete |
 | UI-13 | Named geometry conventions | Pending |
 
 ## Verification
@@ -77,3 +77,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - Scheduling, intake history and pause editing share one outlined picker field using Material label/border decoration, the theme interactive outline, scalable height, associated label/value and error semantics, optional icons and an independent clear action. Date formats and validation rules remain owned by each flow.
 - Verification: debug assembly and lint passed. Emulator replay confirmed label/value descriptions, a working native date-picker action, empty-time semantics, and stacked date/time fields at 200% text. Final field decoration was visually checked at normal size; history data-specific states remain source verified.
+
+### UI-12
+
+- Introduced the app's complete Material typography and named text roles, including line heights. Consolidated half-size caption variants, retained the heading/hero hierarchy, and reused role sizes in the native reminder popup and named XML widget dimensions.
+- Verification: theme/contrast tests and debug assembly passed. Emulator replay checked normal picker decoration and 200% navigation, dosage choices and stacked picker fields. Native text still follows Android font scaling; brand lettering and the compact widget clock retain their explicit display roles.

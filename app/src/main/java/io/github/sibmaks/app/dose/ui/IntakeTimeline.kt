@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.DoseEvent
 import io.github.sibmaks.app.dose.data.DoseLog
@@ -71,8 +70,7 @@ internal fun TimelineHeading(text: String) {
         text.uppercase(AppLanguages.locale(LocalContext.current)),
         color = Semantic.eyebrow,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 11.sp,
-        letterSpacing = 1.1.sp,
+        style = DoseText.eyebrow,
     )
 }
 
@@ -102,7 +100,7 @@ internal fun IntakeTimeline(
             if (previous == null || previous.format(dayFormatter) != day) {
                 RailRow(last = false, tile = {}) {
                     Text(
-                        day, fontSize = 13.sp, fontWeight = FontWeight.Bold, color = TextMuted,
+                        day, style = DoseText.supporting, fontWeight = FontWeight.Bold, color = TextMuted,
                         modifier = Modifier.padding(bottom = 2.dp),
                     )
                 }
@@ -130,11 +128,11 @@ internal fun IntakeTimeline(
                         Text(
                             timelineTitle(context, entry),
                             modifier = Modifier.weight(1f),
-                            fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary,
+                            style = DoseText.body, fontWeight = FontWeight.SemiBold, color = TextPrimary,
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(
-                            moment.format(timeFormatter), fontSize = 13.sp, fontWeight = FontWeight.Bold,
+                            moment.format(timeFormatter), style = DoseText.supporting, fontWeight = FontWeight.Bold,
                             color = when (entry.kind) {
                                 "taken" -> Mint
                                 "missed" -> Peach
@@ -143,7 +141,7 @@ internal fun IntakeTimeline(
                         )
                     }
                     timelineMeta(context, entry, moment)?.let {
-                        Text(it, fontSize = 12.sp, color = TextMuted, modifier = Modifier.padding(top = 2.dp))
+                        Text(it, style = DoseText.caption, color = TextMuted, modifier = Modifier.padding(top = 2.dp))
                     }
                 }
             }

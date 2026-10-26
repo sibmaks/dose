@@ -24,7 +24,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.ColorWheelSelection
@@ -79,7 +78,7 @@ internal fun ColorPicker(
                         )
                         .border(1.dp, PanelBorder, RoundedCornerShape(12.dp))
                 )
-                Text(brightnessString, fontSize = 13.sp)
+                Text(brightnessString, style = DoseText.supporting)
                 Slider(
                     value = brightness, onValueChange = { choose(selection.copy(brightness = it)) },
                     modifier = Modifier.semantics { contentDescription = brightnessString })
