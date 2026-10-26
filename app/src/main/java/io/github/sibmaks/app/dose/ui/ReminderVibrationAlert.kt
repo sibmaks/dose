@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -111,9 +112,15 @@ internal fun ReminderVibrationAlert(
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     stringResource(if (unavailable) R.string.vibration_unavailable_title else R.string.vibration_off),
-                    color = MaterialTheme.colorScheme.onErrorContainer, fontWeight = FontWeight.Bold
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.5.sp,
                 )
-                Text(stringResource(message), color = MaterialTheme.colorScheme.onErrorContainer)
+                Text(
+                    stringResource(message),
+                    fontSize = 12.5.sp,
+                    color = MaterialTheme.colorScheme.onErrorContainer
+                )
                 if (!unavailable) TextButton(onClick = {
                     onSettings(
                         if (channelSettings) ReminderNotifications.settingsIntent(context) else Intent(Settings.ACTION_SOUND_SETTINGS),

@@ -167,12 +167,15 @@ private fun PauseStatusCard(
                 stringResource(
                     if (neverUsed) R.string.pause_notifications_enabled else R.string.pause_notifications_active
                 ),
-                fontWeight = FontWeight.Bold, fontSize = 14.5.sp, color = Mint,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.5.sp,
+                color = Mint,
                 modifier = Modifier.padding(top = 6.dp),
             )
             if (neverUsed) Text(
                 stringResource(R.string.pause_enabled_hint),
-                fontSize = 12.5.sp, color = TextMuted,
+                fontSize = 12.5.sp,
+                color = TextMuted,
                 modifier = Modifier.padding(top = 2.dp),
             )
         }
