@@ -253,7 +253,7 @@ private fun PickerField(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    val background = if (invalid) themeColor(0xFFFFF6F4, 0xFF3A2A24) else Panel
+    val background = if (invalid) Semantic.invalidFieldContainer else Panel
     Box(modifier) {
         Row(
             Modifier

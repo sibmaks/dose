@@ -9,7 +9,7 @@ import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.appearance.AppAppearance
 import io.github.sibmaks.app.dose.data.ThemeMode
 import io.github.sibmaks.app.dose.ui.doseColorScheme
-import io.github.sibmaks.app.dose.ui.doseStatusColors
+import io.github.sibmaks.app.dose.ui.doseSemanticColors
 
 /** Expanded widgets follow app appearance; the compact widget keeps the app's branded hero. */
 internal class WidgetAppearance(context: Context) {
@@ -49,12 +49,13 @@ internal class WidgetAppearance(context: Context) {
         color(R.id.medication_name, lightColors.onSurface, darkColors.onSurface)
         color(R.id.medication_detail, lightColors.onSurfaceVariant, darkColors.onSurfaceVariant)
         color(R.id.widget_row_time, lightColors.primary, darkColors.primary)
-        val lightStatus = doseStatusColors(false)
-        val darkStatus = doseStatusColors(true)
+        val lightStatus = doseSemanticColors(false)
+        val darkStatus = doseSemanticColors(true)
         val (light, night) = when (status) {
             "taken" -> lightStatus.success to darkStatus.success
             "due", "overdue", "missed" -> lightStatus.attention to darkStatus.attention
             "pending", "upcoming" -> lightColors.primary to darkColors.primary
+            "snoozed" -> lightStatus.snooze to darkStatus.snooze
             else -> lightColors.onSurfaceVariant to darkColors.onSurfaceVariant
         }
         color(R.id.widget_row_status, light, night)

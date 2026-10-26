@@ -774,8 +774,8 @@ internal fun StatusBadge(status: String) {
         "overdue" -> Triple(stringResource(R.string.overdue), Peach, AttentionPanel)
         "snoozed" -> Triple(
             stringResource(R.string.snoozed),
-            themeColor(0xFF456F9B, 0xFFA3C9F3),
-            themeColor(0xFFEAF2FC, 0xFF26384B)
+            Semantic.snooze,
+            Semantic.snoozeContainer
         )
 
         "pending" -> Triple(stringResource(R.string.pending), Violet, AccentPanel)
@@ -1048,7 +1048,7 @@ private fun HistoryPage(
 private fun Eyebrow(text: String) {
     Text(
         text,
-        color = themeColor(0xFF796599, 0xFFB9A8DB),
+        color = Semantic.eyebrow,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 11.sp,
         letterSpacing = 1.1.sp

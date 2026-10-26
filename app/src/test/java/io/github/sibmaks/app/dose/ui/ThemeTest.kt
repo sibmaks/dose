@@ -47,11 +47,17 @@ class ThemeTest {
     @Test fun `small text on brand and status containers meets normal text contrast`() {
         assertTrue(contrast(OnBrandViolet, BrandViolet) >= 4.5)
         for (dark in listOf(false, true)) {
-            val colors = doseStatusColors(dark)
+            val colors = doseSemanticColors(dark)
             listOf(
                 colors.success to colors.successContainer,
                 colors.attention to colors.attentionContainer,
                 colors.resolved to colors.resolvedContainer,
+                colors.warning to colors.warningContainer,
+                colors.snooze to colors.snoozeContainer,
+                colors.success to colors.pauseAvailableContainer,
+                doseColorScheme(dark).onSurfaceVariant to colors.pauseActiveContainer,
+                colors.eyebrow to doseColorScheme(dark).background,
+                doseColorScheme(dark).error to colors.invalidFieldContainer,
             ).forEach { (foreground, background) ->
                 assertTrue("dark=$dark foreground=$foreground background=$background", contrast(foreground, background) >= 4.5)
             }
@@ -92,11 +98,15 @@ class ThemeTest {
                 }
             }
             val scheme = doseColorScheme(dark)
-            assertEquals(scheme.background, parseColor("@color/dose_widget_page"))
-            assertEquals(scheme.surface, parseColor("@color/dose_widget_panel"))
-            assertEquals(scheme.onSurface, parseColor("@color/dose_widget_text"))
-            assertEquals(scheme.primary, parseColor("@color/dose_widget_primary"))
-            assertEquals(scheme.onPrimary, parseColor("@color/dose_widget_on_primary"))
+            mapOf(
+                "page" to scheme.background, "panel" to scheme.surface,
+                "text" to scheme.onSurface, "muted" to scheme.onSurfaceVariant,
+                "border" to scheme.outlineVariant, "primary" to scheme.primary,
+                "on_primary" to scheme.onPrimary, "primary_container" to scheme.primaryContainer,
+                "on_primary_container" to scheme.onPrimaryContainer,
+            ).forEach { (role, expected) -> assertEquals(role, expected, parseColor("@color/dose_widget_$role")) }
+            assertEquals(BrandViolet, parseColor("@color/dose_brand"))
+            assertEquals(OnBrandViolet, parseColor("@color/dose_on_brand"))
         }
     }
 

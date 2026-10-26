@@ -29,10 +29,10 @@ internal val PanelBorder: Color @Composable get() = MaterialTheme.colorScheme.ou
 internal val Panel: Color @Composable get() = MaterialTheme.colorScheme.surface
 internal val SoftPanel: Color @Composable get() = MaterialTheme.colorScheme.surfaceContainerLow
 internal val AccentPanel: Color @Composable get() = MaterialTheme.colorScheme.primaryContainer
-internal val Mint: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).success
-internal val Peach: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).attention
-internal val SuccessPanel: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).successContainer
-internal val AttentionPanel: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).attentionContainer
+internal val Mint: Color @Composable get() = Semantic.success
+internal val Peach: Color @Composable get() = Semantic.attention
+internal val SuccessPanel: Color @Composable get() = Semantic.successContainer
+internal val AttentionPanel: Color @Composable get() = Semantic.attentionContainer
 internal val OnAccent: Color @Composable get() = MaterialTheme.colorScheme.onPrimary
 
 internal data class Appearance(
@@ -42,12 +42,6 @@ internal data class Appearance(
 )
 
 internal val LocalAppearance = staticCompositionLocalOf { Appearance(ThemeMode.SYSTEM, false) {} }
-
-@Composable
-internal fun themeColor(
-    light: Long,
-    dark: Long
-): Color = Color(if (LocalAppearance.current.dark) dark else light)
 
 private val LightColors = lightColorScheme(
     primary = Color(0xFF6958D6), onPrimary = Color.White,

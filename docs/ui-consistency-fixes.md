@@ -13,7 +13,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-07 | Medication wizard keyboard and footer layout | Complete |
 | UI-08 | Large-text navigation and compact layouts | Complete |
 | UI-09 | Widget appearance policy and updates | Complete |
-| UI-10 | Shared semantic color ownership | Pending |
+| UI-10 | Shared semantic color ownership | Complete |
 | UI-11 | Shared accessible picker fields | Pending |
 | UI-12 | Shared typography roles | Pending |
 | UI-13 | Named geometry conventions | Pending |
@@ -67,3 +67,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - Expanded widgets follow System/Light/Dark; compact widgets retain the same fixed violet hero as Today. Theme selection refreshes existing widgets immediately. Configuration changes refresh widgets while the process is running; API 31+ text actions retain day/night colors for host reapplication. Native resources cover light/dark backgrounds and actions.
 - Verification: 13 palette/layout/widget-state tests, debug assembly and lint passed. A temporary API 27 launcher widget was resized to expanded mode and visibly refreshed from light to dark after app theme selection. System appearance was restored and the test widget removed. Populated widget rows and other launcher hosts remain unverified visually.
+
+### UI-10
+
+- Consolidated success, attention, resolved, warning, snooze, pause, eyebrow and invalid-field colors in one semantic palette. Feature screens no longer define hex colors or light/dark pairs. Native reminder popup colors now come from the same Material scheme; platform dialog themes reuse fixed light/dark resource roles.
+- Verification: four expanded palette/contrast/resource-parity tests and debug assembly passed. Intentional branded surfaces, user-selected medication colors, and the functional color wheel remain distinct. Native reminder popup rendering was source verified, not visually exercised.

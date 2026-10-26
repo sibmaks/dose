@@ -15,6 +15,8 @@ import io.github.sibmaks.app.dose.data.MedicationIconColors
 import io.github.sibmaks.app.dose.localization.localizedDose
 import io.github.sibmaks.app.dose.localization.localizedForm
 import io.github.sibmaks.app.dose.ui.iconResource
+import io.github.sibmaks.app.dose.ui.doseColorScheme
+import androidx.compose.ui.graphics.toArgb
 
 /** Explicit shapes and colors keep the pop-up consistent across device button themes. */
 internal object ReminderPopupView {
@@ -33,14 +35,14 @@ internal object ReminderPopupView {
         onAll: (String) -> Unit
     ): ScrollView {
         val dark = AppAppearance.isDark(context)
-        val ink = if (dark) 0xFFE6E5F0.toInt() else Color.rgb(37, 43, 67)
-        val muted = if (dark) 0xFFB7B6C9.toInt() else 0xFF62677D.toInt()
-        val accent = if (dark) 0xFFC4B9FF.toInt() else 0xFF6958D6.toInt()
-        val violet = Color.rgb(113, 99, 229)
-        val lavender = if (dark) 0xFF342D52.toInt() else Color.rgb(242, 239, 255)
-        val border = if (dark) 0xFF393A49.toInt() else Color.rgb(231, 228, 245)
-        val surface = if (dark) 0xFF1C1D28.toInt() else Color.WHITE
-        val cardSurface = if (dark) 0xFF232430.toInt() else Color.rgb(250, 249, 254)
+        val colors = doseColorScheme(dark)
+        val ink = colors.onSurface.toArgb()
+        val muted = colors.onSurfaceVariant.toArgb()
+        val accent = colors.primary.toArgb()
+        val lavender = colors.primaryContainer.toArgb()
+        val border = colors.outlineVariant.toArgb()
+        val surface = colors.surface.toArgb()
+        val cardSurface = colors.surfaceContainerLow.toArgb()
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
         fun shape(
             color: Int,
@@ -87,11 +89,11 @@ internal object ReminderPopupView {
                 stateListAnimator = null
                 elevation = 0f
                 val fill = when {
-                    primary -> violet; quiet -> surface; else -> lavender
+                    primary -> accent; quiet -> surface; else -> lavender
                 }
-                setTextColor(if (primary) Color.WHITE else if (quiet) muted else accent)
+                setTextColor(if (primary) colors.onPrimary.toArgb() else if (quiet) muted else colors.onPrimaryContainer.toArgb())
                 background = RippleDrawable(
-                    ColorStateList.valueOf(if (primary) 0x33FFFFFF else 0x1F7163E5),
+                    ColorStateList.valueOf((if (primary) colors.onPrimary else colors.primary).copy(alpha = 0.12f).toArgb()),
                     shape(fill, 28, if (quiet) border else null), shape(Color.WHITE, 28)
                 )
                 setOnClickListener { onClick() }

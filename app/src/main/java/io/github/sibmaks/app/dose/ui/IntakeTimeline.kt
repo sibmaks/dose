@@ -46,22 +46,22 @@ internal data class IntakeStatusStyle(
 internal fun intakeStatusStyle(status: String): IntakeStatusStyle = when (status) {
     "taken" -> IntakeStatusStyle(
         stringResource(R.string.taken), stringResource(R.string.status_taken_hint),
-        Icons.Rounded.Check, Color(0xFF237C62), Mint, SuccessPanel,
+        Icons.Rounded.Check, doseSemanticColors(false).success, Mint, SuccessPanel,
     )
 
     "pending" -> IntakeStatusStyle(
         stringResource(R.string.pending), stringResource(R.string.status_pending_hint),
-        Icons.Rounded.Schedule, Color(0xFF6958D6), Violet, AccentPanel,
+        Icons.Rounded.Schedule, doseColorScheme(false).primary, Violet, AccentPanel,
     )
 
     "missed" -> IntakeStatusStyle(
         stringResource(R.string.missed), stringResource(R.string.status_missed_hint),
-        Icons.Rounded.AlarmOff, Color(0xFFAD5726), Peach, AttentionPanel,
+        Icons.Rounded.AlarmOff, doseSemanticColors(false).attention, Peach, AttentionPanel,
     )
 
     else -> IntakeStatusStyle(
         stringResource(R.string.skipped), stringResource(R.string.event_skipped),
-        Icons.Rounded.Block, Color(0xFF62677D), TextMuted, SoftPanel,
+        Icons.Rounded.Block, doseColorScheme(false).onSurfaceVariant, TextMuted, SoftPanel,
     )
 }
 
@@ -69,7 +69,7 @@ internal fun intakeStatusStyle(status: String): IntakeStatusStyle = when (status
 internal fun TimelineHeading(text: String) {
     Text(
         text.uppercase(AppLanguages.locale(LocalContext.current)),
-        color = themeColor(0xFF796599, 0xFFB9A8DB),
+        color = Semantic.eyebrow,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 11.sp,
         letterSpacing = 1.1.sp,

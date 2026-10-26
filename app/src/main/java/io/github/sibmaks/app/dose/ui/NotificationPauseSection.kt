@@ -159,8 +159,8 @@ private fun PauseStatusCard(
 ) {
     Surface(
         shape = RoundedCornerShape(18.dp),
-        color = themeColor(0xFFF4FBF7, 0xFF16281F),
-        border = BorderStroke(1.dp, themeColor(0xFFBFE3D2, 0xFF2E5C46)),
+        color = Semantic.pauseAvailableContainer,
+        border = BorderStroke(1.dp, Semantic.pauseAvailableBorder),
         modifier = modifier,
     ) {
         Column(Modifier.padding(13.dp)) {
@@ -193,8 +193,8 @@ private fun PauseActiveCard(
     val momentFormatter = DateTimeFormatter.ofPattern("d MMMM, HH:mm", locale)
     Surface(
         shape = RoundedCornerShape(18.dp),
-        color = themeColor(0xFFF0EDFB, 0xFF2A2545),
-        border = BorderStroke(1.dp, themeColor(0xFFD8CFF6, 0xFF4A3F73)),
+        color = Semantic.pauseActiveContainer,
+        border = BorderStroke(1.dp, Semantic.pauseActiveBorder),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(Modifier.padding(14.dp)) {
@@ -354,7 +354,7 @@ private fun PauseCountChip(
         color = if (muted) TextMuted else Violet,
         modifier = Modifier
             .clip(RoundedCornerShape(999.dp))
-            .background(if (muted) themeColor(0xFFEBECF5, 0xFF30313F) else AccentPanel)
+            .background(if (muted) MaterialTheme.colorScheme.surfaceVariant else AccentPanel)
             .padding(horizontal = 8.dp, vertical = 2.5.dp),
     )
 }
@@ -681,7 +681,7 @@ private fun PauseOptionChip(
         color = if (selected) AccentPanel else Panel,
         border = BorderStroke(
             1.5.dp,
-            if (selected) Violet else themeColor(0xFFE2E6EE, 0xFF3A3B48)
+            if (selected) Violet else PanelBorder
         ),
         modifier = modifier.selectionControl(selected, onClick = onClick),
     ) {

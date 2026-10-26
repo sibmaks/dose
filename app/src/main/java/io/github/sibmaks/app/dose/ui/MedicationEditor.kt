@@ -1603,17 +1603,16 @@ private fun RadioButtonCircle(selected: Boolean) {
 }
 
 /** Soft amber for warnings, calm green for a settled coincidence — same hues in both themes. */
-private val AmberPanel: Color @Composable get() = themeColor(0xFFFDF4DC, 0xFF3A3118)
-private val AmberBorder: Color @Composable get() = themeColor(0xFFF0E2B8, 0xFF5A4C22)
-private val AmberText: Color @Composable get() = themeColor(0xFF7A600E, 0xFFF2CE74)
-private val AmberMuted: Color @Composable get() = themeColor(0xFFA3842E, 0xFFD9BC7A)
-private val AmberIcon: Color @Composable get() = themeColor(0xFFB8830F, 0xFFEBCC6B)
-private val GreenPanel: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).resolvedContainer
-private val GreenBorder: Color @Composable get() = themeColor(0xFFD4EBDD, 0xFF2C5240)
-private val GreenText: Color @Composable get() = doseStatusColors(LocalAppearance.current.dark).resolved
+private val AmberPanel: Color @Composable get() = Semantic.warningContainer
+private val AmberBorder: Color @Composable get() = Semantic.warningBorder
+private val AmberText: Color @Composable get() = Semantic.warning
+private val AmberIcon: Color @Composable get() = Semantic.warningIcon
+private val GreenPanel: Color @Composable get() = Semantic.resolvedContainer
+private val GreenBorder: Color @Composable get() = Semantic.resolvedBorder
+private val GreenText: Color @Composable get() = Semantic.resolved
 private val GreenMuted: Color @Composable get() = GreenText
-private val GreenAction: Color @Composable get() = themeColor(0xFF27A468, 0xFF2FA468)
-private val RadioButtonBorder: Color @Composable get() = themeColor(0xFFC9CDDD, 0xFF4A4B60)
+private val GreenAction: Color @Composable get() = Semantic.resolvedProgress
+private val RadioButtonBorder: Color @Composable get() = MaterialTheme.colorScheme.outline
 
 /** One half of the unit-mode segmented control; the active side carries the soft purple fill. */
 @Composable
