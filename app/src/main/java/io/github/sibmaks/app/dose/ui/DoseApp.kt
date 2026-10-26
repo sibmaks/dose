@@ -845,9 +845,10 @@ private fun MedicationsPage(
                                     fontSize = 12.sp, color = TextMuted, maxLines = 2,
                                 )
                             }
-                            Switch(
+                            LabeledSwitch(
                                 checked = med.active,
                                 onCheckedChange = { onToggle(med) },
+                                label = med.name,
                             )
                             IconButton(onClick = { onEdit(med) }) {
                                 Icon(

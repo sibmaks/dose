@@ -8,7 +8,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-02 | Native widget dose action hit areas | Complete |
 | UI-03 | Visible validation for non-positive dosage | Complete |
 | UI-04 | Empty custom pause end state | Complete |
-| UI-05 | Accessible switch names | Pending |
+| UI-05 | Accessible switch names | Complete |
 | UI-06 | Semantic selection for custom choices | Pending |
 | UI-07 | Medication wizard keyboard and footer layout | Pending |
 | UI-08 | Large-text navigation and compact layouts | Pending |
@@ -42,3 +42,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - Unchosen custom ends are nullable; the date stays meaningful and the time displays a localized placeholder instead of formatting epoch zero. Save stays disabled and an unchosen time is not immediately shown as an invalid range.
 - Verification: 11 pause-window tests and debug assembly passed. Guarded emulator replay confirmed no 1970 value, a Choose a time placeholder, and disabled Save; no pause was saved.
+
+### UI-05
+
+- Shared labeled switches keep their contextual accessible name inside a single switch action, without a separately clickable indicator. Medication activation uses the medication name; instructions and reminder switches use localized labels.
+- Verification: debug assembly passed. Emulator hierarchy confirmed each reminder switch action contains its name and exposes checked state, with only one click action. TalkBack speech was not exercised.

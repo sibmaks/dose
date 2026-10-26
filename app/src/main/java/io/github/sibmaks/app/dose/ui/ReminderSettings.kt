@@ -226,7 +226,10 @@ private fun ReminderChoice(
                 Text(explanation, color = TextMuted, fontSize = 12.sp)
                 if (accessHint != null) Text(accessHint, color = Violet, fontSize = 12.sp)
             }
-            Switch(checked = checked, onCheckedChange = onChange, enabled = enabled)
+            LabeledSwitch(
+                checked = checked, onCheckedChange = onChange, enabled = enabled,
+                label = title,
+            )
         }
     }
 }

@@ -726,7 +726,10 @@ internal fun MedicationEditor(
                                         modifier = Modifier.weight(1f),
                                         fontWeight = FontWeight.Bold
                                     )
-                                    Switch(checked = addInstructions, onCheckedChange = { addInstructions = it })
+                                    LabeledSwitch(
+                                        checked = addInstructions, onCheckedChange = { addInstructions = it },
+                                        label = stringResource(R.string.add_instructions),
+                                    )
                                 }
                                 if (addInstructions) OutlinedTextField(
                                     note,
