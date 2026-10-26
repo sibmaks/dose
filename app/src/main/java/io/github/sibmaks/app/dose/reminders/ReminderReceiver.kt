@@ -149,6 +149,9 @@ class ReminderReceiver : BroadcastReceiver() {
         val group =
             DoseGroups.together(items, items.find { it.medication.id == id && it.time == time && it.date == date })
         val multiple = group.size > 1
+        // One delivery per shared instant: only the group's first member posts the combined
+        // notification and records it, so simultaneous alarms never duplicate the feed or the history.
+        if (multiple && group.first().medication.id != id) return
         val message = if (multiple) group.joinToString("\n") {
             "${it.medication.name} · ${notificationDetail(context, it.medication, it.scheduledAt, it.amount)}"
         } else notificationDetail(context, medication, scheduledAt, medication.amountAt(LocalDate.parse(date), time))
