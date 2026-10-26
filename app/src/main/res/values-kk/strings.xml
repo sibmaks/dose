@@ -332,10 +332,10 @@
     <string name="vibration_style_pulse">"Жұмсақ импульстер"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"Ойындық"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: миссия сәтті өтті"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"Галоп"</string>
+    <string name="vibration_style_orbs">"Шарлар"</string>
+    <string name="vibration_style_mission_passed">"Миссия сәтті өтті"</string>
+    <string name="vibration_style_heavy_march">"Ауыр марш"</string>
     <string name="dose_overlap_detected">"Кестелердің сәйкес келуі анықталды"</string>
     <string name="dose_overlap_resolve">"Сәйкес келуді шешу"</string>
     <string name="dose_overlap_choose_title">"Кестелердің сәйкес келуі"</string>

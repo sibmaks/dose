@@ -332,10 +332,10 @@
     <string name="vibration_style_pulse">"რბილი იმპულსები"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"თამაშისებური"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: მისია გავლილია"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"გალოპი"</string>
+    <string name="vibration_style_orbs">"ბურთულები"</string>
+    <string name="vibration_style_mission_passed">"მისია გავლილია"</string>
+    <string name="vibration_style_heavy_march">"მძიმე მარში"</string>
     <string name="dose_overlap_detected">"განრიგების დამთხვევა გამოვლენილია"</string>
     <string name="dose_overlap_resolve">"დამთხვევის მოგვარება"</string>
     <string name="dose_overlap_choose_title">"განრიგების დამთხვევა"</string>

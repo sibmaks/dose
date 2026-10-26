@@ -332,10 +332,10 @@
     <string name="vibration_style_pulse">"Толқинҳои мулоим"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"Бозӣмонанд"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: миссия иҷро шуд"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"Галоп"</string>
+    <string name="vibration_style_orbs">"Кураҳо"</string>
+    <string name="vibration_style_mission_passed">"Миссия иҷро шуд"</string>
+    <string name="vibration_style_heavy_march">"Марши вазнин"</string>
     <string name="dose_overlap_detected">"Мувофиқкунии ҷадвалҳо муайян шуд"</string>
     <string name="dose_overlap_resolve">"Мувофиқкуниро ҳал кунед"</string>
     <string name="dose_overlap_choose_title">"Мувофиқкунии ҷадвалҳо"</string>

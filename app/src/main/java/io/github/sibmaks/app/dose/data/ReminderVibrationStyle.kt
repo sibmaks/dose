@@ -34,30 +34,30 @@ enum class ReminderVibrationStyle(
         intArrayOf(0, 56, 0, 88, 0, 120, 0, 152, 0, 184, 0, 216, 0, 255)
     ),
 
-    // Doom E1M1: the galloping riff, fading like the descending notes, with a heavy final hit.
-    DOOM(
-        "doom",
+    // Heavy-metal gallop: driving "da-da-dum" groups fading like the descending notes, with a heavy final hit.
+    GALLOP(
+        "gallop",
         longArrayOf(0, 45, 45, 45, 45, 140, 110, 45, 45, 45, 45, 140, 110, 45, 45, 45, 45, 140, 110, 240),
         intArrayOf(0, 255, 0, 255, 0, 255, 0, 216, 0, 216, 0, 216, 0, 184, 0, 184, 0, 184, 0, 255)
     ),
 
-    // Minecraft XP orbs: a quick run of bright "pling" ticks.
-    MINECRAFT(
-        "minecraft",
+    // Experience orbs: a quick run of bright "pling" ticks.
+    ORBS(
+        "orbs",
         longArrayOf(0, 30, 45, 30, 45, 30, 45, 30, 45, 30, 45, 30, 45, 30, 45, 60),
         intArrayOf(0, 160, 0, 208, 0, 160, 0, 208, 0, 160, 0, 208, 0, 160, 0, 255)
     ),
 
-    // The GTA mission-passed jingle: two rising "ta-ta-daa" phrases and a sustained resolve.
-    GTA(
-        "gta",
+    // A mission-complete jingle: two rising "ta-ta-daa" phrases and a sustained resolve.
+    MISSION_PASSED(
+        "mission_passed",
         longArrayOf(0, 55, 55, 55, 55, 110, 130, 55, 55, 55, 55, 110, 130, 280),
         intArrayOf(0, 150, 0, 195, 0, 240, 0, 150, 0, 195, 0, 240, 0, 255)
     ),
 
-    // Red Alert 2's Hell March: a chainsaw rev accelerating into heavy marching stomps.
-    HELL_MARCH(
-        "hell_march",
+    // A strategy-game anthem: a saw rev accelerating into heavy marching stomps.
+    HEAVY_MARCH(
+        "heavy_march",
         longArrayOf(0, 30, 45, 30, 40, 30, 35, 35, 30, 35, 70, 190, 140, 190, 140, 190, 140, 280),
         intArrayOf(0, 80, 0, 112, 0, 144, 0, 176, 0, 208, 0, 255, 0, 255, 0, 255, 0, 255)
     ),

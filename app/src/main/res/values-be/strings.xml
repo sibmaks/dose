@@ -332,10 +332,10 @@
     <string name="vibration_style_pulse">"Мяккія імпульсы"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"Аркадная"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: місія пройдзена"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"Галоп"</string>
+    <string name="vibration_style_orbs">"Сферы"</string>
+    <string name="vibration_style_mission_passed">"Місія пройдзена"</string>
+    <string name="vibration_style_heavy_march">"Цяжкі марш"</string>
     <string name="dose_overlap_detected">"Выяўлена супадзенне раскладаў"</string>
     <string name="dose_overlap_resolve">"Вырашыць супадзенне"</string>
     <string name="dose_overlap_choose_title">"Супадзенне раскладаў"</string>

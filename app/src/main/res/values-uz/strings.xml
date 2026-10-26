@@ -332,10 +332,10 @@
     <string name="vibration_style_pulse">"Yumshoq toʻlqinlar"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"Arkada"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: missiya bajarildi"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"Galop"</string>
+    <string name="vibration_style_orbs">"Sharlar"</string>
+    <string name="vibration_style_mission_passed">"Missiya bajarildi"</string>
+    <string name="vibration_style_heavy_march">"Og‘ir marsh"</string>
     <string name="dose_overlap_detected">"Jadvallar ustma-ust tushishi aniqlandi"</string>
     <string name="dose_overlap_resolve">"Ustma-ust tushishni hal qilish"</string>
     <string name="dose_overlap_choose_title">"Jadvallar ustma-ust tushishi"</string>

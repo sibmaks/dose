@@ -296,10 +296,10 @@ private fun ReminderVibrationStyle.label(): Int = when (this) {
     ReminderVibrationStyle.PULSE -> R.string.vibration_style_pulse
     ReminderVibrationStyle.SOS -> R.string.vibration_style_sos
     ReminderVibrationStyle.GAME -> R.string.vibration_style_game
-    ReminderVibrationStyle.DOOM -> R.string.vibration_style_doom
-    ReminderVibrationStyle.MINECRAFT -> R.string.vibration_style_minecraft
-    ReminderVibrationStyle.GTA -> R.string.vibration_style_gta
-    ReminderVibrationStyle.HELL_MARCH -> R.string.vibration_style_hell_march
+    ReminderVibrationStyle.GALLOP -> R.string.vibration_style_gallop
+    ReminderVibrationStyle.ORBS -> R.string.vibration_style_orbs
+    ReminderVibrationStyle.MISSION_PASSED -> R.string.vibration_style_mission_passed
+    ReminderVibrationStyle.HEAVY_MARCH -> R.string.vibration_style_heavy_march
 }
 
 private fun ReminderVibrationStyle.icon(): ImageVector = when (this) {
@@ -309,8 +309,8 @@ private fun ReminderVibrationStyle.icon(): ImageVector = when (this) {
     ReminderVibrationStyle.PULSE -> Icons.Rounded.GraphicEq
     ReminderVibrationStyle.SOS -> Icons.Rounded.Emergency
     ReminderVibrationStyle.GAME -> Icons.Rounded.SportsEsports
-    ReminderVibrationStyle.DOOM -> Icons.Rounded.Whatshot
-    ReminderVibrationStyle.MINECRAFT -> Icons.Rounded.Grass
-    ReminderVibrationStyle.GTA -> Icons.Rounded.MilitaryTech
-    ReminderVibrationStyle.HELL_MARCH -> Icons.Rounded.MusicNote
+    ReminderVibrationStyle.GALLOP -> Icons.Rounded.Whatshot
+    ReminderVibrationStyle.ORBS -> Icons.Rounded.BubbleChart
+    ReminderVibrationStyle.MISSION_PASSED -> Icons.Rounded.MilitaryTech
+    ReminderVibrationStyle.HEAVY_MARCH -> Icons.Rounded.MusicNote
 }

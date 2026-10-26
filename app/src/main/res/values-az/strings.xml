@@ -332,10 +332,10 @@
     <string name="vibration_style_pulse">"Yumşaq impulslar"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"Oyunvari"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: missiya tamamlandı"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"Qalop"</string>
+    <string name="vibration_style_orbs">"Kürələr"</string>
+    <string name="vibration_style_mission_passed">"Missiya tamamlandı"</string>
+    <string name="vibration_style_heavy_march">"Ağır marş"</string>
     <string name="dose_overlap_detected">"Qrafiklərin üst-üstə düşməsi aşkarlandı"</string>
     <string name="dose_overlap_resolve">"Üst-üstə düşməni həll edin"</string>
     <string name="dose_overlap_choose_title">"Qrafiklərin üst-üstə düşməsi"</string>

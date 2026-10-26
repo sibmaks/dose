@@ -332,10 +332,10 @@
     <string name="vibration_style_pulse">"Pulsuri blânde"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"Arcadă"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: Misiune îndeplinită"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"Galop"</string>
+    <string name="vibration_style_orbs">"Sfere"</string>
+    <string name="vibration_style_mission_passed">"Misiune îndeplinită"</string>
+    <string name="vibration_style_heavy_march">"Marș greu"</string>
     <string name="dose_overlap_detected">"A fost detectată o suprapunere de programe"</string>
     <string name="dose_overlap_resolve">"Rezolvă suprapunerea"</string>
     <string name="dose_overlap_choose_title">"Suprapunere de programe"</string>

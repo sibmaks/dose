@@ -334,10 +334,10 @@
     <string name="vibration_style_pulse">"Gentle pulses"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"Power-up"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: Mission passed"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"Gallop"</string>
+    <string name="vibration_style_orbs">"Orbs"</string>
+    <string name="vibration_style_mission_passed">"Mission passed"</string>
+    <string name="vibration_style_heavy_march">"Heavy march"</string>
     <string name="dose_overlap_detected">"A schedule overlap was detected"</string>
     <string name="dose_overlap_resolve">"Resolve the overlap"</string>
     <string name="dose_overlap_choose_title">"Schedule overlap"</string>

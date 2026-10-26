@@ -39,10 +39,10 @@ class ReminderVibrationStyleTest {
     @Test fun `game styles stay under two seconds so a reminder never drones on`() {
         val gameStyles = listOf(
             ReminderVibrationStyle.GAME,
-            ReminderVibrationStyle.DOOM,
-            ReminderVibrationStyle.MINECRAFT,
-            ReminderVibrationStyle.GTA,
-            ReminderVibrationStyle.HELL_MARCH
+            ReminderVibrationStyle.GALLOP,
+            ReminderVibrationStyle.ORBS,
+            ReminderVibrationStyle.MISSION_PASSED,
+            ReminderVibrationStyle.HEAVY_MARCH
         )
         gameStyles.forEach { style ->
             val duration = style.timings.sum()

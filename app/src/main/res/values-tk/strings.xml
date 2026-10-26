@@ -332,10 +332,10 @@
     <string name="vibration_style_pulse">"Ýumşak tolkunlar"</string>
     <string name="vibration_style_sos">"SOS"</string>
     <string name="vibration_style_game">"Oýunly"</string>
-    <string name="vibration_style_doom">"Doom"</string>
-    <string name="vibration_style_minecraft">"Minecraft"</string>
-    <string name="vibration_style_gta">"GTA: missiýa geçildi"</string>
-    <string name="vibration_style_hell_march">"Hell March"</string>
+    <string name="vibration_style_gallop">"Galop"</string>
+    <string name="vibration_style_orbs">"Şarlar"</string>
+    <string name="vibration_style_mission_passed">"Missiýa geçildi"</string>
+    <string name="vibration_style_heavy_march">"Agyr marş"</string>
     <string name="dose_overlap_detected">"Tertipleriň gabat gelýändigi anyklanyldy"</string>
     <string name="dose_overlap_resolve">"Gabat gelýänligi çözmek"</string>
     <string name="dose_overlap_choose_title">"Tertipleriň gabat gelýändigi"</string>
