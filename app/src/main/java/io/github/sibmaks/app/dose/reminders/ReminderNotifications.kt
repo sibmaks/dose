@@ -11,18 +11,27 @@ import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import io.github.sibmaks.app.dose.R
+import io.github.sibmaks.app.dose.data.ReminderVibrationStyle
 import io.github.sibmaks.app.dose.localization.AppLanguages
 
 object ReminderNotifications {
     fun createChannel(sourceContext: Context) {
         val context = AppLanguages.wrap(sourceContext)
         val manager = context.getSystemService(NotificationManager::class.java)
+        val style = ReminderAlerts.vibrationStyle(sourceContext)
         manager.createNotificationChannel(
             NotificationChannel(
                 ReminderReceiver.CHANNEL_ID,
                 context.getString(R.string.medication_reminders), NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = context.getString(R.string.notification_channel_description)
+                if (style == ReminderVibrationStyle.DEFAULT) {
+                    // Keep the system default buzz; a chosen preset overrides it below.
+                    vibrationPattern = null
+                } else {
+                    enableVibration(true)
+                    vibrationPattern = style.timings
+                }
             })
     }
 

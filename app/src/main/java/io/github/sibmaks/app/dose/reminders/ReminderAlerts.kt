@@ -8,6 +8,7 @@ import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.ReminderEnableStep
 import io.github.sibmaks.app.dose.data.ReminderSetupState
 import io.github.sibmaks.app.dose.data.ReminderStyle
+import io.github.sibmaks.app.dose.data.ReminderVibrationStyle
 import java.time.LocalDate
 
 /** A dose keeps its original schedule even when its alert has been snoozed. */
@@ -83,6 +84,15 @@ object ReminderAlerts {
             manager.activeNotifications.filter { it.notification.extras.containsKey(ReminderReceiver.EXTRA_MEDICATION_ID) }
                 .forEach { manager.cancel(it.id) }
         }
+    }
+
+    fun vibrationStyle(context: Context): ReminderVibrationStyle =
+        ReminderVibrationStyle.fromPreference(prefs(context).getString("vibration_style", null))
+
+    /** Switching the style also re-applies it to the notification-feed channel. */
+    fun selectVibrationStyle(context: Context, style: ReminderVibrationStyle) {
+        prefs(context).edit().putString("vibration_style", style.preference).apply()
+        ReminderNotifications.createChannel(context)
     }
 
     fun setupOffered(context: Context): Boolean =

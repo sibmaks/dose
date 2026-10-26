@@ -7,13 +7,17 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -27,7 +31,9 @@ import io.github.sibmaks.app.dose.R
 import io.github.sibmaks.app.dose.data.ReminderEnableStep
 import io.github.sibmaks.app.dose.data.ReminderSetupState
 import io.github.sibmaks.app.dose.data.ReminderStyle
+import io.github.sibmaks.app.dose.data.ReminderVibrationStyle
 import io.github.sibmaks.app.dose.reminders.ReminderAlerts
+import io.github.sibmaks.app.dose.reminders.ReminderHaptics
 import io.github.sibmaks.app.dose.reminders.ReminderNotifications
 import io.github.sibmaks.app.dose.reminders.ReminderScheduler
 import kotlinx.coroutines.flow.first
@@ -177,6 +183,7 @@ internal fun ReminderSettingsScreen(
             )
         } else {
             ReminderVibrationAlert(state.feedChecked, state.popupsChecked, ::launchSettings)
+            VibrationStyleSection()
         }
         if (state.popupsChecked && !state.feedChecked) {
             Text(
@@ -217,4 +224,93 @@ private fun ReminderChoice(
             Switch(checked = checked, onCheckedChange = onChange, enabled = enabled)
         }
     }
+}
+
+/** Pick how reminders buzz from a select box; choosing a style saves it and plays it as a preview. */
+@Composable
+private fun VibrationStyleSection() {
+    val context = LocalContext.current
+    var selected by rememberSaveable { mutableStateOf(ReminderAlerts.vibrationStyle(context)) }
+    var expanded by remember { mutableStateOf(false) }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(stringResource(R.string.vibration_style), fontWeight = FontWeight.Bold, fontSize = 15.sp)
+        Text(stringResource(R.string.vibration_style_hint), color = TextMuted, fontSize = 12.sp)
+        Box {
+            Surface(
+                onClick = { expanded = true },
+                shape = RoundedCornerShape(11.dp),
+                color = Panel,
+                border = BorderStroke(1.5.dp, if (expanded) Violet else PanelBorder),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    Modifier.padding(start = 14.dp, end = 10.dp, top = 9.dp, bottom = 9.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        selected.icon(), null,
+                        tint = if (expanded) Violet else TextMuted,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        stringResource(selected.label()),
+                        fontSize = 13.5.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(Icons.Rounded.ExpandMore, null, tint = TextMuted)
+                }
+            }
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                ReminderVibrationStyle.entries.forEach { style ->
+                    DropdownMenuItem(
+                        text = { Text(stringResource(style.label())) },
+                        leadingIcon = {
+                            Icon(
+                                style.icon(), null,
+                                tint = if (selected == style) Violet else TextMuted,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        },
+                        trailingIcon = { if (selected == style) Icon(Icons.Rounded.Check, null, tint = Violet) },
+                        onClick = {
+                            expanded = false
+                            if (selected != style) {
+                                selected = style
+                                ReminderAlerts.selectVibrationStyle(context, style)
+                            }
+                            // Feel the freshly chosen pattern immediately; re-choosing previews it again.
+                            ReminderHaptics.vibrate(context)
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun ReminderVibrationStyle.label(): Int = when (this) {
+    ReminderVibrationStyle.DEFAULT -> R.string.vibration_style_default
+    ReminderVibrationStyle.SHORT -> R.string.vibration_style_short
+    ReminderVibrationStyle.DOUBLE -> R.string.vibration_style_double
+    ReminderVibrationStyle.PULSE -> R.string.vibration_style_pulse
+    ReminderVibrationStyle.SOS -> R.string.vibration_style_sos
+    ReminderVibrationStyle.GAME -> R.string.vibration_style_game
+    ReminderVibrationStyle.DOOM -> R.string.vibration_style_doom
+    ReminderVibrationStyle.MINECRAFT -> R.string.vibration_style_minecraft
+    ReminderVibrationStyle.GTA -> R.string.vibration_style_gta
+    ReminderVibrationStyle.HELL_MARCH -> R.string.vibration_style_hell_march
+}
+
+private fun ReminderVibrationStyle.icon(): ImageVector = when (this) {
+    ReminderVibrationStyle.DEFAULT -> Icons.Rounded.Vibration
+    ReminderVibrationStyle.SHORT -> Icons.Rounded.Bolt
+    ReminderVibrationStyle.DOUBLE -> Icons.Rounded.NotificationsActive
+    ReminderVibrationStyle.PULSE -> Icons.Rounded.GraphicEq
+    ReminderVibrationStyle.SOS -> Icons.Rounded.Emergency
+    ReminderVibrationStyle.GAME -> Icons.Rounded.SportsEsports
+    ReminderVibrationStyle.DOOM -> Icons.Rounded.Whatshot
+    ReminderVibrationStyle.MINECRAFT -> Icons.Rounded.Grass
+    ReminderVibrationStyle.GTA -> Icons.Rounded.MilitaryTech
+    ReminderVibrationStyle.HELL_MARCH -> Icons.Rounded.MusicNote
 }

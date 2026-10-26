@@ -47,7 +47,8 @@ object ReminderHaptics {
     fun vibrate(context: Context) {
         val vibrator = vibrator(context)
         if (vibrator?.hasVibrator() != true) return
-        val effect = VibrationEffect.createWaveform(longArrayOf(0, 180, 100, 180), -1)
+        val style = ReminderAlerts.vibrationStyle(context)
+        val effect = VibrationEffect.createWaveform(style.timings, style.amplitudes, style.repeat)
         try {
             if (Build.VERSION.SDK_INT >= 33) {
                 vibrator.vibrate(
