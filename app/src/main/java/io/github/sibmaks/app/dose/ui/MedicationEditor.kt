@@ -12,6 +12,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
@@ -453,6 +454,7 @@ internal fun MedicationEditor(
                                 )
                                 Text(stringResource(R.string.color), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                                 FlowRow(
+                                    modifier = Modifier.selectableGroup(),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                                     verticalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
@@ -467,7 +469,7 @@ internal fun MedicationEditor(
                                             val colorDescriptionLocalization = stringResource(
                                                 R.string.color_description,
                                                 localizedColor(context, choice),
-                                                if (selected) stringResource(R.string.selected_suffix) else ""
+                                                ""
                                             )
                                             Box(
                                                 Modifier
@@ -479,7 +481,7 @@ internal fun MedicationEditor(
                                                         if (selected) TextPrimary else PanelBorder,
                                                         RoundedCornerShape(12.dp)
                                                     )
-                                                    .clickable { color = choice }
+                                                    .selectionControl(selected) { color = choice }
                                                     .semantics {
                                                         contentDescription = colorDescriptionLocalization
                                                     }, contentAlignment = Alignment.Center
@@ -512,28 +514,30 @@ internal fun MedicationEditor(
                                         suggestedForm.orEmpty()
                                     ), color = TextMuted, fontSize = 13.sp
                                 )
-                                localizedForms.forEach { choice ->
-                                    Surface(
-                                        onClick = { chooseForm(choice) },
-                                        shape = RoundedCornerShape(14.dp),
-                                        color = if (form == choice) AccentPanel else SoftPanel,
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Row(
-                                            Modifier.padding(12.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                                    localizedForms.forEach { choice ->
+                                        Surface(
+                                            shape = RoundedCornerShape(14.dp),
+                                            color = if (form == choice) AccentPanel else SoftPanel,
+                                            modifier = Modifier.fillMaxWidth().selectionControl(form == choice) { chooseForm(choice) }
                                         ) {
-                                            PillAvatar(color, choice, choice.localizedLabel(context))
-                                            Text(
-                                                choice.localizedLabel(context),
-                                                fontWeight = FontWeight.Bold,
-                                                modifier = Modifier.weight(1f)
-                                            )
-                                            RadioButton(selected = form == choice, onClick = null)
+                                            Row(
+                                                Modifier.padding(12.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                            ) {
+                                                PillAvatar(color, choice, choice.localizedLabel(context))
+                                                Text(
+                                                    choice.localizedLabel(context),
+                                                    fontWeight = FontWeight.Bold,
+                                                    modifier = Modifier.weight(1f)
+                                                )
+                                                RadioButton(selected = form == choice, onClick = null)
+                                            }
                                         }
                                     }
                                 }
+
                             }
 
                             MedicationStep.OTHER_FORM -> {
@@ -582,7 +586,8 @@ internal fun MedicationEditor(
                                         .fillMaxWidth()
                                         .height(50.dp)
                                         .clip(RoundedCornerShape(14.dp))
-                                        .border(1.dp, PanelBorder, RoundedCornerShape(14.dp)),
+                                        .border(1.dp, PanelBorder, RoundedCornerShape(14.dp))
+                                        .selectableGroup(),
                                 ) {
                                     UnitModeSegment(
                                         stringResource(R.string.unit_list_mode),
@@ -622,7 +627,7 @@ internal fun MedicationEditor(
                                         modifier = Modifier.fillMaxWidth()
                                     )
                                 } else {
-                                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                         DoseUnits.common.chunked(3)
                                             .forEach { rowUnits ->
                                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -880,7 +885,7 @@ private fun ScheduleEditor(
                     )
                 }
             }
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 ScheduleKind.entries.chunked(2)
                     .forEach { rowKinds ->
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -934,6 +939,7 @@ private fun ScheduleEditor(
                                             DayOfWeek.of(day)
                                                 .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context)),
                                             selected = day in rule.weekDays,
+                                            multiple = true,
                                             modifier = Modifier.weight(1f),
                                             borderColor = if (issue?.field == ScheduleField.WEEKDAYS) errorColor else Violet,
                                         ) { onChange(rule.copy(weekDays = if (day in rule.weekDays) rule.weekDays - day else rule.weekDays + day)) }
@@ -955,13 +961,15 @@ private fun ScheduleEditor(
                                     val dayDescriptionLocalization = stringResource(
                                         R.string.day_description,
                                         day,
-                                        if (selected) stringResource(R.string.selected_suffix) else ""
+                                        ""
                                     )
                                     Surface(
-                                        onClick = { onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day)) },
                                         modifier = Modifier
                                             .weight(1f)
                                             .height(40.dp)
+                                            .selectionControl(selected, multiple = true) {
+                                                onChange(rule.copy(monthDays = if (selected) rule.monthDays - day else rule.monthDays + day))
+                                            }
                                             .semantics {
                                                 contentDescription = dayDescriptionLocalization
                                             },
@@ -1445,21 +1453,20 @@ private fun ExpandedConflict(
         )
     }
     // One grid keeps every overlapping dose visible; the choice stays a single radio group.
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         group.members.chunked(2)
             .forEach { rowMembers ->
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     rowMembers.forEach { index ->
                         val rule = schedules[index]
                         Surface(
-                            onClick = { pending = index },
                             color = if (pending == index) AccentPanel else SoftPanel,
                             border = BorderStroke(
                                 if (pending == index) 1.5.dp else 1.dp,
                                 if (pending == index) Violet else PanelBorder
                             ),
                             shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(1f).selectionControl(pending == index) { pending = index },
                         ) {
                             Column(
                                 Modifier
@@ -1607,7 +1614,7 @@ private fun UnitModeSegment(
         modifier
             .fillMaxHeight()
             .background(if (active) AccentPanel else Color.Transparent)
-            .clickable(onClick = onClick),
+            .selectionControl(active, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -1626,6 +1633,7 @@ private fun UnitChip(
     selected: Boolean,
     modifier: Modifier = Modifier,
     borderColor: Color = Violet,
+    multiple: Boolean = false,
     onClick: () -> Unit
 ) {
     Box(
@@ -1634,7 +1642,7 @@ private fun UnitChip(
             .clip(RoundedCornerShape(11.dp))
             .background(if (selected) AccentPanel else Color.Transparent)
             .border(1.5.dp, if (selected) borderColor else PanelBorder, RoundedCornerShape(11.dp))
-            .clickable(onClick = onClick),
+            .selectionControl(selected, multiple, onClick),
         contentAlignment = Alignment.Center,
     ) {
         Text(

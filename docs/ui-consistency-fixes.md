@@ -9,7 +9,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | UI-03 | Visible validation for non-positive dosage | Complete |
 | UI-04 | Empty custom pause end state | Complete |
 | UI-05 | Accessible switch names | Complete |
-| UI-06 | Semantic selection for custom choices | Pending |
+| UI-06 | Semantic selection for custom choices | Complete |
 | UI-07 | Medication wizard keyboard and footer layout | Pending |
 | UI-08 | Large-text navigation and compact layouts | Pending |
 | UI-09 | Widget appearance policy and updates | Pending |
@@ -47,3 +47,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 
 - Shared labeled switches keep their contextual accessible name inside a single switch action, without a separately clickable indicator. Medication activation uses the medication name; instructions and reminder switches use localized labels.
 - Verification: debug assembly passed. Emulator hierarchy confirmed each reminder switch action contains its name and exposes checked state, with only one click action. TalkBack speech was not exercised.
+
+### UI-06
+
+- Custom exclusive choices now expose radio selection; independently selected weekdays/month days expose checkbox state. Explicit groups separate start/end presets and other exclusive option sets. Visual indicators do not add separate actions.
+- Verification: debug assembly passed. Emulator hierarchy/replay verified selected pause/unit choices, exclusive selection changes, and simultaneous checked Mon/Tue states. Unsaved flows were discarded; TalkBack speech remains untested.

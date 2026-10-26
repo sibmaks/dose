@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material3.Icon
@@ -60,21 +61,24 @@ internal fun LanguagePicker(
         if (firstStart) Text(stringResource(R.string.first_language_offer), fontSize = 14.sp, color = TextMuted)
         val options =
             listOf("" to stringResource(R.string.system_language)) + AppLanguages.supported.map { it.tag to it.nativeName }
-        options.forEach { (tag, name) ->
-            Surface(
-                onClick = { selected = tag }, shape = RoundedCornerShape(14.dp),
-                color = if (selected == tag) AccentPanel else SoftPanel, modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    Modifier.padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+        Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            options.forEach { (tag, name) ->
+                Surface(
+                    shape = RoundedCornerShape(14.dp),
+                    color = if (selected == tag) AccentPanel else SoftPanel,
+                    modifier = Modifier.fillMaxWidth().selectionControl(selected == tag) { selected = tag }
                 ) {
-                    val flag = languageFlag(tag)
-                    if (flag == null) Icon(Icons.Rounded.Language, null, tint = Violet, modifier = Modifier.size(36.dp))
-                    else Image(painterResource(flag), null, modifier = Modifier.size(width = 36.dp, height = 24.dp))
-                    Text(name, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                    RadioButton(selected = selected == tag, onClick = null)
+                    Row(
+                        Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        val flag = languageFlag(tag)
+                        if (flag == null) Icon(Icons.Rounded.Language, null, tint = Violet, modifier = Modifier.size(36.dp))
+                        else Image(painterResource(flag), null, modifier = Modifier.size(width = 36.dp, height = 24.dp))
+                        Text(name, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                        RadioButton(selected = selected == tag, onClick = null)
+                    }
                 }
             }
         }

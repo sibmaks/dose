@@ -8,6 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.ErrorOutline
@@ -136,17 +137,19 @@ internal fun HistoryDoseEditor(
         IntakeMedicationCard(log, scheduled, DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm", locale))
 
         TimelineHeading(stringResource(R.string.status_section))
-        options.forEach { option ->
-            StatusOption(
-                style = intakeStatusStyle(option),
-                selected = status == option,
-                current = option == log.status,
-                onClick = {
-                    status = option
-                    // Selecting taken from an unresolved record starts at the current date and time.
-                    if (option == "taken" && at == 0L) at = System.currentTimeMillis()
-                },
-            )
+        Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            options.forEach { option ->
+                StatusOption(
+                    style = intakeStatusStyle(option),
+                    selected = status == option,
+                    current = option == log.status,
+                    onClick = {
+                        status = option
+                        // Selecting taken from an unresolved record starts at the current date and time.
+                        if (option == "taken" && at == 0L) at = System.currentTimeMillis()
+                    },
+                )
+            }
         }
 
         if (status == "taken") {
@@ -195,11 +198,10 @@ private fun StatusOption(
     onClick: () -> Unit
 ) {
     Surface(
-        onClick = onClick,
         shape = RoundedCornerShape(16.dp),
         color = if (selected) AccentPanel else Panel,
         border = BorderStroke(1.dp, if (selected) Violet else PanelBorder),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().selectionControl(selected, onClick = onClick),
     ) {
         Row(
             Modifier.padding(horizontal = 13.dp, vertical = 10.dp),

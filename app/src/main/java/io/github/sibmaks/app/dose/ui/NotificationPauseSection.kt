@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Close
@@ -479,7 +480,7 @@ private fun CreatePauseSheet(
             }
 
             Text(stringResource(R.string.pause_start_label), fontWeight = FontWeight.Bold, fontSize = 14.sp)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.selectableGroup(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 PauseOptionChip(
                     stringResource(R.string.pause_start_now),
                     selected = startNow,
@@ -537,29 +538,31 @@ private fun CreatePauseSheet(
             }
 
             Text(stringResource(R.string.pause_end_label), fontWeight = FontWeight.Bold, fontSize = 14.sp)
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                PauseOptionChip(stringResource(R.string.pause_30_min), selected = preset == PausePreset.MIN30.name) {
-                    preset = PausePreset.MIN30.name
+            Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    PauseOptionChip(stringResource(R.string.pause_30_min), selected = preset == PausePreset.MIN30.name) {
+                        preset = PausePreset.MIN30.name
+                    }
+                    PauseOptionChip(stringResource(R.string.pause_1_hour), selected = preset == PausePreset.HOUR1.name) {
+                        preset = PausePreset.HOUR1.name
+                    }
+                    PauseOptionChip(stringResource(R.string.pause_2_hours), selected = preset == PausePreset.HOURS2.name) {
+                        preset = PausePreset.HOURS2.name
+                    }
                 }
-                PauseOptionChip(stringResource(R.string.pause_1_hour), selected = preset == PausePreset.HOUR1.name) {
-                    preset = PausePreset.HOUR1.name
-                }
-                PauseOptionChip(stringResource(R.string.pause_2_hours), selected = preset == PausePreset.HOURS2.name) {
-                    preset = PausePreset.HOURS2.name
-                }
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                PauseOptionChip(
-                    stringResource(R.string.pause_until_morning),
-                    selected = preset == PausePreset.MORNING.name
-                ) {
-                    preset = PausePreset.MORNING.name
-                }
-                PauseOptionChip(
-                    stringResource(R.string.pause_custom_time),
-                    selected = preset == PausePreset.CUSTOM.name
-                ) {
-                    preset = PausePreset.CUSTOM.name
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    PauseOptionChip(
+                        stringResource(R.string.pause_until_morning),
+                        selected = preset == PausePreset.MORNING.name
+                    ) {
+                        preset = PausePreset.MORNING.name
+                    }
+                    PauseOptionChip(
+                        stringResource(R.string.pause_custom_time),
+                        selected = preset == PausePreset.CUSTOM.name
+                    ) {
+                        preset = PausePreset.CUSTOM.name
+                    }
                 }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -678,14 +681,13 @@ private fun PauseOptionChip(
     onClick: () -> Unit
 ) {
     Surface(
-        onClick = onClick,
         shape = RoundedCornerShape(11.dp),
         color = if (selected) AccentPanel else Panel,
         border = BorderStroke(
             1.5.dp,
             if (selected) Violet else themeColor(0xFFE2E6EE, 0xFF3A3B48)
         ),
-        modifier = modifier,
+        modifier = modifier.selectionControl(selected, onClick = onClick),
     ) {
         Text(
             label, fontSize = 13.5.sp,
