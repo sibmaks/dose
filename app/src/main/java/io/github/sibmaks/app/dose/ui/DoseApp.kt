@@ -820,7 +820,7 @@ private fun MedicationsPage(
                 EmptyCard(
                     stringResource(R.string.no_medications_yet),
                     stringResource(R.string.medication_list_empty_hint),
-                    onAdd
+                    null
                 )
             }
         } else {
