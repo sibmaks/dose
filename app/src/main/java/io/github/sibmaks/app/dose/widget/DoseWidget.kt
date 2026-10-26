@@ -235,11 +235,11 @@ class DoseWidget : AppWidgetProvider() {
                             ?.takeIf { it.isNotEmpty() }
                             ?: listOf(
                                 SizeF(180f, 110f),
-                                SizeF(180f, 220f),
-                                SizeF(180f, 332f),
-                                SizeF(180f, 444f),
-                                SizeF(180f, 556f),
-                                SizeF(180f, 668f)
+                                SizeF(180f, 232f),
+                                SizeF(180f, 368f),
+                                SizeF(180f, 504f),
+                                SizeF(180f, 640f),
+                                SizeF(180f, 776f)
                             )
                     RemoteViews(supported.associateWith { render(it.height) })
                 } else {

@@ -5,7 +5,7 @@ Follow-up to the UI audit of revision `28010b4` on 26 October 2026. Each issue i
 | Issue | Scope | Status |
 |---|---|---|
 | UI-01 | Small-text contrast on hero, status, overlap and widget surfaces | Complete |
-| UI-02 | Native widget dose action hit areas | Pending |
+| UI-02 | Native widget dose action hit areas | Complete |
 | UI-03 | Visible validation for non-positive dosage | Pending |
 | UI-04 | Empty custom pause end state | Pending |
 | UI-05 | Accessible switch names | Pending |
@@ -27,3 +27,8 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 - Reused full-opacity, contrast-validated text on brand, status and resolved-overlap surfaces; aligned compact-widget violet with the app hero.
 - Added shared status color pairs and contrast checks against shipped widget XML.
 - Verification: four theme/contrast tests, debug APK assembly and lint passed. Current emulator build checked for hero appearance; populated detail and launcher-widget visuals remain unverified.
+
+### UI-02
+
+- Expanded widget Taken/Skip hit areas to at least 48 x 48 dp and increased row height/capacity thresholds together. Smaller widgets retain the compact layout until a complete expanded row fits.
+- Verification: widget-state and shipping-layout geometry tests (9 total) plus debug assembly passed. Launcher hit testing remains device-host dependent.

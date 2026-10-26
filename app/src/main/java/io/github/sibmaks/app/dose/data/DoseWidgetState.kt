@@ -14,8 +14,8 @@ object DoseWidgetState {
 
     fun nextGroup(items: List<DoseItem>): List<DoseItem> = DoseGroups.together(items, next(items))
 
-    const val EXPANDED_HEIGHT = 220
-    const val ROW_HEIGHT = 116
+    const val EXPANDED_HEIGHT = 232
+    const val ROW_HEIGHT = 136
 
     /** Reserve the header, padding and footer; never clip an interactive card. */
     fun visibleRows(
