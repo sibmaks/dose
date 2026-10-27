@@ -60,6 +60,21 @@ Commands use JDK 21 and the cached Gradle distribution. Runtime observations are
 - The full-width dialog explicitly opts into window insets and safe-drawing padding, enabling the appropriate platform resize/inset path instead of an unspecified IME mode.
 - Verification: debug assembly passed. On API 27, Continue was visible above the IME and successfully advanced while the keyboard was open. Modern Android IME animation behavior remains a runtime coverage limit.
 
+#### Height recovery follow-up — 27 October 2026
+
+- The original check missed the return to full height. Reproduction showed later steps retaining a 939 px card after keyboard dismissal, compared with 1,530 px before typing. The retained editable page could also leave the old field visible beneath the next step's heading.
+- The dialog now owns its editor state and focus handling. A full-window outer container applies system/IME insets around the fractional-height card, and only the active step renders its input fields. Horizontal swipes use the existing step validation and cannot dismiss the first step or save from the final step; hardware Back follows the same previous-step rules as the footer.
+- Added `scripts/check_medication_editor_ime.py`, an ADB regression for an installed English debug build. It uses an unsaved draft, compares card bounds before/during/after typing, checks Continue and keyboard Back dismissal, validates swipe gating, and returns through every step with hardware Back. It writes XML/screenshots to a temporary directory and never presses Save.
+- Verification: 236 unit tests, debug assembly and lint passed. On the API 27 emulator at both 100% and 200% text, the card returned from 899 px while typing to its original 1,627 px on Form, Dosage, Schedule and Details, including repeated keyboard opening/dismissal, validated swipes and hardware Back. The original font setting was restored and all drafts were discarded.
+
+Run from the repository root with `adb` on PATH and the app on a main tab:
+
+```sh
+python3 scripts/check_medication_editor_ime.py --serial emulator-5554
+```
+
+Use `--adb /path/to/adb` when needed. Close any existing draft first; the check requires English labels and a closed keyboard. It does not change language, theme or font settings.
+
 ### UI-08
 
 - Navigation labels stay on one line with ellipsis when necessary; their full accessible text is retained. Choice cells grow with text, unit/weekday columns adapt, month-day columns respect a 48 dp cell minimum, presets wrap, and paired fields stack for large text/narrow content.

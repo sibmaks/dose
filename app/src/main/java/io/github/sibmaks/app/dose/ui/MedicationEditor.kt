@@ -3,13 +3,11 @@ package io.github.sibmaks.app.dose.ui
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,13 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -73,6 +70,26 @@ private val ScheduleListSaver = Saver<List<DoseSchedule>, String>(
 
 @Composable
 internal fun MedicationEditor(
+    original: Medication?,
+    onDismiss: () -> Unit,
+    onSave: (Medication) -> Unit,
+    onDelete: (Medication) -> Unit,
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            dismissOnClickOutside = false,
+            dismissOnBackPress = false,
+            decorFitsSystemWindows = false,
+        ),
+    ) {
+        MedicationEditorContent(original, onDismiss, onSave, onDelete)
+    }
+}
+
+@Composable
+private fun MedicationEditorContent(
     original: Medication?,
     onDismiss: () -> Unit,
     onSave: (Medication) -> Unit,
@@ -133,7 +150,6 @@ internal fun MedicationEditor(
             steps.indexOf(step)
                 .coerceAtLeast(0)
     }
-    val keyboard = LocalSoftwareKeyboardController.current
     val unitColumns = if (LocalDensity.current.fontScale >= 1.5f) 2 else 3
     // A legacy medication may intentionally have no unit; it stays optional while the amount is untouched.
     val unitOptional = original?.quantity == "" && amount == original.amount
@@ -174,7 +190,6 @@ internal fun MedicationEditor(
     }
 
     fun previous() {
-        keyboard?.hide()
         if (step == MedicationStep.NAME) onDismiss() else step = MedicationEditorFlow.previous(step, form, hasOverlaps)
         showValidation = false
     }
@@ -208,7 +223,6 @@ internal fun MedicationEditor(
     }
 
     fun save() {
-        keyboard?.hide()
         showValidation = true
         val invalidStep = steps.firstOrNull { stepError(it) != null }
         if (invalidStep != null) {
@@ -252,50 +266,42 @@ internal fun MedicationEditor(
         if (step == MedicationStep.DETAILS) {
             save(); return
         }
-        keyboard?.hide()
         showValidation = true
         if (stepError(step) != null) return
         step = MedicationEditorFlow.next(step, form, hasOverlaps)
         showValidation = false
     }
 
-    // Only expose the next page after the same validation used by Continue succeeds.
-    // Pager bookkeeping goes through one snapshot variable: the count and the per-page keys can then
-    // never observe disagreeing versions of the steps list while the overlaps screen appears or vanishes.
-    var pagerPageCount by remember { mutableStateOf(MedicationEditorFlow.steps(form, hasOverlaps).size) }
-    val validStep = stepError(step) == null
-    val pager = rememberPagerState(initialPage = position.coerceIn(0, steps.lastIndex)) { pagerPageCount }
-    val activePosition by rememberUpdatedState(position)
-    LaunchedEffect(step) {
-        pager.animateScrollToPage(position.coerceIn(0, steps.lastIndex))
-    }
-    LaunchedEffect(pager.settledPage) {
-        if (pager.settledPage > activePosition) advance()
-        else if (pager.settledPage < activePosition) previous()
-    }
-    SideEffect {
-        val wanted = if (validStep) steps.size else position + 1
-        if (pagerPageCount != wanted) pagerPageCount = wanted
-    }
-    val forwardBlocked by rememberUpdatedState(!validStep || step == MedicationStep.DETAILS)
+    val forwardBlocked = stepError(step) != null || step == MedicationStep.DETAILS
     val swipeThreshold = with(LocalDensity.current) { 48.dp.toPx() }
 
-    Dialog(
-        onDismissRequest = ::previous,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            dismissOnClickOutside = false,
-            decorFitsSystemWindows = false,
-        )
+    BackHandler(onBack = ::previous)
+    // These controllers must belong to the dialog's view, not the activity behind it.
+    val keyboard = LocalSoftwareKeyboardController.current
+    val focus = LocalFocusManager.current
+    fun finishInput() {
+        focus.clearFocus(force = true)
+        keyboard?.hide()
+    }
+    LaunchedEffect(step) { finishInput() }
+    val onSwipe by rememberUpdatedState<(Boolean) -> Unit> { forward ->
+        if (forward || step != MedicationStep.NAME) {
+            finishInput()
+            if (!forward) previous()
+            else if (forwardBlocked) showValidation = true
+            else advance()
+        }
+    }
+    // A full-size window lets the card grow again after IME resize on older Android.
+    Box(
+        modifier = Modifier.fillMaxSize().safeDrawingPadding().imePadding(),
+        contentAlignment = Alignment.Center,
     ) {
         Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .safeDrawingPadding()
+            modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = DoseSpacing.shellMargin)
-                .fillMaxHeight(0.94f)
-                .imePadding(),
-            shape = DoseShapes.shell, color = Panel
+                .fillMaxHeight(0.94f),
+            shape = DoseShapes.shell, color = Panel,
         ) {
             Column {
                 Row(
@@ -312,7 +318,9 @@ internal fun MedicationEditor(
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
                     )
-                    if (original != null && step != MedicationStep.DETAILS) TextButton(onClick = ::save) {
+                    if (original != null && step != MedicationStep.DETAILS) TextButton(onClick = {
+                        finishInput(); save()
+                    }) {
                         Text(stringResource(R.string.save), fontWeight = FontWeight.Bold)
                     }
                     IconButton(onClick = onDismiss) {
@@ -342,36 +350,33 @@ internal fun MedicationEditor(
                         color = Violet
                     )
                 }
-                HorizontalPager(
-                    state = pager, key = { page -> steps.getOrNull(page)?.ordinal ?: (1000 + page) },
-                    beyondViewportPageCount = 1,
-                    verticalAlignment = Alignment.Top,
-                    modifier = Modifier
+                Box(
+                    Modifier
                         .weight(1f)
                         .fillMaxWidth()
                         .pointerInput(step, swipeThreshold) {
-                            // Observe blocked forward attempts without consuming the pager's gesture.
-                            awaitEachGesture {
-                                val down = awaitFirstDown(requireUnconsumed = false)
-                                var distance = Offset.Zero
-                                do {
-                                    val event = awaitPointerEvent(PointerEventPass.Final)
-                                    val change = event.changes.firstOrNull { it.id == down.id } ?: break
-                                    distance += change.position - change.previousPosition
-                                } while (event.changes.any { it.pressed })
-                                if (forwardBlocked && distance.x < -swipeThreshold && -distance.x > kotlin.math.abs(
-                                        distance.y
-                                    )
-                                ) {
-                                    keyboard?.hide()
-                                    showValidation = true
-                                }
-                            }
-                        }) { page ->
-                    val pageStep = steps.getOrNull(page) ?: return@HorizontalPager
+                            var distance = 0f
+                            detectHorizontalDragGestures(
+                                onDragStart = { distance = 0f },
+                                onDragCancel = { distance = 0f },
+                                onHorizontalDrag = { change, delta ->
+                                    change.consume()
+                                    distance += delta
+                                },
+                                onDragEnd = {
+                                    if (kotlin.math.abs(distance) > swipeThreshold) {
+                                        onSwipe(distance < 0)
+                                    }
+                                },
+                            )
+                        },
+                ) {
+                    // Only the current step owns input. Retaining offscreen editable pages lets an
+                    // outgoing focused field pull the layout back while the keyboard is closing.
+                    val pageStep = step
                     val scroll = rememberScrollState()
-                    val validationVisible = showValidation && pageStep == step
-                    LaunchedEffect(step) { if (pageStep == step) scroll.scrollTo(0) }
+                    val validationVisible = showValidation
+                    LaunchedEffect(step) { scroll.scrollTo(0) }
                     Column(
                         Modifier
                             .fillMaxSize()
@@ -409,7 +414,7 @@ internal fun MedicationEditor(
                                                     context
                                                 )
                                                 suggestedForm = suggestion.localizedForm(context); showSuggestions =
-                                                false; keyboard?.hide()
+                                                false; finishInput()
                                             },
                                             shape = DoseShapes.button,
                                             color = AccentPanel,
@@ -779,14 +784,14 @@ internal fun MedicationEditor(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (step != MedicationStep.NAME) OutlinedButton(
-                            onClick = ::previous,
+                            onClick = { finishInput(); previous() },
                             modifier = Modifier
                                 .weight(1f)
                                 .heightIn(min = DoseDimensions.dialogAction),
                             shape = DoseShapes.button
                         ) { Text(stringResource(R.string.back), fontWeight = FontWeight.Bold) }
                         Button(
-                            onClick = ::advance,
+                            onClick = { finishInput(); advance() },
                             modifier = Modifier
                                 .weight(1f)
                                 .heightIn(min = DoseDimensions.dialogAction),
