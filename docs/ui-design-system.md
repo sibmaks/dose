@@ -11,7 +11,11 @@ Use the shared roles below before adding a screen-specific value. Keep medicatio
 
 ## Text
 
-`Typography.kt` installs `DoseTypography` in `DoseTheme`. Prefer `DoseText` roles for the app's existing hierarchy:
+`Typography.kt` installs `DoseTypography` in `DoseTheme`.
+
+Text roles inherit Material's sans-serif family, tracking and platform text metrics, then apply their size, line height and weight. Plain small copy uses regular weight; titles and selected/action text use their explicit emphasis. Build styles from the Material base so consolidating sizes does not change font resolution or tighten secondary copy.
+
+Prefer `DoseText` roles for the app's existing hierarchy:
 
 | Use | Role | Size / line height (sp) |
 |---|---|---|
@@ -36,6 +40,7 @@ Brand lettering, empty-hero headings, metrics and tracked eyebrows have explicit
 - Default spacing: 4, 8, 12, 16, 20 and 24 dp. Named 6 dp compact gaps, 10 dp control gaps and 14 dp card insets retain the existing dense layouts.
 - Main pages use the 21 dp `pageGutter`. Full-screen shells use the 12 dp `shellMargin`, 20 dp `shellInset` and 26 dp shell shape. The branded hero keeps its 23 dp inset and 27 dp radius.
 - Reuse shapes by purpose: badge 8, choice 12, button 14, field 15, tile 16, panel 18 and card 20 dp. Pills use a fully rounded shape. Avoid adjacent one-off variants such as 19 versus 20 dp cards.
+- Reminder-status panels use the same borderless button shape and 12 dp inset as reminder-choice cards. Plain title/caption stacks use a 4 dp gap; semantic container/text colors communicate the status.
 - Editable fields explicitly use the same field shape as `OutlinedPickerField`. Small icon tiles can use the inset tile shape to keep fill inside a border.
 - Interactive controls have a 48 dp minimum target. Segments, dialog actions, primary actions and fields retain their named 50, 51, 53 and 56 dp minimum heights; these are minimums, not clipping constraints.
 - Native popup shapes and spacing read the same Kotlin roles. Its 24 dp outer panel and 28 dp action radius are intentional native-surface variants.

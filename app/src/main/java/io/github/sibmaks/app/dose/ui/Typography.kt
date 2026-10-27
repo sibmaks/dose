@@ -2,16 +2,18 @@ package io.github.sibmaks.app.dose.ui
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 /** Existing hierarchy, with small half-size variants consolidated into shared roles. */
 internal object DoseText {
-    private fun style(size: Int, height: Int, weight: FontWeight = FontWeight.Normal) = TextStyle(
-        fontFamily = FontFamily.Default, fontSize = size.sp, lineHeight = height.sp, fontWeight = weight,
+    // Preserve Material's sans-serif family, tracking and platform text metrics. Building bare
+    // styles changed the font resolution and made the app's secondary copy denser/heavier.
+    private val materialBody = Typography().bodyLarge
+    private fun style(size: Int, height: Int, weight: FontWeight = FontWeight.Normal): TextStyle = materialBody.copy(
+        fontSize = size.sp, lineHeight = height.sp, fontWeight = weight,
     )
-    val label = style(11, 16, FontWeight.Medium)
+    val label = style(11, 16)
     val caption = style(12, 18)
     val supporting = style(13, 18)
     val body = style(14, 20)

@@ -157,12 +157,14 @@ private fun PauseStatusCard(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        shape = DoseShapes.panel,
+        shape = DoseShapes.button,
         color = Semantic.pauseAvailableContainer,
-        border = BorderStroke(DoseDimensions.border, Semantic.pauseAvailableBorder),
         modifier = modifier,
     ) {
-        Column(Modifier.padding(13.dp)) {
+        Column(
+            Modifier.padding(DoseSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(DoseSpacing.tiny),
+        ) {
             Text(
                 stringResource(
                     if (neverUsed) R.string.pause_notifications_enabled else R.string.pause_notifications_active
@@ -170,13 +172,11 @@ private fun PauseStatusCard(
                 fontWeight = FontWeight.Bold,
                 style = DoseText.itemTitle,
                 color = Mint,
-                modifier = Modifier.padding(top = DoseSpacing.compactGap),
             )
             if (neverUsed) Text(
                 stringResource(R.string.pause_enabled_hint),
-                style = DoseText.supporting,
+                style = DoseText.caption,
                 color = TextMuted,
-                modifier = Modifier.padding(top = 2.dp),
             )
         }
     }
@@ -191,16 +191,14 @@ private fun PauseActiveCard(
     val locale = AppLanguages.locale(LocalContext.current)
     val momentFormatter = DateTimeFormatter.ofPattern("d MMMM, HH:mm", locale)
     Surface(
-        shape = DoseShapes.panel,
+        shape = DoseShapes.button,
         color = Semantic.pauseActiveContainer,
-        border = BorderStroke(DoseDimensions.border, Semantic.pauseActiveBorder),
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(Modifier.padding(DoseSpacing.cardInset)) {
+        Column(Modifier.padding(DoseSpacing.small)) {
             Text(
                 stringResource(R.string.pause_current_title),
                 fontWeight = FontWeight.Bold, style = DoseText.itemTitle,
-                modifier = Modifier.padding(top = 7.dp),
             )
             BoundRow(
                 stringResource(R.string.pause_start_label),

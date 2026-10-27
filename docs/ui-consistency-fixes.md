@@ -106,6 +106,12 @@ Use `--adb /path/to/adb` when needed. Close any existing draft first; the check 
 - Widget XML now uses named geometry resources. The shipping-layout test resolves these resources, verifies physical actions and row capacity, and checks shared XML/Compose dimension parity. Added design conventions covering color, text, geometry, semantics and adaptive layouts.
 - Verification: all 236 unit tests, debug APK assembly and lint passed. Final API 27 emulator checks covered the normal home screen and picker fields, 200% navigation/dosage choices/stacked fields, native date-picker opening, and advancing the medication wizard with the keyboard open. Drafts were discarded and the original font/theme settings restored.
 
+### Typography and reminder-card refinement — 27 October 2026
+
+- The typography extraction had replaced Material's explicit sans-serif family with the platform default and omitted its tracking/platform metrics. Shared styles now inherit the Material body base, including its original 0.5 sp tracking; unweighted small labels use regular weight.
+- Notification-status panels now use the reminder cards' borderless 14 dp shape and 12 dp inset. Removed the separate green/purple strokes and extra title padding; the plain status description uses the same caption role and 4 dp title gap as the reminder choices.
+- Verification: all 236 unit tests, debug assembly and lint passed in the current working tree. API 27 screenshots and hierarchy checks at 100%/200% text confirmed matching title/description left edges and a borderless inactive-status panel. The active-pause variant was source checked. The original 100% font setting was restored.
+
 ## Final validation
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`
