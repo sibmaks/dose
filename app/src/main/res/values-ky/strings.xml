@@ -179,7 +179,7 @@
     <string name="clear_bound">"Күндү тазалоо: %1$s"</string>
     <string name="color_channel">"Түс каналы: %1$s"</string>
     <string name="monthly_days">"Ай сайын: %1$s"</string>
-    <string name="from_date">" · %1$s баштап"</string>
+    <string name="from_date">"%1$s баштап"</string>
     <string name="until_date">" %1$s чейин"</string>
     <string name="period_days">"%1$d күн"</string>
     <string name="average_delay_count">"Орточо кечигүү · Кабыл алынды: %1$d"</string>

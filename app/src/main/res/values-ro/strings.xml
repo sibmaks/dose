@@ -179,7 +179,7 @@
     <string name="clear_bound">"Șterge data: %1$s"</string>
     <string name="color_channel">"Canal de culoare: %1$s"</string>
     <string name="monthly_days">"Lunar: %1$s"</string>
-    <string name="from_date">" · de la %1$s"</string>
+    <string name="from_date">"de la %1$s"</string>
     <string name="until_date">" până la %1$s"</string>
     <string name="period_days">"%1$d zile"</string>
     <string name="average_delay_count">"Întârziere medie · Luate: %1$d"</string>

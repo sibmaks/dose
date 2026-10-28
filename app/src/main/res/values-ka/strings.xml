@@ -179,7 +179,7 @@
     <string name="clear_bound">"თარიღის გასუფთავება: %1$s"</string>
     <string name="color_channel">"ფერის არხი: %1$s"</string>
     <string name="monthly_days">"ყოველთვიურად: %1$s"</string>
-    <string name="from_date">" · %1$s-დან"</string>
+    <string name="from_date">"%1$s-დან"</string>
     <string name="until_date">" %1$s-მდე"</string>
     <string name="period_days">"%1$d დღე"</string>
     <string name="average_delay_count">"საშუალო დაყოვნება · მიღებულია: %1$d"</string>

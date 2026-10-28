@@ -860,15 +860,7 @@ private fun MedicationsPage(
                             }
                         }
                         HorizontalDivider(color = PanelBorder, modifier = Modifier.padding(top = 13.dp, bottom = 9.dp))
-                        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            med.schedules.forEach { rule ->
-                                Text(
-                                    scheduleSummary(context, rule, med.amount, med.quantity),
-                                    style = DoseText.caption,
-                                    color = Violet
-                                )
-                            }
-                        }
+                        MedicationScheduleSummary(med)
                     }
                 }
             }

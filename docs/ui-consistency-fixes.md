@@ -112,6 +112,12 @@ Use `--adb /path/to/adb` when needed. Close any existing draft first; the check 
 - Notification-status panels now use the reminder cards' borderless 14 dp shape and 12 dp inset. Removed the separate green/purple strokes and extra title padding; the plain status description uses the same caption role and 4 dp title gap as the reminder choices.
 - Verification: all 236 unit tests, debug assembly and lint passed in the current working tree. API 27 screenshots and hierarchy checks at 100%/200% text confirmed matching title/description left edges and a borderless inactive-status panel. The active-pause variant was source checked. The original 100% font setting was restored.
 
+### Medication schedule alignment — 28 October 2026
+
+- Medication cards now align dose, days, time and date columns across their schedule rows. Column widths follow the actual localized text; long date ranges wrap, larger text uses paired dose/day and time/date columns, and narrow content stacks the values.
+- Extracted shared localized schedule fields while preserving the prose order used by editor/detail screens. Specific dates appear in the date column; recurring rules retain their start/end bounds. Removed the embedded separator from the start-date resource in all 13 languages so the formatter owns punctuation.
+- Verification: all 236 unit tests, including language-resource validation, debug assembly and lint passed. The API 27 emulator's existing two-schedule example had matching column coordinates at 100% text and matching paired-column coordinates at 200%. Medication data was not edited, and the original font setting was restored.
+
 ## Final validation
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`

@@ -1155,39 +1155,6 @@ private fun DateBound(
     )
 }
 
-internal fun scheduleSummary(
-    context: Context,
-    rule: DoseSchedule,
-    defaultAmount: String? = null,
-    quantity: String = ""
-): String {
-    val dates = when (rule.kind) {
-        ScheduleKind.DAILY -> context.getString(R.string.every_day)
-        ScheduleKind.SPECIFIC_DATES -> rule.dates.sorted()
-            .joinToString(", ") { localizedDate(context, it) }
-
-        ScheduleKind.WEEKDAYS -> rule.weekDays.sorted()
-            .joinToString(", ") {
-                DayOfWeek.of(it)
-                    .getDisplayName(TextStyle.SHORT, AppLanguages.locale(context))
-            }
-
-        ScheduleKind.MONTH_DAYS -> context.getString(
-            R.string.monthly_days,
-            rule.monthDays.sorted()
-                .joinToString(", ")
-        )
-    }
-    val bounds = if (rule.kind == ScheduleKind.SPECIFIC_DATES) "" else context.getString(
-        R.string.from_date,
-        localizedDate(context, rule.from ?: rule.createdOn)
-    ) + (rule.until?.let { context.getString(R.string.until_date, localizedDate(context, it)) } ?: "")
-    val dose =
-        defaultAmount?.let { "${rule.amount ?: it} ${localizedUnit(context, quantity)} · " }
-            .orEmpty()
-    return "$dose$dates · ${rule.times.joinToString(", ")}$bounds"
-}
-
 /** Localized long date (full month name) used by the coincidence cards: «24 октября 2026». */
 internal fun localizedLongDate(
     context: Context,

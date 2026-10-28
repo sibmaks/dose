@@ -179,7 +179,7 @@
     <string name="clear_bound">"Մաքրել ամսաթիվը՝ %1$s"</string>
     <string name="color_channel">"Գույնի ալիք՝ %1$s"</string>
     <string name="monthly_days">"Ամեն ամիս՝ %1$s"</string>
-    <string name="from_date">" · սկսած %1$s"</string>
+    <string name="from_date">"սկսած %1$s"</string>
     <string name="until_date">" մինչև %1$s"</string>
     <string name="period_days">"%1$d օր"</string>
     <string name="average_delay_count">"Միջին ուշացում · Ընդունված՝ %1$d"</string>

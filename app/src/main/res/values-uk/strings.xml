@@ -179,7 +179,7 @@
     <string name="clear_bound">"Очистити дату: %1$s"</string>
     <string name="color_channel">"Канал кольору: %1$s"</string>
     <string name="monthly_days">"Щомісяця: %1$s"</string>
-    <string name="from_date">" · з %1$s"</string>
+    <string name="from_date">"з %1$s"</string>
     <string name="until_date">" до %1$s"</string>
     <string name="period_days">"%1$d дн."</string>
     <string name="average_delay_count">"Середня затримка · Прийнято: %1$d"</string>

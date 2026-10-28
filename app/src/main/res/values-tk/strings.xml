@@ -179,7 +179,7 @@
     <string name="clear_bound">"Senäni arassalamak: %1$s"</string>
     <string name="color_channel">"Reňk kanaly: %1$s"</string>
     <string name="monthly_days">"Her aý: %1$s"</string>
-    <string name="from_date">" · %1$s başlap"</string>
+    <string name="from_date">"%1$s başlap"</string>
     <string name="until_date">" %1$s çenli"</string>
     <string name="period_days">"%1$d gün"</string>
     <string name="average_delay_count">"Ortaça gijikme · Içildi: %1$d"</string>

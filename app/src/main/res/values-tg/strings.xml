@@ -179,7 +179,7 @@
     <string name="clear_bound">"Пок кардани сана: %1$s"</string>
     <string name="color_channel">"Канали ранг: %1$s"</string>
     <string name="monthly_days">"Ҳар моҳ: %1$s"</string>
-    <string name="from_date">" · аз %1$s"</string>
+    <string name="from_date">"аз %1$s"</string>
     <string name="until_date">" то %1$s"</string>
     <string name="period_days">"%1$d рӯз"</string>
     <string name="average_delay_count">"Таъхири миёна · Қабул: %1$d"</string>

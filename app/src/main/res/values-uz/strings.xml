@@ -179,7 +179,7 @@
     <string name="clear_bound">"Sanani tozalash: %1$s"</string>
     <string name="color_channel">"Rang kanali: %1$s"</string>
     <string name="monthly_days">"Har oy: %1$s"</string>
-    <string name="from_date">" · %1$s dan"</string>
+    <string name="from_date">"%1$s dan"</string>
     <string name="until_date">" %1$s gacha"</string>
     <string name="period_days">"%1$d kun"</string>
     <string name="average_delay_count">"Oʻrtacha kechikish · Qabul: %1$d"</string>

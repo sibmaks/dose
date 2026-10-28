@@ -179,7 +179,7 @@
     <string name="clear_bound">"Tarixi təmizlə: %1$s"</string>
     <string name="color_channel">"Rəng kanalı: %1$s"</string>
     <string name="monthly_days">"Hər ay: %1$s"</string>
-    <string name="from_date">" · başlanğıc %1$s"</string>
+    <string name="from_date">"başlanğıc %1$s"</string>
     <string name="until_date">" son %1$s"</string>
     <string name="period_days">"%1$d gün"</string>
     <string name="average_delay_count">"Orta gecikmə · Qəbul: %1$d"</string>
