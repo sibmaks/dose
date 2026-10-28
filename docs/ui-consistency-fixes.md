@@ -118,6 +118,13 @@ Use `--adb /path/to/adb` when needed. Close any existing draft first; the check 
 - Extracted shared localized schedule fields while preserving the prose order used by editor/detail screens. Specific dates appear in the date column; recurring rules retain their start/end bounds. Removed the embedded separator from the start-date resource in all 13 languages so the formatter owns punctuation.
 - Verification: all 236 unit tests, including language-resource validation, debug assembly and lint passed. The API 27 emulator's existing two-schedule example had matching column coordinates at 100% text and matching paired-column coordinates at 200%. Medication data was not edited, and the original font setting was restored.
 
+### Smooth editor swipes — 28 October 2026
+
+- Restored continuous horizontal paging between medication editor steps and animated Continue/Back transitions. The height-recovery follow-up had replaced the pager with an instant page swap, removing the animation and drag feedback.
+- Neighboring pages now render as previews: their text fields are read-only and excluded from keyboard focus. Text input is available only on the active, settled page; transitions clear focus and hide the IME. The full-window inset container remains in place, and page count, keys and content share one snapshot as optional steps change.
+- Extended the unsaved-draft regression with heading/content consistency checks and optional `--check-swipe-motion` coverage. A held drag visibly moves the page before release, and a short drag settles back on the current step.
+- Verification: all 236 unit tests, debug assembly and lint passed. API 27 checks at 100%/200% text confirmed full height recovery, validation and hardware Back. Normal-size checks confirmed continuous dragging, snap-back, optional custom-form page insertion/removal and navigation with its keyboard open. The original font setting was restored and drafts were discarded.
+
 ## Final validation
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`

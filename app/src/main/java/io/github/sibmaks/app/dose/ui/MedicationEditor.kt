@@ -7,7 +7,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,8 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -47,6 +53,7 @@ import io.github.sibmaks.app.dose.data.*
 import io.github.sibmaks.app.dose.localization.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.first
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
@@ -67,6 +74,9 @@ private val ScheduleListSaver = Saver<List<DoseSchedule>, String>(
         }.getOrDefault(listOf(DoseSchedule()))
     },
 )
+
+/** Read-only preview fields must also be excluded from keyboard focus. */
+private fun Modifier.editorInput(active: Boolean) = focusProperties { canFocus = active }
 
 @Composable
 internal fun MedicationEditor(
@@ -272,24 +282,43 @@ private fun MedicationEditorContent(
         showValidation = false
     }
 
-    val forwardBlocked = stepError(step) != null || step == MedicationStep.DETAILS
+    val validStep = stepError(step) == null
+    val forwardBlocked by rememberUpdatedState(!validStep || step == MedicationStep.DETAILS)
     val swipeThreshold = with(LocalDensity.current) { 48.dp.toPx() }
+    val allowedSteps = steps.take(if (validStep) steps.size else position + 1)
+    // The count, keys and page content use one snapshot while optional steps appear/disappear.
+    var pagerSteps by remember { mutableStateOf(allowedSteps) }
+    SideEffect { pagerSteps = allowedSteps }
+    val pager = rememberPagerState(initialPage = position) { pagerSteps.size }
+    var navigating by remember { mutableStateOf(false) }
 
     BackHandler(onBack = ::previous)
-    // These controllers must belong to the dialog's view, not the activity behind it.
     val keyboard = LocalSoftwareKeyboardController.current
     val focus = LocalFocusManager.current
     fun finishInput() {
         focus.clearFocus(force = true)
         keyboard?.hide()
     }
-    LaunchedEffect(step) { finishInput() }
-    val onSwipe by rememberUpdatedState<(Boolean) -> Unit> { forward ->
-        if (forward || step != MedicationStep.NAME) {
+    LaunchedEffect(step) {
+        navigating = true
+        try {
             finishInput()
-            if (!forward) previous()
-            else if (forwardBlocked) showValidation = true
-            else advance()
+            val targetStep = step
+            val target = snapshotFlow { pagerSteps.indexOf(targetStep) }.first { it >= 0 }
+            pager.animateScrollToPage(target)
+        } finally {
+            navigating = false
+        }
+    }
+    val scrolling = pager.isScrollInProgress
+    LaunchedEffect(scrolling) { if (scrolling) finishInput() }
+    val settledPage = pager.settledPage
+    LaunchedEffect(settledPage, scrolling, navigating) {
+        if (!navigating && !scrolling) {
+            val shownStep = pagerSteps.getOrNull(settledPage)
+            val shownPosition = steps.indexOf(shownStep)
+            if (shownPosition > position) advance()
+            else if (shownPosition >= 0 && shownPosition < position) previous()
         }
     }
     // A full-size window lets the card grow again after IME resize on older Android.
@@ -350,33 +379,38 @@ private fun MedicationEditorContent(
                         color = Violet
                     )
                 }
-                Box(
-                    Modifier
+                HorizontalPager(
+                    state = pager,
+                    key = { page -> pagerSteps.getOrNull(page)?.ordinal ?: (1000 + page) },
+                    beyondViewportPageCount = 1,
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
                         .pointerInput(step, swipeThreshold) {
-                            var distance = 0f
-                            detectHorizontalDragGestures(
-                                onDragStart = { distance = 0f },
-                                onDragCancel = { distance = 0f },
-                                onHorizontalDrag = { change, delta ->
-                                    change.consume()
-                                    distance += delta
-                                },
-                                onDragEnd = {
-                                    if (kotlin.math.abs(distance) > swipeThreshold) {
-                                        onSwipe(distance < 0)
-                                    }
-                                },
-                            )
+                            // Observe invalid forward attempts without taking the pager's drag.
+                            awaitEachGesture {
+                                val down = awaitFirstDown(requireUnconsumed = false)
+                                var distance = Offset.Zero
+                                do {
+                                    val event = awaitPointerEvent(PointerEventPass.Final)
+                                    val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                                    distance += change.position - change.previousPosition
+                                } while (event.changes.any { it.pressed })
+                                if (forwardBlocked && distance.x < -swipeThreshold && -distance.x > kotlin.math.abs(distance.y)) {
+                                    finishInput()
+                                    showValidation = true
+                                }
+                            }
                         },
-                ) {
-                    // Only the current step owns input. Retaining offscreen editable pages lets an
-                    // outgoing focused field pull the layout back while the keyboard is closing.
-                    val pageStep = step
+                ) { page ->
+                    val pageStep = pagerSteps.getOrNull(page) ?: return@HorizontalPager
+                    // Adjacent pages remain drawable for a continuous swipe, but can never keep
+                    // an outgoing editable field focused or reopen the IME during navigation.
+                    val inputActive = pageStep == step && !scrolling && !navigating
                     val scroll = rememberScrollState()
-                    val validationVisible = showValidation
-                    LaunchedEffect(step) { scroll.scrollTo(0) }
+                    val validationVisible = showValidation && pageStep == step
+                    LaunchedEffect(step) { if (pageStep == step) scroll.scrollTo(0) }
                     Column(
                         Modifier
                             .fillMaxSize()
@@ -391,11 +425,12 @@ private fun MedicationEditorContent(
                                     { name = it.take(70); showSuggestions = true; suggestedForm = null },
                                     isError = validationVisible && name.isBlank(),
                                     supportingText = { if (validationVisible && name.isBlank()) Text(stringResource(R.string.name_required)) },
+                                    readOnly = !inputActive,
                                     shape = DoseShapes.field,
                                     label = { Text(stringResource(R.string.medication_name)) },
                                     placeholder = { Text(stringResource(R.string.start_typing_a_name)) },
                                     singleLine = true,
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.fillMaxWidth().editorInput(inputActive)
                                 )
                                 val suggestions =
                                     if (showSuggestions) dictionary?.suggestions(name, medications, language = language)
@@ -560,10 +595,11 @@ private fun MedicationEditorContent(
                                 OutlinedTextField(
                                     customForm,
                                     { customForm = it.take(40) },
+                                    readOnly = !inputActive,
                                     shape = DoseShapes.field,
                                     label = { Text(stringResource(R.string.custom_form_optional)) },
                                     singleLine = true,
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.fillMaxWidth().editorInput(inputActive)
                                 )
                             }
 
@@ -577,6 +613,7 @@ private fun MedicationEditorContent(
                                 OutlinedTextField(
                                     amount,
                                     { amount = it.take(70); changeSchedules(schedules) },
+                                    readOnly = !inputActive,
                                     shape = DoseShapes.field,
                                     label = { Text(stringResource(R.string.amount)) },
                                     placeholder = { Text(stringResource(R.string.e_g_500)) },
@@ -586,7 +623,7 @@ private fun MedicationEditorContent(
                                     },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                                     singleLine = true,
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.fillMaxWidth().editorInput(inputActive)
                                 )
                                 Text(
                                     stringResource(R.string.unit),
@@ -628,6 +665,7 @@ private fun MedicationEditorContent(
                                             customUnitText = it.take(40); quantity = customUnitText; automaticUnit =
                                             false
                                         },
+                                        readOnly = !inputActive,
                                         shape = DoseShapes.field,
                                         label = { Text(stringResource(R.string.unit_custom_name)) },
                                         placeholder = { Text(stringResource(R.string.unit_custom_placeholder)) },
@@ -638,7 +676,7 @@ private fun MedicationEditorContent(
                                             ) else Text(stringResource(R.string.unit_custom_hint))
                                         },
                                         singleLine = true,
-                                        modifier = Modifier.fillMaxWidth()
+                                        modifier = Modifier.fillMaxWidth().editorInput(inputActive)
                                     )
                                 } else {
                                     Column(Modifier.selectableGroup(), verticalArrangement = Arrangement.spacedBy(DoseSpacing.extraSmall)) {
@@ -677,6 +715,7 @@ private fun MedicationEditorContent(
                                         validationVisible,
                                         amount,
                                         quantity,
+                                        inputActive = inputActive,
                                         onChange = { updated ->
                                             changeSchedules(
                                                 schedules.toMutableList()
@@ -753,13 +792,14 @@ private fun MedicationEditorContent(
                                 if (addInstructions) OutlinedTextField(
                                     note,
                                     { note = it.take(140) },
+                                    readOnly = !inputActive,
                                     shape = DoseShapes.field,
                                     label = { Text(stringResource(R.string.instructions)) },
                                     placeholder = { Text(stringResource(R.string.e_g_take_after_a_meal)) },
                                     isError = validationVisible && note.isBlank(),
                                     supportingText = { if (validationVisible && note.isBlank()) Text(stringResource(R.string.instructions_required)) },
                                     minLines = 2,
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.fillMaxWidth().editorInput(inputActive)
                                 )
                             }
                         }
@@ -840,6 +880,7 @@ private fun ScheduleEditor(
     showValidation: Boolean,
     defaultAmount: String,
     quantity: String,
+    inputActive: Boolean,
     onChange: (DoseSchedule) -> Unit,
     onRemove: (() -> Unit)?
 ) {
@@ -1096,13 +1137,14 @@ private fun ScheduleEditor(
                 OutlinedTextField(
                     value = rule.amount,
                     onValueChange = { onChange(rule.copy(amount = it.take(70))) },
+                    readOnly = !inputActive,
                     shape = DoseShapes.field,
                     label = { Text(stringResource(R.string.amount) + " · " + localizedUnit(context, quantity)) },
                     isError = issue?.field == ScheduleField.AMOUNT,
                     supportingText = { ScheduleError(issue, ScheduleField.AMOUNT) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().editorInput(inputActive),
                 )
                 TextButton(onClick = { onChange(rule.copy(amount = null)) }) {
                     Text(

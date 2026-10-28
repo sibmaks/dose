@@ -8,6 +8,7 @@ screenshots are written to --output (a temporary directory by default).
 import argparse
 import pathlib
 import re
+import struct
 import subprocess
 import tempfile
 import time
@@ -19,6 +20,8 @@ def main():
     parser.add_argument("--adb", default="adb")
     parser.add_argument("--serial")
     parser.add_argument("--output", type=pathlib.Path)
+    parser.add_argument("--check-swipe-motion", action="store_true",
+                        help="Check content moves before pointer release and a short drag snaps back")
     args = parser.parse_args()
     output = args.output or pathlib.Path(tempfile.mkdtemp(prefix="dose-editor-ime-"))
     output.mkdir(parents=True, exist_ok=True)
@@ -73,6 +76,54 @@ def main():
         adb("shell", "input", "swipe", str(int(left + (right - left) * start)), y,
             str(int(left + (right - left) * end)), y, "400")
 
+    def raw_frame():
+        raw = adb("exec-out", "screencap")
+        width, height, pixel_format = struct.unpack("<III", raw[:12])
+        pixel_size = {1: 4, 2: 4, 3: 3}.get(pixel_format)
+        assert pixel_size is not None, f"Unsupported screenshot format {pixel_format}"
+        header = len(raw) - width * height * pixel_size
+        assert header in (12, 16), "Unexpected raw screenshot header"
+        return width, height, pixel_size, memoryview(raw)[header:]
+
+    def moving_swipe():
+        left, top, right, bottom = card_bounds(hierarchy()[0])
+        width, height = right - left, bottom - top
+        (output / "03a-before-swipe.png").write_bytes(adb("exec-out", "screencap", "-p"))
+        before = raw_frame()
+        y = str((top + bottom) // 2)
+        gesture = subprocess.Popen(command + ["shell", "input", "swipe",
+            str(int(left + width * 0.8)), y, str(int(left + width * 0.2)), y, "4000"],
+            stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+        try:
+            time.sleep(1.2)
+            assert gesture.poll() is None, "Gesture finished before the motion sample"
+            during = raw_frame()
+            (output / "03b-during-swipe.png").write_bytes(adb("exec-out", "screencap", "-p"))
+            assert gesture.poll() is None, "Motion capture exceeded the held gesture"
+        finally:
+            _, error = gesture.communicate(timeout=30)
+            assert gesture.returncode == 0, error.decode()
+        assert before[:3] == during[:3]
+        screen_width, _, pixel_size = before[:3]
+        changed = samples = 0
+        # Inspect only the page body, excluding status bar, heading/progress and footer.
+        for y in range(int(top + height * 0.3), int(bottom - height * 0.2), 4):
+            for x in range(int(left + width * 0.07), int(right - width * 0.07), 4):
+                offset = (y * screen_width + x) * pixel_size
+                changed += before[3][offset:offset + 3] != during[3][offset:offset + 3]
+                samples += 1
+        ratio = changed / samples
+        assert ratio > 0.01, f"Page stayed static before release ({ratio:.1%} changed)"
+        print(f"Page follows held swipe: {ratio:.1%} of body samples changed", flush=True)
+
+    def cancelled_swipe():
+        left, top, right, bottom = card_bounds(hierarchy()[0])
+        y = str((top + bottom) // 2)
+        adb("shell", "input", "swipe", str((left + right) // 2), y,
+            str(int(left + (right - left) * 0.58)), y, "1200")
+        assert_step(3)
+        print("Short backward drag settles on the current step", flush=True)
+
     def assert_step(number):
         assert any(n.get("text", "").startswith(f"Step {number} of ")
                    for n in hierarchy()[0].iter("node")), f"Expected step {number}"
@@ -126,13 +177,17 @@ def main():
         assert footer is not None and bounds(footer)[3] > bounds(footer)[1], "Footer is hidden"
         tap(footer)
         restored("03-form-restored", baseline)
-        swipe(True)
+        assert find(hierarchy()[0], "class", "android.widget.EditText") is None, "Outgoing name field is still visible"
+        moving_swipe() if args.check_swipe_motion else swipe(True)
         restored("04-amount-restored", baseline)
         assert_step(3)
+        if args.check_swipe_motion:
+            cancelled_swipe()
         focus_field("1")
         assert keyboard_shown(), "Amount keyboard did not open"
         tap_text("Continue")
         restored("05-schedule-restored", baseline)
+        assert find(hierarchy()[0], "text", "Every day") is not None, "Schedule content does not match the step"
         swipe(False)
         assert_step(3)
         focus_field()
