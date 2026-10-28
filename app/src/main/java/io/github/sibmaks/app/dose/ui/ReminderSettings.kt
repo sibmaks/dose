@@ -123,7 +123,6 @@ internal fun ReminderSettingsScreen(
                         ), R.string.exact_alarm_settings_fallback
                     )
 
-                    else -> Unit
                 }
             }
         }

@@ -113,7 +113,7 @@ object VibrationRepeat {
             it.date == date && it.medicationId == id && it.time == time && it.status != "pending"
         }
         val snoozed = (DoseStore.snoozes(context)[key] ?: 0L) > now
-        val rescheduled = medication == null || parsedDate == null || cycle.scheduledAt != DoseLogic.effectiveScheduledMillis(
+        val rescheduled = medication == null || cycle.scheduledAt != DoseLogic.effectiveScheduledMillis(
             medication, parsedDate, time, DoseStore.timeOverrides(context)
         )
         // Same-instant siblings share one buzz: only the notification anchor's cycle sounds.
