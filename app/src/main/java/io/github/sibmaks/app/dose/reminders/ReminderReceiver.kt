@@ -62,13 +62,14 @@ class ReminderReceiver : BroadcastReceiver() {
                                 DoseStore.wasDeferred(
                                     context,
                                     slot.key
-                                ), slot.scheduledAt, now
+                                ), med.scheduledMillis(scheduledDate, time), now
                             )
                         ) return
                         DoseStore.record(
                             context, DoseLogic.recordedLog(
                                 med, date, time,
-                                if (intent.action == ACTION_SKIP) "skipped" else "taken", slot.scheduledAt, now,
+                                if (intent.action == ACTION_SKIP) "skipped" else "taken",
+                                med.scheduledMillis(scheduledDate, time), now,
                                 onTime = intent.action == ACTION_ON_TIME
                             )
                         )

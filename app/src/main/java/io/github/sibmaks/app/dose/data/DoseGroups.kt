@@ -55,6 +55,6 @@ object DoseGroups {
         status: String,
         now: Long
     ): List<DoseLog> = items.map {
-        DoseLogic.recordedLog(it.medication, it.date, it.time, status, it.scheduledAt, now)
+        DoseLogic.recordedLog(it.medication, it.date, it.time, status, it.intakeScheduledAt, now)
     }
 }

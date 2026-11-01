@@ -32,23 +32,31 @@ class TodayDoseTest {
     @Test fun `moving earlier skips the original alarm rather than delivering twice`() {
         assertEquals(at("08:00", date.plusDays(1)), DoseLogic.nextOccurrence(med, "08:00", now("07:00"), emptyList(), mapOf(key to "06:00")))
     }
+    @Test fun `retaining awaiting history does not suppress the rescheduled alarm`() {
+        val pending = DoseLogic.pendingLog(med, date.toString(), "08:00", at("08:00"))
+        assertEquals(at("10:00"), DoseLogic.nextOccurrence(med, "08:00", now("09:00"), listOf(pending), overrides))
+        val taken = DoseLogic.acceptedAt(items(listOf(pending)).first(), at("10:00"), at("10:00"))
+        assertEquals(at("08:00", date.plusDays(1)), DoseLogic.nextOccurrence(med, "08:00", now("09:00"), listOf(taken), overrides))
+    }
     @Test fun `recorded moved dose resolves its original slot and undo keeps exception`() {
         val item = items().first()
         val log = DoseLogic.acceptedAt(item, at("10:15"), at("11:00"))
-        assertEquals(at("10:00"), log.scheduledAt)
+        assertEquals(at("08:00"), log.scheduledAt)
         assertEquals(at("11:00"), log.clickedAt)
-        assertEquals(15 * 60_000L, DoseReports.timing(log)!!.delayMillis)
+        assertEquals(135 * 60_000L, DoseReports.timing(log)!!.delayMillis)
         assertEquals("taken", items(listOf(log)).first().status)
         assertEquals(at("08:00", date.plusDays(1)), DoseLogic.nextOccurrence(med, "08:00", now("09:00"), listOf(log), overrides))
         assertEquals("10:00", items().first().scheduledTime)
     }
-    @Test fun `snooze affects alert time but not moved deadline`() {
+    @Test fun `snooze after moving a reminder retains the original intake deadline`() {
         val item = items(snoozes = mapOf(key to at("10:30"))).first()
         assertEquals(at("10:30"), item.dueMillis)
         assertEquals(at("10:00"), item.scheduledAt)
-        val log = DoseLogic.acceptedAt(item, item.scheduledAt, at("11:00"))
-        assertTrue(log.onTime)
-        assertEquals(0L, DoseReports.timing(log)!!.delayMillis)
+        assertEquals(at("08:00"), item.intakeScheduledAt)
+        val log = DoseLogic.acceptedAt(item, item.dueMillis, at("11:00"))
+        assertFalse(log.onTime)
+        assertEquals(150 * 60_000L, DoseReports.timing(log)!!.delayMillis)
+        assertEquals(150L, DoseTimeline.delayMinutes(log))
     }
     @Test fun `reject collisions past reminders and resolved or previous day slots`() {
         val item = items().first()
@@ -68,8 +76,37 @@ class TodayDoseTest {
     @Test fun `correcting acceptance keeps the captured deadline`() {
         val item = items().first()
         val original = DoseLogic.acceptedAt(item, at("10:20"), at("11:00"))
-        val corrected = DoseLogic.acceptedAt(item.copy(log = original, scheduledAt = at("09:00")), at("10:00"), at("12:00"))
-        assertEquals(at("10:00"), corrected.scheduledAt)
+        val corrected = DoseLogic.acceptedAt(item.copy(log = original, scheduledAt = at("09:00")), at("08:00"), at("12:00"))
+        assertEquals(at("08:00"), corrected.scheduledAt)
         assertTrue(corrected.onTime)
+    }
+
+    @Test fun `taking a dose exactly at its moved reminder still reports the original delay`() {
+        val item = items().first()
+        val log = DoseLogic.acceptedAt(item, at("10:00"), at("10:00"))
+        assertFalse(log.onTime)
+        assertEquals(120 * 60_000L, DoseReports.timing(log)!!.delayMillis)
+        assertEquals(120L, DoseTimeline.delayMinutes(log))
+        val restored = DoseLogJson.decode(DoseLogJson.encode(log))!!
+        assertEquals(at("08:00"), restored.scheduledAt)
+        assertEquals(120L, DoseTimeline.delayMinutes(restored))
+    }
+
+    @Test fun `bulk acceptance and pending history retain original deadlines after a second move`() {
+        val moved = DoseLogic.todayItems(listOf(med), emptyList(), emptyMap(), at("12:00"), date, mapOf(key to "12:00"))
+            .first()
+        val pending = DoseLogic.pendingLog(med, moved.date, moved.time, moved.intakeScheduledAt)
+        assertEquals(at("08:00"), pending.scheduledAt)
+        val log = DoseGroups.logs(listOf(moved), "taken", at("12:00")).single()
+        assertEquals(at("08:00"), log.scheduledAt)
+        assertEquals(240L, DoseTimeline.delayMinutes(log))
+    }
+
+    @Test fun `moving a reminder earlier does not turn early intake into a late one`() {
+        val moved = DoseLogic.todayItems(listOf(med), emptyList(), emptyMap(), at("07:00"), date, mapOf(key to "07:00"))
+            .first()
+        val log = DoseLogic.acceptedAt(moved, at("07:00"), at("07:00"))
+        assertEquals(-60 * 60_000L, DoseReports.timing(log)!!.differenceMillis)
+        assertNull(DoseTimeline.delayMinutes(log))
     }
 }

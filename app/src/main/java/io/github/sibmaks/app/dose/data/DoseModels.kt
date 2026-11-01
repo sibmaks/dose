@@ -292,6 +292,8 @@ data class DoseItem(
     val status: String,
     val scheduledTime: String = time,
     val scheduledAt: Long = medication.scheduledMillis(LocalDate.parse(date), time),
+    // Moving today's reminder changes delivery, while intake history keeps the prescribed deadline.
+    val intakeScheduledAt: Long = medication.scheduledMillis(LocalDate.parse(date), time),
 ) {
     val id: String get() = "${date}|${medication.id}|$time"
     val amount: String get() = medication.amountAt(LocalDate.parse(date), time)
@@ -406,8 +408,8 @@ object DoseLogic {
         )
         return DoseLog(
             item.date, item.medication.id, item.medication.name, item.medication.dose,
-            item.time, "taken", at, item.log?.scheduledAt ?: item.scheduledAt,
-            onTime = at == (item.log?.scheduledAt ?: item.scheduledAt), clickedAt = nowMillis
+            item.time, "taken", at, item.log?.scheduledAt ?: item.intakeScheduledAt,
+            onTime = at == (item.log?.scheduledAt ?: item.intakeScheduledAt), clickedAt = nowMillis
         )
     }
 
@@ -421,7 +423,7 @@ object DoseLogic {
     ): Long? {
         if (!medication.active || !isTime(time)) return null
         val recordedDates =
-            logs.filter { it.medicationId == medication.id && it.time == time }
+            logs.filter { it.medicationId == medication.id && it.time == time && it.status != "pending" }
                 .map { it.date }
                 .toSet()
         return medication.schedules.filter { time in it.times }

@@ -133,6 +133,12 @@ Use `--adb /path/to/adb` when needed. Close any existing draft first; the check 
 - The shared snooze revalidates the displayed dose snapshot, retains each dose's original deadline and awaiting history entry, stops repeat vibration, and postpones all remaining members to the same instant so they stay grouped when the alarm returns.
 - Verification: 236 unit tests, debug assembly and lint passed. On the API 27 emulator at normal text size, screenshots confirmed the capsule in the status bar/drawer, individual popup controls, one bottom snooze control, and separated history timeline icons. Both the popup and notification-drawer snooze actions postponed two doses to exactly the same instant and recorded one snooze event per dose. Temporary emulator data and font settings were restored. Other Android versions remain unverified at runtime.
 
+### Original intake deadline after rescheduling — 1 November 2026
+
+- Today-only changes now move reminder delivery while intake logging and delay reports use the original schedule. This applies to Today actions, chosen acceptance times, notifications, popup actions, the widget, grouped intake, and awaiting history entries. Existing recorded acceptance corrections retain their captured deadline.
+- Rescheduling retains the awaiting entry and earlier reminder events. Awaiting entries no longer suppress the moved alarm; only resolved history excludes an occurrence from scheduling.
+- Verification: 240 unit tests, debug assembly and lint passed. Regressions cover taking exactly at the moved reminder, a second move, snoozing, bulk intake, JSON persistence, moving earlier, and scheduling with retained awaiting history. The API 27 emulator moved an overdue dose to a future time through the native time picker, preserved its pending deadline and reminder event, then recorded Taken with a positive delay against the original time. Temporary emulator data was restored after verification.
+
 ## Final validation
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`

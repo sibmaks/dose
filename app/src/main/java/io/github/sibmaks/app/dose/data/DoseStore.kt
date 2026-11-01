@@ -192,7 +192,7 @@ object DoseStore {
         val additions = items.filter { item ->
             existing.none { it.date == item.date && it.medicationId == item.medication.id && it.time == item.time }
         }
-            .map { DoseLogic.pendingLog(it.medication, it.date, it.time, it.scheduledAt) }
+            .map { DoseLogic.pendingLog(it.medication, it.date, it.time, it.intakeScheduledAt) }
         val allEvents = events(context)
         val events = if (repeat == null) emptyList() else items.map {
             DoseEvent(it.date, it.medication.id, it.time, if (repeat) "repeat" else "reminder", now)
@@ -402,29 +402,8 @@ object DoseStore {
         saveOverrides(context, overrides + (slotKey to newTime))
         clearSnooze(context, slotKey)
         clearDeferred(context, slotKey)
-        // The moved slot awaits its new reminder instant; its awaiting entry referred to the old one.
-        removePending(context, slotKey)
-        removeSlotEvents(context, slotKey)
+        // Earlier deliveries still belong to this dose, even though its next alert moves.
         return true
-    }
-
-    private fun removePending(
-        context: Context,
-        key: String
-    ) {
-        val parts = key.split('|', limit = 3)
-        if (parts.size != 3) return
-        val (date, id, time) = parts
-        val existing = logs(context)
-        val kept = existing.filterNot {
-            it.date == date && it.medicationId == id && it.time == time && it.status == "pending"
-        }
-        if (kept.size == existing.size) return
-        val array = JSONArray()
-        kept.forEach { array.put(DoseLogJson.encode(it)) }
-        prefs(context).edit()
-            .putString(LOGS, array.toString())
-            .commit()
     }
 
     @Synchronized
@@ -513,7 +492,7 @@ object DoseStore {
         status: String
     ): DoseLog = DoseLogic.recordedLog(
         item.medication, item.date, item.time, if (status == "on_time") "taken" else status,
-        item.scheduledAt,
+        item.intakeScheduledAt,
         System.currentTimeMillis(), onTime = status == "on_time",
     )
 
