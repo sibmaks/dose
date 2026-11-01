@@ -112,18 +112,22 @@ internal fun IntakeTimeline(
                 "skipped" -> Triple(SoftPanel, TextMuted, Icons.Rounded.Block)
                 else -> Triple(AccentPanel, Violet, Icons.Rounded.Notifications)
             }
-            RailRow(last = index == rows.lastIndex, tile = {
-                Box(
-                    Modifier
-                        .size(34.dp)
-                        .clip(CircleShape)
-                        .background(tileBackground),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(tileIcon, null, tint = tileTint, modifier = Modifier.size(17.dp))
+            RailRow(
+                last = index == rows.lastIndex,
+                modifier = Modifier.heightIn(min = 34.dp + DoseSpacing.small),
+                tile = {
+                    Box(
+                        Modifier
+                            .size(34.dp)
+                            .clip(CircleShape)
+                            .background(tileBackground),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(tileIcon, null, tint = tileTint, modifier = Modifier.size(17.dp))
+                    }
                 }
-            }) {
-                Column(Modifier.padding(bottom = 15.dp)) {
+            ) {
+                Column(Modifier.padding(bottom = DoseSpacing.medium)) {
                     Row(Modifier.fillMaxWidth()) {
                         Text(
                             timelineTitle(context, entry),
@@ -198,10 +202,11 @@ private fun timelineMeta(
 @Composable
 private fun RailRow(
     last: Boolean,
+    modifier: Modifier = Modifier,
     tile: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
-    Row(Modifier.height(IntrinsicSize.Min)) {
+    Row(modifier.height(IntrinsicSize.Min)) {
         Box(
             Modifier
                 .width(34.dp)
