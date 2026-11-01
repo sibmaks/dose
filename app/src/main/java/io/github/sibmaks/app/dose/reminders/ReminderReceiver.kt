@@ -16,7 +16,6 @@ import io.github.sibmaks.app.dose.data.DoseStore
 import io.github.sibmaks.app.dose.data.Medication
 import io.github.sibmaks.app.dose.localization.AppLanguages
 import io.github.sibmaks.app.dose.localization.localizedDose
-import io.github.sibmaks.app.dose.ui.iconResource
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -164,7 +163,7 @@ class ReminderReceiver : BroadcastReceiver() {
         val skip = if (multiple) GroupDoseActions.pending(context, GroupDoseActions.SKIP, group)
         else ReminderScheduler.actionIntent(context, ACTION_SKIP, id, time, date, scheduledAt)
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(medication.form.iconResource())
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(
                 if (multiple) context.getString(R.string.several_medicines, group.size)
                 else context.getString(R.string.time_for_named, medication.name)

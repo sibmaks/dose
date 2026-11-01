@@ -1,5 +1,8 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
-    <path android:fillColor="#FFFFFFFF"
-        android:pathData="M8.2,2.7a6,6 0,0 1,8.5 0l4.6,4.6a6,6 0,0 1,0 8.5l-5.5,5.5a6,6 0,0 1,-8.5 0l-4.6,-4.6a6,6 0,0 1,0 -8.5zM11.6,5.8L5.8,11.6l6.6,6.6 5.8,-5.8z"/>
+    <!-- Dose's capsule, with a transparent seam that remains visible as a status-bar mask. -->
+    <group android:rotation="-45" android:pivotX="12" android:pivotY="12">
+        <path android:fillColor="#FFFFFFFF"
+            android:pathData="M7,11V7A5,5 0,0 1,17 7V11Z M7,13H17V17A5,5 0,0 1,7 17Z"/>
+    </group>
 </vector>
