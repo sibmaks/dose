@@ -78,7 +78,10 @@ object ReminderAlerts {
             .putBoolean("overlay_enabled", enablePopups)
             .putBoolean("setup_reviewed", true)
             .apply()
-        if (!enablePopups) context.stopService(Intent(context, ReminderOverlayService::class.java))
+        if (!enablePopups) {
+            PendingReminderPopups.clear(context)
+            context.stopService(Intent(context, ReminderOverlayService::class.java))
+        }
         if (!enableFeed) {
             val manager = context.getSystemService(android.app.NotificationManager::class.java)
             manager.activeNotifications.filter { it.notification.extras.containsKey(ReminderReceiver.EXTRA_MEDICATION_ID) }
@@ -119,7 +122,9 @@ object ReminderAlerts {
         slot: ReminderSlot
     ) {
         if (NotificationPause.isPaused(context) || !enabled(context) || !permissionGranted(context)) return
-        start(context, slot.putInto(Intent(context, ReminderOverlayService::class.java)))
+        if (!PendingReminderPopups.screenAvailable(context) ||
+            !start(context, slot.putInto(Intent(context, ReminderOverlayService::class.java)))
+        ) PendingReminderPopups.defer(context, listOf(slot))
     }
 
     private fun start(

@@ -139,6 +139,13 @@ Use `--adb /path/to/adb` when needed. Close any existing draft first; the check 
 - Rescheduling retains the awaiting entry and earlier reminder events. Awaiting entries no longer suppress the moved alarm; only resolved history excludes an occurrence from scheduling.
 - Verification: 240 unit tests, debug assembly and lint passed. Regressions cover taking exactly at the moved reminder, a second move, snoozing, bulk intake, JSON persistence, moving earlier, and scheduling with retained awaiting history. The API 27 emulator moved an overdue dose to a future time through the native time picker, preserved its pending deadline and reminder event, then recorded Taken with a positive delay against the original time. Temporary emulator data was restored after verification.
 
+### Popups received while locked — 1 November 2026
+
+- A popup received with the screen off or keyguard active now waits in a persistent queue. A visible popup also returns to that queue if the phone locks. The short foreground service only runs while the screen is available, so unseen reminders do not consume its two-minute display timeout.
+- Screen-on and unlock broadcasts request a retry. A non-wakeup exact alarm recovers pending popups after process death and permits a fresh short foreground service after unlock. The queue is acknowledged only after the window is added; retries preserve the original notification delivery and history event.
+- Each retry checks the current day, dose identity, reminder deadline, snooze instant, unresolved status, reminder settings, permissions, and notification pause state. Disabling popups or starting a pause clears the queue; schedule rebuilds prune stale entries.
+- Verification: 240 unit tests, debug assembly and lint passed. The API 27 emulator received a reminder while asleep, retained its queued popup beyond 130 seconds with no popup service running, survived an explicit process kill, then displayed it after wake/unlock. The queue cleared after display, the history retained one delivery event, and Taken closed the popup. The rescheduling UI replay also passed. Original medication/history data and font settings were restored exactly. Modern Android and vendor-specific runtime behavior remain unverified.
+
 ## Final validation
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`

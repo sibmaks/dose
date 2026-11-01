@@ -29,7 +29,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/** Only runs while the opt-in pop-up is visible; notifications remain after it times out. */
+/** Only runs while the opt-in popup is visible; locked screens defer it to the persistent queue. */
 class ReminderOverlayService : Service() {
     private val handler = Handler(Looper.getMainLooper())
     private val slots = linkedMapOf<String, ReminderSlot>()
@@ -68,6 +68,10 @@ class ReminderOverlayService : Service() {
                         (snoozes[slot.key] ?: 0L) > System.currentTimeMillis()
             }
             if (slots.isEmpty()) {
+                finishAlert(); return
+            }
+            if (!PendingReminderPopups.screenAvailable(this@ReminderOverlayService)) {
+                PendingReminderPopups.defer(this@ReminderOverlayService, slots.values)
                 finishAlert(); return
             }
             val language = languageKey()
@@ -205,11 +209,13 @@ class ReminderOverlayService : Service() {
             window = null
             manager.addView(popup, params)
             window = popup
+            PendingReminderPopups.shown(this, slots.keys)
             renderedKeys = slots.keys.toList()
             renderedLanguage = languageKey()
             renderedDark = AppAppearance.isDark(context)
         } catch (_: RuntimeException) {
-            // Permission revocation / protected system surfaces must leave the ordinary reminder intact.
+            // Protected system surfaces can temporarily reject a window; retry the unseen popup.
+            PendingReminderPopups.defer(this, slots.values)
             finishAlert()
         }
     }

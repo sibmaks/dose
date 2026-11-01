@@ -97,6 +97,7 @@ object NotificationPause {
 
     /** Stops what is already on screen the moment a pause takes effect. */
     fun silenceNow(context: Context) {
+        PendingReminderPopups.clear(context)
         context.stopService(Intent(context, ReminderOverlayService::class.java))
         context.getSystemService(NotificationManager::class.java)
             .let { manager ->
