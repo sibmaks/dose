@@ -125,6 +125,14 @@ Use `--adb /path/to/adb` when needed. Close any existing draft first; the check 
 - Extended the unsaved-draft regression with heading/content consistency checks and optional `--check-swipe-motion` coverage. A held drag visibly moves the page before release, and a short drag settles back on the current step.
 - Verification: all 236 unit tests, debug assembly and lint passed. API 27 checks at 100%/200% text confirmed full height recovery, validation and hardware Back. Normal-size checks confirmed continuous dragging, snap-back, optional custom-form page insertion/removal and navigation with its keyboard open. The original font setting was restored and drafts were discarded.
 
+### Reminder icon, history spacing and reminder actions — 1 November 2026
+
+- Reminder notifications now use Dose's capsule symbol instead of the medication-form artwork. The monochrome notification drawable has a transparent seam and is shared with the popup service notification.
+- History timeline event rows reserve at least 46 dp for their 34 dp icon, retaining a minimum 12 dp gap even when an event has only one line of text. Date headings keep their existing compact height.
+- Removed Taken all/Skip all and per-dose snooze controls from the reminder popup. Each dose keeps Taken/Skip, followed by one Snooze 10 min control below the list. Grouped drawer notifications also omit bulk Taken/Skip and expose one snooze action; a single-dose drawer notification retains Taken/Skip.
+- The shared snooze revalidates the displayed dose snapshot, retains each dose's original deadline and awaiting history entry, stops repeat vibration, and postpones all remaining members to the same instant so they stay grouped when the alarm returns.
+- Verification: 236 unit tests, debug assembly and lint passed. On the API 27 emulator at normal text size, screenshots confirmed the capsule in the status bar/drawer, individual popup controls, one bottom snooze control, and separated history timeline icons. Both the popup and notification-drawer snooze actions postponed two doses to exactly the same instant and recorded one snooze event per dose. Temporary emulator data and font settings were restored. Other Android versions remain unverified at runtime.
+
 ## Final validation
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`

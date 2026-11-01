@@ -35,9 +35,7 @@ internal object ReminderPopupView {
     fun create(
         context: Context,
         entries: List<Entry>,
-        keepNotification: Boolean,
-        onLater: () -> Unit,
-        onAll: (String) -> Unit
+        onSnooze: () -> Unit
     ): ScrollView {
         val dark = AppAppearance.isDark(context)
         val colors = doseColorScheme(dark)
@@ -115,14 +113,6 @@ internal object ReminderPopupView {
                 text(context.getString(R.string.several_medicines, entries.size), DoseText.body.fontSize.value, color = muted),
                 LinearLayout.LayoutParams(-1, -2)
                     .apply { topMargin = dimension(DoseSpacing.extraSmall) })
-            content.addView(
-                pill(context.getString(R.string.taken_all), primary = true) { onAll("taken") },
-                LinearLayout.LayoutParams(-1, -2)
-                    .apply { topMargin = dimension(DoseSpacing.small) })
-            content.addView(
-                pill(context.getString(R.string.skip_all), quiet = true) { onAll("skipped") },
-                LinearLayout.LayoutParams(-1, -2)
-                    .apply { topMargin = dimension(DoseSpacing.extraSmall) })
         }
         entries.forEach { entry ->
             val medication = entry.medication
@@ -189,13 +179,6 @@ internal object ReminderPopupView {
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
                     .apply { topMargin = dimension(DoseSpacing.cardInset) })
-            card.addView(
-                pill(context.getString(R.string.snooze_10_min)) { entry.onAction(ReminderReceiver.ACTION_SNOOZE) },
-                LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                    .apply { topMargin = dimension(DoseSpacing.extraSmall) })
             content.addView(
                 card, LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -205,9 +188,8 @@ internal object ReminderPopupView {
         }
         content.addView(
             pill(
-                if (keepNotification) context.getString(R.string.later_keep_notification) else context.getString(R.string.later),
-                quiet = true,
-                onClick = onLater
+                context.getString(R.string.snooze_10_min),
+                onClick = onSnooze
             ),
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 .apply { topMargin = dimension(DoseSpacing.medium) })

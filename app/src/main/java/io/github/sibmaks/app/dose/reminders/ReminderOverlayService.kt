@@ -182,10 +182,8 @@ class ReminderOverlayService : Service() {
         val popup = ReminderPopupView.create(
             themed,
             entries,
-            keepNotification = ReminderAlerts.feedEnabled(this) && ReminderNotifications.allowed(this),
-            onLater = ::deferAlerts,
-            onAll = { status ->
-                GroupDoseActions.record(this, members, status)
+            onSnooze = {
+                GroupDoseActions.snooze(this, members)
                 handler.removeCallbacks(reconcile)
                 reconcile.run()
             })
@@ -214,14 +212,6 @@ class ReminderOverlayService : Service() {
             // Permission revocation / protected system surfaces must leave the ordinary reminder intact.
             finishAlert()
         }
-    }
-
-    private fun deferAlerts() {
-        slots.values.forEach { slot ->
-            DoseStore.markDeferred(this, slot.key)
-            ReminderReceiver.refreshNotification(this, slot)
-        }
-        finishAlert()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

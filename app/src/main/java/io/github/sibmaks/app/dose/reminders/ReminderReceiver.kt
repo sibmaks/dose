@@ -27,7 +27,9 @@ class ReminderReceiver : BroadcastReceiver() {
         intent: Intent
     ) {
         try {
-            if (intent.action == GroupDoseActions.TAKEN || intent.action == GroupDoseActions.SKIP) {
+            if (intent.action == GroupDoseActions.TAKEN || intent.action == GroupDoseActions.SKIP ||
+                intent.action == GroupDoseActions.SNOOZE
+            ) {
                 GroupDoseActions.receive(context, intent)
                 return
             }
@@ -158,10 +160,7 @@ class ReminderReceiver : BroadcastReceiver() {
         val message = if (multiple) group.joinToString("\n") {
             "${it.medication.name} · ${notificationDetail(context, it.medication, it.scheduledAt, it.amount)}"
         } else notificationDetail(context, medication, scheduledAt, medication.amountAt(LocalDate.parse(date), time))
-        val taken = if (multiple) GroupDoseActions.pending(context, GroupDoseActions.TAKEN, group)
-        else ReminderScheduler.actionIntent(context, ACTION_TAKEN, id, time, date, scheduledAt)
-        val skip = if (multiple) GroupDoseActions.pending(context, GroupDoseActions.SKIP, group)
-        else ReminderScheduler.actionIntent(context, ACTION_SKIP, id, time, date, scheduledAt)
+        val snooze = GroupDoseActions.pending(context, GroupDoseActions.SNOOZE, group)
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(
@@ -173,8 +172,6 @@ class ReminderReceiver : BroadcastReceiver() {
                 NotificationCompat.BigTextStyle()
                     .bigText(message)
             )
-            .addAction(R.drawable.ic_notification, context.getString(R.string.taken), taken)
-            .addAction(R.drawable.ic_notification, context.getString(R.string.skip), skip)
             .addExtras(Bundle().apply {
                 putString(EXTRA_MEDICATION_ID, id)
                 putString(EXTRA_TIME, time)
@@ -187,6 +184,16 @@ class ReminderReceiver : BroadcastReceiver() {
             .setContentIntent(open)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
+        if (!multiple) {
+            builder.addAction(
+                R.drawable.ic_notification, context.getString(R.string.taken),
+                ReminderScheduler.actionIntent(context, ACTION_TAKEN, id, time, date, scheduledAt)
+            ).addAction(
+                R.drawable.ic_notification, context.getString(R.string.skip),
+                ReminderScheduler.actionIntent(context, ACTION_SKIP, id, time, date, scheduledAt)
+            )
+        }
+        builder.addAction(R.drawable.ic_notification, context.getString(R.string.snooze_10_min), snooze)
         val notification = builder.build()
         // Every real delivery lands on the slot's timeline and starts it as awaiting acceptance;
         // silent refreshes re-render an already delivered reminder, so they stay unrecorded.

@@ -11,10 +11,11 @@ import io.github.sibmaks.app.dose.data.DoseLogic
 import io.github.sibmaks.app.dose.data.DoseStore
 import java.security.MessageDigest
 
-/** Immutable membership keeps a stale notification from accepting a newly added or moved dose. */
+/** Immutable membership keeps stale reminder actions from changing newly added or moved doses. */
 object GroupDoseActions {
     const val TAKEN = "io.github.sibmaks.app.dose.TAKEN_ALL"
     const val SKIP = "io.github.sibmaks.app.dose.SKIP_ALL"
+    const val SNOOZE = "io.github.sibmaks.app.dose.SNOOZE_ALL"
     private const val KEYS = "groupKeys"
     private const val SCHEDULED = "groupScheduled"
     private const val DUE = "groupDue"
@@ -24,7 +25,7 @@ object GroupDoseActions {
         action: String,
         items: List<DoseItem>
     ): PendingIntent {
-        require(action == TAKEN || action == SKIP)
+        require(action == TAKEN || action == SKIP || action == SNOOZE)
         val members =
             DoseGroups.snapshot(items)
                 .sortedBy { it.key }
@@ -64,10 +65,29 @@ object GroupDoseActions {
         val scheduled = intent.getLongArrayExtra(SCHEDULED) ?: return
         val due = intent.getLongArrayExtra(DUE) ?: return
         if (keys.size != scheduled.size || keys.size != due.size) return
-        record(
-            context, keys.indices.map { DoseGroups.Member(keys[it], scheduled[it], due[it]) },
-            if (intent.action == TAKEN) "taken" else "skipped"
+        val members = keys.indices.map { DoseGroups.Member(keys[it], scheduled[it], due[it]) }
+        when (intent.action) {
+            TAKEN -> record(context, members, "taken")
+            SKIP -> record(context, members, "skipped")
+            SNOOZE -> snooze(context, members)
+        }
+    }
+
+    fun snooze(context: Context, members: List<DoseGroups.Member>) {
+        val now = System.currentTimeMillis()
+        val current = DoseLogic.todayItems(
+            DoseStore.medications(context), DoseStore.logs(context), DoseStore.snoozes(context), now,
+            overrides = DoseStore.timeOverrides(context)
         )
+        DoseGroups.eligible(current, members).forEach { item ->
+            // One instant keeps the doses grouped when their reminders return.
+            ReminderScheduler.snooze(context, item.medication.id, item.time, item.date, now = now)
+            VibrationRepeat.stop(context, item.id)
+            NotificationManagerCompat.from(context)
+                .cancel(ReminderReceiver.notificationId(item.medication.id, item.time, item.date))
+        }
+        ReminderReceiver.refreshVisible(context)
+        io.github.sibmaks.app.dose.widget.DoseWidget.updateAll(context)
     }
 
     fun record(

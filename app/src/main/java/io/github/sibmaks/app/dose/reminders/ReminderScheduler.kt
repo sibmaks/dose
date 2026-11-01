@@ -173,16 +173,17 @@ object ReminderScheduler {
         medicationId: String,
         time: String,
         date: String,
-        minutes: Int = 10
+        minutes: Int = 10,
+        now: Long = System.currentTimeMillis()
     ) {
         DoseStore.markDeferred(context, DoseLogic.slotKey(date, medicationId, time))
-        val until = System.currentTimeMillis() + minutes * 60_000L
+        val until = now + minutes * 60_000L
         val key = DoseLogic.slotKey(date, medicationId, time)
         DoseStore.putSnooze(context, key, until)
         // The postponement and its follow-up reminder instant belong on the slot's timeline.
         DoseStore.addEvents(
             context, listOf(
-                DoseEvent(date, medicationId, time, "snooze", System.currentTimeMillis(), minutes.toLong(), until)
+                DoseEvent(date, medicationId, time, "snooze", now, minutes.toLong(), until)
             )
         )
         scheduleSnooze(context, medicationId, time, date, until)
