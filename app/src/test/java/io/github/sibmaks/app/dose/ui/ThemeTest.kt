@@ -11,19 +11,27 @@ import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 
 class ThemeTest {
-    @Test fun `system is the default and tracks Android while explicit modes override it`() {
+    @Test
+    fun `system is the default and tracks Android while explicit modes override it`() {
         for (preference in listOf(null, "", "unknown", "system")) {
             val mode = ThemeMode.fromPreference(preference)
             assertFalse(mode.isDark(false))
             assertTrue(mode.isDark(true))
         }
         for (systemDark in listOf(false, true)) {
-            assertFalse(ThemeMode.fromPreference("light").isDark(systemDark))
-            assertTrue(ThemeMode.fromPreference("dark").isDark(systemDark))
+            assertFalse(
+                ThemeMode.fromPreference("light")
+                    .isDark(systemDark)
+            )
+            assertTrue(
+                ThemeMode.fromPreference("dark")
+                    .isDark(systemDark)
+            )
         }
     }
 
-    @Test fun `body text controls and secondary labels stay readable in both palettes`() {
+    @Test
+    fun `body text controls and secondary labels stay readable in both palettes`() {
         for (dark in listOf(false, true)) {
             val colors = doseColorScheme(dark)
             val pairs = listOf(
@@ -38,13 +46,17 @@ class ThemeTest {
                 colors.error to colors.surface,
             )
             pairs.forEach { (foreground, background) ->
-                assertTrue("dark=$dark foreground=$foreground background=$background", contrast(foreground, background) >= 4.5)
+                assertTrue(
+                    "dark=$dark foreground=$foreground background=$background",
+                    contrast(foreground, background) >= 4.5
+                )
             }
             assertEquals(dark, colors.background.luminanceIsDark())
         }
     }
 
-    @Test fun `small text on brand and status containers meets normal text contrast`() {
+    @Test
+    fun `small text on brand and status containers meets normal text contrast`() {
         assertTrue(contrast(OnBrandViolet, BrandViolet) >= 4.5)
         for (dark in listOf(false, true)) {
             val colors = doseSemanticColors(dark)
@@ -59,28 +71,49 @@ class ThemeTest {
                 colors.eyebrow to doseColorScheme(dark).background,
                 doseColorScheme(dark).error to colors.invalidFieldContainer,
             ).forEach { (foreground, background) ->
-                assertTrue("dark=$dark foreground=$foreground background=$background", contrast(foreground, background) >= 4.5)
+                assertTrue(
+                    "dark=$dark foreground=$foreground background=$background",
+                    contrast(foreground, background) >= 4.5
+                )
             }
         }
     }
 
-    @Test fun `shipping widget small text remains readable on its actual backgrounds`() {
+    @Test
+    fun `shipping widget small text remains readable on its actual backgrounds`() {
         val resources = listOf(File("src/main/res"), File("app/src/main/res")).first { it.isDirectory }
-        fun elements(path: String, tag: String): List<Element> {
-            val nodes = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(File(resources, path)).getElementsByTagName(tag)
+        fun elements(
+            path: String,
+            tag: String
+        ): List<Element> {
+            val nodes =
+                DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(File(resources, path))
+                    .getElementsByTagName(tag)
             return (0 until nodes.length).map { nodes.item(it) as Element }
         }
-        val dimensions = elements("values/dimens.xml", "dimen").associate { it.getAttribute("name") to it.textContent.trim() }
-        val baseColors = elements("values/colors.xml", "color").associate { it.getAttribute("name") to it.textContent.trim() }
+
+        val dimensions =
+            elements("values/dimens.xml", "dimen").associate { it.getAttribute("name") to it.textContent.trim() }
+        val baseColors =
+            elements("values/colors.xml", "color").associate { it.getAttribute("name") to it.textContent.trim() }
         for (dark in listOf(false, true)) {
             val colors = baseColors + if (dark) elements("values-night/colors.xml", "color")
                 .associate { it.getAttribute("name") to it.textContent.trim() } else emptyMap()
+
             fun parseColor(value: String): Color {
                 if (value.startsWith("@color/")) return parseColor(colors.getValue(value.substringAfter('/')))
-                return Color((value.removePrefix("#").toLong(16) or 0xFF000000).toInt())
+                return Color(
+                    (value.removePrefix("#")
+                        .toLong(16) or 0xFF000000).toInt()
+                )
             }
-            fun background(path: String) = parseColor(elements(path, "solid").single().getAttribute("android:color"))
+
+            fun background(path: String) = parseColor(
+                elements(path, "solid").single()
+                    .getAttribute("android:color")
+            )
             for ((layout, fill) in listOf(
                 "widget_upcoming_dose" to "widget_background",
                 "widget_dose_list" to "widget_list_background",
@@ -89,14 +122,20 @@ class ThemeTest {
                 val surface = background("drawable/$fill.xml")
                 elements("layout/$layout.xml", "TextView").forEach { view ->
                     val sizeValue = view.getAttribute("android:textSize")
-                    val size = (if (sizeValue.startsWith("@dimen/")) dimensions.getValue(sizeValue.substringAfter('/')) else sizeValue).removeSuffix("sp").toFloat()
+                    val size =
+                        (if (sizeValue.startsWith("@dimen/")) dimensions.getValue(sizeValue.substringAfter('/')) else sizeValue).removeSuffix(
+                            "sp"
+                        )
+                            .toFloat()
                     val large = size >= if (view.getAttribute("android:textStyle") == "bold") 14f else 18f
                     val ownBackground = view.getAttribute("android:background")
                     val behindText = if (ownBackground.startsWith("@drawable/"))
                         background("drawable/${ownBackground.substringAfter('/')}.xml") else surface
                     val foreground = parseColor(view.getAttribute("android:textColor"))
-                    assertTrue("dark=$dark ${view.getAttribute("android:id")} on $fill",
-                        contrast(foreground, behindText) >= if (large) 3.0 else 4.5)
+                    assertTrue(
+                        "dark=$dark ${view.getAttribute("android:id")} on $fill",
+                        contrast(foreground, behindText) >= if (large) 3.0 else 4.5
+                    )
                 }
             }
             val scheme = doseColorScheme(dark)
@@ -112,6 +151,10 @@ class ThemeTest {
         }
     }
 
-    private fun contrast(first: Color, second: Color) = MedicationIconColors.contrast(first.toArgb(), second.toArgb())
+    private fun contrast(
+        first: Color,
+        second: Color
+    ) = MedicationIconColors.contrast(first.toArgb(), second.toArgb())
+
     private fun Color.luminanceIsDark() = contrast(this, Color.White) > contrast(this, Color.Black)
 }

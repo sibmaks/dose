@@ -6,5 +6,6 @@ import java.io.File
 internal object MedicationDictionaryTestAsset {
     val source: File get() = File(requireNotNull(System.getProperty("dose.dictionary.source")))
     val compressed: File get() = File(requireNotNull(System.getProperty("dose.dictionary.asset")))
-    fun load(): MedicationDictionary = compressed.inputStream().use(MedicationDictionary::fromGzip)
+    fun load(): MedicationDictionary = compressed.inputStream()
+        .use(MedicationDictionary::fromGzip)
 }

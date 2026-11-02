@@ -109,7 +109,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.vaadin.external.google:android-json:0.0.20131108.vaadin1")
+    testImplementation("org.json:json:20260814")
 }
 
 // Catalog-only edits regenerate the shipped asset and rerun its validation/search tests.
