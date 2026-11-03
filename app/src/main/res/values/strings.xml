@@ -14,7 +14,6 @@
     <string name="reminder_setup_banner">"Choose how Dose reminds you and finish Android access."</string>
     <string name="set_up_reminders">"Set up reminders"</string>
     <string name="today_s_schedule">"Today\'s schedule"</string>
-    <string name="manage">"Manage"</string>
     <string name="no_doses_scheduled_today">"No doses scheduled today"</string>
     <string name="nothing_scheduled_yet">"Nothing scheduled yet"</string>
     <string name="schedule_empty_today_hint">"Your reminders follow the dates you selected. View them in Medications."</string>
@@ -102,7 +101,6 @@
     <string name="unit_custom_hint">"Enter your own unit of measurement or medication form"</string>
     <string name="unit_custom_required">"Enter the unit name."</string>
     <string name="amount_positive">"Quantity must be greater than zero."</string>
-    <string name="choose_below_or_type_your_own">"Choose below or type your own"</string>
     <string name="when_should_dose_remind_you">"When should Dose remind you?"</string>
     <string name="add_another_schedule">"Add another schedule"</string>
     <string name="review_finish">"Review &amp; finish"</string>
@@ -111,7 +109,6 @@
     <string name="e_g_take_after_a_meal">"e.g. Take after a meal"</string>
     <string name="delete_medication">"Delete medication"</string>
     <string name="back">"Back"</string>
-    <string name="save_changes">"Save changes"</string>
     <string name="delete_medication_hint">"Reminders will stop. Your previous dose history will be kept."</string>
     <string name="delete">"Delete"</string>
     <string name="cancel">"Cancel"</string>
@@ -124,8 +121,6 @@
     <string name="add_time">"Add time"</string>
     <string name="pick_a_color">"Pick a color"</string>
     <string name="hex_color_rrggbb">"Hex color (#RRGGBB)"</string>
-    <string name="red">"Red"</string>
-    <string name="green">"Green"</string>
     <string name="blue">"Blue"</string>
     <string name="use_color">"Use color"</string>
     <string name="every_day">"Every day"</string>
@@ -147,7 +142,6 @@
     <string name="duration_1_min">"&lt;1 min"</string>
     <string name="time_for_your_medication">"Time for your medication"</string>
     <string name="snooze_10_min">"Snooze 10 min"</string>
-    <string name="later_keep_notification">"Later · keep notification"</string>
     <string name="later">"Later"</string>
     <string name="medication_reminders">"Medication reminders"</string>
     <string name="notification_channel_description">"Reminders for medication schedules you added"</string>
@@ -167,7 +161,6 @@
     <string name="choose_suggestion">"Choose %1$s, %2$s"</string>
     <string name="suggested_form">"Suggested form: %1$s. You can change it next."</string>
     <string name="color_description">"Color %1$s%2$s"</string>
-    <string name="selected_suffix">", selected"</string>
     <string name="choose_form">"Choose the form of %1$s."</string>
     <string name="change_suggested_form">"Suggested: %1$s. Choose another form if needed."</string>
     <string name="delete_named">"Delete %1$s?"</string>
@@ -176,9 +169,7 @@
     <string name="remove_date">"Remove date %1$s"</string>
     <string name="day_description">"Day %1$d%2$s"</string>
     <string name="default_date">"%1$s"</string>
-    <string name="label_value" translatable="false">"%1$s: %2$s"</string>
     <string name="clear_bound">"Clear date: %1$s"</string>
-    <string name="color_channel">"%1$s color channel"</string>
     <string name="monthly_days">"Monthly: %1$s"</string>
     <string name="from_date">"from %1$s"</string>
     <string name="until_date">" until %1$s"</string>
@@ -245,13 +236,10 @@
     <string name="instructions_required">"Enter instructions or turn off Add instructions."</string>
     <string name="today_only_hint">"Changes apply to this dose today only."</string>
     <string name="reminder_time">"Reminder time"</string>
-    <string name="taken_at">"Taken at"</string>
-    <string name="acceptance_time_error">"Choose a time today that has already passed."</string>
     <string name="today_time_error">"Choose a future time today that is different from this medication’s other doses. Recorded doses cannot be moved."</string>
     <string name="widget_name">"Dose · Today"</string>
     <string name="widget_description">"See your next pending dose and its time for today."</string>
     <string name="widget_open_today">"Tap to open Today"</string>
-    <string name="pause_notifications">"Pause"</string>
     <string name="notification_pause_title">"Notification pauses"</string>
     <string name="pause_current_title">"Current pause"</string>
     <string name="pause_start_label">"Start"</string>
@@ -282,19 +270,14 @@
     <string name="pause_delete_confirm_title">"Delete pause?"</string>
     <string name="pause_delete_confirm_text">"The scheduled pause will be canceled and appear in history."</string>
     <string name="pause_range_invalid">"The end must be after the start."</string>
-    <string name="notifications_paused_until">"Notifications paused until %1$s"</string>
-    <string name="resume_notifications">"Resume notifications now"</string>
     <string name="reminders_disabled_hint">"Reminders are off. Your medication schedules stay saved."</string>
-    <string name="pause_time_error">"Choose a future date and time."</string>
     <string name="dose_label">"Dose"</string>
     <string name="dose_status">"Status"</string>
     <string name="snoozed_until">"Snoozed until"</string>
-    <string name="skipped_at">"Skipped at"</string>
     <string name="recorded_dose">"Recorded dose"</string>
     <string name="color_wheel_hint">"Drag on the circle to choose a color. The center is white; the edge is fully saturated."</string>
     <string name="brightness">"Brightness"</string>
     <string name="color_hex_error">"Enter a color as #RRGGBB."</string>
-    <string name="taken_all">"Taken all"</string>
     <string name="skip_all">"Skip all"</string>
     <string name="several_medicines">"Medicines to take: %1$d"</string>
     <string name="mark_all_as_taken">"Mark all as taken"</string>
@@ -336,19 +319,14 @@
     <string name="vibration_style_orbs">"Orbs"</string>
     <string name="vibration_style_mission_passed">"Mission passed"</string>
     <string name="vibration_style_heavy_march">"Heavy march"</string>
-    <string name="dose_overlap_detected">"A schedule overlap was detected"</string>
-    <string name="dose_overlap_resolve">"Resolve the overlap"</string>
-    <string name="dose_overlap_choose_title">"Schedule overlap"</string>
     <string name="dose_overlap_choose_desc">"A single time has different doses. Choose which schedule applies where they overlap."</string>
     <string name="dose_overlap_what_happens">"What will happen"</string>
     <string name="dose_overlap_result">"One intake at the overlap — %1$s."</string>
     <string name="dose_overlap_result_pending">"Choose a schedule to see the result."</string>
     <string name="dose_overlap_result_keep">"The remaining intakes of both schedules stay unchanged."</string>
     <string name="dose_overlap_apply">"Apply priority"</string>
-    <string name="dose_overlap_resolved_title">"Overlap resolved"</string>
     <string name="dose_overlap_resolved_tag">"Resolved"</string>
     <string name="dose_overlap_pending_tag">"Needs a choice"</string>
-    <string name="dose_overlap_change">"Change"</string>
     <string name="dose_overlap_priority_dose">"Priority: %1$s"</string>
     <string name="overlaps_step">"Schedule overlaps"</string>
     <string name="dose_overlap_pick_all">"Choose a priority for every overlap."</string>
