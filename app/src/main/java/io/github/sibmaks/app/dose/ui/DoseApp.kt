@@ -535,17 +535,17 @@ private fun FeaturedCard(
                 .fillMaxWidth()
                 .padding(DoseSpacing.heroInset)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Rounded.Alarm, null, tint = OnBrandViolet, modifier = Modifier.size(20.dp))
-                Spacer(Modifier.width(DoseSpacing.extraSmall))
-                Text(
-                    if (distant) stringResource(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") stringResource(
-                        R.string.dose_needs_attention
-                    ) else stringResource(R.string.your_next_reminder),
-                    style = DoseText.contextTitle, fontWeight = FontWeight.Bold, color = OnBrandViolet,
-                )
-            }
             if (item != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.Alarm, null, tint = OnBrandViolet, modifier = Modifier.size(20.dp))
+                    Spacer(Modifier.width(DoseSpacing.extraSmall))
+                    Text(
+                        if (distant) stringResource(R.string.upcoming_dose) else if (item.status == "overdue" || item.status == "due") stringResource(
+                            R.string.dose_needs_attention
+                        ) else stringResource(R.string.your_next_reminder),
+                        style = DoseText.contextTitle, fontWeight = FontWeight.Bold, color = OnBrandViolet,
+                    )
+                }
                 Spacer(Modifier.height(DoseSpacing.large))
                 Text(
                     Instant.ofEpochMilli(item.dueMillis)
@@ -614,7 +614,6 @@ private fun FeaturedCard(
                     }
                 }
             } else {
-                Spacer(Modifier.height(DoseSpacing.heroInset))
                 Text(
                     if (hasSchedule) stringResource(R.string.all_done_for_today) else if (hasMedications) stringResource(
                         R.string.no_doses_due_today
