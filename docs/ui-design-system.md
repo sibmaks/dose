@@ -7,6 +7,7 @@ Use the shared roles below before adding a screen-specific value. Keep medicatio
 - `Theme.kt` owns the Material light/dark schemes. Use Material roles or the existing `Panel`, `SoftPanel`, `TextPrimary`, `TextMuted` and `Violet` accessors.
 - `SemanticColors.kt` owns status, warning, snooze, pause and invalid-field pairs. Use a foreground together with its matching container; do not add alpha to small status text.
 - The native reminder popup reads the same schemes. Native XML colors mirror the shared roles; `ThemeTest` verifies their parity and actual widget text/background contrast.
+- The popup uses a `surfaceContainerHigh` outer panel, `surface` medication cards, and an `outline` boundary above a dimmed system backdrop. Keep its bounded overlay window attached while updating the displayed medicines so the backdrop stays stable.
 - Expanded widgets follow the app's System/Light/Dark selection. Compact widgets keep the fixed violet Today hero treatment.
 
 ## Text

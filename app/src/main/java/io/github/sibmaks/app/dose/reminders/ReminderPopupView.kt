@@ -45,7 +45,7 @@ internal object ReminderPopupView {
         val lavender = colors.primaryContainer.toArgb()
         val border = colors.outlineVariant.toArgb()
         val surface = colors.surface.toArgb()
-        val cardSurface = colors.surfaceContainerLow.toArgb()
+        val popupSurface = colors.surfaceContainerHigh.toArgb()
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
         fun dimension(value: Dp) = (value.value * context.resources.displayMetrics.density).toInt()
         fun shape(
@@ -120,7 +120,7 @@ internal object ReminderPopupView {
             val card = LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(dimension(DoseSpacing.cardInset), dimension(DoseSpacing.cardInset), dimension(DoseSpacing.cardInset), dimension(DoseSpacing.cardInset))
-                background = shape(cardSurface, DoseRadii.card, border)
+                background = shape(surface, DoseRadii.card, border)
             }
             val heading = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
             heading.addView(ImageView(context).apply {
@@ -194,7 +194,7 @@ internal object ReminderPopupView {
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 .apply { topMargin = dimension(DoseSpacing.medium) })
         return ScrollView(context).apply {
-            background = shape(surface, DoseRadii.largePanel)
+            background = shape(popupSurface, DoseRadii.largePanel, colors.outline.toArgb())
             clipToOutline = true
             isFillViewport = true
             addView(content)

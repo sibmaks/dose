@@ -146,6 +146,22 @@ Use `--adb /path/to/adb` when needed. Close any existing draft first; the check 
 - Each retry checks the current day, dose identity, reminder deadline, snooze instant, unresolved status, reminder settings, permissions, and notification pause state. Disabling popups or starting a pause clears the queue; schedule rebuilds prune stale entries.
 - Verification: 240 unit tests, debug assembly and lint passed. The API 27 emulator received a reminder while asleep, retained its queued popup beyond 130 seconds with no popup service running, survived an explicit process kill, then displayed it after wake/unlock. The queue cleared after display, the history retained one delivery event, and Taken closed the popup. The rescheduling UI replay also passed. Original medication/history data and font settings were restored exactly. Modern Android and vendor-specific runtime behavior remain unverified.
 
+### Popup separation and stable updates — 3 November 2026
+
+- The native popup now dims the background by 38% and uses a tinted outer panel,
+  an explicit outline, and contrasting medication cards in both themes.
+- Reminder arrivals, duplicate deliveries, and individual dose actions update
+  the existing bounded overlay window instead of removing and adding it. The
+  system dim layer stays attached until the final displayed dose is resolved,
+  snoozed, or the popup otherwise closes.
+- Verification: all 240 unit tests, debug assembly, and lint passed. API 27 phone
+  checks verified single Taken/Skip records, one persistent window across a
+  two-medicine arrival/duplicate/action sequence, a shared snooze instant, and
+  removal of the dim layer after final Taken/Skip/Snooze. Light and dark popup
+  captures were inspected. The phone and native 600 dp tablet store galleries
+  were recaptured from the updated APK. Modern Android runtime behavior remains
+  unverified.
+
 ## Final validation
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`

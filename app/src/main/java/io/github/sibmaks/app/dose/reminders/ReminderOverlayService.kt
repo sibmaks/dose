@@ -16,6 +16,7 @@ import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.FrameLayout
 import androidx.core.app.NotificationCompat
 import io.github.sibmaks.app.dose.MainActivity
 import io.github.sibmaks.app.dose.R
@@ -33,7 +34,7 @@ import java.time.format.DateTimeFormatter
 class ReminderOverlayService : Service() {
     private val handler = Handler(Looper.getMainLooper())
     private val slots = linkedMapOf<String, ReminderSlot>()
-    private var window: View? = null
+    private var window: FrameLayout? = null
     private var renderedKeys: List<String> = emptyList()
     private var renderedLanguage: String? = null
     private var renderedDark: Boolean? = null
@@ -200,15 +201,28 @@ class ReminderOverlayService : Service() {
         val height = popup.measuredHeight
         val params = WindowManager.LayoutParams(
             width, height, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or WindowManager.LayoutParams.FLAG_DIM_BEHIND,
             PixelFormat.TRANSLUCENT
         )
-            .apply { gravity = Gravity.CENTER; title = context.getString(R.string.dose_medication_reminder) }
+            .apply {
+                gravity = Gravity.CENTER
+                title = context.getString(R.string.dose_medication_reminder)
+                dimAmount = 0.38f
+            }
         try {
-            window?.let { manager.removeView(it) }
-            window = null
-            manager.addView(popup, params)
-            window = popup
+            // Keep the overlay and its dim layer attached while a dose is resolved,
+            // another reminder arrives, or the language/theme changes.
+            val host = window
+            if (host == null) {
+                val newHost = FrameLayout(themed).apply { addView(popup) }
+                manager.addView(newHost, params)
+                window = newHost
+            } else {
+                host.removeAllViews()
+                host.addView(popup)
+                manager.updateViewLayout(host, params)
+            }
             PendingReminderPopups.shown(this, slots.keys)
             renderedKeys = slots.keys.toList()
             renderedLanguage = languageKey()

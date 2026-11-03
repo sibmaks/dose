@@ -39,6 +39,8 @@ class ThemeTest {
                 colors.onSurface to colors.surface,
                 colors.onSurfaceVariant to colors.surface,
                 colors.onSurfaceVariant to colors.surfaceContainerLow,
+                colors.onSurface to colors.surfaceContainerHigh,
+                colors.onSurfaceVariant to colors.surfaceContainerHigh,
                 colors.primary to colors.surface,
                 colors.primary to colors.primaryContainer,
                 colors.onPrimary to colors.primary,
