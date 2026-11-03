@@ -1,8 +1,8 @@
 {
   "language": "ru",
   "generated_for": "RuStore",
-  "git_revision": "cc5be076e7a65be87dcb570fc3152cbc12e132fc",
-  "apk_sha256": "00a9041df4d01be02644f7d188d7d97ada6828d0322f9fcd29446f12ec4c01a0",
+  "git_revision": "a4a61f379e61b7a59cf66ead6893b2b03c2b6ed3",
+  "apk_sha256": "5997c28c9e1df3652367408bbc7f15a01724329da13e6773ea9d0853aaa7ccf8",
   "captures": "Real app on dedicated Android 8.1 emulator; fictional sample data.",
   "phone_viewport": "1080x1920, 360 dpi (480dp wide)",
   "tablet_viewport": "1200x1920, 320 dpi (600dp wide)",
@@ -11,11 +11,11 @@
       "file": "phone/01-today.jpg",
       "width": 1080,
       "height": 1920,
-      "bytes": 276492,
+      "bytes": 273232,
       "title": "Лекарства —\nпо расписанию",
       "subtitle": "Ближайший приём и прогресс дня\nна одном экране.",
       "source": "raw/phone/01-today.png",
-      "source_sha256": "8c3313996042702c76e48548801d02e2d54e77d846dfc157486de26d8faf9693",
+      "source_sha256": "4b624483987926a13c22ae65027da465f94fef792366752781964cb22b6780d5",
       "system_chrome_crop": [
         0,
         54,
@@ -28,7 +28,7 @@
         964,
         1835
       ],
-      "sha256": "c38240c49b65a35363683ce85aeb20bd63c4777def61e20c75e0dca77ccdd13c"
+      "sha256": "d2c99b54c3e17ab8334a6238d4b689c18b797bbf0a309efbf5c4f5b30ca1000f"
     },
     {
       "file": "phone/02-medications.jpg",
@@ -38,7 +38,7 @@
       "title": "Все лекарства\nпод рукой",
       "subtitle": "Дозировки, время и заметки —\nв одном списке.",
       "source": "raw/phone/02-medications.png",
-      "source_sha256": "d27b34cf755f5a5e5caa669889d2d0e531575f684d0916da843b46335e91be50",
+      "source_sha256": "0b736db1a69007da61cf12cda49b88431fc7a1b1df91010b6e3de86a0ebcb357",
       "system_chrome_crop": [
         0,
         54,
@@ -61,7 +61,7 @@
       "title": "Расписание\nпод ваш день",
       "subtitle": "Каждый день, по дням недели\nили в выбранные даты.",
       "source": "raw/phone/03-schedule.png",
-      "source_sha256": "d122dbc0314f47d196b0535546da3a8310007cec741935ae68748c18bd89dd83",
+      "source_sha256": "267e5d1117cdd30a1f1d2073e1cded316a4ec0d7e6dd9273ca7b013463706f7b",
       "system_chrome_crop": [
         0,
         54,
@@ -84,7 +84,7 @@
       "title": "Укажите нужную\nдозировку",
       "subtitle": "Удобные единицы измерения\nи возможность добавить свои.",
       "source": "raw/phone/04-dosage.png",
-      "source_sha256": "2c4d006c5f88e60238048f25947626cde5183a41471b5a06ecd3b8050bd87918",
+      "source_sha256": "2a43196823889e98ba6cadb1f85a1c5bb18ed8e4f67cd376fb55710a17d8b010",
       "system_chrome_crop": [
         0,
         54,
@@ -107,7 +107,7 @@
       "title": "Разные формы.\nОдин порядок.",
       "subtitle": "Таблетки, капсулы, капли\nи другие формы приёма.",
       "source": "raw/phone/05-forms.png",
-      "source_sha256": "004c3f3ccc3c270c6e8ab96e54f41871e35bf34656209e6f8dc8abfe50dbe107",
+      "source_sha256": "00c3a0b8e98096b1e6f564463f9b23566778e7a838233d8f160fe67c0e76a2ac",
       "system_chrome_crop": [
         0,
         54,
@@ -126,11 +126,11 @@
       "file": "phone/06-popup.jpg",
       "width": 1080,
       "height": 1920,
-      "bytes": 271615,
+      "bytes": 275813,
       "title": "Напоминание\nперед глазами",
       "subtitle": "Отметьте приём или отложите\nнапоминание на 10 минут.",
       "source": "raw/phone/06-popup.png",
-      "source_sha256": "b23e09a206ceca6ab76522d2f14e119cf3976ec5b7ba460b846fc3acb1a5a6c5",
+      "source_sha256": "d46f0a771869ff49a0f4cc974090a167e0bc1bcfaae60e251af662c5871033e3",
       "system_chrome_crop": [
         0,
         54,
@@ -143,7 +143,7 @@
         964,
         1835
       ],
-      "sha256": "e97a6c208b27c70b8beaed2cfa875853b1d759e6f4b2e7637108256ed505b182"
+      "sha256": "08ad914624b785232f3ea1cbd92d56b1fd6f994294130b033f9da19346547ae7"
     },
     {
       "file": "phone/07-history.jpg",
@@ -153,7 +153,7 @@
       "title": "История\nкаждого приёма",
       "subtitle": "Время приёма и напоминания —\nв подробной истории событий.",
       "source": "raw/phone/07-history.png",
-      "source_sha256": "ff94a310cab6b719c9d4abda66dd48d8b3dd6903b81237d72183cf6044016954",
+      "source_sha256": "80fc15d3f88ab9b5ec9b2d6f46084c727bbc1d243b6e66d845408079821b5479",
       "system_chrome_crop": [
         0,
         54,
@@ -176,7 +176,7 @@
       "title": "Следите за\nрегулярностью",
       "subtitle": "Средняя задержка приёма\nза неделю, месяц или всё время.",
       "source": "raw/phone/08-report.png",
-      "source_sha256": "28536360c8f284390516142d4a5682a8a1d69465f2e156e3d2fa0120eb0466f6",
+      "source_sha256": "7e9a8045df06006d1ed8308ad8a9401e0200186b63e7f85b3098f0b6944627a5",
       "system_chrome_crop": [
         0,
         54,
@@ -195,11 +195,11 @@
       "file": "phone/09-dark.jpg",
       "width": 1080,
       "height": 1920,
-      "bytes": 256172,
+      "bytes": 252907,
       "title": "Светлая днём.\nТёмная вечером.",
       "subtitle": "Выберите удобную тему\nили доверьте выбор системе.",
       "source": "raw/phone/09-dark.png",
-      "source_sha256": "98a74f79401665706571547383b960b0f8ad5b95c1642b997399639fd0664ecf",
+      "source_sha256": "e64f5edbe2ba36f1a3d44936a87a98b7972414b73f77b9f0223423bbfd1db0fd",
       "system_chrome_crop": [
         0,
         54,
@@ -212,7 +212,7 @@
         964,
         1835
       ],
-      "sha256": "e6e1c31b37631a82c088c2caf6a37df9ddee774254f85104c2b34ac4bb385a1b"
+      "sha256": "c479e767856bee8436ae4819f7f011b515eabc00a4eeaed45716c4ad1aaa7696"
     },
     {
       "file": "phone/10-languages.jpg",
@@ -222,7 +222,7 @@
       "title": "На вашем\nязыке",
       "subtitle": "Русский и ещё 12 языков.\nПереключайтесь в приложении.",
       "source": "raw/phone/10-languages.png",
-      "source_sha256": "584769ac2c74e5d8770e542cb5000a3d78a6c7524f1b05efaece946de72d022d",
+      "source_sha256": "34679b7cce72007a2fc3726aa3b29a375c7ab84d7f1e21cdee6fc5238c502606",
       "system_chrome_crop": [
         0,
         54,
@@ -241,11 +241,11 @@
       "file": "tablet/01-today.jpg",
       "width": 1080,
       "height": 1920,
-      "bytes": 270948,
+      "bytes": 272594,
       "title": "Лекарства —\nпо расписанию",
       "subtitle": "Ближайший приём и прогресс дня\nна одном экране.",
       "source": "raw/tablet/01-today.png",
-      "source_sha256": "17544f0c98523b1f91632e95e6b96c1b4ffee5f3c65ad70c7b65dfca65aa3a2d",
+      "source_sha256": "b93697ee182d87ec8d7378d1743bec6475561a62319bb62317cdf0d32104102b",
       "system_chrome_crop": [
         0,
         48,
@@ -258,7 +258,7 @@
         1006,
         1836
       ],
-      "sha256": "3c84178b9cf3cae3906a6df70573818944af27de0ddd1287363ead10415e5d86"
+      "sha256": "d56bfe0fc5a60ff5b1391c9fd827c4210e2dcba44d2fdb6158ca96b4b02565f8"
     },
     {
       "file": "tablet/02-medications.jpg",
@@ -268,7 +268,7 @@
       "title": "Все лекарства\nпод рукой",
       "subtitle": "Дозировки, время и заметки —\nв одном списке.",
       "source": "raw/tablet/02-medications.png",
-      "source_sha256": "634406733acc4adc237466282baecb2a9529cd0dca9acbe2e008c2a9dab59462",
+      "source_sha256": "77ddbc7ce434aeb0d7c7b1fb6888f5df71c6ae41ae204ab4d2e02499d8a4189b",
       "system_chrome_crop": [
         0,
         48,
@@ -291,7 +291,7 @@
       "title": "Расписание\nпод ваш день",
       "subtitle": "Каждый день, по дням недели\nили в выбранные даты.",
       "source": "raw/tablet/03-schedule.png",
-      "source_sha256": "892384e07c9a9077c32bcd13df573ba096c708b1f2b68644378490bfdf7f7a3c",
+      "source_sha256": "a2ffa0a570f03d82a546be2365e1873b0ab13bd62bfefe275f44e8c88c679d66",
       "system_chrome_crop": [
         0,
         48,
@@ -314,7 +314,7 @@
       "title": "Укажите нужную\nдозировку",
       "subtitle": "Удобные единицы измерения\nи возможность добавить свои.",
       "source": "raw/tablet/04-dosage.png",
-      "source_sha256": "cefc5387b8409937409d04fc082c7d73e3720851783daa0a3654a3ad48b9b232",
+      "source_sha256": "284743372774b0e5ac35ff0cbb0170b2f82fb8c539ecbe487fe1417cec471915",
       "system_chrome_crop": [
         0,
         48,
@@ -337,7 +337,7 @@
       "title": "Разные формы.\nОдин порядок.",
       "subtitle": "Таблетки, капсулы, капли\nи другие формы приёма.",
       "source": "raw/tablet/05-forms.png",
-      "source_sha256": "cefb452d846157910934296690d6872998da07dfa3712137b5d34feaf0fbf0b5",
+      "source_sha256": "e0e40b07d9346b4836608d33231bb099ca6c26eb38de5009fdfbf354760a5234",
       "system_chrome_crop": [
         0,
         48,
@@ -356,11 +356,11 @@
       "file": "tablet/06-popup.jpg",
       "width": 1080,
       "height": 1920,
-      "bytes": 276324,
+      "bytes": 277791,
       "title": "Напоминание\nперед глазами",
       "subtitle": "Отметьте приём или отложите\nнапоминание на 10 минут.",
       "source": "raw/tablet/06-popup.png",
-      "source_sha256": "af7104d8f33fc61dcef3d1bc987b675114735786fc3ba576261c4c24cf30ee86",
+      "source_sha256": "32e0ec4585fe6ba8d7127b431bd8e4539f0969f26f7c7b1fa01b53820274f19e",
       "system_chrome_crop": [
         0,
         48,
@@ -373,7 +373,7 @@
         1006,
         1836
       ],
-      "sha256": "366b36fad7fcc977fde425e3fcd919a06972ffcfdc8bd27773fc1268bbb924df"
+      "sha256": "774337f29f696c494de048bbc6b19dc9adf5976063a49cebcc87e343cff9faa8"
     },
     {
       "file": "tablet/07-history.jpg",
@@ -383,7 +383,7 @@
       "title": "История\nкаждого приёма",
       "subtitle": "Время приёма и напоминания —\nв подробной истории событий.",
       "source": "raw/tablet/07-history.png",
-      "source_sha256": "8360878eb795a5531e2716300ba47ece2d41a60f0378dd5a2564cb0bdd4e5847",
+      "source_sha256": "f3c1941944aa46e6ba8a40cac97cb48085569c13563aa372584df3f31d64d451",
       "system_chrome_crop": [
         0,
         48,
@@ -406,7 +406,7 @@
       "title": "Следите за\nрегулярностью",
       "subtitle": "Средняя задержка приёма\nза неделю, месяц или всё время.",
       "source": "raw/tablet/08-report.png",
-      "source_sha256": "3e028b29342333bc3776dabe32391ffde096cf1d6d4b702a67a64ad810600585",
+      "source_sha256": "72c4482e27ed7546287fb28a2bede6a903f531c28ff0e91388e9526d2a6f650e",
       "system_chrome_crop": [
         0,
         48,
@@ -425,11 +425,11 @@
       "file": "tablet/09-dark.jpg",
       "width": 1080,
       "height": 1920,
-      "bytes": 251035,
+      "bytes": 252043,
       "title": "Светлая днём.\nТёмная вечером.",
       "subtitle": "Выберите удобную тему\nили доверьте выбор системе.",
       "source": "raw/tablet/09-dark.png",
-      "source_sha256": "fb42f9fee5332b837a60606f1ecb1cb598c279d6c8d30fa37303d56e737b9335",
+      "source_sha256": "cb50eee61f86f0955a842b60798cd870f58de2f2e7b05031203ba4881cc1f380",
       "system_chrome_crop": [
         0,
         48,
@@ -442,7 +442,7 @@
         1006,
         1836
       ],
-      "sha256": "ded25d8abc5719ea5852896b8218a5f8b61ff0014ae7b8921eeb43ba36e545d9"
+      "sha256": "c66356ac53768862b1f249d7db8c2e65d91fceb8d1ba42cdc0402408db6f9bdb"
     },
     {
       "file": "tablet/10-languages.jpg",
@@ -452,7 +452,7 @@
       "title": "На вашем\nязыке",
       "subtitle": "Русский и ещё 12 языков.\nПереключайтесь в приложении.",
       "source": "raw/tablet/10-languages.png",
-      "source_sha256": "f5e3a7bc2754da7e1f1e2ab9b6b7e696e53f3065ca72439eb48ac8c5e270085e",
+      "source_sha256": "0e2d0c710f15393714b4dd798a5ca86373bd9278f8f9e137eff97be235932361",
       "system_chrome_crop": [
         0,
         48,
