@@ -51,6 +51,7 @@ import io.github.sibmaks.app.dose.reminders.ReminderReceiver
 import io.github.sibmaks.app.dose.reminders.ReminderScheduler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.Collator
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -763,6 +764,15 @@ private fun MedicationsPage(
     listState: LazyListState,
 ) {
     val context = LocalContext.current
+    val locale = AppLanguages.locale(context)
+    val sortedMedications = remember(medications, locale) {
+        val collator = Collator.getInstance(locale).apply { strength = Collator.PRIMARY }
+        medications.sortedWith(
+            compareBy<Medication, String>(collator) { it.name }
+                .thenBy { it.name }
+                .thenBy { it.id }
+        )
+    }
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxSize(),
@@ -786,7 +796,7 @@ private fun MedicationsPage(
                 )
             }
         } else {
-            items(medications, key = { it.id }) { med ->
+            items(sortedMedications, key = { it.id }) { med ->
                 Card(
                     shape = DoseShapes.card,
                     colors = CardDefaults.cardColors(containerColor = Panel),
