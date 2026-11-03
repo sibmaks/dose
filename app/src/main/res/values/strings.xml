@@ -14,10 +14,6 @@
     <string name="reminder_setup_banner">"Choose how Dose reminds you and finish Android access."</string>
     <string name="set_up_reminders">"Set up reminders"</string>
     <string name="today_s_schedule">"Today\'s schedule"</string>
-    <string name="no_doses_scheduled_today">"No doses scheduled today"</string>
-    <string name="nothing_scheduled_yet">"Nothing scheduled yet"</string>
-    <string name="schedule_empty_today_hint">"Your reminders follow the dates you selected. View them in Medications."</string>
-    <string name="schedule_empty_hint">"Add a medication and choose when you want to be reminded."</string>
     <string name="dose_needs_attention">"DOSE NEEDS ATTENTION"</string>
     <string name="your_next_reminder">"YOUR NEXT REMINDER"</string>
     <string name="mark_as_taken">"Mark as taken"</string>

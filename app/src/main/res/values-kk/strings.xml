@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Еске салу түрін таңдап, Android рұқсаттарын беріңіз."</string>
     <string name="set_up_reminders">"Еске салғыштарды баптау"</string>
     <string name="today_s_schedule">"Бүгінгі кесте"</string>
-    <string name="no_doses_scheduled_today">"Бүгін қабылдау жоқ"</string>
-    <string name="nothing_scheduled_yet">"Кесте әзірге бос"</string>
-    <string name="schedule_empty_today_hint">"Еске салғыштар таңдалған күндерге сай. «Дәрілер» бөлімінен қараңыз."</string>
-    <string name="schedule_empty_hint">"Дәрі қосып, еске салу уақытын таңдаңыз."</string>
     <string name="dose_needs_attention">"ДӘРІ ҚАБЫЛДАЙТЫН УАҚЫТ"</string>
     <string name="your_next_reminder">"КЕЛЕСІ ЕСКЕ САЛҒЫШ"</string>
     <string name="mark_as_taken">"Қабылданды деп белгілеу"</string>

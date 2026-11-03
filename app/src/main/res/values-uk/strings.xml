@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Виберіть нагадування й надайте дозволи Android."</string>
     <string name="set_up_reminders">"Налаштувати нагадування"</string>
     <string name="today_s_schedule">"Розклад на сьогодні"</string>
-    <string name="no_doses_scheduled_today">"Сьогодні прийомів немає"</string>
-    <string name="nothing_scheduled_yet">"Розклад поки порожній"</string>
-    <string name="schedule_empty_today_hint">"Нагадування відповідають вибраним датам. Перегляньте їх у розділі «Ліки»."</string>
-    <string name="schedule_empty_hint">"Додайте ліки й виберіть час нагадувань."</string>
     <string name="dose_needs_attention">"ЧАС ПРИЙНЯТИ ЛІКИ"</string>
     <string name="your_next_reminder">"НАСТУПНЕ НАГАДУВАННЯ"</string>
     <string name="mark_as_taken">"Позначити прийом"</string>

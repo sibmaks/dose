@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Выберыце напаміны і дайце доступ у Android."</string>
     <string name="set_up_reminders">"Наладзіць напаміны"</string>
     <string name="today_s_schedule">"Расклад на сёння"</string>
-    <string name="no_doses_scheduled_today">"Сёння прыёмаў няма"</string>
-    <string name="nothing_scheduled_yet">"Расклад пакуль пусты"</string>
-    <string name="schedule_empty_today_hint">"Напаміны прыходзяць у выбраныя даты. Глядзіце іх у раздзеле «Лекі»."</string>
-    <string name="schedule_empty_hint">"Дадайце лекі і выберыце час напамінаў."</string>
     <string name="dose_needs_attention">"ЧАС ПРЫНЯЦЬ ЛЕКІ"</string>
     <string name="your_next_reminder">"НАСТУПНЫ НАПАМІН"</string>
     <string name="mark_as_taken">"Адзначыць прыём"</string>

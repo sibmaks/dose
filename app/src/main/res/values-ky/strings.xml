@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Эскертүү түрүн тандап, Android уруксаттарын бериңиз."</string>
     <string name="set_up_reminders">"Эскертмелерди жөндөө"</string>
     <string name="today_s_schedule">"Бүгүнкү жадыбал"</string>
-    <string name="no_doses_scheduled_today">"Бүгүн кабыл алуу жок"</string>
-    <string name="nothing_scheduled_yet">"Жадыбал азырынча бош"</string>
-    <string name="schedule_empty_today_hint">"Эскертмелер тандалган күндөргө ылайык. «Дарылар» бөлүмүнөн көрүңүз."</string>
-    <string name="schedule_empty_hint">"Дары кошуп, эскертүү убактысын тандаңыз."</string>
     <string name="dose_needs_attention">"ДАРЫ КАБЫЛ АЛУУ УБАКТЫСЫ"</string>
     <string name="your_next_reminder">"КИЙИНКИ ЭСКЕРТМЕ"</string>
     <string name="mark_as_taken">"Кабыл алынды деп белгилөө"</string>

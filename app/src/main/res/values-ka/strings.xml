@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"აირჩიეთ შეხსენებები და მიანიჭეთ Android-ის ნებართვები."</string>
     <string name="set_up_reminders">"შეხსენებების გამართვა"</string>
     <string name="today_s_schedule">"დღევანდელი განრიგი"</string>
-    <string name="no_doses_scheduled_today">"დღეს მიღება დაგეგმილი არ არის"</string>
-    <string name="nothing_scheduled_yet">"ჯერ არაფერია დაგეგმილი"</string>
-    <string name="schedule_empty_today_hint">"შეხსენებები მიჰყვება არჩეულ თარიღებს. იხილეთ „წამლები“."</string>
-    <string name="schedule_empty_hint">"დაამატეთ წამალი და აირჩიეთ შეხსენების დრო."</string>
     <string name="dose_needs_attention">"წამლის მიღების დროა"</string>
     <string name="your_next_reminder">"შემდეგი შეხსენება"</string>
     <string name="mark_as_taken">"მიღებულად მონიშვნა"</string>

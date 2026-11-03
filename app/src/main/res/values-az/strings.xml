@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Xatırlatma üsulunu seçin və Android icazələrini tamamlayın."</string>
     <string name="set_up_reminders">"Xatırlatmaları qur"</string>
     <string name="today_s_schedule">"Bugünkü cədvəl"</string>
-    <string name="no_doses_scheduled_today">"Bu gün qəbul planlaşdırılmayıb"</string>
-    <string name="nothing_scheduled_yet">"Hələ heç nə planlaşdırılmayıb"</string>
-    <string name="schedule_empty_today_hint">"Xatırlatmalar seçdiyiniz tarixlərə uyğundur. Dərmanlar bölməsinə baxın."</string>
-    <string name="schedule_empty_hint">"Dərman əlavə edib xatırlatma vaxtını seçin."</string>
     <string name="dose_needs_attention">"DƏRMAN QƏBULU VAXTIDIR"</string>
     <string name="your_next_reminder">"NÖVBƏTİ XATIRLATMA"</string>
     <string name="mark_as_taken">"Qəbul edildi kimi qeyd et"</string>

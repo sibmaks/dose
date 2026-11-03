@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Eslatma turini tanlang va Android ruxsatlarini bering."</string>
     <string name="set_up_reminders">"Eslatmalarni sozlash"</string>
     <string name="today_s_schedule">"Bugungi jadval"</string>
-    <string name="no_doses_scheduled_today">"Bugun qabul rejalashtirilmagan"</string>
-    <string name="nothing_scheduled_yet">"Hali hech narsa rejalashtirilmagan"</string>
-    <string name="schedule_empty_today_hint">"Eslatmalar tanlangan sanalarga mos. Dorilar boʻlimida koʻring."</string>
-    <string name="schedule_empty_hint">"Dori qoʻshing va eslatma vaqtini tanlang."</string>
     <string name="dose_needs_attention">"DORI QABUL QILISH VAQTI"</string>
     <string name="your_next_reminder">"KEYINGI ESLATMA"</string>
     <string name="mark_as_taken">"Qabul qilindi deb belgilash"</string>

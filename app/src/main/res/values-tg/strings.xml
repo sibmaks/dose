@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Ёдраскуниҳоро интихоб карда, иҷозатҳои Android-ро диҳед."</string>
     <string name="set_up_reminders">"Танзими ёдраскуниҳо"</string>
     <string name="today_s_schedule">"Ҷадвали имрӯз"</string>
-    <string name="no_doses_scheduled_today">"Имрӯз қабул нест"</string>
-    <string name="nothing_scheduled_yet">"Ҷадвал ҳоло холӣ аст"</string>
-    <string name="schedule_empty_today_hint">"Ёдраскуниҳо аз рӯйи санаҳои интихобшудаанд. Ба бахши «Доруҳо» нигаред."</string>
-    <string name="schedule_empty_hint">"Дору илова карда, вақти ёдраскуниро интихоб кунед."</string>
     <string name="dose_needs_attention">"ВАҚТИ ҚАБУЛИ ДОРУ"</string>
     <string name="your_next_reminder">"ЁДРАСКУНИИ НАВБАТӢ"</string>
     <string name="mark_as_taken">"Қабулшударо қайд кардан"</string>

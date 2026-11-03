@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Alege mementourile și acordă permisiunile Android."</string>
     <string name="set_up_reminders">"Configurează mementourile"</string>
     <string name="today_s_schedule">"Programul de astăzi"</string>
-    <string name="no_doses_scheduled_today">"Nicio doză programată astăzi"</string>
-    <string name="nothing_scheduled_yet">"Nimic programat încă"</string>
-    <string name="schedule_empty_today_hint">"Mementourile urmează datele alese. Vezi secțiunea Medicamente."</string>
-    <string name="schedule_empty_hint">"Adaugă un medicament și alege când să fii anunțat."</string>
     <string name="dose_needs_attention">"DOZA NECESITĂ ATENȚIE"</string>
     <string name="your_next_reminder">"URMĂTORUL MEMENTO"</string>
     <string name="mark_as_taken">"Marchează ca luată"</string>

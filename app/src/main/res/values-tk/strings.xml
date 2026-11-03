@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Ýatlatmalary saýlap, Android rugsatlaryny beriň."</string>
     <string name="set_up_reminders">"Ýatlatmalary sazlamak"</string>
     <string name="today_s_schedule">"Şu günki tertip"</string>
-    <string name="no_doses_scheduled_today">"Şu gün doza bellenmedik"</string>
-    <string name="nothing_scheduled_yet">"Entek hiç zat bellenmedik"</string>
-    <string name="schedule_empty_today_hint">"Ýatlatmalar saýlanan senelere eýerýär. Dermanlar bölümine serediň."</string>
-    <string name="schedule_empty_hint">"Derman goşup, ýatlatma wagtyny saýlaň."</string>
     <string name="dose_needs_attention">"DERMAN IÇMEGIŇ WAGTY"</string>
     <string name="your_next_reminder">"INDIKI ÝATLATMA"</string>
     <string name="mark_as_taken">"Içildi diýip bellemek"</string>

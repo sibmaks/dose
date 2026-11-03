@@ -490,7 +490,7 @@ private fun TodayPage(
                 }
             }
         }
-        if (items.isEmpty() || remaining.isNotEmpty()) {
+        if (remaining.isNotEmpty()) {
             item {
                 Text(
                     stringResource(R.string.today_s_schedule),
@@ -499,18 +499,8 @@ private fun TodayPage(
                     modifier = Modifier.padding(top = DoseSpacing.controlGap)
                 )
             }
-            if (items.isEmpty()) {
-                item {
-                    EmptyCard(
-                        if (hasMedications) stringResource(R.string.no_doses_scheduled_today) else stringResource(R.string.nothing_scheduled_yet),
-                        if (hasMedications) stringResource(R.string.schedule_empty_today_hint) else stringResource(R.string.schedule_empty_hint),
-                        if (hasMedications) null else onAdd
-                    )
-                }
-            } else {
-                items(remaining, key = { it.id }) { item ->
-                    DoseCard(item, onRecord = onRecord, onUndo = onUndo, onOpen = onOpen)
-                }
+            items(remaining, key = { it.id }) { item ->
+                DoseCard(item, onRecord = onRecord, onUndo = onUndo, onOpen = onOpen)
             }
         }
     }

@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Выберите напоминания и предоставьте доступ в Android."</string>
     <string name="set_up_reminders">"Настроить напоминания"</string>
     <string name="today_s_schedule">"Расписание на сегодня"</string>
-    <string name="no_doses_scheduled_today">"Сегодня приёмов нет"</string>
-    <string name="nothing_scheduled_yet">"Расписание пока пусто"</string>
-    <string name="schedule_empty_today_hint">"Напоминания приходят в выбранные даты. Посмотрите их в разделе «Лекарства»."</string>
-    <string name="schedule_empty_hint">"Добавьте лекарство и выберите время напоминаний."</string>
     <string name="dose_needs_attention">"ПОРА ПРИНЯТЬ ЛЕКАРСТВО"</string>
     <string name="your_next_reminder">"СЛЕДУЮЩЕЕ НАПОМИНАНИЕ"</string>
     <string name="mark_as_taken">"Отметить приём"</string>

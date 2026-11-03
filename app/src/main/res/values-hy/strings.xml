@@ -13,10 +13,6 @@
     <string name="reminder_setup_banner">"Ընտրեք հիշեցումները և տրամադրեք Android-ի թույլտվությունները։"</string>
     <string name="set_up_reminders">"Կարգավորել հիշեցումները"</string>
     <string name="today_s_schedule">"Այսօրվա ժամանակացույցը"</string>
-    <string name="no_doses_scheduled_today">"Այսօր ընդունումներ չկան"</string>
-    <string name="nothing_scheduled_yet">"Դեռ ոչինչ պլանավորված չէ"</string>
-    <string name="schedule_empty_today_hint">"Հիշեցումները հետևում են ընտրված ամսաթվերին։ Դիտեք դրանք «Դեղեր» բաժնում։"</string>
-    <string name="schedule_empty_hint">"Ավելացրեք դեղ և ընտրեք հիշեցման ժամանակը։"</string>
     <string name="dose_needs_attention">"ԴԵՂՆ ԸՆԴՈՒՆԵԼՈՒ ԺԱՄԱՆԱԿՆ Է"</string>
     <string name="your_next_reminder">"ՀԱՋՈՐԴ ՀԻՇԵՑՈՒՄԸ"</string>
     <string name="mark_as_taken">"Նշել որպես ընդունված"</string>
