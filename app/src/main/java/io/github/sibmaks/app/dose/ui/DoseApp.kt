@@ -320,7 +320,6 @@ fun DoseApp(openTodayRequest: Int = 0) {
                     onReminderSetup = { firstReminderSetup = false; showReminderSettings = true },
                     onAdd = { editingId = null; showEditor = true },
                     onOpen = { todayDoseId = it.id },
-                    onManage = { scope.launch { pagerState.animateScrollToPage(Tab.Medications.ordinal) } },
                     onRecord = { item, status ->
                         ReminderScheduler.cancelSnooze(context, item.medication.id, item.time, item.date)
                         DoseStore.record(context, DoseStore.newLog(item, status))
@@ -405,7 +404,6 @@ private fun TodayPage(
     showSetupWarning: Boolean,
     onReminderSetup: () -> Unit,
     onAdd: () -> Unit,
-    onManage: () -> Unit,
     onRecord: (DoseItem, String) -> Unit,
     onRecordGroup: (List<DoseItem>, String) -> Unit,
     onUndo: (DoseItem) -> Unit,
@@ -413,6 +411,7 @@ private fun TodayPage(
 ) {
     val context = LocalContext.current
     val featured = DoseGroups.featured(items)
+    val remaining = items.filter { it.log?.status != "taken" }
     val taken = items.count { it.status == "taken" }
     val skipped = items.count { it.status == "skipped" }
     val percent = if (items.isEmpty()) 0 else (taken * 100f / items.size).toInt()
@@ -491,52 +490,26 @@ private fun TodayPage(
                 }
             }
         }
-        item {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = DoseSpacing.controlGap)) {
+        if (items.isEmpty() || remaining.isNotEmpty()) {
+            item {
                 Text(
                     stringResource(R.string.today_s_schedule),
                     style = DoseText.sectionTitle,
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.padding(top = DoseSpacing.controlGap)
                 )
-                TextButton(onClick = onManage) {
-                    Text(
-                        stringResource(R.string.manage),
-                        fontWeight = FontWeight.Bold
+            }
+            if (items.isEmpty()) {
+                item {
+                    EmptyCard(
+                        if (hasMedications) stringResource(R.string.no_doses_scheduled_today) else stringResource(R.string.nothing_scheduled_yet),
+                        if (hasMedications) stringResource(R.string.schedule_empty_today_hint) else stringResource(R.string.schedule_empty_hint),
+                        if (hasMedications) null else onAdd
                     )
                 }
-            }
-        }
-        if (items.isEmpty()) {
-            item {
-                EmptyCard(
-                    if (hasMedications) stringResource(R.string.no_doses_scheduled_today) else stringResource(R.string.nothing_scheduled_yet),
-                    if (hasMedications) stringResource(R.string.schedule_empty_today_hint) else stringResource(R.string.schedule_empty_hint),
-                    if (hasMedications) null else onAdd
-                )
-            }
-        } else {
-            items(items.filter { it.log?.status != "taken" }, key = { it.id }) { item ->
-                DoseCard(item, onRecord = onRecord, onUndo = onUndo, onOpen = onOpen)
-            }
-            // Everything taken closes the day's schedule with a success banner.
-            if (items.all { it.log?.status == "taken" }) item(key = "all-taken") {
-                Surface(
-                    color = SuccessPanel,
-                    shape = DoseShapes.tile,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Row(
-                        Modifier.padding(DoseSpacing.cardInset),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(Icons.Rounded.CheckCircle, null, tint = Mint, modifier = Modifier.size(19.dp))
-                        Spacer(Modifier.width(DoseSpacing.controlGap))
-                        Text(
-                            stringResource(R.string.all_medication_taken),
-                            fontWeight = FontWeight.Bold, style = DoseText.supporting, color = Mint,
-                        )
-                    }
+            } else {
+                items(remaining, key = { it.id }) { item ->
+                    DoseCard(item, onRecord = onRecord, onUndo = onUndo, onOpen = onOpen)
                 }
             }
         }
