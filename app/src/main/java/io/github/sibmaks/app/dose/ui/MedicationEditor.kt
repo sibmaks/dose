@@ -38,6 +38,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -1061,7 +1063,7 @@ private fun ScheduleEditor(
             }
             if (rule.kind != ScheduleKind.SPECIFIC_DATES) {
                 HorizontalDivider(color = PanelBorder)
-                ResponsiveFields {
+                ResponsiveFields { heightModifier ->
                     DateBound(
                         stringResource(R.string.from),
                         rule.from,
@@ -1076,7 +1078,7 @@ private fun ScheduleEditor(
                                 )
                             )
                         },
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f).then(heightModifier),
                         error = issue?.takeIf { it.field in listOf(ScheduleField.START, ScheduleField.BOUNDS) }
                             ?.let { localizedValidationError(context, it.message) })
                     DateBound(
@@ -1085,10 +1087,11 @@ private fun ScheduleEditor(
                         stringResource(R.string.no_end_date),
                         onPick = { pickDate(rule.until ?: rule.from) { onChange(rule.copy(until = it)) } },
                         onClear = { onChange(rule.copy(until = null)) },
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f).then(heightModifier),
                         error = issue?.takeIf { it.field in listOf(ScheduleField.END, ScheduleField.BOUNDS) }
                             ?.let { localizedValidationError(context, it.message) })
                 }
+                ScheduleError(issue, ScheduleField.START, ScheduleField.END, ScheduleField.BOUNDS)
             }
             HorizontalDivider(color = PanelBorder)
             Text(
@@ -1162,12 +1165,13 @@ private fun ScheduleEditor(
 @Composable
 private fun ScheduleError(
     issue: ScheduleIssue?,
-    field: ScheduleField
+    vararg fields: ScheduleField
 ) {
-    if (issue?.field == field) Text(
+    if (issue != null && issue.field in fields) Text(
         localizedValidationError(LocalContext.current, issue.message),
         color = MaterialTheme.colorScheme.error,
-        style = DoseText.caption
+        style = DoseText.caption,
+        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
     )
 }
 
@@ -1192,7 +1196,6 @@ private fun DateBound(
         icon = Icons.Rounded.CalendarMonth,
         onClear = onClear.takeIf { value != null },
         errorMessage = error,
-        supportingError = true,
         containerColor = SoftPanel,
     )
 }

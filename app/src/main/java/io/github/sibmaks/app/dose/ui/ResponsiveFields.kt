@@ -11,16 +11,22 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun ResponsiveFields(
     gap: Dp = DoseSpacing.extraSmall,
-    content: @Composable FlowRowScope.() -> Unit,
+    content: @Composable RowScope.(heightModifier: Modifier) -> Unit,
 ) {
     val largeText = LocalDensity.current.fontScale >= 1.5f
     BoxWithConstraints(Modifier.fillMaxWidth()) {
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            maxItemsInEachRow = if (largeText || maxWidth < 320.dp) 1 else 2,
-            horizontalArrangement = Arrangement.spacedBy(gap),
-            verticalArrangement = Arrangement.spacedBy(DoseSpacing.medium),
-            content = content,
-        )
+        if (largeText || maxWidth < 320.dp) {
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                maxItemsInEachRow = 1,
+                verticalArrangement = Arrangement.spacedBy(DoseSpacing.medium),
+            ) { content(Modifier) }
+        } else {
+            // Measure paired fields at their actual weighted widths before matching heights.
+            Row(
+                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                horizontalArrangement = Arrangement.spacedBy(gap),
+            ) { content(Modifier.fillMaxHeight()) }
+        }
     }
 }

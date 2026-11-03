@@ -31,7 +31,6 @@ internal fun OutlinedPickerField(
     icon: ImageVector? = null,
     onClear: (() -> Unit)? = null,
     errorMessage: String? = null,
-    supportingError: Boolean = false,
     containerColor: Color = Panel,
 ) {
     val interactions = remember { MutableInteractionSource() }
@@ -45,55 +44,49 @@ internal fun OutlinedPickerField(
         errorContainerColor = background,
         unfocusedBorderColor = MaterialTheme.colorScheme.outline,
     )
-    Column(modifier) {
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .padding(top = DoseSpacing.extraSmall)
-                .heightIn(min = DoseDimensions.field)
-                .clickable(interactionSource = interactions, indication = null, role = Role.Button,
-                    onClickLabel = label, onClick = onClick)
-                .semantics(mergeDescendants = true) {
-                    contentDescription = listOf(label, display).filter { it.isNotBlank() }.joinToString(", ")
-                    if (errorMessage != null) error(errorMessage)
-                },
-            contentAlignment = Alignment.CenterStart,
-            propagateMinConstraints = true,
-        ) {
-            OutlinedTextFieldDefaults.DecorationBox(
-                value = display,
-                innerTextField = {
-                    Text(display, style = DoseText.itemTitle,
-                        fontWeight = if (value.isBlank()) FontWeight.Normal else FontWeight.SemiBold,
-                        color = if (value.isBlank()) TextMuted else TextPrimary,
-                        modifier = Modifier.clearAndSetSemantics {})
-                },
-                enabled = true,
-                singleLine = false,
-                visualTransformation = VisualTransformation.None,
-                interactionSource = interactions,
-                isError = invalid,
-                label = { Text(label, modifier = Modifier.clearAndSetSemantics {}) },
-                trailingIcon = if (onClear != null) ({
-                    IconButton(onClick = onClear) {
-                        Icon(Icons.Rounded.Close, stringResource(R.string.clear_bound, label),
-                            tint = TextMuted, modifier = Modifier.size(20.dp))
-                    }
-                }) else icon?.let { fieldIcon ->
-                    { Icon(fieldIcon, null, tint = TextMuted, modifier = Modifier.size(20.dp)) }
-                },
-                colors = colors,
-                container = {
-                    OutlinedTextFieldDefaults.Container(
-                        enabled = true, isError = invalid, interactionSource = interactions,
-                        colors = colors, shape = shape,
-                    )
-                },
-            )
-        }
-        if (supportingError && errorMessage != null) Text(
-            errorMessage, color = MaterialTheme.colorScheme.error, style = DoseText.caption,
-            modifier = Modifier.padding(top = DoseSpacing.tiny).semantics { liveRegion = LiveRegionMode.Polite },
+    Box(
+        modifier
+            .fillMaxWidth()
+            .padding(top = DoseSpacing.extraSmall)
+            .heightIn(min = DoseDimensions.field)
+            .clickable(interactionSource = interactions, indication = null, role = Role.Button,
+                onClickLabel = label, onClick = onClick)
+            .semantics(mergeDescendants = true) {
+                contentDescription = listOf(label, display).filter { it.isNotBlank() }.joinToString(", ")
+                if (errorMessage != null) error(errorMessage)
+            },
+        contentAlignment = Alignment.CenterStart,
+        propagateMinConstraints = true,
+    ) {
+        OutlinedTextFieldDefaults.DecorationBox(
+            value = display,
+            innerTextField = {
+                Text(display, style = DoseText.itemTitle,
+                    fontWeight = if (value.isBlank()) FontWeight.Normal else FontWeight.SemiBold,
+                    color = if (value.isBlank()) TextMuted else TextPrimary,
+                    modifier = Modifier.clearAndSetSemantics {})
+            },
+            enabled = true,
+            singleLine = false,
+            visualTransformation = VisualTransformation.None,
+            interactionSource = interactions,
+            isError = invalid,
+            label = { Text(label, modifier = Modifier.clearAndSetSemantics {}) },
+            trailingIcon = if (onClear != null) ({
+                IconButton(onClick = onClear) {
+                    Icon(Icons.Rounded.Close, stringResource(R.string.clear_bound, label),
+                        tint = TextMuted, modifier = Modifier.size(20.dp))
+                }
+            }) else icon?.let { fieldIcon ->
+                { Icon(fieldIcon, null, tint = TextMuted, modifier = Modifier.size(20.dp)) }
+            },
+            colors = colors,
+            container = {
+                OutlinedTextFieldDefaults.Container(
+                    enabled = true, isError = invalid, interactionSource = interactions,
+                    colors = colors, shape = shape,
+                )
+            },
         )
     }
 }
