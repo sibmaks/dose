@@ -563,13 +563,13 @@ private fun FeaturedCard(
                 .padding(DoseSpacing.heroInset)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Rounded.Alarm, null, tint = OnBrandViolet, modifier = Modifier.size(17.dp))
+                Icon(Icons.Rounded.Alarm, null, tint = OnBrandViolet, modifier = Modifier.size(20.dp))
                 Spacer(Modifier.width(DoseSpacing.extraSmall))
                 Text(
                     if (distant) stringResource(R.string.upcoming_dose) else if (item?.status == "overdue" || item?.status == "due") stringResource(
                         R.string.dose_needs_attention
                     ) else stringResource(R.string.your_next_reminder),
-                    style = DoseText.caption, fontWeight = FontWeight.Bold, color = OnBrandViolet,
+                    style = DoseText.contextTitle, fontWeight = FontWeight.Bold, color = OnBrandViolet,
                 )
             }
             if (item != null) {

@@ -162,6 +162,17 @@ Use `--adb /path/to/adb` when needed. Close any existing draft first; the check 
   were recaptured from the updated APK. Modern Android runtime behavior remains
   unverified.
 
+### Hero status heading readability — 3 November 2026
+
+- Increased the Today hero's upcoming/due/next-reminder label from the 12 sp
+  caption role to the 16 sp context-title role, with a matching 20 dp alarm icon.
+  Long labels can wrap and continue to follow Android's text scaling.
+- Verification: all 240 unit tests, debug assembly, and lint passed. API 27
+  Russian screenshots and hierarchy checks at 100%/200% text confirmed the
+  larger upcoming label and an unclipped, two-line due label. The store set now
+  contains matching ten-image phone and native 600 dp tablet galleries,
+  recaptured from the updated APK.
+
 ## Final validation
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-21.jdk/Contents/Home ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --offline --no-daemon`

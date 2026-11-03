@@ -34,6 +34,8 @@ Prefer `DoseText` roles for the app's existing hierarchy:
 
 Brand lettering, empty-hero headings, metrics and tracked eyebrows have explicit display roles. The compact native widget clock uses 36 sp to fit its host surface. Native widget text sizes live in `values/dimens.xml`; native popup sizes read `DoseText`. Keep sizes in sp and allow content to grow or scroll when text scales. A local weight override may strengthen an action or selected value without inventing a new size.
 
+The Today hero's upcoming/due/next-reminder status uses `contextTitle` (16 / 24 sp) with a 20 dp alarm icon. Let long status labels wrap at larger text sizes.
+
 ## Geometry
 
 `Geometry.kt` owns `DoseSpacing`, `DoseRadii`, `DoseShapes`, `DoseDimensions` and the installed Material shapes.
