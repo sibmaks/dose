@@ -883,7 +883,7 @@ private fun HistoryPage(
                 Text(stringResource(R.string.history_hint), style = DoseText.body, color = TextMuted)
             }
         }
-        item { DelayReportCard(logs, today) }
+        item(key = "delay-report") { DelayReportCard(logs, today) }
         if (groups.isEmpty()) {
             item {
                 EmptyCard(

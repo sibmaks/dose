@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,7 +24,7 @@ internal fun DelayReportCard(
     today: LocalDate
 ) {
     val context = LocalContext.current
-    var days by remember { mutableStateOf<Int?>(7) }
+    var days by rememberSaveable { mutableStateOf<Int?>(7) }
     val report =
         remember(logs, days, today) { DoseReports.summarize(logs, days?.let { today.minusDays(it - 1L) }, today) }
     Card(
